@@ -128,6 +128,15 @@ class KohaRest extends \VuFind\ILS\Driver\AbstractBase implements
     ];
 
     /**
+     * Permanent renewal blocks
+     */
+    protected $permanentRenewalBlocks = [
+        'onsite_checkout',
+        'on_reserve',
+        'too_many'
+    ];
+
+    /**
      * Whether to display home branch instead of holding branch
      *
      * @var bool
@@ -511,11 +520,20 @@ class KohaRest extends \VuFind\ILS\Driver\AbstractBase implements
             }
 
             $renewable = $entry['renewable'];
+            $renewals = $entry['renewals'];
+            $renewLimit = $entry['max_renewals'];
             $message = '';
             if (!$renewable) {
                 $message = $this->mapRenewalBlockReason(
                     $entry['renewability_error']
                 );
+                $permanent = in_array(
+                    $entry['renewability_error'], $this->permanentRenewalBlocks
+                );
+                if ($permanent) {
+                    $renewals = null;
+                    $renewLimit = null;
+                }
             }
 
             $transaction = [
@@ -528,8 +546,8 @@ class KohaRest extends \VuFind\ILS\Driver\AbstractBase implements
                     'Y-m-d\TH:i:sP', $entry['date_due']
                 ),
                 'dueStatus' => $dueStatus,
-                'renew' => $entry['renewals'],
-                'renewLimit' => $entry['max_renewals'],
+                'renew' => $renewals,
+                'renewLimit' => $renewLimit,
                 'renewable' => $renewable,
                 'message' => $message
             ];
@@ -1174,8 +1192,9 @@ class KohaRest extends \VuFind\ILS\Driver\AbstractBase implements
             if (empty($this->config['TransactionHistory']['enabled'])) {
                 return false;
             }
+            $limit = $this->config['TransactionHistory']['max_page_size'] ?? 100;
             return [
-                'max_results' => 100,
+                'max_results' => $limit,
                 'sort' => [
                     'checkout desc' => 'sort_checkout_date_desc',
                     'checkout asc' => 'sort_checkout_date_asc',
@@ -1190,8 +1209,9 @@ class KohaRest extends \VuFind\ILS\Driver\AbstractBase implements
             if (empty($this->config['Catalog']['checkoutsSupportPaging'])) {
                 return [];
             }
+            $limit = $this->config['Loans']['max_page_size'] ?? 100;
             return [
-                'max_results' => 100,
+                'max_results' => $limit,
                 'sort' => [
                     'checkout desc' => 'sort_checkout_date_desc',
                     'checkout asc' => 'sort_checkout_date_asc',
