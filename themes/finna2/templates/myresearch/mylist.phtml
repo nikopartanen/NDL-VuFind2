@@ -11,9 +11,6 @@
   // Set up page title:
   $this->headTitle(isset($list) ? $list->title : $this->translate('Favorites'));
 
-  // Set up myresearch menu
-  $this->layout()->finnaMainTabs = $this->context($this)->renderInContext("myresearch/menu.phtml", ['active' => isset($list) ? 'list' . $list['id'] : 'favorites']);
-
   // Set up breadcrumbs:
   $currPage = isset($list) ? 'List' : 'Favorites';
   $this->layout()->breadcrumbs = '<li><a href="' . $this->url('myresearch-home') . '">' . $this->transEsc('Your Account') . '</a></li> <li class="active">' . $this->transEsc($currPage) . '</li>';
@@ -44,77 +41,73 @@
   $user = $this->auth()->isLoggedIn();
   $lists = $user ? $user->getLists() : null;
 ?>
+
+<!-- Leftside navigationbar -->
+<?= $this->context($this)->renderInContext("myresearch/menu.phtml", ['active' => isset($list) ? 'list' . $list['id'] : 'favorites']); ?>
+
 <?php foreach ($this->results->getRecommendations('side') as $current): ?>
   <?=$this->recommend($current)?>
 <?php endforeach; ?>
 
-<div class="mylist-error hidden"><?=$this->translate('An error has occurred'); ?></div>
-<div>
+<div class="<?=$this->layoutClass('mainbody-myresearch')?>">
+  <div class="mylist-error hidden"><?=$this->translate('An error has occurred'); ?></div>
   <?php if (isset($list)): ?>
     <input type="hidden" name="listID" value="<?=$this->escapeHtmlAttr($list->id)?>" />
     <input type="hidden" name="listName" value="<?=$this->escapeHtmlAttr($list->title)?>" />
   <?php endif; ?>
-  <div class="mainbody right">
-    <div class="clearfix mylist-header hidden-print">
-      <div>
-        <?=$this->flashmessages()?>
-      </div>
-      <div>
-        <h2 class="list-title<?= !$list ? ' no-edit' : '' ?>"><?php if(!$isDefaultList): ?><i class="list-title-edit fa fa-pen"></i><?php endif; ?><span><?=$list ? $this->escapeHtml($list->title) : $this->transEsc("All Favourites")?></span></h2>
-        <?php if ($list): ?>
+  <div class="clearfix mylist-header hidden-print">
+    <div>
+      <?=$this->flashmessages()?>
+    </div>
+    <div>
+      <h2 class="list-title<?= !$list ? ' no-edit' : '' ?>"><?php if(!$isDefaultList): ?><i class="list-title-edit fa fa-pen"></i><?php endif; ?><span><?=$list ? $this->escapeHtml($list->title) : $this->transEsc("All Favourites")?></span></h2>
+      <?php if ($list): ?>
         <div class="list-description<?= $list ? ' markdown' : ''?>">
           <i class="list-description-edit fa fa-pen" aria-hidden="true"></i><div class="editable" data-markdown="<?=$this->escapeHtmlAttr($list ? $list->description : '')?>"><?=(!empty($list->description) ? $this->markdown()->toHtml($list->description) : $this->translate('Add list description'))?></div>
         </div>
-        <?php endif; ?>
-      </div>
+      <?php endif; ?>
     </div>
-    <?php if ($template = $this->content()->findTemplateForLng("content/Additions/myresearch-favorites")): ?>
-      <div class="myresearch-favorites">
-        <?=$this->render($template)?>
-      </div>
-    <?php endif; ?>
+  </div>
+  <?php if ($template = $this->content()->findTemplateForLng("content/Additions/myresearch-favorites")): ?>
+    <div class="myresearch-favorites">
+      <?=$this->render($template)?>
+    </div>
+  <?php endif; ?>
   <div class="mylist-header">
     <?php if ($recordTotal > 0): ?>
-    <div class="mylist-controls-bar">
-      <div class="pagination-container">
-        <?=$this->paginationControl($this->results->getPaginator(), 'Sliding', 'search/pagination_simple.phtml', ['results' => $this->results])?>
-      </div>
-      <div class="mylist-controls hidden-print">
+      <div class="mylist-controls-bar">
+        <div class="pagination-container">
+          <?=$this->paginationControl($this->results->getPaginator(), 'Sliding', 'search/pagination_simple.phtml', ['results' => $this->results])?>
+        </div>
+        <div class="mylist-controls hidden-print">
           <?php if (isset($list)): ?>
             <a class="btn btn-primary" href="<?=$this->url('sortList', ['id' => $list->id]) ?>" data-backdrop=”static” data-lightbox><?=$this->transEsc('Sort manually');?></a>
           <?php endif; ?>
           <?=$this->render('search/controls/sort.phtml')?>
           <?=$this->render('search/controls/limit.phtml')?>
+        </div>
       </div>
-    </div>
-  </div>
-  <div>
-    <form class="form" method="post" name="bulkActionForm" action="<?=$this->url('cart-myresearchbulk')?>" data-lightbox>
-      <?=$this->context($this)->renderInContext('myresearch/bulk-action-buttons.phtml', ['idPrefix' => '', 'list' => $list ?? null, 'account' => $this->account, 'lists' => $lists])?>
-      <?php foreach ($this->results->getResults() as $i => $current): ?>
-        <?=$this->record($current)->getListEntry($list, $user)?>
-      <?php endforeach; ?>
-    </form>
-      <?php else: ?>
+      <div>
+        <form class="form" method="post" name="bulkActionForm" action="<?=$this->url('cart-myresearchbulk')?>" data-lightbox>
+          <?=$this->context($this)->renderInContext('myresearch/bulk-action-buttons.phtml', ['idPrefix' => '', 'list' => $list ?? null, 'account' => $this->account, 'lists' => $lists])?>
+          <?php foreach ($this->results->getResults() as $i => $current): ?>
+            <?=$this->record($current)->getListEntry($list, $user)?>
+          <?php endforeach; ?>
+        </form>
+      </div>
+    <?php else: ?>
       <p><?=$this->transEsc('You do not have any saved resources')?></p>
-      <?php endif; ?>
-    </div>
-    <?php if ($recordTotal > 0): ?>
+    <?php endif; ?>
+  </div>
+  <?php if ($recordTotal > 0): ?>
     <div>
       <div class="text-center">
         <hr>
         <?=$this->paginationControl($this->results->getPaginator(), 'Sliding', 'search/pagination_simple.phtml', ['results' => $this->results])?>
       </div>
     </div>
-    <?php endif;?>
-  </div>
-  <div class="sidebar mylist-bar">
-  <?php if ($this->userlist()->getMode() !== 'disabled' && $user = $this->auth()->isLoggedIn()): ?>
-  <?= $this->partial('myresearch/mylist-navi.phtml', ['user' => $user, 'isDefaultList' => $isDefaultList, 'activeId' => $activeId, 'activePublic' => $activePublic, 'lists' => $lists, 'results' => $this->results]); ?>
-  <?php endif ?>
-  </div>
+  <?php endif;?>
 </div>
-
 <?php if ($user && $list): ?>
   <form class="pull-left delete-list" action="<?=$this->url('myresearch-deletelist') ?>?listID=<?=urlencode($list->id)?>&confirm=1" method="post">
     <ul class="dropdown-menu">
@@ -124,9 +117,10 @@
     </ul>
   </form>
 <?php endif; ?>
-<div class="mobile-navigation visible-xs hidden-print">
+<div class="mylist-mobile mobile-navigation visible-xs visible-sm hidden-print">
   <ul>
     <li class="sidebar-navigation"><i class="fa fa-arrow-up"></i> <?=$this->transEsc('Your Lists')?></li>
   </ul>
 </div>
+
 <!-- END of: finna - myresearch/mylist.phtml -->

@@ -543,7 +543,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
      * @param array $renewDetails An array of data required for renewing items
      * including the Patron ID and an array of renewal IDS
      *
-     * @return array              An array of renewal information keyed by item ID
+     * @return array An array of renewal information keyed by item ID
      */
     public function renewMyItems($renewDetails)
     {
@@ -592,7 +592,6 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
      * @throws DateException
      * @throws ILSException
      * @return array        Array of the patron's holds on success.
-     * @todo   Support for handling frozen and pickup location change
      */
     public function getMyHolds($patron)
     {
@@ -624,7 +623,8 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
                 'available' => ($entry['ServiceCode'] === 'ReservationArrived'
                     || $entry['ServiceCode'] === 'ReservationNoticeSent')
                         ? true : false,
-                'requestId' => $entry['Id']
+                'requestId' => $entry['Id'],
+                'frozen' => $entry['ResPausedTo'] ?? false
             ];
             if (!empty($entry['MarcRecordTitle'])) {
                 $hold['title'] = $entry['MarcRecordTitle'];
@@ -894,7 +894,9 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
      */
     public function updatePhone($patron, $phone)
     {
-        $code = $this->updatePatronInfo($patron, ['MainPhone' => $phone]);
+        $code = $this->updatePatronInfo(
+            $patron, ['MainPhone' => $phone, 'Mobile' => $phone]
+        );
         if ($code !== 200) {
             return  [
                 'success' => false,
@@ -1496,7 +1498,6 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
                 'holdings_id' => $unit['organisation'],
                 'location' => $locationName,
                 'organisation_id' => $unit['organisation'],
-                'branch' => $locationName,
                 'branch_id' => $unit['branch'],
                 'availability' => $available,
                 'status' => $statusCode,
@@ -1509,7 +1510,6 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
 
             if (!empty($item['LocationId'])) {
                 $entry['department'] = $this->getDepartment($item['LocationId']);
-                $entry['branch'] = $this->translate("Copy");
             }
 
             if ($this->itemHoldAllowed($item) && $item['PermitLoan']) {
@@ -1569,6 +1569,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
             if ($item['is_holdable']) {
                 $holdable = true;
             }
+            $itemsTotal++;
         }
 
         // Since summary data is appended to the holdings array as a fake item,
@@ -1850,9 +1851,10 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
         }
 
         $map = [
-           'DuplicateReservationExists' => 'hold_error_duplicate',
+           'DuplicateReservationExists' => 'hold_error_already_held',
            'NoItemsAvailableByTerm' => 'hold_error_denied',
-           'NoItemAvailable' => 'hold_error_denied'
+           'NoItemAvailable' => 'hold_error_denied',
+           'NoTermsPermitLoanOrReservation' => 'hold_error_not_holdable'
         ];
 
         if (isset($map[$message])) {
@@ -2016,7 +2018,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
         if ($orderB !== null) {
             return 1;
         }
-        return strcmp($a['branch'], $b['branch']);
+        return strcmp($a['location'], $b['location']);
     }
 
     /**
@@ -2039,5 +2041,44 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
             );
         }
         return $cacheDepartment[$locationId][0]['Name'];
+    }
+
+    /**
+     * Change request status
+     *
+     * This is responsible for changing the status of a hold request
+     *
+     * @param string $patron      Patron array
+     * @param string $holdDetails The request details
+     *
+     * @return array Associative array of the results
+     */
+    public function changeRequestStatus($patron, $holdDetails)
+    {
+        if ($holdDetails['frozen'] == 1) {
+            // Mikromarc doesn't have any separate 'freeze' status on reservations
+            $getHold = $this->makeRequest(
+                ['odata','BorrowerReservations(' . $holdDetails['requestId'] . ')']
+            );
+            $pausedFrom = date('Y-m-d', strtotime('today'));
+            $pausedTo = date('Y-m-d', strtotime($getHold['ResValidUntil']));
+        } else {
+            $pausedFrom = null;
+            $pausedTo = null;
+        }
+        $requestBody = [
+            "ResPausedFrom" => $pausedFrom,
+            "ResPausedTo" => $pausedTo
+        ];
+        list($code, $result) = $this->makeRequest(
+            ['odata','BorrowerReservations(' . $holdDetails['requestId'] . ')'],
+            json_encode($requestBody),
+            'PATCH',
+            true
+        );
+        if ($code >= 300) {
+            return $this->holdError($code, $result);
+        }
+        return ['success' => true];
     }
 }

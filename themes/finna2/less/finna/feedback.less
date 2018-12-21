@@ -12,7 +12,8 @@
     top: 0;
   }
   &:hover {
-    background: darken(@finna-feedback-background,5%);
+    background: darken(@finna-feedback-background,10%);
+    color: @finna-feedback-color;
   }
   &:before {
     content: "";
@@ -48,6 +49,11 @@
 
 form[name=feedbackRecord] .feedback-info {
   border: none;
+  .datasource-info {
+    font-weight: initial;
+    padding-top: 1em;
+    display: inline-block;
+  }
 }
 .form-horizontal[name=emailRecord] {
   & input[type=email] {
@@ -61,3 +67,4 @@ form[name=feedbackRecord] .feedback-info {
     width: 50%;
   }
 }
+

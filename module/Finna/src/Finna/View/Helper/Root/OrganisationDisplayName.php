@@ -51,7 +51,7 @@ class OrganisationDisplayName extends \Zend\View\Helper\AbstractHelper
     {
         $translate = $this->getView()->plugin('translate');
 
-        $institutions = $record->tryMethod('getInstitutions');
+        $institutions = (array)$record->tryMethod('getInstitutions');
         $institution = reset($institutions);
 
         // Case 1: only one building level
@@ -59,7 +59,7 @@ class OrganisationDisplayName extends \Zend\View\Helper\AbstractHelper
         $building = $buildings[0] ?? '';
         $displayName = $translate($building);
 
-        if (!$fullName && count($buildings) === 1) {
+        if (!$fullName && count((array)$buildings) === 1) {
             return $displayName;
         }
 

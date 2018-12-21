@@ -21,12 +21,15 @@
 
 .introduction h1, .introduction h3 {
   padding: 0 5px 1px 7px;
-  color: #fff;
+  color: @introduction-text-color;
   line-height: 1.4em;
   font-weight: bold;
   & .brand-third {
     color: @brand-third;
   }
+}
+.introduction h3 {
+    color: @introduction-text-small-color;
 }
 .introduction h1 {
   font-size: @introduction-header;
@@ -119,7 +122,7 @@ h3.introductionText > em {
 
 .infobox {
   margin: 20px 0px;
-  .box-shadow (@infobox-box-shadow);
+  box-shadow: @infobox-box-shadow;
   padding: 10px 20px;
   color: @infobox-text-color;
   background: @infobox-background;

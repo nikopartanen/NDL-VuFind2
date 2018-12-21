@@ -56,6 +56,32 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
     ];
 
     /**
+     * Whether to use location in addition to branch when grouping holdings
+     *
+     * @param bool
+     */
+    protected $groupHoldingsByLocation;
+
+    /**
+     * Initialize the driver.
+     *
+     * Validate configuration and perform all resource-intensive tasks needed to
+     * make the driver active.
+     *
+     * @throws ILSException
+     * @return void
+     */
+    public function init()
+    {
+        parent::init();
+
+        $this->groupHoldingsByLocation
+            = isset($this->config['Holdings']['group_by_location'])
+            ? $this->config['Holdings']['group_by_location']
+            : '';
+    }
+
+    /**
      * Get Holding
      *
      * This is responsible for retrieving the holding information of a certain
@@ -979,6 +1005,33 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
     }
 
     /**
+     * Return a location for a Koha item
+     *
+     * @param array $item Item
+     *
+     * @return string
+     */
+    protected function getItemLocationName($item)
+    {
+        $result = parent::getItemLocationName($item);
+
+        if ($this->groupHoldingsByLocation) {
+            $location = $this->translateLocation(
+                $item['location'],
+                !empty($item['location_description'])
+                    ? $item['location_description'] : $item['location']
+            );
+            if ($location) {
+                if ($result) {
+                    $result .= ', ';
+                }
+                $result .= $location;
+            }
+        }
+        return $result;
+    }
+
+    /**
      * Return a call number for a Koha item
      *
      * @param array $item Item
@@ -988,17 +1041,21 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
     protected function getItemCallNumber($item)
     {
         $result = [];
-        if (!empty($item['ccode'])) {
+        if (!empty($item['ccode'])
+            && !empty($this->config['Holdings']['display_ccode'])
+        ) {
             $result[] = $this->translateCollection(
                 $item['ccode'],
-                $item['ccode_description'] ?? null
+                $item['ccode_description'] ?? $item['ccode']
             );
         }
-        $result[] = $this->translateLocation(
-            $item['location'],
-            !empty($item['location_description'])
-                ? $item['location_description'] : $item['location']
-        );
+        if (!$this->groupHoldingsByLocation) {
+            $result[] = $this->translateLocation(
+                $item['location'],
+                !empty($item['location_description'])
+                    ? $item['location_description'] : $item['location']
+            );
+        }
         if ((!empty($item['itemcallnumber'])
             || !empty($item['itemcallnumber_display']))
             && !empty($this->config['Holdings']['display_full_call_number'])
@@ -1024,14 +1081,22 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
      */
     protected function getItemStatusesForBiblio($id, $patron = null)
     {
-        $holdings = null;
+        $holdings = [];
         if (!empty($this->config['Holdings']['use_holding_records'])) {
-            $holdingsResult = $this->makeRequest(
+            list($code, $holdingsResult) = $this->makeRequest(
                 ['v1', 'biblios', $id, 'holdings'],
                 [],
                 'GET',
-                $patron
+                $patron,
+                true
             );
+            if (404 === $code) {
+                return [];
+            }
+            if ($code !== 200) {
+                throw new ILSException('Problem with Koha REST API.');
+            }
+
             // Turn the holdings into a keyed array
             if (!empty($holdingsResult['holdings'])) {
                 foreach ($holdingsResult['holdings'] as $holding) {
@@ -1039,12 +1104,19 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
                 }
             }
         }
-        $result = $this->makeRequest(
+        list($code, $result) = $this->makeRequest(
             ['v1', 'availability', 'biblio', 'search'],
             ['biblionumber' => $id],
             'GET',
-            $patron
+            $patron,
+            true
         );
+        if (404 === $code) {
+            return [];
+        }
+        if ($code !== 200) {
+            throw new ILSException('Problem with Koha REST API.');
+        }
 
         $statuses = [];
         foreach ($result[0]['item_availabilities'] ?? [] as $i => $item) {
@@ -1074,6 +1146,7 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
             $location = $this->getItemLocationName($item);
             $callnumber = $this->getItemCallNumber($item);
             $sublocation = $item['sub_description'] ?? '';
+
             $entry = [
                 'id' => $id,
                 'item_id' => $item['itemnumber'],
@@ -1130,7 +1203,38 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
                 }
 
                 $i++;
-                $callnumber = $this->translateLocation($holding['location']);
+                $location = $this->getBranchName($holding['holdingbranch']);
+                $callnumber = '';
+                if (!empty($holding['ccode'])
+                    && !empty($this->config['Holdings']['display_ccode'])
+                ) {
+                    $callnumber = $this->translateCollection(
+                        $holding['ccode'],
+                        $holding['ccode_description'] ?? $holding['ccode']
+                    );
+                }
+
+                if ($this->groupHoldingsByLocation) {
+                    $holdingLoc = $this->translateLocation(
+                        $holding['location'],
+                        !empty($holding['location_description'])
+                            ? $holding['location_description'] : $holding['location']
+                    );
+                    if ($holdingLoc) {
+                        if ($location) {
+                            $location .= ', ';
+                        }
+                        $location .= $holdingLoc;
+                    }
+                } else {
+                    $callnumber
+                        .= ', ' . $this->translateLocation(
+                            $holding['location'],
+                            !empty($holding['location_description'])
+                                ? $holding['location_description']
+                                : $holding['location']
+                        );
+                }
                 if ($holding['callnumber']) {
                     $callnumber .= ' ' . $holding['callnumber'];
                 }
@@ -1139,7 +1243,7 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
                 $entry = [
                     'id' => $id,
                     'item_id' => 'HLD_' . $holding['biblionumber'],
-                    'location' => $this->getBranchName($holding['holdingbranch']),
+                    'location' => $location,
                     'requests_placed' => 0,
                     'status' => '',
                     'use_unknown_message' => true,

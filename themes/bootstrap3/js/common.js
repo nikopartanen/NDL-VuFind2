@@ -31,10 +31,11 @@ var VuFind = (function VuFind() {
     if (_submodules.indexOf(name) === -1) {
       _submodules.push(name);
       this[name] = typeof module == 'function' ? module() : module;
-    }
-    // If the object has already initialized, we should auto-init on register:
-    if (_initialized && this[name].init) {
-      this[name].init();
+
+      // If the object has already initialized, we should auto-init on register:
+      if (_initialized && this[name].init) {
+        this[name].init();
+      }
     }
   };
   var init = function init() {
@@ -243,16 +244,7 @@ function setupOffcanvas() {
   if ($('.sidebar').length > 0) {
     $('[data-toggle="offcanvas"]').click(function offcanvasClick() {
       $('body.offcanvas').toggleClass('active');
-      var active = $('body.offcanvas').hasClass('active');
-      var right = $('body.offcanvas').hasClass('offcanvas-right');
-      if ((active && !right) || (!active && right)) {
-        $('.offcanvas-toggle .fa').removeClass('fa-chevron-right').addClass('fa-chevron-left');
-      } else {
-        $('.offcanvas-toggle .fa').removeClass('fa-chevron-left').addClass('fa-chevron-right');
-      }
-      $('.offcanvas-toggle .fa').attr('title', VuFind.translate(active ? 'sidebar_close' : 'sidebar_expand'));
     });
-    $('[data-toggle="offcanvas"]').click().click();
   } else {
     $('[data-toggle="offcanvas"]').addClass('hidden');
   }

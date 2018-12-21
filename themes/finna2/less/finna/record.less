@@ -160,6 +160,12 @@ a.authority {
   clear: left;
 }
 
+@media(max-width: @screen-xs-max){
+  .truncate-field.recordcovers {
+    display: inline-block;
+  }
+}
+
 .record .record-title {
   margin: 0;
   margin-bottom: 3px;
@@ -177,7 +183,7 @@ a.authority {
   .media-left,
   .media-right {
     @media (min-width: @screen-sm) {
-      width: 25%;
+      width: 50%;
     }
     .record-image-container {
       text-align: center;

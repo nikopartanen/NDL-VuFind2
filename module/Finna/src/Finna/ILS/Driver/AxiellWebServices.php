@@ -24,6 +24,7 @@
  * @author   Bjarne Beckmann <bjarne.beckmann@helsinki.fi>
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
+ * @author   Konsta Raunio <konsta.raunio@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:ils_drivers Wiki
  */
@@ -45,6 +46,7 @@ use Zend\Db\Sql\Ddl\Column\Boolean;
  * @author   Bjarne Beckmann <bjarne.beckmann@helsinki.fi>
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
+ * @author   Konsta Raunio <konsta.raunio@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:ils_drivers Wiki
  */
@@ -121,6 +123,13 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
      * @var string
      */
     protected $patron_wsdl = '';
+
+    /**
+     * Wsdl file name or url for accessing the patronaurora section of AWS
+     *
+     * @var string
+     */
+    protected $patronaurora_wsdl = '';
 
     /**
      * Wsdl file name or url for accessing the loans section of AWS
@@ -258,15 +267,14 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
 
         $username = $patron['cat_username'];
         $cacheKey = $this->getPatronCacheKey($username);
+        $profile = $this->getCachedData($cacheKey);
 
-        $userCached = $this->getCachedData($cacheKey);
-
-        if (null === $userCached) {
+        if (null === $profile) {
             $this->patronLogin($username, $patron['cat_password']);
-            return $this->getCachedData($cacheKey);
+            $profile = $this->getCachedData($cacheKey);
         }
 
-        return $userCached;
+        return $profile;
     }
 
     /**
@@ -324,6 +332,11 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
         } else {
             throw new
                 ILSException('reservations_wsdl configuration needs to be set.');
+        }
+
+        if (isset($this->config['Catalog']['patronaurora_wsdl'])) {
+            $this->patronaurora_wsdl
+                = $this->getWsdlPath($this->config['Catalog']['patronaurora_wsdl']);
         }
 
         $this->defaultPickUpLocation
@@ -820,7 +833,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
     public function getStatuses($idList)
     {
         $items = [];
-        foreach ($ids as $id) {
+        foreach ($idList as $id) {
             $items[] = $this->getHolding($id);
         }
         return $items;
@@ -922,10 +935,10 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
     protected function parseHoldings($organisationHoldings, $id, $journalInfo = null)
     {
         if ($organisationHoldings[0]->status == 'noHolding') {
-            return;
+            return [];
         }
         if ($organisationHoldings[0]->type != 'organisation') {
-            return;
+            return [];
         }
 
         $result = [];
@@ -1164,7 +1177,6 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
             'user' => $username,
             'password' => $password,
             'language' => $this->getLanguage()
-
         ];
 
         $result = $this->doSOAPRequest(
@@ -1207,6 +1219,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
             'email' => '',
             'emailId' => '',
             'address1' => '',
+            'addressId' => '',
             'zip' => '',
             'city' => '',
             'country' => '',
@@ -1244,6 +1257,8 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                         ? $address->city : '';
                     $userCached['country'] = isset($address->country)
                         ? $address->country : '';
+                    $userCached['addressId'] = isset($address->id)
+                        ? $address->id : '';
                 }
             }
         }
@@ -1435,6 +1450,21 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
             $message = isset($loan->loanStatus->status)
                 ? $this->mapStatus($loan->loanStatus->status, $function) : '';
 
+            $renewals = max(
+                [
+                    0,
+                    $this->config['Loans']['renewalLimit']
+                        - $loan->remainingRenewals
+                ]
+            );
+            $renewLimit = $this->config['Loans']['renewalLimit'];
+            if (isset($loan->loanStatus->status)
+                && $this->isPermanentRenewalBlock($loan->loanStatus->status)
+            ) {
+                $renewals = null;
+                $renewLimit = null;
+            }
+
             $trans = [
                 'id' => $loan->catalogueRecord->id,
                 'item_id' => $loan->id,
@@ -1442,12 +1472,8 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 'duedate' => $loan->loanDueDate,
                 'renewable' => (string)$loan->loanStatus->isRenewable == 'yes',
                 'message' => $message,
-                'renewalCount' => max(
-                    [0,
-                        $this->config['Loans']['renewalLimit']
-                        - $loan->remainingRenewals]
-                ),
-                'renewalLimit' => $this->config['Loans']['renewalLimit']
+                'renewalCount' => $renewals,
+                'renewalLimit' => $renewLimit,
             ];
 
             $transList[] = $trans;
@@ -1530,7 +1556,8 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 'fine' => $debt->debtType . ' - ' . $debt->debtNote,
                 'balance' => $amount,
                 'createdate' => $debt->debtDate,
-                'payableOnline' => true
+                'payableOnline' => true,
+                'organization' => $debt->organisation ?? ''
             ];
             if (!empty($debt->organisation)) {
                 $debt->organisation = $debt->organisation;
@@ -1636,7 +1663,9 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
         $statusAWS = $result->$functionResult->status;
 
         if ($statusAWS->type != 'ok') {
-            $message = $this->handleError($function, $statusAWS->message, $username);
+            $message = $this->handleError(
+                $function, $statusAWS->message, $patron['cat_username']
+            );
             if ($message == 'ils_connection_failed') {
                 throw new ILSException('ils_offline_status');
             }
@@ -1985,6 +2014,77 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 'status' => 'Email address changed',
                 'sys_message' => '',
             ];
+    }
+
+    /**
+     * Update patron contact information
+     *
+     * @param array  $patron  Patron array
+     * @param String $details Associative array of patron contact information
+     *
+     * @throws ILSException
+     *
+     * @return array Associative array of the results
+     */
+    public function updateAddress($patron, $details)
+    {
+        $username = $patron['cat_username'];
+        $password = $patron['cat_password'];
+
+        $user = $this->getMyProfile($patron);
+
+        $function = '';
+        $functionResult = '';
+
+        $conf = [
+            'arenaMember'   => $this->arenaMember,
+            'language'      => $this->getLanguage(),
+            'user'          => $username,
+            'password'      => $password,
+            'patronId'      => $patron['id'],
+            'isActive'      => 'yes',
+            'id'            => $user['addressId'],
+            'streetAddress' => $details['address1'],
+            'zipCode'       => $details['zip'],
+            'city'          => $details['city']
+        ];
+
+        $function = 'changeAddress';
+        $functionResult = 'changeAddressResponse';
+
+        $result = $this->doSOAPRequest(
+            $this->patronaurora_wsdl, $function, $functionResult, $username,
+            ['changeAddressRequest' => $conf]
+        );
+
+        $statusAWS = $result->$functionResult;
+        if ($statusAWS->status->type != 'ok') {
+            $message = $this->handleError($function, $statusAWS->message, $username);
+            if ($message == 'ils_connection_failed') {
+                throw new ILSException('ils_offline_status');
+            }
+            return  [
+                'success' => false,
+                'status' => $statusAWS->status->type,
+            ];
+        }
+
+        // Clear patron cache
+        $cacheKey = $this->getPatronCacheKey($username);
+        $this->putCachedData($cacheKey, null);
+
+        if (isset($this->config['updateAddress']['needsApproval'])
+            && !$this->config['updateAddress']['needsApproval']
+        ) {
+            $status = 'request_change_accepted';
+        } else {
+            $status = 'request_change_done';
+        }
+        return [
+            'success' => true,
+            'status' => $status,
+            'sys_message' => $statusAWS->status->type
+        ];
     }
 
     /**
@@ -2411,6 +2511,23 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
             return $statuses[$status];
         }
         return $status;
+    }
+
+    /**
+     * Check if renewal is permanently blocked
+     *
+     * @param string $status Status as a string
+     *
+     * @return bool
+     */
+    protected function isPermanentRenewalBlock($status)
+    {
+        $blocks = [
+            'copyHasSpecialCircCat',
+            'copyIsReserved'
+        ];
+
+        return in_array($status, $blocks);
     }
 
     /**

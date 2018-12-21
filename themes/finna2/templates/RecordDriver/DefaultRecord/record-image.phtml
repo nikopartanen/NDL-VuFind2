@@ -2,14 +2,14 @@
 <?php $formats = $this->driver->tryMethod('getFormats'); ?>
 <?php $largeImageLayout = $this->driver->getSourceIdentifier() == 'Solr' && in_array($this->driver->tryMethod('getRecordType'), ['lido', 'forward']); ?>
 <div class="record-image-container <?= empty($images[0]['urls']['large']) && empty($images[0]['urls']['medium']) ? 'hide-image' : ''?>">
-  <div class="recordcover-holder" data-format="<?=$this->transEsc(end($formats))?>" data-noimage="<?=$this->transEsc('no_image')?>">
+  <div class="recordcover-holder" data-format="<?=$this->transEsc(end($formats))?>" data-noimage="<?=$this->transEsc('no_image')?>" aria-hidden="true">
 
     <?= $this->record($this->driver)->renderTemplate('record-image-navi.phtml', ['images' => $images, 'type' => $type]); ?>
 
     <?php if (!$this->userAgent()->isBot()): ?>
       <?php if (!empty($images[0]['urls']['medium']) || !empty($images[0]['urls']['large'])): ?>
         <div class="recordcover-container">
-          <a class="image-popup-trigger" href="<?=$this->recordLink()->getUrl($this->driver) ?>#image" title="<?=$this->transEsc('Open Preview') . ': ' . $this->escapeHtmlAttr($this->driver->getTitle())?>">
+          <a class="image-popup-trigger" href="<?=$this->recordLink()->getUrl($this->driver) ?>#image">
             <?php if (count($images) <= 1): ?>
               <div class="iconlabel format-<?=$this->record($this->driver)->getFormatClass(end($formats))?>"></div>
             <?php endif; ?>
@@ -24,7 +24,7 @@
           </a>
         </div>
       <?php else: ?>
-        <a class="image-popup-trigger no-image" href="<?=$this->recordLink()->getUrl($this->driver) ?>#image" title="<?=$this->transEsc('Open Preview')?>">
+        <a class="image-popup-trigger no-image" href="<?=$this->recordLink()->getUrl($this->driver) ?>#image">
           <div class="iconlabel format-<?=$this->record($this->driver)->getFormatClass(end($formats))?>"></div>
           <img src="<?=$this->url('cover-unavailable')?>" class="recordcover" alt="<?=$this->transEsc('No Cover Image')?>"/>
         </a>
@@ -63,13 +63,29 @@
         <div class="access-rights">
           <div class="image-rights">
             <?php $hasLink = isset($rights['link']); ?>
-            <strong><?= $this->transEsc('Image Rights') ?>:</strong>
-            <?php if (!empty($rights['copyright'])): ?><?php if ($hasLink): ?><span class="imagerights"><a target="_blank" href="<?= $rights['link'] ?>"><?php endif; ?><?php if ($this->transEsc($rights['copyright']) === "Luvanvarainen käyttö / ei tiedossa"): ?><?= $this->transEsc('usage_F') ?><?php else: ?><?=$this->transEsc($rights['copyright']) ?><?php endif; ?><?php if ($hasLink): ?></a></span><?php endif; ?>
-            <?php else: ?>
-              <?php if (in_array('usage_F', $this->driver->tryMethod('getUsageRights', [], []))): ?>
-                <?=$this->transEsc('usage_F') ?><br>
+            <strong><?= $this->transEsc('Image Rights') ?></strong><br>
+            <span class="cc-rights">
+              <?php if (!empty($rights['copyright'])): ?>
+                <?php $copyright = $this->transEsc($rights['copyright']) ?>
+                <?php if (!empty($copyright)): ?>
+                  <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $copyright]);?><?php if ($hasLink): ?><a target="_blank" href="<?= $rights['link'] ?>"><?php endif; ?><?php if ($copyright === "Luvanvarainen käyttö / ei tiedossa"): ?><?= $this->transEsc('usage_F') ?><?php else: ?><?=$copyright ?><?php endif; ?><?php if ($hasLink): ?></a><?php endif; ?>
+                <?php endif; ?>
+              <?php else: ?>
+                <?php if (isset($rights['description'])): ?>
+                  <?php foreach ($rights['description'] as $item): ?>
+                    <?php if (!empty($item)): ?>
+                      <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $item])?> <?php if ($hasLink): ?><a target="_blank" href="<?= $rights['link'] ?>"><?php endif; ?><?=$item ?><?php if ($hasLink): ?></a><?php endif; ?>
+                    <?php endif; ?>
+                  <?php endforeach ?>
+                <?php else: ?>
+                  <?php if (in_array('usage_F', $this->driver->tryMethod('getUsageRights', [], []))): ?>
+                    <?=$this->transEsc('usage_F') ?>
+                  <?php else: ?>
+                    <?=$this->transEsc('usage_unknown') ?>
+                  <?php endif; ?>
+                <?php endif; ?>
               <?php endif; ?>
-            <?php endif; ?>
+            </span> <p class="copyright-meaning"><a target="_blank" href="<?php if ($hasLink): ?><?= $rights['link'] ?><?php else: ?><?=$this->url('content-page', ['page' => 'terms'])?><?php endif; ?>"><?=$this->transEsc('usage_meaning') ?></a></p>
           </div>
           <div class="copyright truncate-field">
             <?php if (isset($rights['description'])): ?>

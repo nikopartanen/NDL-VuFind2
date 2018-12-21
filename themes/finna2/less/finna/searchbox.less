@@ -4,30 +4,35 @@
       width: 30%;
     }
     .btn.btn-link {
-      background: @finna-searchbox-link-background;
+      background: @background-color;
       border-radius: @border-radius-small;
     }
     .btn.btn-link {
-      color: @finna-searchbox-link-color;
+      color:  mix(@background-color, contrast(@background-color), 5%);
       font-size: 1em;
       font-weight: normal;
       line-height: 25px;
-      margin-top: 0;
+      margin-top: 1em;
       padding: 0px 5px;
       overflow: hidden;
       text-transform: none;
-      & .adv-search {
+      .adv-search {
         i {
-          color: @finna-searchbox-link-color;
+          color:  mix(@body-bg, contrast(@body-bg), 95%);
         }
       }
     }
   }
   .pager {
-    & li.pager-text {
-      font-size: 1em;
+    @media (max-width: @screen-lg) {
+      margin-left: 6px;
     }
-    & li > a {
+    li.pager-text {
+      font-size: 1em;
+      margin: 0px 3px;
+      color:  mix(@finna-search-background, contrast(@finna-search-background), 5%);
+    }
+    li > a {
       padding: 0 5px;        
     }
   }
@@ -39,20 +44,32 @@
 }
 
 .finna-filters, .checkboxFilter {
-  & .checkbox label input {
-    display: none;
-  }
-  & .checkbox label:before {
-    content: "\f096";
-    font-family: 'Fontawesome';
-    font-size: 20px;
-    vertical-align: -2px;
+  .filters {
     display: inline-block;
-    width: 16px;
   }
-  & .checkbox.checked label:before {
-    font-family: 'Fontawesome';
-    content: "\f14a";
+  input[type=checkbox] {
+    height: 16px;
+    width: 16px;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid @gray-light;
+    border-radius: 4px;
+    margin: 0px;
+    top: 3px;
+
+    &:checked{
+      background-color: black;
+      &:after{
+        font-family: 'Fontawesome';
+        content: "\f00c";
+        color: white;
+        position: absolute;
+        font-size: 14px;
+        line-height: 14px;
+        font-weight: normal;
+      }
+    }
   }
 }
 
@@ -76,26 +93,27 @@
     transition: none;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-    & .btn-link {
+    .btn-link {
       display: none;
     }
   }
-  & .nav.searchbox {
+  .nav.searchbox {
     margin: 0;
   }
 }
 
 .back-to-search a {
-  display: block;
+  display: flex;
+  align-items: center;
   font-size: 1em;
   font-weight: 600;
   color: @finna-search-link-color;
-  & i {
+  i {
     vertical-align: text-top;
     font-size: 1.5em;
     margin-right: 5px;
   }
-  & .btn {
+  .btn {
     margin-right: 10px;
   }
   .back-to-search-text {
@@ -117,6 +135,19 @@
   }
   
   .search-tooltip {
+    button {
+      background-color: transparent;
+      border: none;
+      i {
+        cursor: pointer;
+      }
+      &.tooltip-button {
+        height: 50px;
+      }
+      &.tooltip-image {
+        height: 30px;
+      }
+    }
     float: right;
     padding-left: 5px;
     display: -webkit-box;
@@ -164,6 +195,13 @@
     width: 50%;
     flex: 1;
   }
+  .pager {
+    display: flex;
+    align-items: center;
+    .disabled {
+      color: mix(@finna-search-background, contrast(@finna-search-background), 50%);
+    }
+  }
   .search-tooltip {
     line-height: 48px;
     a {
@@ -175,15 +213,18 @@
   }
   @media(max-width: @screen-md) {
     .pager {
-      & li.pager-text {
+      li.pager-text {
         margin: 0 5px;
       }
     }
   }
-  @media(max-width: @screen-sm) {
+  @media(max-width: @screen-sm-max) {
     .pager {
       min-width: 70px;
       margin-left: 10px;
+      li:first-child {
+        margin-right: 4px;
+      }
       .pager-text {
         display:none;
       }

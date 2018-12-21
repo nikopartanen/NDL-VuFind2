@@ -110,7 +110,7 @@ section.main.template-dir-feedcontent.template-name-content > .container {
     & a.iconlabel {
         color: @link-color;
         &:before {
-            color: @gray;
+            color: @text-color;
         }
         &:hover {
                 text-decoration: none;
@@ -281,6 +281,14 @@ label.list-group-item {border-radius:0;font-weight:normal;margin-top:0;padding-l
 }
 .more-link, .less-link, .less-link-top {
     cursor: default;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: none;
+    background-color: transparent;
+    padding: 0;
 }
 
 // ipad ios 6 fix
@@ -327,4 +335,9 @@ label.list-group-item {border-radius:0;font-weight:normal;margin-top:0;padding-l
             margin-bottom: 20px;
         }
     }
+}
+
+.well {
+    background-color: mix(@body-bg, contrast(@body-bg), 95%);
+    border: 1px solid mix(@body-bg, contrast(@body-bg), 85%);
 }
