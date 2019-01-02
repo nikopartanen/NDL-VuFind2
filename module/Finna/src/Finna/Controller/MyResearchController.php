@@ -269,7 +269,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
             )
         );
 
-        $view->blocks = $this->getILS()->getAccountBlocks($patron);
+        $view->blocks = $this->getAccountBlocks($patron);
         return $view;
     }
 
@@ -494,7 +494,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
             && $config->Site->hideProfileEmailAddress;
 
         if (is_array($patron)) {
-            $view->blocks = $this->getILS()->getAccountBlocks($patron);
+            $view->blocks = $this->getAccountBlocks($patron);
         }
 
         return $view;
@@ -747,7 +747,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
 
         $view = parent::holdsAction();
         $view->recordList = $this->orderAvailability($view->recordList);
-        $view->blocks = $this->getILS()->getAccountBlocks($patron);
+        $view->blocks = $this->getAccountBlocks($patron);
         return $view;
     }
 
@@ -838,7 +838,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
 
         $view = parent::storageRetrievalRequestsAction();
         $view->recordList = $this->orderAvailability($view->recordList);
-        $view->blocks = $this->getILS()->getAccountBlocks($patron);
+        $view->blocks = $this->getAccountBlocks();
         return $view;
     }
 
@@ -860,7 +860,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
 
         $view = parent::illRequestsAction();
         $view->recordList = $this->orderAvailability($view->recordList);
-        $view->blocks = $this->getILS()->getAccountBlocks($patron);
+        $view->blocks = $this->getAccountBlocks($patron);
         return $view;
     }
 
@@ -881,7 +881,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
         }
 
         $view = parent::finesAction();
-        $view->blocks = $this->getILS()->getAccountBlocks($patron);
+        $view->blocks = $this->getAccountBlocks($patron);
         if (isset($patron['source'])) {
             $this->handleOnlinePayment($patron, $view->fines, $view);
         }
@@ -1361,5 +1361,23 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
             $record->setExtraDetail('ils_details', $current);
             return $record;
         }
+    }
+
+    /**
+     * Get account blocks if supported by the ILS
+     *
+     * @param array $patron Patron
+     *
+     * @return array
+     */
+    protected function getAccountBlocks($patron)
+    {
+        $catalog = $this->getILS();
+        if ($catalog->checkCapability('getAccountBlocks', compact('patron'))
+            && $blocks = $catalog->getAccountBlocks($patron)
+        ) {
+            return $blocks;
+        }
+        return [];
     }
 }
