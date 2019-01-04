@@ -838,7 +838,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
 
         $view = parent::storageRetrievalRequestsAction();
         $view->recordList = $this->orderAvailability($view->recordList);
-        $view->blocks = $this->getAccountBlocks();
+        $view->blocks = $this->getAccountBlocks($patron);
         return $view;
     }
 
