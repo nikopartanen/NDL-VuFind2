@@ -43,17 +43,24 @@ class YamlReader extends \VuFind\Config\YamlReader
     /**
      * Return a configuration
      *
-     * @param string $filename config file name
+     * @param string  $filename        Config file name
+     * @param boolean $useLocalConfig  Use local configuration if available
+     * @param boolean $ignoreFileCache Read from file even if config has been cached.
      *
      * @return array
      */
-    public function get($filename)
+    public function get($filename, $useLocalConfig = true, $ignoreFileCache = false)
     {
         // Load data if it is not already in the object's cache:
-        if (!isset($this->files[$filename])) {
-            $localFile = Locator::getLocalConfigPath($filename);
-            if (!file_exists($localFile)) {
-                $localFile = Locator::getLocalConfigPath($filename, 'config/finna');
+        if ($ignoreFileCache || !isset($this->files[$filename])) {
+            if ($useLocalConfig) {
+                $localFile = Locator::getLocalConfigPath($filename);
+                if (!file_exists($localFile)) {
+                    $localFile
+                        = Locator::getLocalConfigPath($filename, 'config/finna');
+                }
+            } else {
+                $localFile = null;
             }
             $this->files[$filename] = $this->getFromPaths(
                 Locator::getBaseConfigPath($filename), $localFile
@@ -61,5 +68,44 @@ class YamlReader extends \VuFind\Config\YamlReader
         }
 
         return $this->files[$filename];
+    }
+
+    /**
+     * Return a Finna configuration (Finna default or view specific)
+     *
+     * @param string  $filename        Config file name
+     * @param boolean $localDir        Config directory (local/finna or local/vufind)
+     * @param boolean $ignoreFileCache Read from file even if config has been cached.
+     *
+     * @return array
+     */
+    public function getFinna(
+        $filename, $localDir = 'local/vufind', $ignoreFileCache = false
+    ) {
+        $key = "$localDir/$filename";
+
+        if ($ignoreFileCache || !isset($this->files[$key])) {
+            $cache = (null !== $this->cacheManager)
+                ? $this->cacheManager->getCache($this->cacheName) : false;
+
+            // Determine full configuration file path:
+            $fullpath = Locator::getLocalConfigPath($filename, $localDir);
+
+            // Generate cache key:
+            $cacheKey = $filename . '-'
+                . (file_exists($fullpath) ? filemtime($fullpath) : 0)
+                . '-' . $localDir;
+
+            $cacheKey = md5($cacheKey);
+
+            $results = $this->parseYaml($fullpath);
+            $this->files[$key] = $results;
+
+            if ($cache !== false) {
+                $cache->setItem($cacheKey, $results);
+            }
+        }
+
+        return $this->files[$key];
     }
 }
