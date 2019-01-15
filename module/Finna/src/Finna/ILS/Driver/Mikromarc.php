@@ -24,7 +24,7 @@
  * @author   Bjarne Beckmann <bjarne.beckmann@helsinki.fi>
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
- * @author   Konsta Raunio  <konsta.raunio@helsinki.fi>
+ * @author   Konsta Raunio <konsta.raunio@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:ils_drivers Wiki
  */
@@ -41,7 +41,7 @@ use VuFind\Exception\ILS as ILSException;
  * @author   Bjarne Beckmann <bjarne.beckmann@helsinki.fi>
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
- * @author   Konsta Raunio  <konsta.raunio@helsinki.fi>
+ * @author   Konsta Raunio <konsta.raunio@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:ils_drivers Wiki
  */
@@ -233,7 +233,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
      * @param string $username The patron username
      * @param string $password The patron password
      *
-     * @return mixed           Associative array of patron info on successful login,
+     * @return mixed Associative array of patron info on successful login,
      * null on unsuccessful login.
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
@@ -246,16 +246,27 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
               'Pin' => $password
             ]
         );
-        list($code, $result) = $this->makeRequest(
+        list($code, $patronId) = $this->makeRequest(
             ['odata', 'Borrowers', 'Default.Authenticate'],
             $request, 'POST', true
         );
-        if ($code != 200 || empty($result)) {
+        if (($code != 200 && $code != 403) || empty($patronId)) {
             return null;
+        } elseif ($code == 403 && !empty($patronId['error']['code'])
+            && $patronId['error']['code'] == 'Defaulted'
+        ) {
+            $defaultedPatron = $this->makeRequest(
+                ['odata', 'Borrowers', 'Default.AuthenticateDebtor'],
+                $request, 'POST', false
+            );
+            $patronId = $defaultedPatron['BorrowerId'];
         }
         $patron = [
-            'cat_username' => $username, 'cat_password' => $password, 'id' => $result
+            'cat_username' => $username,
+            'cat_password' => $password,
+            'id' => $patronId
         ];
+
         if ($profile = $this->getMyProfile($patron)) {
             $profile['major'] = null;
             $profile['college'] = null;
@@ -1594,7 +1605,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
      *
      * @param array $item Item from Mikromarc.
      *
-     * @return String Status
+     * @return string Status
      */
     protected function getItemStatusCode($item)
     {
@@ -1851,6 +1862,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
         }
 
         $map = [
+           'BorrowerDefaulted' => 'authentication_error_account_locked',
            'DuplicateReservationExists' => 'hold_error_already_held',
            'NoItemsAvailableByTerm' => 'hold_error_denied',
            'NoItemAvailable' => 'hold_error_denied',
