@@ -211,22 +211,51 @@ class SolrEad3 extends SolrEad
 
     public function getLocations()
     {
-        return [
-            'Kansallisarkisto - Mikkeli' =>
-            ['items' => [['label' => 'Paperi', 'id' => 'xzcdf24'],
-                         ['label' => 'Mikrofilmi', 'id' => 'xzcdf24']
-                        ]
-             ],
-            'Kansallisarkisto - Rovaniemi' =>
-            ['items' => [['label' => 'Paperi', 'id' => 'xzcdf24'],
-                         ['label' => 'Mikrofilmi', 'id' => 'xzcdf24'],
-                         ['label' => 'Paperi', 'id' => 'xzcdf24'],
-                         ['label' => 'Mikrofilmi', 'id' => 'xzcdf24'],
-                         ['label' => 'Paperi', 'id' => 'xzcdf24'],
-                         ['label' => 'Mikrofilmi', 'id' => 'xzcdf24']
-                        ]
-            ]
+        $xml = $this->getXmlRecord();
+        if (!isset($xml->altformavail->altformavail)) {
+            return [];
+        }
 
-        ];
+        $result = [];
+        foreach ($xml->altformavail->altformavail as $altform) {
+            $id = $altform->attributes()->id;
+            $owner = $label = $serviceLocation = null;
+            foreach ($altform->list->defitem as $defitem) {
+                $type = $defitem->label;
+                $val = (string)$defitem->item;
+                switch($type) {
+                case 'Tekninen tyyppi':
+                    $label = $val;
+                    break;
+                case 'Säilyttävä toimipiste':
+                    $owner = $val;
+                    break;
+                case 'Tietopalvelun tarjoamispaikka':
+                    $serviceLocation = $val;
+                    break;
+                }
+            }
+            
+            if (!$id || !$owner || !$label) {
+                continue;
+            }
+
+            if (!isset($result[$owner]['items'])) {
+                $result[$owner] = ['items' => []];
+            }
+            if ($serviceLocation) {
+                if (!isset($result[$serviceLocation])) {
+                    $result[$serviceLocation] = [];
+                }
+                $result[$serviceLocation]['providesService'] = true;
+            }
+
+            $result[$owner]['items'][] = compact('label', 'id');
+        }
+
+
+        //echo ("locations: " . var_export($result, true));
+        
+        return $result;
     }
 }

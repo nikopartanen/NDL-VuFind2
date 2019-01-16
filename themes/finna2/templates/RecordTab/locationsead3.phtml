@@ -23,7 +23,9 @@ $links = ['https://finna.fi', 'https://finna.fi', 'https://finna.fi'];
           <i class="fa fa-arrow-down" aria-hidden="true"></i> <?=$branch?></div>
           <div class="holdings-details">Aineistotunnus</div>
           <div class="location-link text-right">
-              <div class="location-link-text">Tarjoaa tietopalvelua</div>
+              <?php if (!empty($branchData['providesService'])): ?>
+                  <div class="location-link-text">Tarjoaa tietopalvelua</div>
+              <?php endif; ?>
           </div>
   </div>
   <div class="clearfix collapsed"></div>
@@ -35,9 +37,6 @@ $links = ['https://finna.fi', 'https://finna.fi', 'https://finna.fi'];
       <div class="copy-info">
           <span><?=$this->transEsc($item['id'])?></span>
           <div class="pull-right">
-          </div>
-          <div class="copy-available">
-              <div class="available">Tarjoaa tietopalvelua</div>
           </div>
       </div>
   </div>
