@@ -241,13 +241,11 @@ class SolrEad3 extends SolrEad
             }
 
             if (!isset($result[$owner]['items'])) {
-                $result[$owner] = ['items' => []];
-            }
-            if ($serviceLocation) {
-                if (!isset($result[$serviceLocation])) {
-                    $result[$serviceLocation] = [];
-                }
-                $result[$serviceLocation]['providesService'] = true;
+                $result[$owner] = [
+                    'providesService' =>
+                        $serviceLocation === $owner ? true : $serviceLocation,
+                    'items' => []
+                ];
             }
 
             $result[$owner]['items'][] = compact('label', 'id');

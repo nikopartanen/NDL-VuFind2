@@ -28,7 +28,7 @@ $links = ['https://finna.fi', 'https://finna.fi', 'https://finna.fi'];
               <div class="holdings-details">Aineistotunnus</div>
               <div class="location-link text-right">
                   <?php if (!empty($branchData['providesService'])): ?>
-                      <div class="location-link-text">Tarjoaa tietopalvelua</div>
+                      <div class="location-link-text"><?= $this->transEsc($branchData['providesService'] === true ? 'Tarjoaa tietopalvelua' : $branchData['providesService'])?></div>
                   <?php endif; ?>
               </div>
       </div>
