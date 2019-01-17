@@ -8,11 +8,13 @@ $links = ['https://finna.fi', 'https://finna.fi', 'https://finna.fi'];
         <div class="headers">
             <p class="holdings-title">Linkit</p>
         </div>
-    <?php foreach ($links as $link): ?>
-        <div class="copy-details">
-            <span class="branch"><a href="<?=$this->escapeHtmlAttr($link['url'])?>"><i class="fa fa-external-link" aria-hidden="true"></i> <?=$link['desc']?></a></span>
+        <div class="links-container">
+            <?php foreach ($links as $link): ?>
+                <div class="copy-details">
+                    <span class="branch"><a href="<?=$this->escapeHtmlAttr($link['url'])?>"><i class="fa fa-external-link" aria-hidden="true"></i> <?=$link['desc']?></a></span>
+                </div>
+            <?php endforeach; ?>
         </div>
-    <?php endforeach; ?>
     </div>
 <?php endif; ?>
 
