@@ -136,6 +136,28 @@ class RecordDataFormatterFactory
         $spec->reorderKeys(
             ['Archive Origination', 'Archive', 'Archive Series', 'Relations']
         );
+
+        $getUnitIds = function ($data, $options) {
+            $result = [];
+            foreach ($data as $type => $value) {
+                $result[] = [
+                    'label' => 'Unit ID',
+                    'values' => [ $type => "$value ($type)"],
+                    'options' => [
+                        'renderType' => 'RecordDriverTemplate',
+                        'template' => 'data-escapeHtml.phtml',
+                        'context' => [
+                            'class' => 'class',
+                            'type' => $type,
+                            'schemaLabel' => null,
+                        ]
+                    ]
+                ];
+            }
+            return $result;
+        };
+
+        $spec->setMultiLine('Unit ID', 'getUnitIDs', $getUnitIds);
         
         return $spec->getArray();
     }

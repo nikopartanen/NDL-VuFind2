@@ -258,4 +258,27 @@ class SolrEad3 extends SolrEad
         
         return $result;
     }
+
+    public function getUnitIds()
+    {
+        $xml = $this->getXmlRecord();
+        if (!isset($xml->did->unitid)) {
+            return [];
+        }
+
+        $ids = [];
+        foreach ($xml->did->unitid as $id) {
+            $label = (string)$id->attributes()->label;
+            $val = (string)$id;
+            if (!$val) {
+                $val = (string)$id->attributes()->identifier;
+            }
+            if (!$label || !$val) {
+                continue;
+            }
+            $ids[$label] = $val;
+        }
+
+        return $ids;
+    }
 }
