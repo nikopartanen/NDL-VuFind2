@@ -48,6 +48,48 @@ namespace Finna\RecordDriver;
 class SolrEad3 extends SolrEad
 {
     /**
+     * Get the institutions holding the record.
+     *
+     * @param string $language User language version (locale)
+     *
+     * @return array
+     */
+    public function getInstitutions($language = null)
+    {
+        $result = parent::getInstitutions();
+
+        if (! $language) {
+            return $result;
+        }
+        if ($name = $this->getRepositoryName($language)) {
+            return [$name];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Return building from index.
+     *
+     * @param string $language User language version (locale)
+     *
+     * @return array
+     */
+    public function getBuilding($language = 'swe')
+    {
+        $result = parent::getBuilding();
+
+        if (! $language) {
+            return $result;
+        }
+        if ($name = $this->getRepositoryName($language)) {
+            return [$name];
+        }
+
+        return $result;
+    }
+
+    /**
      * Return an array of associative URL arrays with one or more of the following
      * keys:
      *
@@ -278,5 +320,45 @@ class SolrEad3 extends SolrEad
         }
 
         return $ids;
+    }
+
+    /**
+     * Return translated repository display name from metadata.
+     *
+     * @param string $language Language code
+     *
+     * @return string
+     */
+    protected function getRepositoryName($language)
+    {
+        $language = $this->mapLanguageCode($language);
+        $record = $this->getXmlRecord();
+
+        if (isset($record->did->repository->corpname)) {
+            foreach ($record->did->repository->corpname as $corpname) {
+                if (! isset($corpname->part)) {
+                    continue;
+                }
+                foreach ($corpname->part->attributes() as $key => $val) {
+                    if ($key === 'lang' && (string)$val === $language) {
+                        return (string)$corpname->part;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Convert Finna language codes to EAD3 codes.
+     *
+     * @param string $languageCode Language code
+     *
+     * @return string
+     */
+    protected function mapLanguageCode($languageCode)
+    {
+        $langMap = ['fi' => 'fin', 'sv' => 'swe', 'en-gb' => 'eng'];
+        return $langMap[$languageCode] ?? $languageCode;
     }
 }
