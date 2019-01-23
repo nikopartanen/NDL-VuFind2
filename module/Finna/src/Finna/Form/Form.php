@@ -53,6 +53,13 @@ class Form extends \VuFind\Form\Form
     protected $institution;
 
     /**
+     * Institution email
+     *
+     * @var string
+     */
+    protected $institutionEmail;
+
+    /**
      * User
      *
      * @var User
@@ -93,6 +100,18 @@ class Form extends \VuFind\Form\Form
     }
 
     /**
+     * Set institution email
+     *
+     * @param string $email Email
+     *
+     * @return void
+     */
+    public function setInstitutionEmail($email)
+    {
+        $this->institutionEmail = $email;
+    }
+
+    /**
      * Set user
      *
      * @param User  $user  User
@@ -107,6 +126,21 @@ class Form extends \VuFind\Form\Form
     }
 
     /**
+     * Return form recipient.
+     *
+     * @return array with name, email or null if not configured
+     */
+    public function getRecipient()
+    {
+        $recipient = parent::getRecipient();
+
+        if (empty($recipient[1]) && $this->institutionEmail) {
+            return ['', $this->institutionEmail];
+        }
+        return $recipient;
+    }
+
+    /**
      * Return form help text.
      *
      * @return string|null
@@ -116,7 +150,9 @@ class Form extends \VuFind\Form\Form
         $help = parent::getHelp();
 
         // Help text from configuration
-        $pre = $this->formConfig['help']['pre'] ?? '';
+        $pre = isset($this->formConfig['help']['pre'])
+            ? $this->translate($this->formConfig['help']['pre'])
+            : '';
 
         // 'feedback_instructions_html' translation
         if ($this->formId === 'FeedbackSite') {
