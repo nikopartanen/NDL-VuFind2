@@ -106,7 +106,7 @@ class Backend extends \VuFindSearch\Backend\Solr\Backend
         $params->set('q', implode(' OR ', $query));
         $params->add('fq', sprintf('-id:"%s"', addcslashes($id, '"')));
         $params->add('rows', 100);
-        $params->add('sort', 'main_date_str_mv desc, title_sort asc');
+        $params->add('sort', 'main_date_str desc, title_sort asc');
         $response = $this->connector->search($params);
         $collection = $this->createRecordCollection($response);
         $this->injectSourceIdentifier($collection);
