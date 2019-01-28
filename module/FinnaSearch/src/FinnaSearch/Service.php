@@ -47,17 +47,18 @@ class Service extends \VuFindSearch\Service
      *
      * @param string   $backend  Search backend identifier
      * @param string   $id       Id of record to compare with
-     * @param array    $workKeys Work identification keys
+     * @param array    $workKeys Work identification keys (optional; retrieved from
+     * the record to compare with if not specified)
      * @param ParamBag $params   Search backend parameters
      *
      * @return RecordCollectionInterface
      */
-    public function workExpressions($backend, $id, $workKeys, ParamBag $params = null
+    public function workExpressions($backend, $id, $workKeys = null,
+        ParamBag $params = null
     ) {
         $params  = $params ?: new \VufindSearch\ParamBag();
-        // Use the same context as similar records since we want the same processing
-        $context = 'similar';
-        $args = compact('backend', 'id', 'params', 'context');
+        $context = __FUNCTION__;
+        $args = compact('backend', 'id', 'params', 'context', 'workKeys');
         $backendInstance = $this->resolve($backend, $args);
         $args['backend_instance'] = $backendInstance;
 
@@ -67,6 +68,13 @@ class Service extends \VuFindSearch\Service
                 throw new BackendException(
                     "$backend does not support workExpressions()"
                 );
+            }
+            if (empty($args['workKeys'])) {
+                $records = $backendInstance->retrieve($id)->getRecords();
+                if (!empty($records[0])) {
+                    $fields = $records[0]->getRawData();
+                    $workKeys = $fields['work_keys_str_mv'] ?? [];
+                }
             }
             $response = $backendInstance->workExpressions($id, $workKeys, $params);
         } catch (BackendException $e) {

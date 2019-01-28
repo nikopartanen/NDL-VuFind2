@@ -55,7 +55,9 @@ class DeduplicationListener extends \VuFind\Search\Solr\DeduplicationListener
         if ($backend === $this->backend) {
             $params = $event->getParam('params');
             $context = $event->getParam('context');
-            if (($context == 'search' || $context == 'similar') && $params) {
+            if ($params
+                && in_array($context, ['search', 'similar', 'workExpressions'])
+            ) {
                 // Check for a special filter that enables deduplication
                 $fq = $params->get('fq');
                 if ($fq) {
@@ -78,7 +80,14 @@ class DeduplicationListener extends \VuFind\Search\Solr\DeduplicationListener
                 }
             }
         }
-        $result = parent::onSearchPre($event);
+        if ($event->getParam('context') === 'workExpressions') {
+            // Handle workExpressions like similar records in the upstream code
+            $event->setParam('context', 'similar');
+            $result = parent::onSearchPre($event);
+            $event->setParam('context', 'workExpressions');
+        } else {
+            $result = parent::onSearchPre($event);
+        }
         $this->enabled = $saveEnabled;
         return $result;
     }
