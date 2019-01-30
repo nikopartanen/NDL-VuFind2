@@ -1,11 +1,15 @@
 <!-- START of: finna - Related/WorkExpressions.phtml -->
-<?php $records = $this->related->getResults(); ?>
+<?php
+  $records = $this->related->getResults();
+  $limit = $this->related->getResultLimit();
+?>
 <?php if (!empty($records)): ?>
   <div class="work-expressions">
     <h4><?=$this->transEsc('work_expressions_title')?></h4>
-    <ul class="list-group">
+    <div class="list-group">
+      <?php $i = 0; ?>
       <?php foreach ($records as $data): ?>
-        <li class="list-group-item">
+        <div class="list-group-item<?=++$i > $limit ? ' hidden' : ''?>">
           <a href="<?=$this->recordLink()->getUrl($data)?>">
             <?=$this->escapeHtml($data->getTitle())?>
           </a>
@@ -18,9 +22,20 @@
               <br/><?=$this->transEsc('Published')?>: (<?=$this->escapeHtml($pubDates[0])?>)
             <?php endif; ?>
           </div>
-        </li>
+        </div>
       <?php endforeach; ?>
-    </ul>
+      <?php if (count($records) > $limit): ?>
+        <button class="more-link toggle">
+          <?=$this->transEsc('show_more');?> <i class="fa fa-arrow-down" aria-hidden="true"></i>
+        </button>
+        <button class="less-link toggle hidden">
+          <?=$this->transEsc('show_less');?> <i class="fa fa-arrow-up" aria-hidden="true"></i>
+        </button>
+      <?php endif; ?>
+      <a class="more-link" href="<?=$this->url('search-results')?>?<?=$this->escapeHtmlAttr($this->related->getSearchUrlParams()) ?>&sort=main_date_str+desc" rel="nofollow">
+        <span class="text"><?=$this->transEsc('see all')?> <i class="fa fa-list" aria-hidden="true"></i></span>
+      </a>
+    </div>
   </div>
 <?php endif; ?>
 <!-- END of: finna - Related/WorkExpressions.phtml -->

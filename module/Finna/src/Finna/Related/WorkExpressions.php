@@ -49,6 +49,13 @@ class WorkExpressions implements \VuFind\Related\RelatedInterface
     protected $results;
 
     /**
+     * Total count
+     *
+     * @var int
+     */
+    protected $resultCount;
+
+    /**
      * Search service
      *
      * @var \VuFindSearch\Service
@@ -56,13 +63,37 @@ class WorkExpressions implements \VuFind\Related\RelatedInterface
     protected $searchService;
 
     /**
+     * Search configuration
+     *
+     * @var \Zend\Config\Config
+     */
+    protected $searchConfig;
+
+    /**
+     * Record ID
+     *
+     * @var string
+     */
+    protected $recordId;
+
+    /**
+     * Work keys
+     *
+     * @var array
+     */
+    protected $workKeys;
+
+    /**
      * Constructor
      *
-     * @param \VuFindSearch\Service $search Search service
+     * @param \VuFindSearch\Service $search       Search service
+     * @param \Zend\Config\Config   $searchConfig Search configuration
      */
-    public function __construct(\VuFindSearch\Service $search)
-    {
+    public function __construct(\VuFindSearch\Service $search,
+        \Zend\Config\Config $searchConfig
+    ) {
         $this->searchService = $search;
+        $this->searchConfig = $searchConfig;
     }
 
     /**
@@ -75,16 +106,23 @@ class WorkExpressions implements \VuFind\Related\RelatedInterface
      */
     public function init($settings, $driver)
     {
-        if (($workKeys = $driver->tryMethod('getWorkKeys'))
+        $this->recordId = $driver->getUniqueID();
+        if (($this->workKeys = $driver->tryMethod('getWorkKeys'))
             && $driver->getSourceIdentifier() === 'Solr'
         ) {
-            $this->results = $this->searchService->workExpressions(
+            $params = new \VuFindSearch\ParamBag();
+            $params->add('rows', $this->getResultMoreLimit());
+            $results = $this->searchService->workExpressions(
                 $driver->getSourceIdentifier(),
                 $driver->getUniqueID(),
-                $workKeys
-            )->getRecords();
+                $this->workKeys,
+                $params
+            );
+            $this->results = $results->getRecords();
+            $this->resultCount = $results->getTotal();
         } else {
             $this->results = [];
+            $this->resultCount = 0;
         }
     }
 
@@ -97,5 +135,55 @@ class WorkExpressions implements \VuFind\Related\RelatedInterface
     public function getResults()
     {
         return $this->results;
+    }
+
+    /**
+     * Get the total number of results.
+     *
+     * @return int
+     */
+    public function getResultCount()
+    {
+        return $this->resultCount;
+    }
+
+    /**
+     * Get the number of results to be displayed by default
+     *
+     * @return int
+     */
+    public function getResultLimit()
+    {
+        return $this->searchConfig->WorkExpressions->count ?? 5;
+    }
+
+    /**
+     * Get the number of results to be displayed with the more link
+     *
+     * @return int
+     */
+    public function getResultMoreLimit()
+    {
+        return $this->searchConfig->WorkExpressions->showMoreCount ?? 30;
+    }
+
+    /**
+     * Get parameters for a search URL that display all work expressions
+     *
+     * @return string
+     */
+    public function getSearchUrlParams()
+    {
+        $mapFunc = function ($val) {
+            return addcslashes($val, '"');
+        };
+        $imploded = implode('" OR "', array_map($mapFunc, $this->workKeys));
+        $query = [
+            'join' => 'AND',
+            'lookfor0[]' => "\"$imploded\"",
+            'type0[]' => 'WorkKeys',
+            'bool0[]' => 'AND'
+        ];
+        return http_build_query($query);
     }
 }

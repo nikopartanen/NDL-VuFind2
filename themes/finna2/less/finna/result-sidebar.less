@@ -163,6 +163,19 @@ button.list-group-item {
   @media print {
     display: none;
   }
+
+  .list-group {
+    .more-link, .less-link, .show-all-link {
+      display: block;
+      margin: 0;
+      padding-top: 5px;
+      color: @gray;
+
+      i {
+        top: 0
+      }
+    }
+  }
 }
 
 #side-collapse-first_indexed {
