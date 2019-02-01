@@ -50,18 +50,16 @@ class SolrEad3 extends SolrEad
     /**
      * Get the institutions holding the record.
      *
-     * @param string $language User language version (locale)
-     *
      * @return array
      */
-    public function getInstitutions($language = null)
+    public function getInstitutions()
     {
         $result = parent::getInstitutions();
 
-        if (! $language) {
+        if (! $this->preferredLanguage) {
             return $result;
         }
-        if ($name = $this->getRepositoryName($language)) {
+        if ($name = $this->getRepositoryName()) {
             return [$name];
         }
 
@@ -75,14 +73,14 @@ class SolrEad3 extends SolrEad
      *
      * @return array
      */
-    public function getBuilding($language = 'swe')
+    public function getBuilding()
     {
         $result = parent::getBuilding();
 
-        if (! $language) {
+        if (! $this->preferredLanguage) {
             return $result;
         }
-        if ($name = $this->getRepositoryName($language)) {
+        if ($name = $this->getRepositoryName()) {
             return [$name];
         }
 
@@ -130,8 +128,17 @@ class SolrEad3 extends SolrEad
     public function getOrigination()
     {
         $record = $this->getXmlRecord();
-        return isset($record->did->origination->name->part)
-            ? (string)$record->did->origination->name->part : '';
+        if (isset($record->did->origination)) {
+            foreach ($record->did->origination->name as $name) {
+                $localType = $name->attributes()->localType;
+                if ($localType === 'http://www.rdaregistry.info/Elements/u/P60672') {
+                    if ($name = $this->getDisplayName($name)) {
+                        return $name;
+                    }
+                }
+            }
+        }
+        return '';
     }
 
     /**
@@ -325,25 +332,36 @@ class SolrEad3 extends SolrEad
     /**
      * Return translated repository display name from metadata.
      *
-     * @param string $language Language code
-     *
      * @return string
      */
-    protected function getRepositoryName($language)
+    protected function getRepositoryName()
     {
-        $language = $this->mapLanguageCode($language);
         $record = $this->getXmlRecord();
 
         if (isset($record->did->repository->corpname)) {
             foreach ($record->did->repository->corpname as $corpname) {
-                if (! isset($corpname->part)) {
-                    continue;
+                if ($name = $this->getDisplayName($corpname)) {
+                    return $name;
                 }
-                foreach ($corpname->part->attributes() as $key => $val) {
-                    if ($key === 'lang' && (string)$val === $language) {
-                        return (string)$corpname->part;
-                    }
-                }
+            }
+        }
+        return null;
+    }
+
+    protected function getDisplayName($node)
+    {
+        if (! isset($node->part)) {
+            return null;
+        }
+        $language = $this->preferredLanguage
+            ? $this->mapLanguageCode($this->preferredLanguage)
+            : null;
+
+        foreach ($node->part->attributes() as $key => $val) {
+            if ($language === null
+                || ($key === 'lang' && (string)$val === $language)
+            ) {
+                return (string)$node->part;
             }
         }
         return null;
