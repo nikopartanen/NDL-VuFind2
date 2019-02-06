@@ -114,7 +114,7 @@ class RecordDataFormatterFactory
                         'renderType' => 'RecordDriverTemplate',
                         'template' => 'data-authors.phtml',
                         'context' => [
-                            'class' => 'class',
+                            'class' => 'recordRelations',
                             'type' => $type,
                             'schemaLabel' => null,
                             // TODO: needed?
@@ -131,12 +131,23 @@ class RecordDataFormatterFactory
         $spec->setMultiLine(
             'Relations', 'getNonPresenterAuthors', $getRelations
         );
+        
+        // TODO position field
+        $spec->setTemplateLine(
+            'Käyttöluvan myöntäjä',
+            'getAccessRestrictGranter',
+            'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'recordAccessRestrictGranter']
+            ]
+        );
 
         
         $spec->reorderKeys(
             ['Archive Origination', 'Archive', 'Archive Series', 'Relations']
         );
 
+        
         $getUnitIds = function ($data, $options) {
             $result = [];
             foreach ($data as $type => $value) {
@@ -158,6 +169,16 @@ class RecordDataFormatterFactory
         };
 
         $spec->setMultiLine('Unit ID', 'getUnitIDs', $getUnitIds);
+
+        /*
+        $fields = array_keys($spec->getArray());
+        unset($fields['Access Restrictions']);
+        unset($fields['Access']);
+        $spec->reorderKeys($fields);
+        */
+
+        $spec->reorderKeyToEnd('Käyttöluvan myöntäjä');
+        $spec->reorderKeyToEnd('Access Restrictions');
         
         return $spec->getArray();
     }

@@ -192,6 +192,8 @@ class SolrEad extends \VuFind\RecordDriver\SolrDefault
      */
     public function getBibliographyNotes()
     {
+        return [];
+        
         $record = $this->getXmlRecord();
         $bibliography = [];
         foreach ($record->xpath('//bibliography') as $node) {

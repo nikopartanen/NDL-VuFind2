@@ -133,7 +133,7 @@ class SolrEad3 extends SolrEad
                 $localType = $name->attributes()->localType;
                 if ($localType === 'http://www.rdaregistry.info/Elements/u/P60672') {
                     if ($name = $this->getDisplayName($name)) {
-                        return $name;
+                        return current($name);
                     }
                 }
             }
@@ -214,6 +214,9 @@ class SolrEad3 extends SolrEad
             }
             $role = '';
             $arcRole = trim((string)$relation->attributes()->arcrole);
+            if ($arcRole === 'Arkistonmuodostaja') {
+                continue;
+            }
             /*
             switch ($arcRole) {
             case '':
@@ -241,9 +244,12 @@ class SolrEad3 extends SolrEad
                'id' => (string)$relation->attributes()->href,
                'type' => 'author-id',
                'role' => $arcRole,
-               'name' => trim((string)$relation->relationentry)
+               'name' => current($this->getDisplayName($relation, 'relationentry', true)) //trim((string)$relation->relationentry)
             ];
         }
+        
+        
+        
         return $result;
     }
 
@@ -300,9 +306,6 @@ class SolrEad3 extends SolrEad
             $result[$owner]['items'][] = compact('label', 'id');
         }
 
-
-        //echo ("locations: " . var_export($result, true));
-        
         return $result;
     }
 
@@ -329,6 +332,120 @@ class SolrEad3 extends SolrEad
         return $ids;
     }
 
+    public function getBibliographyNotes()
+    {
+        return [];
+    }
+    
+    public function getTitleStatement()
+    {
+        $xml = $this->getXmlRecord();
+        if (!isset($xml->bibliography->p)) {
+            return null;
+        }
+        return current($this->getDisplayName($xml->bibliography, 'p', true));
+    }
+
+    // TODO rename this
+    public function getAccessRestrictGranter()
+    {
+        $xml = $this->getXmlRecord();
+        if (!isset($xml->accessrestrict->p)) {
+            return [];
+        }
+        $restrictions = [];
+        foreach ($xml->accessrestrict as $access) {
+            if (isset($access->attributes()->encodinganalog) && in_array($access->attributes()->encodinganalog, ['ahaa:KR7'])
+                && isset($access->p->name)
+            ) {
+                return $this->getDisplayName($access->p->name, 'part', true);
+            }
+        }
+    }
+        
+    /**
+     * Get access restriction notes for the record.
+     *
+     * @return string[] Notes
+     */
+    public function getAccessRestrictions()
+    {
+        $xml = $this->getXmlRecord();
+        if (!isset($xml->accessrestrict->p)) {
+            return [];
+        }
+        $restrictions = [];
+        foreach ($xml->accessrestrict as $access) {
+            if (empty($access->attributes())) {
+                $restrictions += $this->getDisplayName($access, 'p', true);
+            } else if (isset($access->attributes()->encodinganalog) && in_array($access->attributes()->encodinganalog, ['ahaa:KR5'])) {
+                $restrictions += $this->getDisplayName($access, 'p', true);
+            }
+        }
+
+        return $restrictions;
+        //return [$this->getDisplayName($xml->accessrestrict, 'p', true)];
+    }
+    
+    /**
+     * Return type of access restriction for the record.
+     *
+     * @param string $language Language
+     *
+     * @return mixed array with keys:
+     *   'copyright'   Copyright (e.g. 'CC BY 4.0')
+     *   'link'        Link to copyright info, see IndexRecord::getRightsLink
+     *   or false if no access restriction type is defined.
+     */
+    public function getAccessRestrictionsType($language)
+    {
+        if (! $restrictions = $this->getAccessRestrictions()) {
+            return false;
+        }
+        $copyright = $restrictions[0];
+        $data = [];
+        $data['copyright'] = $copyright;
+        if ($link = $this->getRightsLink(strtoupper($copyright), $language)) {
+            $data['link'] = $link;
+        }
+        return $data;
+    }
+
+    /**
+     * Return image rights.
+     *
+     * @param string $language       Language
+     * @param bool   $skipImageCheck Whether to check that images exist
+     *
+     * @return mixed array with keys:
+     *   'copyright'   Copyright (e.g. 'CC BY 4.0') (optional)
+     *   'description' Human readable description (array)
+     *   'link'        Link to copyright info
+     *   or false if the record contains no images
+     */
+    public function getImageRights($language, $skipImageCheck = false)
+    {
+        if (!$skipImageCheck && !$this->getAllImages()) {
+            return false;
+        }
+
+        $rights = [];
+
+        if ($type = $this->getAccessRestrictionsType($language)) {
+            $rights['copyright'] = $type['copyright'];
+            if (isset($type['link'])) {
+                $rights['link'] = $type['link'];
+            }
+        }
+        $desc = $this->getAccessRestrictions();
+        if ($desc && count($desc)) {
+            $rights['description'] = $desc[0];
+        }
+
+        return isset($rights['copyright']) || isset($rights['description'])
+            ? $rights : false;
+    }
+    
     /**
      * Return translated repository display name from metadata.
      *
@@ -341,30 +458,46 @@ class SolrEad3 extends SolrEad
         if (isset($record->did->repository->corpname)) {
             foreach ($record->did->repository->corpname as $corpname) {
                 if ($name = $this->getDisplayName($corpname)) {
-                    return $name;
+                    return current($name);
                 }
             }
         }
         return null;
     }
 
-    protected function getDisplayName($node)
-    {
-        if (! isset($node->part)) {
+    protected function getDisplayName(
+        $node, $childNodeName = 'part', $fallbackToFirst = false
+    ) {
+        if (! isset($node->$childNodeName)) {
             return null;
         }
         $language = $this->preferredLanguage
             ? $this->mapLanguageCode($this->preferredLanguage)
             : null;
 
-        foreach ($node->part->attributes() as $key => $val) {
-            if ($language === null
-                || ($key === 'lang' && (string)$val === $language)
-            ) {
-                return (string)$node->part;
+
+        $result = [];
+        $name = null;
+
+        foreach ($node->{$childNodeName} as $child) {
+            foreach ($child->attributes() as $key => $val) {
+                if (! $name) {
+                    $name = (string)$child;
+                }
+                if ($language === null
+                    || ($key === 'lang' && (string)$val === $language)
+                ) {
+                    $result[] = trim((string)$child);
+                    //$name = trim((string)$node->{$childNodeName});
+                }
             }
         }
-        return null;
+
+        if (! empty($result)) {
+            return $result;
+        } else {
+            return $fallbackToFirst ? [$name] : null;
+        }
     }
 
     /**
