@@ -446,12 +446,8 @@ PublicationPlace:
       - [and, 100]
       - [or, ~]
 
-AuthorId:
+WorkKeys:
   QueryFields:
-    author_id_str_mv:
-      - [or, ~]
-
-CorporateAuthorId:
-  QueryFields:
-    author_corporate_id_str_mv:
+    work_keys_str_mv:
+      - [and, 100]
       - [or, ~]

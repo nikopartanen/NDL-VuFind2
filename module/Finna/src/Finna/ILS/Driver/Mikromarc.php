@@ -471,16 +471,20 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
         $profile = [
             'firstname' => trim($name[1]),
             'lastname' => ucfirst(trim($name[0])),
-            'phone' => $result['MainPhone'],
+            'phone' => !empty($result['MainPhone'])
+                ? $result['MainPhone'] : $result['Mobile'],
             'email' => $result['MainEmail'],
             'address1' => $result['MainAddrLine1'],
             'address2' => $result['MainAddrLine2'],
             'zip' => $result['MainZip'],
             'city' => $result['MainPlace'],
             'expiration_date' => $expirationDate,
-            'loan_history' => $result['StoreBorrowerHistory'] ? 0 : 1,
             'messagingServices' => $messagingSettings
         ];
+
+        if (isset($this->config['updateTransactionHistoryState']['method'])) {
+            $profile['loan_history'] = $result['StoreBorrowerHistory'];
+        }
 
         $profile = array_merge($patron, $profile);
         $this->putCachedData($cacheKey, $profile);
@@ -998,7 +1002,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
     public function updateTransactionHistoryState($patron, $state)
     {
         $code = $this->updatePatronInfo(
-            $patron, ['StoreBorrowerHistory' => ($state == 0)]
+            $patron, ['StoreBorrowerHistory' => $state == 1]
         );
 
         if ($code !== 200) {

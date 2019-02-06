@@ -19,11 +19,17 @@
 #                         value from config.ini [Feedback] section, or 'VuFind Feedback')
 #                         The subject may contain placeholders (for example %%receiver%%)
 #                         that are replaced with submitted form values.
-#   recipient
+#
+#   sendMethod (string) Determines how submitted form data is handled:
+#     email    Form data is sent via email to 'recipient'
+#     database Form data is saved to the database.
+#
+#   recipient (needed only when 'sendMethod' is email)
 #     name (string)  Recipient name (default = recipient_name setting from config.ini
 #                    [Feedback] section)
 #     email (string) Recipient email address (default = recipient_email setting from
 #                    config.ini [Feedback] section)
+#
 #   response (string) Reponse after form submit (translation key)
 #
 #   By default, the form renders input fields for sender name and email address with the
@@ -48,14 +54,16 @@
 #     required (boolean) Is the element required?
 #     settings (array)   HTML attributes as key-value pairs, for example:
 #       - [class, "custom-css-class another-class"]
-#     type (string)      Element type (text|textarea|email|url|select)
-#     help (string)      Element help text (translation key)
+#     type (string)      Element type (text|textarea|email|url|select|radio)
+#     help (string)      Element help text (translation key).
+#                        To include HTML formatting, use a translation key ending
+#                        in '_html' here, and define markup in the language files.
 #     
-#     And for select elements one of:
+#     And for select and radio elements:
 # 
 #     options (array) List of select values (translation keys)
 #
-#     or
+#     or for select elements alternatively:
 #
 #     optionGroups (array) List of option groups with keys:
 #       label (string) Group label (translation key)
@@ -81,6 +89,7 @@ forms:
     senderInfoRequired: false 
     senderInfoHelp: feedback_info
     hideSenderInfo: false
+    sendMethod: email
     #help:
     #  pre: feedback_help_pre
     #  post: feedback_help_post
@@ -113,4 +122,11 @@ forms:
         settings:
           - [placeholder, http://...]
           - [class, 'url']
+      - name: need_help
+        type: radio
+        label: Need Help?
+        required: true
+        options:
+          - Yes
+          - No
 

@@ -245,6 +245,8 @@ $config = [
             'Finna\Search\Memory' => 'VuFind\Search\MemoryFactory',
             'Finna\Search\Solr\HierarchicalFacetHelper' => 'Zend\ServiceManager\Factory\InvokableFactory',
 
+            'FinnaSearch\Service' => 'Finna\Service\Factory::getSearchService',
+
             'VuFind\Search\SearchTabsHelper' => 'Finna\Search\SearchTabsHelperFactory',
 
             'Zend\Session\SessionManager' => 'Finna\Session\ManagerFactory',
@@ -265,6 +267,8 @@ $config = [
             'VuFind\Role\PermissionManager' => 'Finna\Role\PermissionManager',
             'VuFind\Search\Memory' => 'Finna\Search\Memory',
             'VuFind\Search\Solr\HierarchicalFacetHelper' => 'Finna\Search\Solr\HierarchicalFacetHelper',
+
+            'VuFindSearch\Service' => 'FinnaSearch\Service',
         ]
     ],
     // This section contains all VuFind-specific settings (i.e. configurations
@@ -383,6 +387,7 @@ $config = [
                     'Finna\Db\Row\CommentsRecord' => 'VuFind\Db\Row\RowGatewayFactory',
                     'Finna\Db\Row\DueDateReminder' => 'VuFind\Db\Row\RowGatewayFactory',
                     'Finna\Db\Row\Fee' => 'VuFind\Db\Row\RowGatewayFactory',
+                    'Finna\Db\Row\Feedback' => 'VuFind\Db\Row\RowGatewayFactory',
                     'Finna\Db\Row\FinnaCache' => 'VuFind\Db\Row\RowGatewayFactory',
                     'Finna\Db\Row\PrivateUser' => 'VuFind\Db\Row\UserFactory',
                     'Finna\Db\Row\Resource' => 'VuFind\Db\Row\RowGatewayFactory',
@@ -421,6 +426,7 @@ $config = [
                     'Finna\Db\Table\CommentsRecord' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\DueDateReminder' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\Fee' => 'VuFind\Db\Table\GatewayFactory',
+                    'Finna\Db\Table\Feedback' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\FinnaCache' => 'VuFind\Db\Table\GatewayFactory',
                     'Finna\Db\Table\Resource' => 'VuFind\Db\Table\ResourceFactory',
                     'Finna\Db\Table\Search' => 'VuFind\Db\Table\GatewayFactory',
@@ -443,6 +449,7 @@ $config = [
                     'commentsrecord' => 'Finna\Db\Table\CommentsRecord',
                     'duedatereminder' => 'Finna\Db\Table\DueDateReminder',
                     'fee' => 'Finna\Db\Table\Fee',
+                    'feedback' => 'Finna\Db\Table\Feedback',
                     'finnacache' => 'Finna\Db\Table\FinnaCache',
                     'transaction' => 'Finna\Db\Table\Transaction',
                 ]
@@ -628,10 +635,15 @@ $config = [
             ],
             'related' => [
                 'factories' => [
-                    'nothing' => 'Finna\Related\Factory::getNothing',
-                    'similardeferred' => 'Finna\Related\Factory::getSimilarDeferred',
-                    'RelatedItems' => 'Finna\Related\RelatedItemsFactory',
+                    'Finna\Related\Nothing' => 'Zend\ServiceManager\Factory\InvokableFactory',
+                    'Finna\Related\SimilarDeferred' => 'Zend\ServiceManager\Factory\InvokableFactory',
+                    'Finna\Related\WorkExpressions' => 'Finna\Related\WorkExpressionsFactory',
                 ],
+                'aliases' =>  [
+                    'nothing' => 'Finna\Related\Nothing',
+                    'similardeferred' => 'Finna\Related\SimilarDeferred',
+                    'workexpressions' => 'Finna\Related\WorkExpressions',
+                ]
             ],
         ],
         'recorddriver_collection_tabs' => [
