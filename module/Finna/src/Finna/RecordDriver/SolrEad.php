@@ -192,9 +192,7 @@ class SolrEad extends \VuFind\RecordDriver\SolrDefault
      */
     public function getBibliographyNotes()
     {
-        return [];
-        
-        $record = $this->getXmlRecord();
+         $record = $this->getXmlRecord();
         $bibliography = [];
         foreach ($record->xpath('//bibliography') as $node) {
             // Filter out Portti links since they're displayed in links

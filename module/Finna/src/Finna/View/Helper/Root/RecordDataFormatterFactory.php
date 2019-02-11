@@ -131,7 +131,12 @@ class RecordDataFormatterFactory
         $spec->setMultiLine(
             'Relations', 'getNonPresenterAuthors', $getRelations
         );
-        
+
+        $spec->setTemplateLine(
+            'Sisällön luonne', 'getContentDescription', 'data-escapeHtml.phtml',
+            ['context' => ['class' => 'recordContentDescription']]
+        );
+
         // TODO position field
         $spec->setTemplateLine(
             'Käyttöluvan myöntäjä',

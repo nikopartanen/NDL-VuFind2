@@ -333,6 +333,16 @@ class SolrEad3 extends SolrEad
     }
 
     /**
+     * Get notes on bibliography content.
+     *
+     * @return string[] Notes
+     */
+    public function getBibliographyNotes()
+    {
+        return [];
+    }
+    
+    /**
      * Get an array of physical descriptions of the item.
      *
      * @return array
@@ -346,9 +356,23 @@ class SolrEad3 extends SolrEad
 
         return $this->getDisplayLabel($xml->did, 'physdesc', true);
     }
-    
-    public function getBibliographyNotes()
+
+    // TODO rename
+    public function getContentDescription()
     {
+        $xml = $this->getXmlRecord();
+        if (!isset($xml->controlaccess->genreform)) {
+            return [];
+        }
+
+        foreach ($xml->controlaccess->genreform as $genre) {
+            if (! isset($genre->attributes()->encodinganalog)
+                || (string)$genre->attributes()->encodinganalog !== 'ahaa:AI46') {
+                continue;
+            }
+            return $this->getDisplayLabel($genre);
+        }
+
         return [];
     }
     
