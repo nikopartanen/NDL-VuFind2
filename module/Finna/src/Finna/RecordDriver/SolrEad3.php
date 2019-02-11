@@ -132,7 +132,7 @@ class SolrEad3 extends SolrEad
             foreach ($record->did->origination->name as $name) {
                 $localType = $name->attributes()->localType;
                 if ($localType === 'http://www.rdaregistry.info/Elements/u/P60672') {
-                    if ($name = $this->getDisplayName($name)) {
+                    if ($name = $this->getDisplayLabel($name)) {
                         return current($name);
                     }
                 }
@@ -244,7 +244,7 @@ class SolrEad3 extends SolrEad
                'id' => (string)$relation->attributes()->href,
                'type' => 'author-id',
                'role' => $arcRole,
-               'name' => current($this->getDisplayName($relation, 'relationentry', true)) //trim((string)$relation->relationentry)
+               'name' => current($this->getDisplayLabel($relation, 'relationentry', true)) //trim((string)$relation->relationentry)
             ];
         }
         
@@ -332,6 +332,21 @@ class SolrEad3 extends SolrEad
         return $ids;
     }
 
+    /**
+     * Get an array of physical descriptions of the item.
+     *
+     * @return array
+     */
+    public function getPhysicalDescriptions()
+    {
+        $xml = $this->getXmlRecord();
+        if (!isset($xml->did->physdesc)) {
+            return [];
+        }
+
+        return $this->getDisplayLabel($xml->did, 'physdesc', true);
+    }
+    
     public function getBibliographyNotes()
     {
         return [];
@@ -343,7 +358,7 @@ class SolrEad3 extends SolrEad
         if (!isset($xml->bibliography->p)) {
             return null;
         }
-        return current($this->getDisplayName($xml->bibliography, 'p', true));
+        return current($this->getDisplayLabel($xml->bibliography, 'p', true));
     }
 
     // TODO rename this
@@ -358,7 +373,7 @@ class SolrEad3 extends SolrEad
             if (isset($access->attributes()->encodinganalog) && in_array($access->attributes()->encodinganalog, ['ahaa:KR7'])
                 && isset($access->p->name)
             ) {
-                return $this->getDisplayName($access->p->name, 'part', true);
+                return $this->getDisplayLabel($access->p->name, 'part', true);
             }
         }
     }
@@ -377,14 +392,14 @@ class SolrEad3 extends SolrEad
         $restrictions = [];
         foreach ($xml->accessrestrict as $access) {
             if (empty($access->attributes())) {
-                $restrictions += $this->getDisplayName($access, 'p', true);
+                $restrictions += $this->getDisplayLabel($access, 'p', true);
             } else if (isset($access->attributes()->encodinganalog) && in_array($access->attributes()->encodinganalog, ['ahaa:KR5'])) {
-                $restrictions += $this->getDisplayName($access, 'p', true);
+                $restrictions += $this->getDisplayLabel($access, 'p', true);
             }
         }
 
         return $restrictions;
-        //return [$this->getDisplayName($xml->accessrestrict, 'p', true)];
+        //return [$this->getDisplayLabel($xml->accessrestrict, 'p', true)];
     }
     
     /**
@@ -457,7 +472,7 @@ class SolrEad3 extends SolrEad
 
         if (isset($record->did->repository->corpname)) {
             foreach ($record->did->repository->corpname as $corpname) {
-                if ($name = $this->getDisplayName($corpname)) {
+                if ($name = $this->getDisplayLabel($corpname)) {
                     return current($name);
                 }
             }
@@ -465,8 +480,8 @@ class SolrEad3 extends SolrEad
         return null;
     }
 
-    protected function getDisplayName(
-        $node, $childNodeName = 'part', $fallbackToFirst = false
+    protected function getDisplayLabel(
+        $node, $childNodeName = 'part', $obeyPreferredLanguage = true
     ) {
         if (! isset($node->$childNodeName)) {
             return null;
@@ -477,26 +492,26 @@ class SolrEad3 extends SolrEad
 
 
         $result = [];
-        $name = null;
+        $languageResult = [];
 
         foreach ($node->{$childNodeName} as $child) {
             foreach ($child->attributes() as $key => $val) {
-                if (! $name) {
-                    $name = (string)$child;
-                }
+                $name = trim((string)$child);
+                $result[] = $name;
+                
                 if ($language === null
                     || ($key === 'lang' && (string)$val === $language)
                 ) {
-                    $result[] = trim((string)$child);
+                    $languageResult[] = $name;
                     //$name = trim((string)$node->{$childNodeName});
                 }
             }
         }
 
-        if (! empty($result)) {
-            return $result;
+        if (! empty($languageResult)) {
+            return $languageResult;
         } else {
-            return $fallbackToFirst ? [$name] : null;
+            return $obeyPreferredLanguage ? [] : $allResults;
         }
     }
 
