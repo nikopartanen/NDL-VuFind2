@@ -243,7 +243,7 @@ finna.record = (function finnaRecord() {
       if (accordion.hasClass('initiallyActive')) {
         removeHashFromLocation();
       }
-    } 
+    }
   }
 
   function loadSimilarRecords()

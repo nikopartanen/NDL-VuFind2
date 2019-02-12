@@ -39,6 +39,20 @@ namespace Finna\Form;
 class Form extends \VuFind\Form\Form
 {
     /**
+     * Email form handler
+     *
+     * @var string
+     */
+    const HANDLER_EMAIL = 'email';
+
+    /**
+     * Database form handler
+     *
+     * @var string
+     */
+    const HANDLER_DATABASE = 'database';
+
+    /**
      * Form id
      *
      * @var string
@@ -183,8 +197,12 @@ class Form extends \VuFind\Form\Form
                 );
             }
 
-            $recipientInfo= $this->translate(
-                'feedback_recipient_info', ['%%institution%%' => $institutionName]
+            $translationKey = $this->useEmailHandler()
+                ? 'feedback_recipient_info_email'
+                : 'feedback_recipient_info';
+
+            $recipientInfo = $this->translate(
+                $translationKey, ['%%institution%%' => $institutionName]
             );
 
             if (!empty($pre)) {
@@ -229,6 +247,37 @@ class Form extends \VuFind\Form\Form
     }
 
     /**
+     * Should submitted form data be sent via email?
+     *
+     * @return boolean
+     */
+    public function useEmailHandler()
+    {
+        // Send via email if not configured otherwise locally.
+        return !isset($this->formConfig['sendMethod'])
+                || $this->formConfig['sendMethod'] !== Form::HANDLER_DATABASE;
+    }
+
+    /**
+     * Get form element/field names
+     *
+     * @return array
+     */
+    public function getFormFields()
+    {
+        $elements = parent::getFormElements($this->getFormConfig($this->formId));
+        $fields = [];
+        foreach ($elements as $el) {
+            if ($el['type'] === 'submit') {
+                continue;
+            }
+            $fields[] = $el['name'];
+        }
+
+        return $fields;
+    }
+
+    /**
      * Parse form configuration.
      *
      * @param string $formId Form id
@@ -240,13 +289,25 @@ class Form extends \VuFind\Form\Form
     {
         $elements = parent::parseConfig($formId, $config);
 
-        // Add help text for sender name & email fields
-        if (!empty($this->formConfig['senderInfoHelp'])) {
-            $help = $this->formConfig['senderInfoHelp'];
-            foreach ($elements as &$el) {
+        if (!empty($this->formConfig['hideSenderInfo'])) {
+            // Remove default sender info fields
+            $filtered = [];
+            foreach ($elements as $el) {
                 if (isset($el['group']) && $el['group'] === '__sender__') {
-                    $el['help'] = $help;
-                    break;
+                    continue;
+                }
+                $filtered[] = $el;
+            }
+            $elements = $filtered;
+        } else {
+            // Add help text for default sender name & email fields
+            if (!empty($this->formConfig['senderInfoHelp'])) {
+                $help = $this->formConfig['senderInfoHelp'];
+                foreach ($elements as &$el) {
+                    if (isset($el['group']) && $el['group'] === '__sender__') {
+                        $el['help'] = $help;
+                        break;
+                    }
                 }
             }
         }
@@ -263,7 +324,10 @@ class Form extends \VuFind\Form\Form
     {
         $fields = parent::getFormSettingFields();
 
-        $fields = array_merge($fields, ['allowLocaloverride', 'senderInfoHelp']);
+        $fields = array_merge(
+            $fields,
+            ['hideSenderInfo', 'sendMethod', 'senderInfoHelp']
+        );
 
         return $fields;
     }

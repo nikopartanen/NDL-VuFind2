@@ -12,6 +12,7 @@
   }
   $account = $this->auth()->getManager();
   $searchType = $this->params->getSearchType();
+  $geoFilter = '';
 
     // Set up search box:
     $this->layout()->searchbox = $this->context($this)->renderInContext(
@@ -114,6 +115,34 @@
 
   $topRecommendations = $this->results->getRecommendations('top');
 ?>
+<?php $urlQuery = $results->getUrlQuery(); ?>
+
+<?php if (isset($filterList)): ?>
+  <?php ob_start(); ?>
+  <?php foreach ($filterList as $field => $data): ?>
+    <?php if (is_callable([$params, 'isGeographicFilter']) && $params->isGeographicFilter($data)): ?>
+      <?php $geoFilter = $field; ?>
+      <?php $geoRemoveLink = isset($urlQuery) ? $urlQuery->removeFacet($data[0]['field'], $data[0]['value'], $data[0]['operator']) : null;?>
+    <?php else: ?>
+      <?php foreach ($data as $index => $value): ?>
+        <?php
+          $removeLink = isset($urlQuery) ? $urlQuery->removeFacet($value['field'], $value['value'], $value['operator']) : '';
+          $desc = $this->escapeHtml($value['displayText']);
+          $ariaLabel = $this->translate('Remove filter') . ' ' . $desc;
+        ?>
+        <span class="filter-value">
+          <span class="filter-text">
+            <?=$desc?>
+          </span>
+          <?php if ($removeLink): ?><a aria-label="<?=$ariaLabel?>" href="<?=$removeLink?>"><i class="fa fa-window-close" aria-hidden="true"></i></a><?php endif; ?>
+        </span>
+      <?php endforeach; ?>
+    <?php endif; ?>
+  <?php endforeach; ?>
+  <?php $filters = ob_get_contents() ?>
+  <?php ob_end_clean(); ?>
+<?php endif; ?>
+
 <?php if (($recordTotal = $this->results->getResultTotal()) > 0): // only display these at very top if we have results ?>
     <?php foreach ($this->results->getRecommendations('top') as $current): ?>
         <?=$this->recommend($current)?>
@@ -130,6 +159,24 @@
       <?php else: ?>
         <?php $this->layout()->srmessage .= $this->translate('nohit_lookfor_html', ['%%lookfor%%' => $this->escapeHtml($lookfor)]) ?>
         <h4 class="no-results"><?=$this->layout()->srmessage ?></h4>
+        <?php if (isset($filterList)): ?>
+          <div class="noresults alert alert-info">
+            <p><?= $this->translate('nohit_active_filters_html'); ?></p>
+            <?php if ($geoFilter): ?>
+              <div>
+                <p><?= $this->translate('nohit_active_geographic_filter_html'); ?></p>
+                <?= $this->transEsc('try_to_remove_geographical_filters') ?>:
+                <span class="filter-value">
+                  <?=$this->transEsc($geoFilter)?>
+                  <?php if (isset($geoRemoveLink)) :?><a aria-label="<?=$this->translate('Remove filter') ?>" href="<?=$geoRemoveLink?>"><i class="fa fa-window-close" aria-hidden="true"></i></a><?php endif; ?>
+                </span>
+              </div>
+            <?php endif; ?>
+            <?php if (count($filterList) > 1): ?>
+              <div class="filters"><?= $this->transEsc('try_to_remove_filters')?>:<?= $filters ?></div>
+            <?php endif; ?>
+          </div>
+        <?php endif; ?> 
       <?php endif; ?>
       <?php if (isset($this->parseError)): ?>
         <p class="alert alert-danger"><?=$this->transEsc('nohit_parse_error')?></p>
