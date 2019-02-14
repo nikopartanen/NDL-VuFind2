@@ -339,7 +339,6 @@ finna.record = (function finnaRecord() {
     applyRecordAccordionHash(initialToggle);
     $(window).on('hashchange', applyRecordAccordionHash);
     loadSimilarRecords();
-    initWorkExpressions();
   }
 
   var my = {

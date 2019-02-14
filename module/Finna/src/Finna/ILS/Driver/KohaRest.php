@@ -4,7 +4,7 @@
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2017-2018.
+ * Copyright (C) The National Library of Finland 2017-2019.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -791,8 +791,7 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
         );
         if ($code != 204) {
             $error = "Failed to mark payment of $amount paid for patron"
-                . " {$patron['id']}: $code: $result";
-
+                . " {$patron['id']}: $code: " . print_r($result, true);
             $this->error($error);
             throw new ILSException($error);
         }
@@ -1341,11 +1340,6 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
                     continue;
                 }
                 $holdingData = $this->getHoldingData($holding, true);
-                // Don't display a standalone holding unless there's some information
-                // available.
-                if (empty($holdingData)) {
-                    continue;
-                }
 
                 $i++;
                 $location = $this->getBranchName($holding['holdingbranch']);
@@ -1372,13 +1366,15 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
                         $location .= $holdingLoc;
                     }
                 } else {
-                    $callnumber
-                        .= ', ' . $this->translateLocation(
-                            $holding['location'],
-                            !empty($holding['location_description'])
-                                ? $holding['location_description']
-                                : $holding['location']
-                        );
+                    if ($callnumber) {
+                        $callnumber .= ', ';
+                    }
+                    $callnumber .= $this->translateLocation(
+                        $holding['location'],
+                        !empty($holding['location_description'])
+                            ? $holding['location_description']
+                            : $holding['location']
+                    );
                 }
                 if ($holding['callnumber']) {
                     $callnumber .= ' ' . $holding['callnumber'];
