@@ -496,7 +496,7 @@ class SolrEad3 extends SolrEad
 
         if (isset($record->did->repository->corpname)) {
             foreach ($record->did->repository->corpname as $corpname) {
-                if ($name = $this->getDisplayLabel($corpname)) {
+                if ($name = $this->getDisplayLabel($corpname, 'part', true)) {
                     return current($name);
                 }
             }
@@ -505,7 +505,7 @@ class SolrEad3 extends SolrEad
     }
 
     protected function getDisplayLabel(
-        $node, $childNodeName = 'part', $obeyPreferredLanguage = true
+        $node, $childNodeName = 'part', $obeyPreferredLanguage = false
     ) {
         if (! isset($node->$childNodeName)) {
             return null;
@@ -515,28 +515,41 @@ class SolrEad3 extends SolrEad
             : null;
 
 
-        $result = [];
-        $languageResult = [];
-
+        $allResults = [];
+        $defaultLanguageResults = [];
+        $languageResults = [];
+        $defaultLanguage = 'fin';
         foreach ($node->{$childNodeName} as $child) {
             foreach ($child->attributes() as $key => $val) {
                 $name = trim((string)$child);
-                $result[] = $name;
+                $allResults[] = $name;
+                $lang = (string)$val;
                 
-                if ($language === null
-                    || ($key === 'lang' && (string)$val === $language)
+                if ($key === 'lang'
+                    && ($language !== null
+                    || in_array($lang, [$defaultLanguage, $language]))
                 ) {
-                    $languageResult[] = $name;
-                    //$name = trim((string)$node->{$childNodeName});
+                    if ($lang === $defaultLanguage) {
+                        $defaultLanguageResults[] = $name;
+                    }
+                    if ($lang === $language) {
+                        $languageResults[] = $name;
+                    }
                 }
             }
         }
 
-        if (! empty($languageResult)) {
-            return $languageResult;
-        } else {
-            return $obeyPreferredLanguage ? [] : $allResults;
+        if ($obeyPreferredLanguage) {
+            return $languageResults;
         }
+        
+        if (! empty($languageResults)) {
+            return $languageResults;
+        } elseif (! empty($defaultLanguageResults)) {
+            return $defaultLanguageResults;
+        }
+
+        return $allResults;
     }
 
     /**
