@@ -1652,6 +1652,11 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
             $result = strcmp($a['location'], $b['location']);
         }
 
+        if (0 === $result && $this->sortItemsByEnumChron) {
+            // Reverse chronological order
+            $result = strnatcmp($b['number'], $a['number']);
+        }
+
         if (0 === $result) {
             $result = $a['sort'] - $b['sort'];
         }
