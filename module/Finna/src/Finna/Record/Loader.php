@@ -74,9 +74,8 @@ class Loader extends \VuFind\Record\Loader
         }
         $missingException = false;
         try {
-            $params = null;
             if ($this->defaultOptions) {
-                $params = new ParamBag();
+                $params = $params ?? new ParamBag();
                 foreach ($this->defaultOptions as $key => $val) {
                     $params->set($key, $val);
                 }
