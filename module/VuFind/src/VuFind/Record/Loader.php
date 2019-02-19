@@ -33,6 +33,7 @@ use VuFind\Exception\RecordMissing as RecordMissingException;
 use VuFind\Record\FallbackLoader\PluginManager as FallbackLoader;
 use VuFind\RecordDriver\PluginManager as RecordFactory;
 use VuFindSearch\Service as SearchService;
+use VuFindSearch\ParamBag;
 
 /**
  * Record loader
@@ -106,7 +107,7 @@ class Loader implements \Zend\Log\LoggerAwareInterface
      * @return \VuFind\RecordDriver\AbstractBase
      */
     public function load($id, $source = DEFAULT_SEARCH_BACKEND,
-        $tolerateMissing = false
+        $tolerateMissing = false, ParamBag $params = null
     ) {
         if (null !== $id && '' !== $id) {
             $results = [];
@@ -116,7 +117,7 @@ class Loader implements \Zend\Log\LoggerAwareInterface
                 $results = $this->recordCache->lookup($id, $source);
             }
             if (empty($results)) {
-                $results = $this->searchService->retrieve($source, $id)
+                $results = $this->searchService->retrieve($source, $id, $params)
                     ->getRecords();
             }
             if (empty($results) && null !== $this->recordCache

@@ -168,6 +168,8 @@ $config = [
             'Finna\Controller\PrimoRecordController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\RecordController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
             'Finna\Controller\CollectionController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
+            'Finna\Controller\NkrrecordController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
+            'Finna\Controller\NkrController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\SearchController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\ListController' => 'Finna\Controller\ListControllerFactory',
         ],
@@ -180,6 +182,10 @@ $config = [
             'feedcontent' => 'Finna\Controller\FeedContentController',
             'LocationService' => 'Finna\Controller\LocationServiceController',
             'locationservice' => 'Finna\Controller\LocationServiceController',
+            'NkrRecord' => 'Finna\Controller\NkrrecordController',
+            'nkrrecord' => 'Finna\Controller\NkrrecordController',
+            'nkr' => 'Finna\Controller\NkrController',
+            'Nkr' => 'Finna\Controller\NkrController',
             'MetaLib' => 'Finna\Controller\MetaLibController',
             'metalib' => 'Finna\Controller\MetaLibController',
             'MetaLibRecord' => 'Finna\Controller\MetaLibrecordController',
@@ -239,16 +245,19 @@ $config = [
             'Finna\OnlinePayment\OnlinePayment' => 'Finna\Service\Factory::getOnlinePaymentManager',
             'Finna\OnlinePayment\Session' => 'Finna\Service\Factory::getOnlinePaymentSession',
             'Finna\OrganisationInfo\OrganisationInfo' => 'Finna\Service\Factory::getOrganisationInfo',
-            'Finna\Record\Loader' => 'VuFind\Record\LoaderFactory',
+            'Finna\Record\Loader' => 'Finna\Record\LoaderFactory',
             'Finna\RecordTab\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Role\PermissionManager' => 'VuFind\Role\PermissionManagerFactory',
             'Finna\Search\Memory' => 'VuFind\Search\MemoryFactory',
+            'Finna\Search\Options\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
+            'Finna\Search\Params\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
+            'Finna\Search\Results\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Search\Solr\HierarchicalFacetHelper' => 'Zend\ServiceManager\Factory\InvokableFactory',
 
             'FinnaSearch\Service' => 'Finna\Service\Factory::getSearchService',
 
             'VuFind\Search\SearchTabsHelper' => 'Finna\Search\SearchTabsHelperFactory',
-
+            
             'Zend\Session\SessionManager' => 'Finna\Session\ManagerFactory',
         ],
         'aliases' => [
@@ -266,8 +275,11 @@ $config = [
             'VuFind\RecordTab\PluginManager' => 'Finna\RecordTab\PluginManager',
             'VuFind\Role\PermissionManager' => 'Finna\Role\PermissionManager',
             'VuFind\Search\Memory' => 'Finna\Search\Memory',
+            'VuFind\Search\Options\PluginManager' => 'Finna\Search\Options\PluginManager',
+            'VuFind\Search\Params\PluginManager' => 'Finna\Search\Params\PluginManager',
             'VuFind\Search\Solr\HierarchicalFacetHelper' => 'Finna\Search\Solr\HierarchicalFacetHelper',
 
+            'VuFind\Search\Results\PluginManager' => 'Finna\Search\Results\PluginManager',
             'VuFindSearch\Service' => 'FinnaSearch\Service',
         ]
     ],
@@ -498,6 +510,7 @@ $config = [
             ],
             'search_backend' => [
                 'factories' => [
+                    'nkr' => 'Finna\Search\Factory\SolrDefaultBackendFactory',
                     'Primo' => 'Finna\Search\Factory\PrimoBackendFactory',
                     'Solr' => 'Finna\Search\Factory\SolrDefaultBackendFactory',
                 ],
@@ -545,6 +558,7 @@ $config = [
                 'aliases' => [
                     'VuFind\Search\Combined\Results' => 'Finna\Search\Combined\Results',
                     'VuFind\Search\Favorites\Results' => 'Finna\Search\Favorites\Results',
+                    'VuFind\Search\Nkr\Results' => 'Finna\Search\Solr\Results',
                     'VuFind\Search\Primo\Results' => 'Finna\Search\Primo\Results',
                     'VuFind\Search\Solr\Results' => 'Finna\Search\Solr\Results',
                 ]
@@ -755,6 +769,7 @@ $config = [
 ];
 
 $recordRoutes = [
+   'nkrrecord' => 'NkrRecord',
    'metalibrecord' => 'MetaLibRecord'
 ];
 
@@ -769,6 +784,7 @@ $staticRoutes = [
     'Browse/Database', 'Browse/Journal',
     'LibraryCards/Recover', 'LibraryCards/ResetPassword',
     'LocationService/Modal',
+    'Nkr/Home', 'Nkr/Results',
     'MetaLib/Home', 'MetaLib/Search', 'MetaLib/Advanced',
     'MyResearch/SaveCustomOrder', 'MyResearch/PurgeHistoricLoans',
     'OrganisationInfo/Home',

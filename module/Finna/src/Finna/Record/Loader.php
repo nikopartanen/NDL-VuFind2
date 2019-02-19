@@ -30,6 +30,7 @@
 namespace Finna\Record;
 
 use VuFind\Exception\RecordMissing as RecordMissingException;
+use VuFindSearch\ParamBag;
 
 /**
  * Record loader
@@ -44,6 +45,8 @@ use VuFind\Exception\RecordMissing as RecordMissingException;
  */
 class Loader extends \VuFind\Record\Loader
 {
+    protected $defaultOptions = null;
+    
     /**
      * Given an ID and record source, load the requested record object.
      *
@@ -56,7 +59,7 @@ class Loader extends \VuFind\Record\Loader
      * @return \VuFind\RecordDriver\AbstractBase
      */
     public function load($id, $source = DEFAULT_SEARCH_BACKEND,
-        $tolerateMissing = false
+        $tolerateMissing = false, ParamBag $params = null
     ) {
         if ($source == 'MetaLib') {
             if ($tolerateMissing) {
@@ -71,7 +74,14 @@ class Loader extends \VuFind\Record\Loader
         }
         $missingException = false;
         try {
-            $result = parent::load($id, $source, $tolerateMissing);
+            $params = null;
+            if ($this->defaultOptions) {
+                $params = new ParamBag();
+                foreach ($this->defaultOptions as $key => $val) {
+                    $params->set($key, $val);
+                }
+            }
+            $result = parent::load($id, $source, $tolerateMissing, $params);
         } catch (RecordMissingException $e) {
             $missingException = $e;
         }
@@ -136,6 +146,11 @@ class Loader extends \VuFind\Record\Loader
         }
 
         return $records;
+    }
+
+    public function setDefaultOptions($options = null)
+    {
+        $this->defaultOptions = $options;
     }
 
     /**
