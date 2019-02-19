@@ -45,7 +45,7 @@ use VuFindSearch\ParamBag;
  */
 class Loader extends \VuFind\Record\Loader
 {
-    protected $defaultOptions = null;
+    protected $defaultParams = null;
     
     /**
      * Given an ID and record source, load the requested record object.
@@ -74,9 +74,9 @@ class Loader extends \VuFind\Record\Loader
         }
         $missingException = false;
         try {
-            if ($this->defaultOptions) {
+            if ($this->defaultParams) {
                 $params = $params ?? new ParamBag();
-                foreach ($this->defaultOptions as $key => $val) {
+                foreach ($this->defaultParams as $key => $val) {
                     $params->set($key, $val);
                 }
             }
@@ -147,9 +147,9 @@ class Loader extends \VuFind\Record\Loader
         return $records;
     }
 
-    public function setDefaultOptions($options = null)
+    public function setDefaultParams($params = null)
     {
-        $this->defaultOptions = $options;
+        $this->defaultParams = $params;
     }
 
     /**

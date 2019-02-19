@@ -58,7 +58,7 @@ class LoaderFactory extends \VuFind\Record\LoaderFactory
         array $options = null
     ) {
         $loader = parent::__invoke($container, $requestedName);
-        $loader->setDefaultOptions($options);
+        $loader->setDefaultParams($options);
 
         return $loader;
     }
