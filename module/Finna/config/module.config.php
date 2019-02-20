@@ -249,8 +249,6 @@ $config = [
             'Finna\RecordTab\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Role\PermissionManager' => 'VuFind\Role\PermissionManagerFactory',
             'Finna\Search\Memory' => 'VuFind\Search\MemoryFactory',
-            'Finna\Search\Options\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
-            'Finna\Search\Params\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Search\Results\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Search\Solr\HierarchicalFacetHelper' => 'Zend\ServiceManager\Factory\InvokableFactory',
 
@@ -275,8 +273,6 @@ $config = [
             'VuFind\RecordTab\PluginManager' => 'Finna\RecordTab\PluginManager',
             'VuFind\Role\PermissionManager' => 'Finna\Role\PermissionManager',
             'VuFind\Search\Memory' => 'Finna\Search\Memory',
-            'VuFind\Search\Options\PluginManager' => 'Finna\Search\Options\PluginManager',
-            'VuFind\Search\Params\PluginManager' => 'Finna\Search\Params\PluginManager',
             'VuFind\Search\Solr\HierarchicalFacetHelper' => 'Finna\Search\Solr\HierarchicalFacetHelper',
 
             'VuFind\Search\Results\PluginManager' => 'Finna\Search\Results\PluginManager',
@@ -519,6 +515,7 @@ $config = [
                 'factories' => [
                     'Finna\Search\Combined\Options' => 'VuFind\Search\OptionsFactory',
                     'Finna\Search\EDS\Options' => 'VuFind\Search\EDS\OptionsFactory',
+                    'Finna\Search\Nkr\Options' => 'VuFind\Search\Options\OptionsFactory',
                     'Finna\Search\Primo\Options' => 'VuFind\Search\OptionsFactory',
                 ],
                 'aliases' => [
@@ -528,6 +525,8 @@ $config = [
 
                     // Counterpart for EmptySet Params:
                     'Finna\Search\EmptySet\Options' => 'VuFind\Search\EmptySet\Options',
+
+                    'nkr' => 'VuFind\Search\Solr\Options',
                 ]
             ],
             'search_params' => [
@@ -536,6 +535,7 @@ $config = [
                     'Finna\Search\EDS\Params' => 'VuFind\Search\Params\ParamsFactory',
                     'Finna\Search\EmptySet\Params' => 'VuFind\Search\Params\ParamsFactory',
                     'Finna\Search\Favorites\Params' => 'VuFind\Search\Params\ParamsFactory',
+                    'Finna\Search\Nkr\Params' => 'Finna\Search\Solr\ParamsFactory',
                     'Finna\Search\MixedList\Params' => 'VuFind\Search\Params\ParamsFactory',
                     'Finna\Search\Solr\Params' => 'Finna\Search\Solr\ParamsFactory',
                 ],
@@ -546,6 +546,8 @@ $config = [
                     'VuFind\Search\Favorites\Params' => 'Finna\Search\Favorites\Params',
                     'VuFind\Search\MixedList\Params' => 'Finna\Search\MixedList\Params',
                     'VuFind\Search\Solr\Params' => 'Finna\Search\Solr\Params',
+
+                    'nkr' => 'VuFind\Search\Solr\Params',
                 ]
             ],
             'search_results' => [
