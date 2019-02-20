@@ -1,10 +1,10 @@
 <?php
 /**
- * Solr aspect of the Search Multi-class (Options)
+ * Solr aspect of the Search Multi-class (Results)
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2015-2016.
+ * Copyright (C) The National Library of Finland 2015.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -22,33 +22,20 @@
  * @category VuFind
  * @package  Search_Solr
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Page
  */
 namespace Finna\Search\Nkr;
 
 /**
- * Solr Search Options
+ * Solr Search Parameters
  *
  * @category VuFind
  * @package  Search_Solr
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Page
  */
-class Options extends \Finna\Search\Solr\Options
+class Results extends \Finna\Search\Solr\Results
 {
-
-    /**
-     * Return the route name for the search results action.
-     *
-     * @return string
-     */
-    public function getSearchAction()
-    {
-        return 'nkr-search';
-    }
-
 }

@@ -38,17 +38,37 @@ namespace Finna\Controller;
  */
 class NkrController extends SearchController
 {
+    /**
+     * Search class family to use.
+     *
+     * @var string
+     */
+    protected $searchClassId = 'Nkr';
 
+
+    /**
+     * Create a new ViewModel.
+     *
+     * @param array $params Parameters to pass to ViewModel constructor.
+     *
+     * @return ViewModel
+     */
+    protected function createViewModel($params = null)
+    {
+        $view = parent::createViewModel($params);
+        $view->searchClassId = $this->searchClassId;
+        return $view;
+    }
 
     /**
      * Results action.
      *
      * @return mixed
      */
-    public function resultsAction()
+    public function searchAction()
     {
         $view = parent::resultsAction();
-        $view->setTemplate('search/results.phtml');
+        $view->setTemplate('nkr/results');
         return $view;
     }
 }

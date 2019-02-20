@@ -249,7 +249,6 @@ $config = [
             'Finna\RecordTab\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Role\PermissionManager' => 'VuFind\Role\PermissionManagerFactory',
             'Finna\Search\Memory' => 'VuFind\Search\MemoryFactory',
-            'Finna\Search\Results\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Search\Solr\HierarchicalFacetHelper' => 'Zend\ServiceManager\Factory\InvokableFactory',
 
             'FinnaSearch\Service' => 'Finna\Service\Factory::getSearchService',
@@ -275,7 +274,6 @@ $config = [
             'VuFind\Search\Memory' => 'Finna\Search\Memory',
             'VuFind\Search\Solr\HierarchicalFacetHelper' => 'Finna\Search\Solr\HierarchicalFacetHelper',
 
-            'VuFind\Search\Results\PluginManager' => 'Finna\Search\Results\PluginManager',
             'VuFindSearch\Service' => 'FinnaSearch\Service',
         ]
     ],
@@ -506,7 +504,7 @@ $config = [
             ],
             'search_backend' => [
                 'factories' => [
-                    'nkr' => 'Finna\Search\Factory\SolrDefaultBackendFactory',
+                    'Nkr' => 'Finna\Search\Factory\NkrBackendFactory',
                     'Primo' => 'Finna\Search\Factory\PrimoBackendFactory',
                     'Solr' => 'Finna\Search\Factory\SolrDefaultBackendFactory',
                 ],
@@ -526,7 +524,7 @@ $config = [
                     // Counterpart for EmptySet Params:
                     'Finna\Search\EmptySet\Options' => 'VuFind\Search\EmptySet\Options',
 
-                    'nkr' => 'VuFind\Search\Solr\Options',
+                    'Nkr' => 'Finna\Search\Nkr\Options',
                 ]
             ],
             'search_params' => [
@@ -554,15 +552,16 @@ $config = [
                 'factories' => [
                     'Finna\Search\Combined\Results' => 'VuFind\Search\Results\ResultsFactory',
                     'Finna\Search\Favorites\Results' => 'Finna\Search\Favorites\ResultsFactory',
+                    'Finna\Search\Nkr\Results' => 'VuFind\Search\Results\ResultsFactory',
                     'Finna\Search\Primo\Results' => 'VuFind\Search\Results\ResultsFactory',
                     'Finna\Search\Solr\Results' => 'VuFind\Search\Solr\ResultsFactory',
                 ],
                 'aliases' => [
                     'VuFind\Search\Combined\Results' => 'Finna\Search\Combined\Results',
                     'VuFind\Search\Favorites\Results' => 'Finna\Search\Favorites\Results',
-                    'VuFind\Search\Nkr\Results' => 'Finna\Search\Solr\Results',
                     'VuFind\Search\Primo\Results' => 'Finna\Search\Primo\Results',
                     'VuFind\Search\Solr\Results' => 'Finna\Search\Solr\Results',
+                    'nkr' => 'Finna\Search\Nkr\Results'
                 ]
             ],
             'content_covers' => [
@@ -786,7 +785,7 @@ $staticRoutes = [
     'Browse/Database', 'Browse/Journal',
     'LibraryCards/Recover', 'LibraryCards/ResetPassword',
     'LocationService/Modal',
-    'Nkr/Home', 'Nkr/Results',
+    'Nkr/Home', 'Nkr/Search',
     'MetaLib/Home', 'MetaLib/Search', 'MetaLib/Advanced',
     'MyResearch/SaveCustomOrder', 'MyResearch/PurgeHistoricLoans',
     'OrganisationInfo/Home',
