@@ -28,6 +28,8 @@
  */
 namespace Finna\Search\Factory;
 
+use Interop\Container\ContainerInterface;
+
 /**
  * Abstract factory for Nkr backends.
  *
@@ -40,4 +42,37 @@ namespace Finna\Search\Factory;
 class NkrBackendFactory
     extends SolrDefaultBackendFactory
 {
+    protected $nkrConfig;
+
+    /**
+     * Create service
+     *
+     * @param ContainerInterface $sm      Service manager
+     * @param string             $name    Requested service name (unused)
+     * @param array              $options Extra options (unused)
+     *
+     * @return Backend
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function __invoke(ContainerInterface $sm, $name, array $options = null)
+    {
+        $this->nkrConfig = $sm->get('VuFind\Config\PluginManager')->get('Nkr');
+        $this->solrCore = $this->nkrConfig->Index->default_core;
+        return parent::__invoke($sm, $name, $options);
+    }
+
+    /**
+     * Get the Solr URL.
+     *
+     * @param string $config name of configuration file (null for default)
+     *
+     * @return string|array
+     */
+    protected function getSolrUrl($config = null)
+    {
+        $url = $this->nkrConfig->Index->url;
+        return "$url/" . $this->solrCore;
+    }
+
 }

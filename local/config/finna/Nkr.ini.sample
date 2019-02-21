@@ -1,0 +1,21 @@
+[General]
+enabled = 1
+
+; This section requires no changes for most installations
+[Index]
+engine          = Solr
+url             = 
+
+local           = /data/vufind-solr
+default_core    = biblio
+; This setting needs to match the <maxBooleanClauses> setting in your solrconfig.xml
+; file; when VuFind has to look up large numbers of records using ID values, it may
+; have to restrict the size of its result set based on this limitation.
+maxBooleanClauses = 1024
+; This is the timeout in seconds when communicating with the Solr server.
+timeout = 30
+; Whether to shuffle Solr URLs when an array of them is defined. Default is false.
+;shuffle = true
+; List of regexp filters that block invalid searches
+;search_filters[] = "(.[,\s]){30,}"
+;search_filters[] = "[^\s,.\-]{100,}"
