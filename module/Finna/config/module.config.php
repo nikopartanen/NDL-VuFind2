@@ -561,7 +561,7 @@ $config = [
                     'VuFind\Search\Favorites\Results' => 'Finna\Search\Favorites\Results',
                     'VuFind\Search\Primo\Results' => 'Finna\Search\Primo\Results',
                     'VuFind\Search\Solr\Results' => 'Finna\Search\Solr\Results',
-                    'nkr' => 'Finna\Search\Nkr\Results'
+                    'Nkr' => 'Finna\Search\Nkr\Results',
                 ]
             ],
             'content_covers' => [
@@ -581,6 +581,8 @@ $config = [
                 'factories' => [
                     'Finna\RecordDriver\EDS' =>
                         'VuFind\RecordDriver\NameBasedConfigFactory',
+                    'Finna\RecordDriver\Nkr' =>
+                        'VuFind\RecordDriver\SolrDefaultFactory',
                     'Finna\RecordDriver\SolrDefault' =>
                         'VuFind\RecordDriver\SolrDefaultFactory',
                     'Finna\RecordDriver\SolrMarc' =>
@@ -597,6 +599,7 @@ $config = [
                         'VuFind\RecordDriver\NameBasedConfigFactory',
                 ],
                 'aliases' => [
+                    'nkr' => 'Finna\RecordDriver\Nkr',
                     'SolrEad' => 'Finna\RecordDriver\SolrEad',
                     'SolrForward' => 'Finna\RecordDriver\SolrForward',
                     'SolrLido' => 'Finna\RecordDriver\SolrLido',

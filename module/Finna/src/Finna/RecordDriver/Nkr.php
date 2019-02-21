@@ -1,10 +1,10 @@
 <?php
 /**
- * Solr aspect of the Search Multi-class (Results)
+ * Model for Nkr records.
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2015.
+ * Copyright (C) The National Library of Finland 2019.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -20,28 +20,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  Search_Solr
+ * @package  RecordDrivers
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org Main Page
+ * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
  */
-namespace Finna\Search\Nkr;
+namespace Finna\RecordDriver;
 
 /**
- * Solr Search Parameters
+ * Model for Nkr records.
  *
  * @category VuFind
- * @package  Search_Solr
+ * @package  RecordDrivers
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org Main Page
+ * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
  */
-class Results extends \Finna\Search\Solr\Results
+class Nrk extends SolrEad
 {
     /**
-     * Search backend identifiers.
+     * Used for identifying search backends
      *
      * @var string
      */
-    protected $backendId = 'Nkr';
+    protected $sourceIdentifier = 'Nkr';
 }

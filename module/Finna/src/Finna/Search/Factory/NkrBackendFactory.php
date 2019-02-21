@@ -1,10 +1,11 @@
 <?php
+
 /**
- * Solr aspect of the Search Multi-class (Results)
+ * Abstract factory for Nkr backends.
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2015.
+ * Copyright (C) The National Library of Finland 2019.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -20,28 +21,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  Search_Solr
+ * @package  Search
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org Main Page
+ * @link     http://vufind.org   Main Site
  */
-namespace Finna\Search\Nkr;
+namespace Finna\Search\Factory;
 
 /**
- * Solr Search Parameters
+ * Abstract factory for Nkr backends.
  *
  * @category VuFind
- * @package  Search_Solr
+ * @package  Search
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org Main Page
+ * @link     http://vufind.org   Main Site
  */
-class Results extends \Finna\Search\Solr\Results
+class NkrBackendFactory
+    extends SolrDefaultBackendFactory
 {
-    /**
-     * Search backend identifiers.
-     *
-     * @var string
-     */
-    protected $backendId = 'Nkr';
 }
