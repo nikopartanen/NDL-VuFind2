@@ -57,7 +57,7 @@ class NkrrecordController extends RecordController
         $view = parent::createViewModel($params);
         $this->layout()->searchClassId = $view->searchClassId = $this->searchClassId;
         $view->driver = $this->loadRecord();
-        $view->restrictedDriver = $this->loadRestrictedRecord();
+        $view->unrestrictedDriver = $this->loadRecordWithRestrictedData();
         
         return $view;
     }
@@ -67,7 +67,7 @@ class NkrrecordController extends RecordController
      *
      * @return \VuFind\RecordDriver\AbstractBase
      */
-    public function loadRestrictedRecord()
+    public function loadRecordWithRestrictedData()
     {
         $params = ['foo' => 'bar'];
         $recordLoader
