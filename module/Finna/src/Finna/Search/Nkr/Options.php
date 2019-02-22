@@ -42,6 +42,20 @@ class Options extends \Finna\Search\Solr\Options
 {
 
     /**
+     * Configuration file to read facet settings from
+     *
+     * @var string
+     */
+    protected $facetsIni = 'facets-nkr';
+
+    /**
+     * Configuration file to read search settings from
+     *
+     * @var string
+     */
+    protected $searchIni = 'searches-nkr';
+
+    /**
      * Return the route name for the search results action.
      *
      * @return string
@@ -50,5 +64,4 @@ class Options extends \Finna\Search\Solr\Options
     {
         return 'nkr-search';
     }
-
 }

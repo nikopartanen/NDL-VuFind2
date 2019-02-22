@@ -1,0 +1,7 @@
+; Inherit main configuration
+[Parent_Config]
+relative_path = searches.ini
+
+; This section contains global settings affecting search behavior.
+[General]
+default_side_recommend[] = SideFacetsDeferred:Results:CheckboxFacets:facets-nkr

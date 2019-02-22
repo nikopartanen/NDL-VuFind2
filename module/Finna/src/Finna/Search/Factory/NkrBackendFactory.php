@@ -45,6 +45,20 @@ class NkrBackendFactory
     protected $nkrConfig;
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->facetConfig = 'foo';
+
+        parent::__construct();
+        $this->facetConfig = 'facets-nkr';
+        $this->searchConfig = 'searches-nkr';
+        $this->searchYaml
+            = $this->nkrConfig->General->config->searchSpecs ?? $this->searchYaml;
+    }
+
+    /**
      * Create service
      *
      * @param ContainerInterface $sm      Service manager
