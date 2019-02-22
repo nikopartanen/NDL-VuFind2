@@ -1309,6 +1309,9 @@ file_permission = 0660
 ; link to the respective collections page rather than the record page
 ; (default = false).
 collections = true
+; Collection routes
+route[record] = collection
+route[nkrrecord] = nkrcollection
 ; Control default tab of Collection view (default = CollectionList)
 defaultTab = CollectionList
 ; This controls where data is retrieved from to build the Collections/Home page.

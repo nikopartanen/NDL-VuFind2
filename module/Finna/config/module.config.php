@@ -169,6 +169,7 @@ $config = [
             'Finna\Controller\RecordController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
             'Finna\Controller\CollectionController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
             'Finna\Controller\NkrrecordController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
+            'Finna\Controller\NkrcollectionController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
             'Finna\Controller\NkrController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\SearchController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\ListController' => 'Finna\Controller\ListControllerFactory',
@@ -182,6 +183,8 @@ $config = [
             'feedcontent' => 'Finna\Controller\FeedContentController',
             'LocationService' => 'Finna\Controller\LocationServiceController',
             'locationservice' => 'Finna\Controller\LocationServiceController',
+            'NkrCollection' => 'Finna\Controller\NkrcollectionController',
+            'nkrcollection' => 'Finna\Controller\NkrcollectionController',
             'NkrRecord' => 'Finna\Controller\NkrrecordController',
             'nkrrecord' => 'Finna\Controller\NkrrecordController',
             'nkr' => 'Finna\Controller\NkrController',
@@ -796,6 +799,7 @@ $config = [
 
 $recordRoutes = [
    'nkrrecord' => 'NkrRecord',
+   'nkrcollection' => 'NkrCollection',
    'metalibrecord' => 'MetaLibRecord'
 ];
 
