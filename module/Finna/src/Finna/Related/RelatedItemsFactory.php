@@ -1,10 +1,10 @@
 <?php
 /**
- * Record loader factory.
+ * Ead3Related helper factory.
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2019.
+ * Copyright (C) The National Library of Finland 2018.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -20,25 +20,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  Record
- * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org   Main Site
- */
-namespace Finna\Record;
-
-use Interop\Container\ContainerInterface;
-
-/**
- * Record loader factory.
- *
- * @category VuFind
- * @package  Record
+ * @package  View_Helpers
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class LoaderFactory extends \VuFind\Record\LoaderFactory
+namespace Finna\Related;
+
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
+
+use Finna\Related\Ead3Related;
+
+/**
+ * Ead3Related helper factory.
+ *
+ * @category VuFind
+ * @package  View_Helpers
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     https://vufind.org/wiki/development Wiki
+ */
+class RelatedItemsFactory implements FactoryInterface
 {
     /**
      * Create an object
@@ -54,11 +57,10 @@ class LoaderFactory extends \VuFind\Record\LoaderFactory
      * creating a service.
      * @throws ContainerException if any other error occurs
      */
-    public function __invoke(ContainerInterface $container, $requestedName,
-        array $options = null
+    public function __invoke(
+        ContainerInterface $container,$requestedName, array $options = null
     ) {
-        $loader = parent::__invoke($container, $requestedName);
-        $loader->setDefaultParams($options);
-        return $loader;
+        $recordLoader = $container->get('VuFind\Record\Loader');
+        return new \Finna\Related\RelatedItems($recordLoader);
     }
 }

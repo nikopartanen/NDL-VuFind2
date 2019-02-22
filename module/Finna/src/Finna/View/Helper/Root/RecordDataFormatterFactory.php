@@ -24,6 +24,7 @@
  * @package  View_Helpers
  * @author   Demian Katz <demian.katz@villanova.edu>
  * @author   Konsta Raunio <konsta.raunio@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:architecture:record_data_formatter
  * Wiki
@@ -37,6 +38,7 @@ namespace Finna\View\Helper\Root;
  * @package  View_Helpers
  * @author   Demian Katz <demian.katz@villanova.edu>
  * @author   Konsta Raunio <konsta.raunio@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:architecture:record_data_formatter
  * Wiki
@@ -52,7 +54,15 @@ class RecordDataFormatterFactory
     {
         $helper = new RecordDataFormatter();
         $helper->setDefaults('core', $this->getDefaultCoreSpecs());
+        $helper->setDefaults('core-ead3', $this->getDefaultCoreEad3Specs());
+
         $helper->setDefaults('description', $this->getDefaultDescriptionSpecs());
+        $helper->setDefaults('authority', $this->getDefaultAuthoritySpecs());
+
+        $helper->setDefaults(
+            'core-ead3', [$this, 'getDefaultCoreEad3Specs']
+        );
+
         return $helper;
     }
 
@@ -64,43 +74,173 @@ class RecordDataFormatterFactory
     public function getDefaultCoreSpecs()
     {
         $spec = new \VuFind\View\Helper\Root\RecordDataFormatter\SpecBuilder();
+
+        $fields = $this->getDefaultCoreFields();
+        
+        foreach ($this->getDefaultCoreFields() as $key => $data) {
+            list($dataMethod, $template, $options) = $data;
+            $spec->setTemplateLine($key, $dataMethod, $template, $options);
+        }
+
+        return $spec->getArray();
+    }
+
+    /**
+     * Get default specifications for displaying data in core metadata.
+     *
+     * @return array
+     */
+    public function getDefaultCoreEad3Specs()
+    {
+        $fields = $this->getDefaultCoreFields();
+
+        $spec = new \VuFind\View\Helper\Root\RecordDataFormatter\SpecBuilder();
+
+        foreach ($fields as $key => $data) {
+            list($dataMethod, $template, $options) = $data;
+            $spec->setTemplateLine($key, $dataMethod, $template, $options);
+        }
+        
+        // Add arcrole-relations as multiple fields with role as field header
+        $getRelations = function ($data, $options) {
+            $final = [];
+            foreach ($data as $type => $values) {
+                $final[] = [
+                    'label' => isset($values['role'])
+                        ? ('CreatorRoles::' . $values['role']) : null,
+                    'values' => [$type => $values],
+                    'options' => [
+                        //'pos' => 1,
+                        'renderType' => 'RecordDriverTemplate',
+                        'template' => 'data-authors.phtml',
+                        'context' => [
+                            'class' => 'recordRelations',
+                            'type' => $type,
+                            'schemaLabel' => null,
+                            // TODO: needed?
+                            /*
+                            'requiredDataFields' => [
+                                ['name' => 'role', 'prefix' => 'CreatorRoles::']
+                                ],*/
+                        ],
+                    ],
+                 ];
+            }
+            return $final;
+        };
+        $spec->setMultiLine(
+            'Relations', 'getNonPresenterAuthors', $getRelations
+        );
+
         $spec->setTemplateLine(
+            'Sisällön luonne', 'getContentDescription', 'data-escapeHtml.phtml',
+            ['context' => ['class' => 'recordContentDescription']]
+        );
+
+        // TODO position field
+        $spec->setTemplateLine(
+            'Käyttöluvan myöntäjä',
+            'getAccessRestrictGranter',
+            'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'recordAccessRestrictGranter']
+            ]
+        );
+
+        
+        $spec->reorderKeys(
+            ['Archive Origination', 'Archive', 'Archive Series', 'Relations']
+        );
+
+        
+        $getUnitIds = function ($data, $options) {
+            $result = [];
+            foreach ($data as $type => $value) {
+                $result[] = [
+                    'label' => 'Unit ID',
+                    'values' => [ $type => "$value ($type)"],
+                    'options' => [
+                        'renderType' => 'RecordDriverTemplate',
+                        'template' => 'data-escapeHtml.phtml',
+                        'context' => [
+                            'class' => 'class',
+                            'type' => $type,
+                            'schemaLabel' => null,
+                        ]
+                    ]
+                ];
+            }
+            return $result;
+        };
+
+        $spec->setMultiLine('Unit ID', 'getUnitIDs', $getUnitIds);
+
+        /*
+        $fields = array_keys($spec->getArray());
+        unset($fields['Access Restrictions']);
+        unset($fields['Access']);
+        $spec->reorderKeys($fields);
+        */
+
+        $spec->reorderKeyToEnd('Käyttöluvan myöntäjä');
+        $spec->reorderKeyToEnd('Access Restrictions');
+        
+        return $spec->getArray();
+    }
+
+    /**
+     * Utility function for getting fields in core metadata
+     *
+     * @return array
+     */
+    protected function getDefaultCoreFields()
+    {
+        $lines = [];
+        $setTemplateLine
+            = function ($key, $dataMethod, $template, $options = []) use (&$lines) {
+                $lines[$key] = [$dataMethod, $template, $options];
+            };
+
+        
+        $setTemplateLine(
             'Genre', 'getGenres', 'data-genres.phtml',
             [
                 'context' => ['class' => 'recordGenres']
             ]
         );
-        $spec->setTemplateLine(
+
+        $setTemplateLine(
             'Age Limit', 'getAgeLimit', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordAgeLimit']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Original Work', 'getOriginalWork', 'data-forwardFields.phtml',
             [
                 'context' => ['class' => 'recordOriginalWork']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Published in', 'getContainerTitle', 'data-containerTitle.phtml',
             [
                 'context' => ['class' => 'record-container-link']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'New Title', 'getNewerTitles', 'data-titles.phtml',
             [
                 'context' => ['class' => 'recordNextTitles']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Previous Title', 'getPreviousTitles', 'data-titles.phtml',
             [
                 'context' => ['class' => 'recordPrevTitles']
             ]
         );
-        $spec->setTemplateLine(
+        
+        $setTemplateLine(
             'Secondary Authors', 'getNonPresenterSecondaryAuthors',
             'data-contributors.phtml',
             [
@@ -110,56 +250,56 @@ class RecordDataFormatterFactory
                 }
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Actors', 'getAllPresenters', 'data-actors.phtml',
             [
                 'context' => ['class' => 'recordPresenters']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Assistants', 'getAssistants', 'data-assistants.phtml',
             [
                 'context' => ['class' => 'record-assistants']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Item Description FWD', 'getGeneralNotes', 'data-forwardFields.phtml',
             [
                 'context' => ['class' => 'recordDescription']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Description FWD', 'getDescription', 'data-forwardFields.phtml',
             [
                 'context' => ['class' => 'recordDescription']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Press Reviews', 'getPressReview', 'data-forwardFields.phtml',
             [
                 'context' => ['class' => 'record-press-review']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Music', 'getMusicInfo', 'data-forwardFields.phtml',
             [
                 'context' => ['class' => 'record-music']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Projected Publication Date', 'getProjectedPublicationDate',
             'data-transEsc.phtml',
             [
                 'context' => ['class' => 'coreProjectedPublicationDate']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Dissertation Note', 'getDissertationNote', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'coreDissertationNote']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Other Links', 'getOtherLinks', 'data-getOtherLinks.phtml',
             [
                 'labelFunction'  => function ($data) {
@@ -169,498 +309,500 @@ class RecordDataFormatterFactory
                 'context' => ['class' => 'recordOtherLink']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Presenters', 'getPresenters', 'data-presenters.phtml',
             [
                 'context' => ['class' => 'recordPresenters']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Other Titles', 'getAlternativeTitles', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordAltTitles']
             ]
         );
-        $spec->setLine(
-            'Format', 'getFormats', 'RecordHelper',
+        
+        $setTemplateLine(
+            'Format', 'getFormats', 'format-list.phtml',
             [
-                'helperMethod' => 'getFormatList',
                 'context' => ['class' => 'recordFormat']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Physical Description', 'getPhysicalDescriptions',
             'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'physicalDescriptions']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Extent', 'getPhysicalDescriptions',
             'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'record-extent']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Language', 'getLanguages', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'recordLanguage']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'original_work_language', 'getOriginalLanguages', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'originalLanguage']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Item Description', 'getGeneralNotes', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordDescription']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Subject Detail', 'getSubjectDetails', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordSubjects']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Subject Place', 'getSubjectPlaces', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordSubjects']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Subject Date', 'getSubjectDates', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordSubjects']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Subject Actor', 'getSubjectActors', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordSubjects']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Organisation', 'getInstitutions', 'data-organisation.phtml',
             [
                 'context' => ['class' => 'recordInstitution']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Collection', 'getCollections', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordCollection']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Inventory ID', 'getIdentifier', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordIdentifier']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Measurements', 'getMeasurements', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordMeasurements']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Inscriptions', 'getInscriptions', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordInscriptions']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Other Classification', 'getFormatClassifications',
             'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordClassifications']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Other ID', 'getLocalIdentifiers', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordIdentifiers']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Events', 'getEvents', 'data-mainFormat.phtml',
             [
                 'context' => ['class' => 'recordEvents', 'title' => ""]
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Archive Origination', 'getOrigination', 'data-origination.phtml',
             [
                 'context' => ['class' => 'record-origination']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Archive', true, 'data-archive.phtml',
             [
                 'context' => ['class' => 'recordHierarchyLinks']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Archive Series', 'isPartOfArchiveSeries', 'data-archiveSeries.phtml',
             [
                 'context' => ['class' => 'recordSeries']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Unit ID', 'getUnitID', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordReferenceCode']
             ]
         );
-        $spec->setTemplateLine(
+
+        $setTemplateLine(
             'Authors', 'getNonPresenterAuthors', 'data-authors.phtml',
             [
                 'context' => ['class' => 'recordAuthors']
             ]
         );
-        $spec->setTemplateLine(
+
+        $setTemplateLine(
             'Publisher', 'getPublicationDetails', 'data-publicationDetails.phtml',
             [
                 'context' => ['class' => 'recordPublications']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Published', 'getPublicationDetails', 'data-publicationDetails.phtml',
             [
                 'context' => ['class' => 'recordPublications']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Projected Publication Date', 'getProjectedPublicationDate',
             'data-transEsc.phtml',
             [
                 'context' => ['class' => 'coreProjectedPublicationDate']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Dissertation Note', 'getDissertationNote', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'coreDissertationNote']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Edition', 'getEdition', 'data-edition.phtml',
             [
                 'context' => ['class' => 'recordEdition']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Series', 'getSeries', 'data-series.phtml',
             [
                 'context' => ['class' => 'recordSeries']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Classification', 'getClassifications', 'data-classification.phtml',
             [
                 'context' => ['class' => 'recordClassifications']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Subjects', 'getAllSubjectHeadings', 'data-allSubjectHeadings.phtml',
             [
                 'context' => ['class' => 'recordSubjects']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Manufacturer', 'getManufacturer', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'recordManufacturer']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Production', 'getProducers', 'data-producers.phtml',
             [
                 'context' => ['class' => 'recordManufacturer']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Funding', 'getFunders', 'data-funding.phtml',
             [
                 'context' => ['class' => 'record-funders']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Distribution', 'getDistributors', 'data-distribution.phtml',
             [
                 'context' => ['class' => 'record-distributors']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Premiere Night', 'getPremiereTime', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'record-premiere-night']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Premiere Theaters', 'getPremiereTheaters', 'data-escapeHtml.phtml',
             [
                'context' =>
                   ['class' => 'record-premiere-theaters'],
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Broadcasting Dates', 'getBroadcastingInfo',
             'data-broadcasting-dates.phtml',
             [
                 'context' => ['class' => 'record-broadcasting-info']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Film Festivals', 'getFestivalInfo', 'data-festival-info.phtml',
             [
                 'context' => ['class' => 'record-festival-info']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Foreign Distribution', 'getForeignDistribution',
             'data-foreign-distribution.phtml',
             [
                'context' => ['class' => 'record-foreign-distribution']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Film Copies', 'getNumberOfCopies', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'record-film-copies']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Other Screenings', 'getOtherScreenings', 'data-other-screenings.phtml',
             [
                'context' => ['class' => 'record-other-screenings']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Additional Information', 'getTitleStatement', 'data-addInfo.phtml',
             [
                 'context' => ['class' => 'recordTitleStatement']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'child_records', 'getChildRecordCount', 'data-childRecords.phtml',
             [
                 'allowZero' => false,
                 'context' => ['class' => 'recordComponentParts']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Record Links', 'getAllRecordLinks', 'data-allRecordLinks.phtml',
             [
                 'context' => ['class' => 'recordLinks', 'title' => ""]
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Online Access', true, 'data-onlineAccess.phtml',
             [
                 'context' => ['class' => 'webResource']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Source Collection', 'getSource', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordSource']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Publish date', 'getDateSpan', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'extendedDateSpan']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Keywords', 'getKeywords', 'data-keywords.phtml',
             [
                 'context' => ['class' => 'record-keywords']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Education Programs', 'getEducationPrograms', 'data-education.phtml',
             [
                 'context' => ['class' => 'record-education-programs']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Publication Frequency', 'getPublicationFrequency',
             'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'extendedFrequency']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Playing Time', 'getPlayingTimes', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'extendedPlayTime']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Color', 'getColor', 'data-color.phtml',
             [
                 'context' => ['class' => 'record-color']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Sound', 'getSound', 'data-sound.phtml',
             [
                 'context' => ['class' => 'record-sound']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Aspect Ratio', 'getAspectRatio', 'data-escapeHtml',
             [
                 'context' => ['class' => 'record-aspect-ratio']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'System Format', 'getSystemDetails', 'data-escapeHtml',
             [
                 'context' => ['class' => 'extendedSystem']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Audience', 'getTargetAudienceNotes', 'data-escapeHtml',
             [
                 'context' => ['class' => 'extendedAudience']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Awards', 'getAwards', 'data-forwardFields.phtml',
             [
                 'context' => ['class' => 'extendedAwards']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Production Credits', 'getProductionCredits', 'data-escapeHtml',
             [
                 'context' => ['class' => 'extendedCredits']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Bibliography', 'getBibliographyNotes', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'extendedBibliography']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'ISBN', 'getISBNs', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'extendedISBNs']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'ISSN', 'getISSNs', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'extendedISSNs']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'DOI', 'getCleanDOI', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'extended-doi']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Related Items', 'getRelationshipNotes', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'extendedRelatedItems']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Access Restrictions', 'getAccessRestrictions', 'data-accrest.phtml',
             [
                 'context' => ['class' => 'extendedAccess']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Access', 'getAccessRestrictions', 'data-accrest.phtml',
             [
                 'context' => ['class' => 'extendedAccess']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Terms of Use', 'getTermsOfUse', 'data-termsOfUse.phtml',
             [
                 'context' => ['class' => 'extendedTermsOfUse']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Finding Aid', 'getFindingAids', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'extendedFindingAids']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Publication_Place', 'getHierarchicalPlaceNames',
             'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'publicationPlace']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Author Notes', true, 'data-authorNotes.phtml',
             [
                 'context' => ['class' => 'extendedAuthorNotes']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Location', 'getPhysicalLocations', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordPhysicalLocation']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Date', 'getUnitDate', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordDaterange']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Photo Info', 'getPhotoInfo', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'record-photoinfo']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Source of Acquisition', 'getAcquisitionSource', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordAcquisition']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Medium of Performance', 'getMusicCompositions', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'record-composition']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Notated Music Format', 'getNotatedMusicFormat', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordNoteFormat']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Event Notice', 'getEventNotice', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordEventNotice']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'First Lyrics', 'getFirstLyrics', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordFirstLyrics']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Trade Availability Note',
             'getTradeAvailabilityNote',
             'data-escapeHtml.phtml',
@@ -668,25 +810,25 @@ class RecordDataFormatterFactory
                 'context' => ['class' => 'recordTradeNote']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Methodology', 'getMethodology', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'recordMethodology']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Inspection Details', 'getInspectionDetails', 'data-inspection.phtml',
             [
                 'context' => ['class' => 'recordInspection']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Scale', 'getMapScale', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-map-scale']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Available Online', 'getWebResource', 'data-url.phtml',
             [
                 'context' => [
@@ -695,19 +837,19 @@ class RecordDataFormatterFactory
                 ]
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Notes', 'getNotes', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-notes']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Place of Origin', 'getAssociatedPlace', 'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'record-associated-place']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Time Period of Creation', 'getTimePeriodOfCreation',
             'data-escapeHtml.phtml',
             [
@@ -715,19 +857,19 @@ class RecordDataFormatterFactory
             ]
         );
 
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Uniform Title', 'getCollectiveUniformTitle', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-collective-uniform-title']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Standard Codes', 'getStandardCodes', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-standard-codes']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Publisher or Distributor Number',
             'getPubDistNumber',
             'data-transEsc.phtml',
@@ -735,33 +877,34 @@ class RecordDataFormatterFactory
                 'context' => ['class' => 'record-pubdist-number']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Time Period', 'getTimePeriod', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-time-period']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Copyright Notes', 'getCopyrightNotes', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-copyright-notes']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Language Notes', 'getLanguageNotes', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-language-notes']
             ]
         );
-        $spec->setTemplateLine(
+        $setTemplateLine(
             'Uncontrolled Title', 'getUncontrolledTitle', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-uncontrolled-title']
             ]
         );
-        return $spec->getArray();
-    }
 
+        return $lines;
+    }
+    
     /**
      * Get default specifications for displaying data in the description tab.
      *
@@ -789,6 +932,19 @@ class RecordDataFormatterFactory
         $spec->setLine('Finding Aid', 'getFindingAids');
         $spec->setLine('Publication_Place', 'getHierarchicalPlaceNames');
         $spec->setTemplateLine('Author Notes', true, 'data-authorNotes.phtml');
+        return $spec->getArray();
+    }
+
+    /**
+     * Get default specifications for displaying data in the description tab.
+     *
+     * @return array
+     */
+    public function getDefaultAuthoritySpecs()
+    {
+        $spec = new \VuFind\View\Helper\Root\RecordDataFormatter\SpecBuilder();
+        $spec->setLine('Title', 'getTitle');
+        $spec->setLine('Other Titles', 'getAlternativeTitles');
         return $spec->getArray();
     }
 }

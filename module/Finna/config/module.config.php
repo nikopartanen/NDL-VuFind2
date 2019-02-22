@@ -299,6 +299,8 @@ $config = [
                         'Finna\AjaxHandler\EditListFactory',
                     'Finna\AjaxHandler\EditListResource' =>
                         'Finna\AjaxHandler\EditListResourceFactory',
+                    'Finna\AjaxHandler\GetAuthorityInfo' =>
+                        'Finna\AjaxHandler\GetAuthorityInfoFactory',
                     'Finna\AjaxHandler\GetACSuggestions' =>
                         'VuFind\AjaxHandler\GetACSuggestionsFactory',
                     'Finna\AjaxHandler\GetContentFeed' =>
@@ -341,6 +343,7 @@ $config = [
                     'checkRequestsAreValid' => 'Finna\AjaxHandler\CheckRequestsAreValid',
                     'editList' => 'Finna\AjaxHandler\EditList',
                     'editListResource' => 'Finna\AjaxHandler\EditListResource',
+                    'getAuthorityInfo' => 'Finna\AjaxHandler\GetAuthorityInfo',
                     'getContentFeed' => 'Finna\AjaxHandler\GetContentFeed',
                     'getDescription' => 'Finna\AjaxHandler\GetDescription',
                     'getDateRangeVisual' => 'Finna\AjaxHandler\GetDateRangeVisual',
@@ -587,7 +590,11 @@ $config = [
                         'VuFind\RecordDriver\SolrDefaultFactory',
                     'Finna\RecordDriver\SolrMarc' =>
                         'VuFind\RecordDriver\SolrDefaultFactory',
+                    'Finna\RecordDriver\SolrAuthEaccpf' =>
+                        'VuFind\RecordDriver\SolrDefaultFactory',
                     'Finna\RecordDriver\SolrEad' =>
+                        'VuFind\RecordDriver\SolrDefaultFactory',
+                    'Finna\RecordDriver\SolrEad3' =>
                         'VuFind\RecordDriver\SolrDefaultFactory',
                     'Finna\RecordDriver\SolrForward' =>
                         'VuFind\RecordDriver\SolrDefaultFactory',
@@ -600,7 +607,9 @@ $config = [
                 ],
                 'aliases' => [
                     'nkr' => 'Finna\RecordDriver\Nkr',
+                    'SolrAuthEaccpf' => 'Finna\RecordDriver\SolrAuthEaccpf',
                     'SolrEad' => 'Finna\RecordDriver\SolrEad',
+                    'SolrEad3' => 'Finna\RecordDriver\SolrEad3',
                     'SolrForward' => 'Finna\RecordDriver\SolrForward',
                     'SolrLido' => 'Finna\RecordDriver\SolrLido',
                     'SolrQdc' => 'Finna\RecordDriver\SolrQdc',
@@ -622,6 +631,7 @@ $config = [
                     'Finna\RecordTab\Distribution' => 'Finna\RecordTab\Factory::getDistribution',
                     'Finna\RecordTab\InspectionDetails' => 'Finna\RecordTab\Factory::getInspectionDetails',
                     'Finna\RecordTab\ItemDescription' => 'Finna\RecordTab\Factory::getItemDescription',
+                    'Finna\RecordTab\LocationsEad3' => 'Finna\RecordTab\Factory::getLocationsEad3',
                     'Finna\RecordTab\Map' => 'Finna\RecordTab\Factory::getMap',
                     'Finna\RecordTab\Music' => 'Finna\RecordTab\Factory::getMusic',
                     'Finna\RecordTab\PressReviews' => 'Finna\RecordTab\Factory::getPressReviews',
@@ -636,6 +646,7 @@ $config = [
                     'distribution' => 'Finna\RecordTab\Distribution',
                     'inspectionDetails' => 'Finna\RecordTab\InspectionDetails',
                     'itemdescription' => 'Finna\RecordTab\ItemDescription',
+                    'LocationsEad3' => 'Finna\RecordTab\LocationsEad3',
                     'music' => 'Finna\RecordTab\Music',
                     'pressreview' => 'Finna\RecordTab\PressReviews',
 
@@ -704,6 +715,17 @@ $config = [
             ],
             'Finna\RecordDriver\SolrEad' => [
                 'tabs' => [
+                    'HierarchyTree' => 'HierarchyTree',
+                    'UserComments' => 'UserComments',
+                    'Reviews' => 'Reviews',
+                    'Map' => 'Map',
+                    'Details' => 'StaffViewArray',
+                ],
+                'defaultTab' => null,
+            ],
+            'Finna\RecordDriver\SolrEad3' => [
+                'tabs' => [
+                    'LocationsEad3' => 'LocationsEad3',
                     'HierarchyTree' => 'HierarchyTree',
                     'UserComments' => 'UserComments',
                     'Reviews' => 'Reviews',

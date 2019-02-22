@@ -826,6 +826,16 @@ trait SolrFinna
     }
 
     /**
+     * Get related records.
+     *
+     * @return array
+     */
+    public function getRelatedItems()
+    {
+        return [];
+    }
+    
+    /**
      * Get work identification keys
      *
      * @return array

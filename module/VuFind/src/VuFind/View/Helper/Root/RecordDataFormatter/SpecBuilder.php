@@ -141,6 +141,28 @@ class SpecBuilder
         }
     }
 
+    public function reorderKeyToEnd($key)
+    {
+        $this->maxPos += 100;
+        $this->spec[$key]['pos'] = $this->maxPos;
+    }
+    /*
+    public function reorderKeyAfter($reorderKey, $positionAfterKey)
+    {
+        $pos = null;
+        foreach (array_keys($this->spec) as $key) {
+            if ($pos === null && $key === $positionAfter) {
+                $pos = $this->spec[$key]['pos'];
+                continue;
+            } else if ($pos !== null) {
+                $this->spec[$key]['pos'] += 1;
+            }
+        }
+        if ($pos !== null) {
+            $this->spec[$reorderKey]['pos'] = $pos;
+        }
+        }*/
+    
     /**
      * Get the spec.
      *

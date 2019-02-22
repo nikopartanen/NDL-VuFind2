@@ -1,10 +1,10 @@
 <?php
 /**
- * Record loader factory.
+ * Factory for GetAuthorityInfo AJAX handler.
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2019.
+ * Copyright (C) The National Library of Finland 2018.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -20,25 +20,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  Record
- * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
+ * @package  AJAX
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org   Main Site
+ * @link     https://vufind.org/wiki/development Wiki
  */
-namespace Finna\Record;
+namespace Finna\AjaxHandler;
 
 use Interop\Container\ContainerInterface;
 
 /**
- * Record loader factory.
+ * Factory for GetAuthorityInfo AJAX handler.
  *
  * @category VuFind
- * @package  Record
- * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
+ * @package  AJAX
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class LoaderFactory extends \VuFind\Record\LoaderFactory
+class GetAuthorityInfoFactory
+    implements \Zend\ServiceManager\Factory\FactoryInterface
 {
     /**
      * Create an object
@@ -53,12 +54,20 @@ class LoaderFactory extends \VuFind\Record\LoaderFactory
      * @throws ServiceNotCreatedException if an exception is raised when
      * creating a service.
      * @throws ContainerException if any other error occurs
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function __invoke(ContainerInterface $container, $requestedName,
         array $options = null
     ) {
-        $loader = parent::__invoke($container, $requestedName);
-        $loader->setDefaultParams($options);
-        return $loader;
+        if (!empty($options)) {
+            throw new \Exception('Unexpected options passed to factory.');
+        }
+        $result = new $requestedName(
+            $container->get('VuFind\Session\Settings'),
+            $container->get('VuFind\Record\Loader'),
+            $container->get('ViewRenderer')
+        );
+        return $result;
     }
 }

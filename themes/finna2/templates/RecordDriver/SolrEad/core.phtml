@@ -98,8 +98,8 @@
       <?php
         $formatter = $this->recordDataFormatter();
         $coreFields = $formatter->getData(
-            $driver, $formatter->filterEADFields($formatter->getDefaults('core'))
-        );
+            $driver, $formatter->filterEAD3Fields($formatter->getDefaults('core' . ($driver->getRecordType() == 'ead3' ? '-ead3' : '')))
+  );
       ?>
       <?php if (!empty($coreFields)): ?>
         <table class="table table-finna-record record-details">

@@ -1,10 +1,10 @@
 <?php
 /**
- * Record loader factory.
+ * Factory for authority helper.
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2019.
+ * Copyright (C) The National Library of Finland 2018.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -20,25 +20,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  Record
- * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org   Main Site
- */
-namespace Finna\Record;
-
-use Interop\Container\ContainerInterface;
-
-/**
- * Record loader factory.
- *
- * @category VuFind
- * @package  Record
- * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
+ * @package  View_Helpers
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class LoaderFactory extends \VuFind\Record\LoaderFactory
+namespace Finna\View\Helper\Root;
+
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
+
+/**
+ * Factory for authority helper.
+ *
+ * @category VuFind
+ * @package  View_Helpers
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     https://vufind.org/wiki/development Wiki
+ */
+class AuthorityFactory implements FactoryInterface
 {
     /**
      * Create an object
@@ -57,8 +58,13 @@ class LoaderFactory extends \VuFind\Record\LoaderFactory
     public function __invoke(ContainerInterface $container, $requestedName,
         array $options = null
     ) {
-        $loader = parent::__invoke($container, $requestedName);
-        $loader->setDefaultParams($options);
-        return $loader;
+        if (!empty($options)) {
+            throw new \Exception('Unexpected options sent to factory.');
+        }
+        $configManager = $container->get('VuFind\Config\PluginManager');
+        return new $requestedName(
+            $configManager->get('config'),
+            $configManager->get('datasources')
+        );
     }
 }

@@ -136,6 +136,21 @@ finna.record = (function finnaRecord() {
     VuFind.lightbox.bind($('.holdings-tab'));
   }
 
+  function setupLocationsEad3Tab() {
+    $('.holdings-container-heading').click(function onClickHeading(e) {
+      $(this).nextUntil('.holdings-container-heading').toggleClass('collapsed');
+      if ($('.location .fa', this).hasClass('fa-arrow-down')) {
+        $('.location .fa', this).removeClass('fa-arrow-down');
+        $('.location .fa', this).addClass('fa-arrow-right');
+      }
+      else {
+        $('.location .fa', this).removeClass('fa-arrow-right');
+        $('.location .fa', this).addClass('fa-arrow-down');
+        var rows = $(this).nextUntil('.holdings-container-heading');
+      }
+    });
+  }
+
   function initRecordNaviHashUpdate() {
     $(window).on('hashchange', function onHashChange() {
       $('.pager a').each(function updateHash(i, a) {
@@ -266,12 +281,61 @@ finna.record = (function finnaRecord() {
       });
   }
 
+  function initAuthorityInfo()
+  {
+    $('div.authority').each(function initAuthority() {
+      var $authority = $(this);
+      $authority.find('a.show-info').click(function onClickShowInfo() {
+        var $authorityInfo = $authority.find('.authority-info .content');
+        if (!$authority.hasClass('loaded')) {
+          $authority.addClass('loaded');
+          $.getJSON(
+            VuFind.path + '/AJAX/JSON',
+            {
+              method: 'getAuthorityInfo',
+              id: $authority.data('authority'),
+              type: $authority.data('type'),
+              source: $authority.data('source')
+            }
+          )
+            .done(function onGetAuthorityInfoDone(response) {
+              $authorityInfo.html(typeof response.data.html !== 'undefined' ? response.data.html : '--');
+            })
+            .fail(function onGetAuthorityInfoFail() {
+              $authorityInfo.text(VuFind.translate('error_occurred'));
+            });
+        }
+        $authority.addClass('open');
+        return false;
+      });
+
+      $authority.find('a.hide-info').click(function onClickHideInfo() {
+        $authority.removeClass('open');
+        return false;
+      });
+    });
+  }
+                            
+  function initWorkExpressions() {
+    $('.work-expressions .more-link.toggle').click(function moreClick() {
+      $('.work-expressions .list-group-item.hidden').addClass('was-hidden').removeClass('hidden');
+      $(this).addClass('hidden');
+      $('.work-expressions .less-link.toggle').removeClass('hidden');
+    });
+    $('.work-expressions .less-link.toggle').click(function lessClick() {
+      $('.work-expressions .list-group-item.was-hidden').removeClass('was-hidden').addClass('hidden');
+      $(this).addClass('hidden');
+      $('.work-expressions .more-link.toggle').removeClass('hidden');
+    });
+  }
+
   function init() {
     initHideDetails();
     initDescription();
     initRecordNaviHashUpdate();
     initRecordAccordion();
     initAudioAccordion();
+    initAuthorityInfo();
     applyRecordAccordionHash(initialToggle);
     $(window).on('hashchange', applyRecordAccordionHash);
     loadSimilarRecords();
@@ -280,7 +344,8 @@ finna.record = (function finnaRecord() {
   var my = {
     checkRequestsAreValid: checkRequestsAreValid,
     init: init,
-    setupHoldingsTab: setupHoldingsTab
+    setupHoldingsTab: setupHoldingsTab,
+    setupLocationsEad3Tab: setupLocationsEad3Tab
   };
 
   return my;
