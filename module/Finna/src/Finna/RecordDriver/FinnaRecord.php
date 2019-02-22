@@ -123,4 +123,9 @@ trait FinnaRecord
     {
         $this->preferredLanguage = $language;
     }
+
+    public function hasRestrictedAlternative()
+    {
+        return false;
+    }
 }

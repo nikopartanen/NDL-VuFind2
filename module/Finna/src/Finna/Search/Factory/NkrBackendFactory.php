@@ -28,6 +28,9 @@
  */
 namespace Finna\Search\Factory;
 
+use VuFindSearch\Backend\Solr\Connector;
+use VuFindSearch\Backend\Solr\Response\Json\RecordCollectionFactory;
+
 use Interop\Container\ContainerInterface;
 
 /**
@@ -74,6 +77,25 @@ class NkrBackendFactory
         $this->nkrConfig = $sm->get('VuFind\Config\PluginManager')->get('Nkr');
         $this->solrCore = $this->nkrConfig->Index->default_core;
         return parent::__invoke($sm, $name, $options);
+    }
+
+    /**
+     * Create the SOLR backend.
+     *
+     * @param Connector $connector Connector
+     *
+     * @return Backend
+     */
+    protected function createBackend(Connector $connector)
+    {
+        $backend = parent::createBackend($connector);
+        $manager = $this->serviceLocator->get('VuFind\RecordDriverPluginManager');
+        $factory = new RecordCollectionFactory(
+            [$manager, 'getNkrRecord'],
+            'FinnaSearch\Backend\Solr\Response\Json\RecordCollection'
+        );
+        $backend->setRecordCollectionFactory($factory);
+        return $backend;
     }
 
     /**

@@ -249,6 +249,7 @@ $config = [
             'Finna\OnlinePayment\Session' => 'Finna\Service\Factory::getOnlinePaymentSession',
             'Finna\OrganisationInfo\OrganisationInfo' => 'Finna\Service\Factory::getOrganisationInfo',
             'Finna\Record\Loader' => 'Finna\Record\LoaderFactory',
+            'Finna\RecordDriver\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\RecordTab\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Role\PermissionManager' => 'VuFind\Role\PermissionManagerFactory',
             'Finna\Search\Memory' => 'VuFind\Search\MemoryFactory',
@@ -272,6 +273,7 @@ $config = [
             'VuFind\ILS\Connection' => 'Finna\ILS\Connection',
             'VuFind\Mailer\Mailer' => 'Finna\Mailer\Mailer',
             'VuFind\Record\Loader' => 'Finna\Record\Loader',
+            'VuFind\RecordDriver\PluginManager' => 'Finna\RecordDriver\PluginManager',
             'VuFind\RecordTab\PluginManager' => 'Finna\RecordTab\PluginManager',
             'VuFind\Role\PermissionManager' => 'Finna\Role\PermissionManager',
             'VuFind\Search\Memory' => 'Finna\Search\Memory',
@@ -588,7 +590,7 @@ $config = [
                     'Finna\RecordDriver\EDS' =>
                         'VuFind\RecordDriver\NameBasedConfigFactory',
                     'Finna\RecordDriver\Nkr' =>
-                        'VuFind\RecordDriver\SolrDefaultFactory',
+                        'VuFind\RecordDriver\NameBasedConfigFactory',
                     'Finna\RecordDriver\SolrDefault' =>
                         'VuFind\RecordDriver\SolrDefaultFactory',
                     'Finna\RecordDriver\SolrMarc' =>

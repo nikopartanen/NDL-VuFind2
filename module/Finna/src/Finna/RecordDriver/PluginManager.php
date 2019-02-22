@@ -1,6 +1,6 @@
 <?php
 /**
- * Model for Nkr records.
+ * Record driver plugin manager
  *
  * PHP version 7
  *
@@ -23,30 +23,25 @@
  * @package  RecordDrivers
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
+ * @link     https://vufind.org/wiki/development:plugins:record_drivers Wiki
  */
 namespace Finna\RecordDriver;
 
 /**
- * Model for Nkr records.
+ * Copyright (C) The National Library of Finland 2019.
  *
  * @category VuFind
  * @package  RecordDrivers
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
+ * @link     https://vufind.org/wiki/development:plugins:record_drivers Wiki
  */
-class Nkr extends SolrEad3
+class PluginManager extends \VuFind\RecordDriver\PluginManager
 {
-    /**
-     * Used for identifying search backends
-     *
-     * @var string
-     */
-    protected $sourceIdentifier = 'Nkr';
+    public function getNkrRecord($data) {
+        $driver = $this->get('nkr');
+        $driver->setRawData($data);
+        return $driver;
 
-    public function hasRestrictedAlternative()
-    {
-        return false;
     }
 }

@@ -484,6 +484,11 @@ class SolrEad3 extends SolrEad
         return isset($rights['copyright']) || isset($rights['description'])
             ? $rights : false;
     }
+
+    public function hasRestrictedAlternative()
+    {
+        return true;
+    }
     
     /**
      * Return translated repository display name from metadata.
