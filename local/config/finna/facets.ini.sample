@@ -231,3 +231,9 @@ facet_limit      = -1
 [Geographical]
 ;Map selection enabled?
 ;map_selection = ""
+
+[CheckboxFacets]
+;edition:1st* = "First Edition"     ; Contrived hypothetical example
+online_boolean:1 = online_material_facet_html
+;free_online_boolean:1 = free_online_material_facet_html
+;source_available_str_mv:* = available_locally_facet_html
