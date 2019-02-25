@@ -62,9 +62,9 @@ class NkrRestrictedRecordNote extends \Zend\View\Helper\AbstractHelper
             return null;
         }
 
-        $route = 'record';
+        $route = 'nkrrecord';
         if ($driver->isCollection()) {
-            $route = $this->collectionRoutes['nkrrecord'] ?? 'collection';
+            $route = $this->collectionRoutes[$route] ?? 'collection';
         }
 
         return $this->getView()->render(
