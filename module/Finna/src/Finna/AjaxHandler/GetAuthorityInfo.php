@@ -29,6 +29,8 @@ namespace Finna\AjaxHandler;
 
 use VuFind\Record\Loader;
 use VuFind\Session\Settings as SessionSettings;
+use VuFindSearch\ParamBag;
+
 use Zend\Mvc\Controller\Plugin\Params;
 use Zend\View\Renderer\RendererInterface;
 
@@ -91,10 +93,12 @@ class GetAuthorityInfo extends \VuFind\AjaxHandler\AbstractBase
             return $this->formatResponse('', self::STATUS_HTTP_BAD_REQUEST);
         }
 
+        $params = new ParamBag();
+        $params->set('authorityType', $type);
+        $params->set('recordSource', $source);
         try {
             $driver = $this->loader->load(
-                $id, 'SolrAuth', false,
-                ['authorityType' => $type, 'recordSource' => $source]
+                $id, 'SolrAuth', false, $params
             );
         } catch (\VuFind\Exception\RecordMissing $e) {
             return $this->formatResponse('');
