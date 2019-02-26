@@ -240,14 +240,14 @@ class SolrEad3 extends SolrEad
             if ('' === $role) {
                 continue;
                 }*/
+
             $result[] = [
                'id' => (string)$relation->attributes()->href,
                'type' => 'author-id',
                'role' => $arcRole,
-               'name' => current($this->getDisplayLabel($relation, 'relationentry', true)) //trim((string)$relation->relationentry)
+               'name' => current($this->getDisplayLabel($relation, 'relationentry'))
             ];
         }
-        
         
         
         return $result;
