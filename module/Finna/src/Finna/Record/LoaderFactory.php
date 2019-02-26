@@ -58,6 +58,9 @@ class LoaderFactory extends \VuFind\Record\LoaderFactory
         array $options = null
     ) {
         $loader = parent::__invoke($container, $requestedName);
+        $loader->setPreferredLanguage(
+            $container->get('VuFind\Translator')->getLocale()
+        );
         $loader->setDefaultParams($options);
         return $loader;
     }
