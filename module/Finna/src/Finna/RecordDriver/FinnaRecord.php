@@ -128,4 +128,11 @@ trait FinnaRecord
     {
         return false;
     }
+
+    public function hasRestrictedMetadata()
+    {
+        return false;
+    }
+
+    
 }

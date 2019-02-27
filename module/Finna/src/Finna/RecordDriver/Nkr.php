@@ -49,4 +49,10 @@ class Nkr extends SolrEad3
     {
         return false;
     }
+
+    public function hasRestrictedMetadata()
+    {
+        return true;
+    }
+
 }

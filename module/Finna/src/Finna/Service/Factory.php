@@ -141,4 +141,24 @@ class Factory extends \VuFind\Service\Factory
             $sm->get('VuFind\SessionManager')
         );
     }
+
+    /**
+     * Construct the REMS service.
+     *
+     * @param ServiceManager $sm Service manager.
+     *
+     * @return RemsService
+     */
+    public static function getRemsService(ServiceManager $sm)
+    {
+        $container = new \Zend\Session\Container(
+            'rems_permission', $sm->get('Zend\Session\SessionManager')
+        );
+        return new \Finna\RemsService\RemsService(
+            $sm->get('VuFind\Config')->get('Nkr')->REMS,
+            $sm->get('VuFind\Http'),
+            $container
+        );
+    }
+
 }
