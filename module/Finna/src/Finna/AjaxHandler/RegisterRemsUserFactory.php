@@ -1,6 +1,6 @@
 <?php
 /**
- * AJAX handler for getting user permissions from REMS
+ * Factory for GetRemsPermission AJAX handler.
  *
  * PHP version 7
  *
@@ -27,12 +27,10 @@
  */
 namespace Finna\AjaxHandler;
 
-use Finna\RemsService\RemsService;
-use VuFind\Session\Settings as SessionSettings;
-use Zend\Mvc\Controller\Plugin\Params;
+use Interop\Container\ContainerInterface;
 
 /**
- * AJAX handler for getting user permissions from REMS
+ * Factory for GetRemsPermission AJAX handler.
  *
  * @category VuFind
  * @package  AJAX
@@ -40,41 +38,35 @@ use Zend\Mvc\Controller\Plugin\Params;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class GetRemsPermission extends \VuFind\AjaxHandler\AbstractBase
+class RegisterRemsUserFactory
+    implements \Zend\ServiceManager\Factory\FactoryInterface
 {
     /**
-     * REMS service
+     * Create an object
      *
-     * @var RemsService
-     */
-    protected $rems;
-
-    /**
-     * Constructor
+     * @param ContainerInterface $container     Service manager
+     * @param string             $requestedName Service being created
+     * @param null|array         $options       Extra options (optional)
      *
-     * @param RemsService $remsService RemsService
+     * @return object
+     *
+     * @throws ServiceNotFoundException if unable to resolve the service.
+     * @throws ServiceNotCreatedException if an exception is raised when
+     * creating a service.
+     * @throws ContainerException if any other error occurs
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function __construct(RemsService $remsService
+    public function __invoke(ContainerInterface $container, $requestedName,
+        array $options = null
     ) {
-        $this->rems = $remsService;
-    }
-
-    /**
-     * Handle a request.
-     *
-     * @param Params $params Parameter helper from controller
-     *
-     * @return array [response data, HTTP status code]
-     */
-    public function handleRequest(Params $params)
-    {
-        //$this->disableSessionWrites();  // avoid session write timing bug
-
-        $id = $params->fromQuery('recordId');
-        if (!$id) {
-            return $this->formatResponse('', self::STATUS_HTTP_BAD_REQUEST);
+        if (!empty($options)) {
+            throw new \Exception('Unexpected options passed to factory.');
         }
-
-        return $this->formatResponse($this->rems->checkPermission($id, 'user'));
+        $result = new $requestedName(
+            $container->get('VuFind\Session\Settings'),
+            $container->get('Finna\RemsService\RemsService')
+        );
+        return $result;
     }
 }

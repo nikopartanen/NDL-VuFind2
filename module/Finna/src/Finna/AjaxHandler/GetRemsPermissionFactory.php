@@ -64,7 +64,6 @@ class GetRemsPermissionFactory
             throw new \Exception('Unexpected options passed to factory.');
         }
         $result = new $requestedName(
-            $container->get('VuFind\Session\Settings'),
             $container->get('Finna\RemsService\RemsService')
         );
         return $result;

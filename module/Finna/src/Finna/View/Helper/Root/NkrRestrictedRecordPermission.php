@@ -57,24 +57,36 @@ class NkrRestrictedRecordPermission extends \Zend\View\Helper\AbstractHelper
      *
      * @return null|html
      */
-    public function __invoke($driver)
+    public function __invoke($driver, $user = null)
     {
         if (!$driver->hasRestrictedMetadata()) {
             return null;
         }
 
-        $status = $this->rems->getPermission('RDapplicant2@funet.fi');
-        if ($status === RemsService::STATUS_APPROVED) {
-            return null;
+        $params = ['user' => $user];
+
+        if ($user !== false) {
+            $status = $this->rems->getPermission('RDapplicant2@funet.fi');
+            if ($status === RemsService::STATUS_APPROVED) {
+                return null;
+            }
+
+            // TODO allow new submit if permission has been closed?
+            $notSubmitted = in_array(
+                $status,
+                [false,
+                 RemsService::STATUS_CLOSED,
+                 RemsService::STATUS_NOT_SUBMITTED]
+            );
+            $params += [
+                'id' => $driver->getUniqueID(),
+                'status' => $status,
+                'notSubmitted' => $notSubmitted
+             ];
         }
         
-        $notSubmitted = $status === RemsService::STATUS_NOT_SUBMITTED;
-        
         return $this->getView()->render(
-            'Helpers/nkrRestrictedRecordPermission.phtml',
-            ['id' => $driver->getUniqueID(),
-             'status' => $this->rems->getPermission('RDapplicant2@funet.fi'),
-             'notSubmitted' => $notSubmitted]
+            'Helpers/nkrRestrictedRecordPermission.phtml', $params
         );
     }
 }

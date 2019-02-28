@@ -19,3 +19,10 @@ timeout = 30
 ; List of regexp filters that block invalid searches
 ;search_filters[] = "(.[,\s]){30,}"
 ;search_filters[] = "[^\s,.\-]{100,}"
+
+[REMS]
+apiUrl = 
+apiKey = 
+apiAdminUser =
+
+resource = 

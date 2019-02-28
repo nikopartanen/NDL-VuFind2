@@ -47,9 +47,7 @@ class RemsService
     use \VuFind\Log\LoggerAwareTrait {
         logError as error;
     }
-
     use \VuFindHttp\HttpServiceAwareTrait;
-
 
     const STATUS_APPROVED = 'approved';
     const STATUS_NOT_SUBMITTED = 'not-submitted';
@@ -74,6 +72,8 @@ class RemsService
 
     protected $session;
 
+    const USER_ID = 'finna-test-user-4';
+    
     /**
      * Constructor.
      *
@@ -82,40 +82,77 @@ class RemsService
      * @param SessionManager $sessionManager Session manager
      */
     public function __construct(
-        Config $config, HttpService $http, Container $session
+        Config $config, HttpService $http, Container $session = null
     ) {
         $this->config = $config;
         $this->http = $http;
         $this->session = $session;
     }
 
-    public function registerUser($userId)
+    public function registerUser($userId, $email, $name)
     {
+        $userId = RemsService::USER_ID;
+
+        $params = ['eppn' => $userId, 'mail' => $email, 'commonName' => $name];
+        $client = $this->getClient(
+            $this->config->apiAdminUser, 'users/create', 'POST', $params
+        );
+        $response = $client->send();
+        $response = json_decode($response->getBody(), true);
+        $success = $response['success'] ?? false;
+
+        if (! $success) {
+            return ['success' => false];
+        }
+
+        $params =  [
+            'command' => 'submit',
+            'catalogue-items' => [(int)$this->config->resource],
+            'items' =>  ['1' => 'Test 1', '2' => 'Test 2'],
+            'licenses' => ['1' => 'approved', '2' => 'approved']
+        ];
+
+        $client = $this->getClient($userId, 'applications/save', 'POST', $params);
+        $response = $client->send();
+        $response = json_decode($response->getBody(), true);
+
+        $success = $response['success'] ?? false;
+        
+        if ($success && isset($response['state'])) {
+            $status = $this->mapRemsStatus($response['state']);
+            $this->savePermissionToSession($status);
+        }
+        
+        return $success;
     }
 
+    
     public function getPermission($userId)
     {
+        $userId = RemsService::USER_ID;
+
         $resourceId = $this->config->resource;
         $sessionKey = $this->getSessionKey($resourceId);
-
-        return $this->session->{$sessionKey};
+        return $this->session->{$sessionKey} ?? RemsService::STATUS_NOT_SUBMITTED;
     }
 
     
     public function checkPermission($userId)
     {
-        $resourceId = $this->config->resource;
+        $userId = RemsService::USER_ID;
 
+        $resourceId = (int)$this->config->resource;
         $sessionKey = $this->getSessionKey($resourceId);
         $status = null;
         $error = false;
+        
         if (isset($this->session->{$sessionKey})) {
             $status = $this->session->{$sessionKey};
         }
 
-        //echo "status from session: " . var_export($status, true);
+        //return "from ses: " . var_export($status, true);
         
-        if ($status === null) {
+        if (in_array($status, [null, RemsService::STATUS_NOT_SUBMITTED])) {
             try {
                 $result = $this->sendRequest('applications', $userId);
                 $statusMap = [
@@ -127,6 +164,7 @@ class RemsService
                     'closed' => RemsService::STATUS_CLOSED,
                     'rems.workflow.dynamic/closed' => RemsService::STATUS_CLOSED
                 ];
+
                 $status = RemsService::STATUS_NOT_SUBMITTED;
                 foreach ($result as $application) {
                     $application = $application;
@@ -142,39 +180,28 @@ class RemsService
                     
                     if ($resourceFound) {
                         $status = $application['state'];
-                        $status = $statusMap[$status] ?? 'unknown';
+                        $status = $this->mapRemsStatus($status); //$statusMap[$status] ?? 'unknown';
                         if ($status === RemsService::STATUS_APPROVED) {
                             break;
                         }
                     }
                 }
-                $this->session->{$sessionKey} = $status;
+                //$status = RemsService::STATUS_CLOSED;
+                $this->savePermissionToSession($status);
             } catch (\Exception $e) {
                 return $e->getMessage();
                 $error = true;
             }
         }
-
-        return ['error' => $error, 'status' => $status];
+        $result = ['error' => $error, 'status' => $status];
+        return $result;
     }
 
     protected function sendRequest($url, $userId, $method = 'GET')
     {
-        $url = $this->config->apiUrl . '/' . $url;
-
-        $client = $this->http->createClient($url);
-        $client->setOptions(['timeout' => 30, 'useragent' => 'Finna']);
-        $headers = $client->getRequest()->getHeaders();
-        $headers->addHeaderLine(
-            'Accept', 'application/json'
-        );
-        $headers->addHeaderLine('x-rems-api-key', $this->config->apiKey);
-        $headers->addHeaderLine('x-rems-user-id', $userId);
-
-        //        die(var_export($headers, true));
-        
+        $client = $this->getClient($userId, $url, $method);
         try {
-            $response = $client->setMethod($method)->send();
+            $response = $client->send();
         } catch (\Exception $e) {
             $this->error(
                 "REMS request for '$url' failed: " . $e->getMessage()
@@ -194,7 +221,6 @@ class RemsService
                 . ', response content: ' . $response->getBody()
             );
 
-
             return "Request for '" . $client->getRequest()->getUriString()
                 . "' did not succeed: "
                 . $response->getStatusCode() . ': '
@@ -210,5 +236,49 @@ class RemsService
     protected function getSessionKey($permissionId)
     {
         return "permission-$permissionId";
+    }
+
+    protected function getClient($userId, $url, $method = 'GET', $bodyParams = [])
+    {
+        $url = $this->config->apiUrl . '/' . $url;
+
+        $client = $this->http->createClient($url);
+        $client->setOptions(['timeout' => 30, 'useragent' => 'Finna']);
+        $headers = $client->getRequest()->getHeaders();
+        $headers->addHeaderLine(
+            'Accept', 'application/json'
+        );
+        $headers->addHeaderLine('x-rems-api-key', $this->config->apiKey);
+        $headers->addHeaderLine('x-rems-user-id', $userId);
+
+
+        $body = json_encode($bodyParams);
+        $client->setRawBody($body);
+        $client->getRequest()->getHeaders()->addHeaderLine('Content-type', 'application/json');
+        
+        $client->setMethod($method);
+        return $client;
+    }
+
+    protected function savePermissionToSession($status)
+    {
+        $resourceId = (int)$this->config->resource;
+        $sessionKey = $this->getSessionKey($resourceId);
+        $this->session->{$sessionKey} = $status;
+    }
+
+    protected function mapRemsStatus($remsStatus)
+    {
+        $statusMap = [
+            'approved' => RemsService::STATUS_APPROVED,
+            'rems.workflow.dynamic/approved' => RemsService::STATUS_APPROVED,
+            'submitted' => RemsService::STATUS_SUBMITTED,
+            'rems.workflow.dynamic/submitted'
+                => RemsService::STATUS_SUBMITTED,
+            'closed' => RemsService::STATUS_CLOSED,
+            'rems.workflow.dynamic/closed' => RemsService::STATUS_CLOSED
+         ];
+
+        return $statusMap[$remsStatus] ?? 'unknown';
     }
 }

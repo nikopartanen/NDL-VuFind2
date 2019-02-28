@@ -251,7 +251,6 @@ $config = [
             'Finna\Record\Loader' => 'Finna\Record\LoaderFactory',
             'Finna\RecordDriver\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\RecordTab\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
-            //'Finna\REMS\RemsService' => 'Finna\Service\Factory::getRemsService',
             'Finna\Role\PermissionManager' => 'VuFind\Role\PermissionManagerFactory',
             'Finna\Search\Memory' => 'VuFind\Search\MemoryFactory',
             'Finna\Search\Solr\HierarchicalFacetHelper' => 'Zend\ServiceManager\Factory\InvokableFactory',
@@ -327,8 +326,6 @@ $config = [
                         'Finna\AjaxHandler\GetOrganisationPageFeedFactory',
                     'Finna\AjaxHandler\GetPiwikPopularSearches' =>
                         'Finna\AjaxHandler\GetPiwikPopularSearchesFactory',
-                    'Finna\AjaxHandler\GetRemsPermission' =>
-                        'Finna\AjaxHandler\GetRemsPermissionFactory',
                     'Finna\AjaxHandler\GetSearchTabsRecommendations' =>
                         'Finna\AjaxHandler\GetSearchTabsRecommendationsFactory',
                     'Finna\AjaxHandler\GetSideFacets' =>
@@ -343,6 +340,8 @@ $config = [
                         'Finna\AjaxHandler\AbstractOnlinePaymentActionFactory',
                     'Finna\AjaxHandler\RegisterOnlinePayment' =>
                         'Finna\AjaxHandler\AbstractOnlinePaymentActionFactory',
+                    'Finna\AjaxHandler\RegisterRemsUser' =>
+                        'Finna\AjaxHandler\RegisterRemsUserFactory',
                 ],
                 'aliases' => [
                     'addToList' => 'Finna\AjaxHandler\AddToList',
@@ -361,13 +360,13 @@ $config = [
                     'getMyLists' => 'Finna\AjaxHandler\GetUserLists',
                     'getOrganisationInfo' => 'Finna\AjaxHandler\GetOrganisationInfo',
                     'getPiwikPopularSearches' => 'Finna\AjaxHandler\GetPiwikPopularSearches',
-                    'GetRemsPermission' => 'Finna\AjaxHandler\GetRemsPermission',
                     'getSearchTabsRecommendations' => 'Finna\AjaxHandler\GetSearchTabsRecommendations',
                     'getSideFacets' => 'Finna\AjaxHandler\GetSideFacets',
                     'getSimilarRecords' => 'Finna\AjaxHandler\GetSimilarRecords',
                     'importFavorites' => 'Finna\AjaxHandler\ImportFavorites',
                     'onlinePaymentNotify' => 'Finna\AjaxHandler\OnlinePaymentNotify',
                     'registerOnlinePayment' => 'Finna\AjaxHandler\RegisterOnlinePayment',
+                    'registerRemsUser' => 'Finna\AjaxHandler\RegisterRemsUser',
 
                     // Overrides:
                     'VuFind\AjaxHandler\CommentRecord' => 'Finna\AjaxHandler\CommentRecord',

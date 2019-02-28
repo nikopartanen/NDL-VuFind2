@@ -40,7 +40,7 @@ use Zend\Mvc\Controller\Plugin\Params;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class GetRemsPermission extends \VuFind\AjaxHandler\AbstractBase
+class RegisterRemsUser extends \VuFind\AjaxHandler\AbstractBase
 {
     /**
      * REMS service
@@ -52,10 +52,13 @@ class GetRemsPermission extends \VuFind\AjaxHandler\AbstractBase
     /**
      * Constructor
      *
-     * @param RemsService $remsService RemsService
+     * @param SessionSettings   $ss       Session settings
+     * @param Loader            $loader   Record loader
+     * @param RendererInterface $renderer View renderer
      */
-    public function __construct(RemsService $remsService
+    public function __construct(SessionSettings $ss, RemsService $remsService
     ) {
+        $this->sessionSettings = $ss;
         $this->rems = $remsService;
     }
 
@@ -70,11 +73,9 @@ class GetRemsPermission extends \VuFind\AjaxHandler\AbstractBase
     {
         //$this->disableSessionWrites();  // avoid session write timing bug
 
-        $id = $params->fromQuery('recordId');
-        if (!$id) {
-            return $this->formatResponse('', self::STATUS_HTTP_BAD_REQUEST);
-        }
-
-        return $this->formatResponse($this->rems->checkPermission($id, 'user'));
+        $response = $this->rems->registerUser(
+            'finna-test-user-1', 'email@email.com', 'name name2'
+        );
+        return $this->formatResponse(['status' => $response]);
     }
 }
