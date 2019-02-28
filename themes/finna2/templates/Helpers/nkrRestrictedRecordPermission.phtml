@@ -1,13 +1,10 @@
 <!-- START of: finna - Helpers/nkrRestrictedRecordPermission.phtml -->
-<p>status: <?= var_export($this->status, true) ?></p> 
-
 <?php if (!$this->user): ?>
   <div class="alert alert-info authorization-notification">
     <p><?= $this->translate('nkr_restricted_record_note') ?></p>
     <p><a href="<?=$this->url('myresearch-userlogin')?>" data-lightbox title="<?=$this->transEsc("Login")?>"><i class="fa fa-sign-in"></i> <?=$this->transEsc("Login")?></a></p>
   </div>
 <?php else: ?>
-
   <? if ($this->notSubmitted): ?>
     <?php $this->headScript()->appendFile('finna-nkr.js'); ?>
     <?php
