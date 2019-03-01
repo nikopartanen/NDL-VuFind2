@@ -72,7 +72,7 @@ class RemsService
 
     protected $session;
 
-    const USER_ID = 'finna-test-user-13';
+    const USER_ID = 'finna-test-user-23';
     
     /**
      * Constructor.
@@ -128,7 +128,7 @@ class RemsService
 
     public function checkPermission($userId, $callApi = false)
     {
-        //        return RemsService::STATUS_NOT_SUBMITTED;
+        //return RemsService::STATUS_APPROVED;
         
         $userId = RemsService::USER_ID;
 
@@ -143,10 +143,7 @@ class RemsService
             return null;
         }
 
-        //return "from ses: " . var_export($status, true);
-
         if ($callApi) {
-            //        if ($in_array($status, [null, RemsService::STATUS_NOT_SUBMITTED])) {
             try {
                 $result = $this->sendRequest('applications', $userId);
 
@@ -165,7 +162,7 @@ class RemsService
                     
                     if ($catItemFound) {
                         $status = $application['state'];
-                        $status = $this->mapRemsStatus($status); //$statusMap[$status] ?? 'unknown';
+                        $status = $this->mapRemsStatus($status);
                         if ($status === RemsService::STATUS_APPROVED) {
                             break;
                         }

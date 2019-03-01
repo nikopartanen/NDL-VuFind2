@@ -67,9 +67,6 @@ class NkrRestrictedRecordPermission extends \Zend\View\Helper\AbstractHelper
 
         if ($user !== false) {
             $status = $this->rems->checkPermission('user', false);
-            if ($status === RemsService::STATUS_APPROVED) {
-                return null;
-            }
 
             // TODO allow new submit if permission has been closed?
             $notSubmitted = in_array(
