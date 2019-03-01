@@ -72,7 +72,7 @@ class RemsService
 
     protected $session;
 
-    const USER_ID = 'finna-test-user-8';
+    const USER_ID = 'finna-test-user-13';
     
     /**
      * Constructor.
@@ -107,7 +107,7 @@ class RemsService
 
         $params =  [
             'command' => 'submit',
-            'catalogue-items' => [(int)$this->config->resource],
+            'catalogue-items' => [$this->getCatalogItemId()],
             'items' =>  ['1' => 'Test 1', '2' => 'Test 2'],
             'licenses' => ['1' => 'approved', '2' => 'approved']
         ];
@@ -132,8 +132,8 @@ class RemsService
         
         $userId = RemsService::USER_ID;
 
-        $resourceId = (int)$this->config->resource;
-        $sessionKey = $this->getSessionKey($resourceId);
+        $catItemId = $this->getCatalogItemId();
+        $sessionKey = $this->getSessionKey($catItemId);
         $status = null;
         $error = false;
         
@@ -149,30 +149,21 @@ class RemsService
             //        if ($in_array($status, [null, RemsService::STATUS_NOT_SUBMITTED])) {
             try {
                 $result = $this->sendRequest('applications', $userId);
-                $statusMap = [
-                    'approved' => RemsService::STATUS_APPROVED,
-                    'rems.workflow.dynamic/approved' => RemsService::STATUS_APPROVED,
-                    'submitted' => RemsService::STATUS_SUBMITTED,
-                    'rems.workflow.dynamic/submitted'
-                        => RemsService::STATUS_SUBMITTED,
-                    'closed' => RemsService::STATUS_CLOSED,
-                    'rems.workflow.dynamic/closed' => RemsService::STATUS_CLOSED
-                ];
 
                 $status = RemsService::STATUS_NOT_SUBMITTED;
                 foreach ($result as $application) {
                     $application = $application;
-                    $resourceFound = false;
+                    $catItemFound = false;
                     if (isset($application['catalogue-items'])) {
                         foreach ($application['catalogue-items'] as $catItem) {
-                            if ($catItem['resource-id'] === $resourceId) {
-                                $resourceFound = true;
+                            if ($catItem['id'] === $catItemId) {
+                                $catItemFound = true;
                                 break;
                             }
                         }
                     }
                     
-                    if ($resourceFound) {
+                    if ($catItemFound) {
                         $status = $application['state'];
                         $status = $this->mapRemsStatus($status); //$statusMap[$status] ?? 'unknown';
                         if ($status === RemsService::STATUS_APPROVED) {
@@ -257,9 +248,14 @@ class RemsService
 
     protected function savePermissionToSession($status)
     {
-        $resourceId = (int)$this->config->resource;
-        $sessionKey = $this->getSessionKey($resourceId);
+        $catItemId = $this->getCatalogItemId();
+        $sessionKey = $this->getSessionKey($catItemId);
         $this->session->{$sessionKey} = $status;
+    }
+
+    protected function getCatalogItemId()
+    {
+        return (int)$this->config->catalogItemId;
     }
 
     protected function mapRemsStatus($remsStatus)
@@ -268,6 +264,7 @@ class RemsService
             'approved' => RemsService::STATUS_APPROVED,
             'rems.workflow.dynamic/approved' => RemsService::STATUS_APPROVED,
             'submitted' => RemsService::STATUS_SUBMITTED,
+            'applied' => RemsService::STATUS_SUBMITTED,
             'rems.workflow.dynamic/submitted'
                 => RemsService::STATUS_SUBMITTED,
             'closed' => RemsService::STATUS_CLOSED,
