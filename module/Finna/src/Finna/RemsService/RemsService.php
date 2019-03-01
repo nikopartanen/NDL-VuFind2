@@ -72,7 +72,7 @@ class RemsService
 
     protected $session;
 
-    const USER_ID = 'finna-test-user-4';
+    const USER_ID = 'finna-test-user-8';
     
     /**
      * Constructor.
@@ -126,19 +126,10 @@ class RemsService
         return $success;
     }
 
-    
-    public function getPermission($userId)
+    public function checkPermission($userId, $callApi = false)
     {
-        $userId = RemsService::USER_ID;
-
-        $resourceId = $this->config->resource;
-        $sessionKey = $this->getSessionKey($resourceId);
-        return $this->session->{$sessionKey} ?? RemsService::STATUS_NOT_SUBMITTED;
-    }
-
-    
-    public function checkPermission($userId)
-    {
+        //        return RemsService::STATUS_NOT_SUBMITTED;
+        
         $userId = RemsService::USER_ID;
 
         $resourceId = (int)$this->config->resource;
@@ -147,12 +138,15 @@ class RemsService
         $error = false;
         
         if (isset($this->session->{$sessionKey})) {
-            $status = $this->session->{$sessionKey};
+            return $this->session->{$sessionKey};
+        } elseif (!$callApi) {
+            return null;
         }
 
         //return "from ses: " . var_export($status, true);
-        
-        if (in_array($status, [null, RemsService::STATUS_NOT_SUBMITTED])) {
+
+        if ($callApi) {
+            //        if ($in_array($status, [null, RemsService::STATUS_NOT_SUBMITTED])) {
             try {
                 $result = $this->sendRequest('applications', $userId);
                 $statusMap = [
@@ -188,13 +182,14 @@ class RemsService
                 }
                 //$status = RemsService::STATUS_CLOSED;
                 $this->savePermissionToSession($status);
+
+                return $status;
             } catch (\Exception $e) {
                 return $e->getMessage();
-                $error = true;
             }
         }
-        $result = ['error' => $error, 'status' => $status];
-        return $result;
+
+        return null;
     }
 
     protected function sendRequest($url, $userId, $method = 'GET')

@@ -66,7 +66,7 @@ class NkrRestrictedRecordPermission extends \Zend\View\Helper\AbstractHelper
         $params = ['user' => $user];
 
         if ($user !== false) {
-            $status = $this->rems->getPermission('RDapplicant2@funet.fi');
+            $status = $this->rems->checkPermission('user', false);
             if ($status === RemsService::STATUS_APPROVED) {
                 return null;
             }
@@ -74,14 +74,15 @@ class NkrRestrictedRecordPermission extends \Zend\View\Helper\AbstractHelper
             // TODO allow new submit if permission has been closed?
             $notSubmitted = in_array(
                 $status,
-                [false,
+                [null,
                  RemsService::STATUS_CLOSED,
                  RemsService::STATUS_NOT_SUBMITTED]
             );
             $params += [
                 'id' => $driver->getUniqueID(),
                 'status' => $status,
-                'notSubmitted' => $notSubmitted
+                'notSubmitted' => $notSubmitted,
+                'callApi' => $status === null
              ];
         }
         

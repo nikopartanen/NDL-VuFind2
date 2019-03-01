@@ -1,4 +1,5 @@
 <!-- START of: finna - Helpers/nkrRestrictedRecordPermission.phtml -->
+<? "status: " . var_export($this->status, true) . ", call: " . var_export($this->callApi, true) . ", not submitted: " . var_export($this->notSubmitted, true) ?>
 <?php if (!$this->user): ?>
   <div class="alert alert-info authorization-notification">
     <p><?= $this->translate('nkr_restricted_record_note') ?></p>
@@ -8,19 +9,21 @@
   <? if ($this->notSubmitted): ?>
     <?php $this->headScript()->appendFile('finna-nkr.js'); ?>
     <?php
+      $fn = $this->callApi ? 'initCheckPermission' : 'initApplyPermission';
       $setupJS = <<<JS
 $(document).ready(function() {
-   finna.nkr.initApplyPermission("{$this->id}");
+   finna.nkr.{$fn}("{$this->id}");
 });
 JS;
       $this->headScript()->appendScript($setupJS);
-    ?>
-    <div class="alert alert-info authorization-notification check-permission" data-id="<?=$this->escapeHtmlAttr($this->id)?>">
-      <p class="txt"><?= $this->translate('nkr_restricted_record_note') ?></p>
-      <p class="register"><a class="btn btn-primary"><?=$this->translate('nkr_register')?></a></p>
-    </div>
-  <? elseif (!$this->translationEmpty("nkr_permission_request_status_{$status}")): ?>
-    <div class="alert alert-info authorization-notification">
+    ?>  
+  <? endif ?>
+  <div class="alert alert-info authorization-notification check-permission status-not-submitted<?= $this->status === null ? ' hide' : ''?>" data-id="<?=$this->escapeHtmlAttr($this->id)?>">
+    <p class="txt"><?= $this->translate('nkr_restricted_record_note') ?></p>
+    <p class="register"><a class="btn btn-primary"><?=$this->translate('nkr_register')?></a></p>
+  </div>
+  <? if (!$this->translationEmpty("nkr_permission_request_status_{$status}")): ?>
+    <div class="alert alert-info authorization-notification status-submitted<?= $this->status === null ? ' hide' : ''?>">
       <p class="txt"><?= $this->transEsc("nkr_permission_request_status_{$status}") ?></p>
     </div>
   <? endif; ?>
