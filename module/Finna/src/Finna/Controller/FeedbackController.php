@@ -76,47 +76,56 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
     public function formAction()
     {
         $formId = $this->params()->fromRoute('id', $this->params()->fromQuery('id'));
-        if ($formId === 'NkrRegister' && $this->formWasSubmitted('submit')) {
-            $user = $this->getUser();
+        if ($formId === 'NkrRegister') {
+            // TODO: extend form config to support sendMethod = <callback> ?
 
-            $form = $this->serviceLocator->get('VuFind\Form\Form');
-            $form->setFormId($formId);
-            
-            $view = $this->createViewModel(compact('form', 'formId', 'user'));
-            $params = $this->params();
-            $form->setData($params->fromPost());            
-
-            if (! $form->isValid()) {
-                return $view;
+            // TODO: check if authenticated with required method
+            if (!($user = $this->getUser())) {
+                return $this->forceLogin();
             }
 
-            $rems = $this->serviceLocator->get('Finna\RemsService\RemsService');
-            $rems->registerUser('user', 'email@email.com', 'name name');
+            if ($this->formWasSubmitted('submit')) {
+                $user = $this->getUser();
 
-            // Request lightbox to refresh page
-            $response = $this->getResponse();
-            $response->setStatusCode(205);
-
-            return '';
-        } else {
-            $view = parent::formAction();
-            
-            if (!$this->submitOk) {
-                return $view;
+                $form = $this->serviceLocator->get('VuFind\Form\Form');
+                $form->setFormId($formId);
+                
+                $view = $this->createViewModel(compact('form', 'formId', 'user'));
+                $params = $this->params();
+                $form->setData($params->fromPost());            
+                
+                if (! $form->isValid()) {
+                    return $view;
+                }
+                
+                $rems = $this->serviceLocator->get('Finna\RemsService\RemsService');
+                $rems->registerUser('user', 'email@email.com', 'name name');
+                
+                // Request lightbox to refresh page
+                $response = $this->getResponse();
+                $response->setStatusCode(205);
+                
+                return '';
             }
-            
-            // Reset flashmessages set by VuFind
-            $msg = $this->flashMessenger();
-            $namespaces = ['error', 'info', 'success'];
-            foreach ($namespaces as $ns) {
-                $msg->setNamespace($ns);
-                $msg->clearCurrentMessages();
-            }
-
-            
-            $view->setTemplate('feedback/response');
+        }
+        
+        $view = parent::formAction();
+        
+        if (!$this->submitOk) {
             return $view;
         }
+        
+        // Reset flashmessages set by VuFind
+        $msg = $this->flashMessenger();
+        $namespaces = ['error', 'info', 'success'];
+        foreach ($namespaces as $ns) {
+            $msg->setNamespace($ns);
+            $msg->clearCurrentMessages();
+        }
+        
+        
+        $view->setTemplate('feedback/response');
+        return $view;
     }
 
     /**
