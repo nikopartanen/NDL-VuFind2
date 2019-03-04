@@ -12,7 +12,7 @@ JS;
   ?>
   <div class="alert alert-info authorization-notification">
     <p><?= $this->translate('nkr_restricted_record_note_html') ?></p>
-    <p><a href="<?=$this->url('feedback-form', ['id' => 'NkrRegister', 'layout' => 'lightbox'])?>" data-lightbox data-lightbox-title="<?=$this->transEsc("nkr_register_form_title")?>"><i class="fa fa-sign-in"></i> <?=$this->transEsc("nkr_register")?></a></p>
+    <p><a href="<?=$this->url('feedback-form', ['id' => 'NkrRegister', 'layout' => 'lightbox'])?>" data-lightbox data-lightbox-title="<?=$this->transEsc("nkr_register_form_title")?>" class="btn btn-primary"><?=$this->transEsc("nkr_register")?></a></p>
   </div>
 <?php elseif ($this->status === 'approved'): ?>
   <div class="alert alert-info authorization-notification check-permission nkr-status nkr-status-approved">

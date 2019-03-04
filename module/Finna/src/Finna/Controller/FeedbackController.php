@@ -30,6 +30,7 @@
 namespace Finna\Controller;
 
 use Finna\Form\Form;
+use Finna\RemsService\RemsService;
 
 /**
  * Feedback Controller
@@ -82,6 +83,16 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
             // TODO: check if authenticated with required method
             if (!($user = $this->getUser())) {
                 return $this->forceLogin();
+            } else {
+                $rems = $this->serviceLocator->get('Finna\RemsService\RemsService');
+                $showRegisterForm
+                    = RemsService::STATUS_NOT_SUBMITTED
+                    === $rems->checkPermission('user', true);
+                if (!$showRegisterForm) {
+                    $response = $this->getResponse();
+                    $response->setStatusCode(205);
+                    return '';
+                }
             }
 
             if ($this->formWasSubmitted('submit')) {
