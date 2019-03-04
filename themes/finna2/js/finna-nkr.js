@@ -15,6 +15,10 @@ finna.nkr = (function finnaNkr() {
     });
   }
 
+  function initAutoOpen() {
+    $('.nkr-status .register .btn-primary').trigger('click');
+  }
+  
   function initCheckPermission() {
     $('div.check-permission').not('.inited').each(function initCheckPermission() {
       var el = $(this);
@@ -41,6 +45,7 @@ finna.nkr = (function finnaNkr() {
   }
   
   var my = {
+    initAutoOpen: initAutoOpen,
     initCheckPermission: initCheckPermission,
     initModal: initModal
   };

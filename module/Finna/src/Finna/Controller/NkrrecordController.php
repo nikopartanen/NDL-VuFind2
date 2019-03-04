@@ -38,12 +38,22 @@ namespace Finna\Controller;
  */
 class NkrrecordController extends RecordController
 {
+    use \Finna\Controller\NkrrecordControllerTrait;
+
     /**
      * Type of record to display
      *
      * @var string
      */
     protected $searchClassId = 'Nkr';
+
+    public function homeAction()
+    {
+        $view = parent::homeAction();
+        $view = $this->handleAutoOpenRegistration($view);
+
+        return $view;
+    }
     
     /**
      * Create a new ViewModel.

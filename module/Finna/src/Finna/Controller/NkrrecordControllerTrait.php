@@ -1,6 +1,6 @@
 <?php
 /**
- * Nkr Collection Controller
+ * Nkr record controller trait.
  *
  * PHP version 7
  *
@@ -23,34 +23,45 @@
  * @package  Controller
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org   Main Site
+ * @link     https://vufind.org/wiki/development:plugins:controllers Wiki
  */
 namespace Finna\Controller;
 
+use Zend\Session\Container as SessionContainer;
+
 /**
- * Nkr Collection Controller
+ * Nkr record controller trait.
  *
  * @category VuFind
  * @package  Controller
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org   Main Site
+ * @link     https://vufind.org/wiki/development:plugins:controllers Wiki
  */
-class NkrcollectionController extends CollectionController
+trait NkrrecordControllerTrait
 {
-    use \Finna\Controller\NkrrecordControllerTrait;
-    
-    /**
-     * Type of record to display
-     *
-     * @var string
-     */
-    protected $searchClassId = 'Nkr';
-
-    public function homeAction()
+    protected function handleAutoOpenRegistration($view)
     {
-        $view = parent::homeAction();
-        $view = $this->handleAutoOpenRegistration($view);
-        return $view;
+        $session = new SessionContainer(
+            'nkrRegistration',
+            $this->serviceLocator->get('VuFind\SessionManager')
+        );
+
+        if ($this->getRequest()->getQuery()->get('register') === '1') {
+            $session->autoOpen = true;
+            $id = $this->params()->fromRoute('id', $this->params()->fromQuery('id'));
+            return $this->redirect()->toRoute(null, ['id' => $id]);
+        }
+        /*
+        $view = $this->showTab(
+            $this->params()->fromRoute('tab', $this->getDefaultTab())
+            );*/
+
+        if (isset($session->autoOpen) && $session->autoOpen === true) {
+            $view->autoOpenNkrRegistration = true;
+            unset($session->autoOpen);
+        }
+        
+        return $view;        
     }
 }

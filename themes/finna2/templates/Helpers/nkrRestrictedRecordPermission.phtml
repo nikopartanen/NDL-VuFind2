@@ -1,5 +1,5 @@
 <!-- START of: finna - Helpers/nkrRestrictedRecordPermission.phtml -->
-<? "status: " . var_export($this->status, true) . ", call: " . var_export($this->callApi, true) . ", not submitted: " . var_export($this->notSubmitted, true) ?>
+<? "status: " . var_export($this->status, true) . ", call: " . var_export($this->callApi, true) . ", not submitted: " . var_export($this->notSubmitted, true) . ", autoopen: " . var_export($this->autoOpen, true) ?>
 <?php $setupJS = false; ?>
 
 <?php if (!$this->user): ?>
@@ -10,9 +10,9 @@ $(document).ready(function() {
 });
 JS;
   ?>
-  <div class="alert alert-info authorization-notification">
+  <div class="alert alert-info authorization-notification nkr-status">
     <p><?= $this->translate('nkr_restricted_record_note_html') ?></p>
-    <p><a href="<?=$this->url('feedback-form', ['id' => 'NkrRegister', 'layout' => 'lightbox'])?>" data-lightbox data-lightbox-title="<?=$this->transEsc("nkr_register_form_title")?>" class="btn btn-primary"><?=$this->transEsc("nkr_register")?></a></p>
+    <p class="register"><a href="<?=$this->url('feedback-form', ['id' => 'NkrRegister', 'layout' => 'lightbox'])?>" data-lightbox data-lightbox-title="<?=$this->transEsc("nkr_register_form_title")?>" class="btn btn-primary"><?=$this->transEsc("nkr_register")?></a></p>
   </div>
 <?php elseif ($this->status === 'approved'): ?>
   <div class="alert alert-info authorization-notification check-permission nkr-status nkr-status-approved">
@@ -48,8 +48,18 @@ JS;
   <? endif; ?>
 <? endif; ?>
 
+<?php if ($autoOpen): ?>
+  <?php    
+  $setupJS .= <<<JS
+$(document).ready(function() {
+   finna.nkr.initAutoOpen();
+});
+JS;
+  ?>
+<?php endif ?>
+    
 <?php if ($setupJS): ?>
   <?= $this->headScript()->appendFile('finna-nkr.js'); ?>
-  <?= $this->headScript()->appendScript($setupJS); ?>
+  <? $this->headScript()->appendScript($setupJS); ?>  
 <?php endif ?>
 <!-- END of: finna - Helpers/nkrRestrictedRecordPermission.phtml -->

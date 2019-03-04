@@ -57,14 +57,14 @@ class NkrRestrictedRecordPermission extends \Zend\View\Helper\AbstractHelper
      *
      * @return null|html
      */
-    public function __invoke($driver, $user = null)
+    public function __invoke($driver, $autoOpen = false, $user = null)
     {
         if (!$driver->hasRestrictedMetadata()) {
             return null;
         }
 
-        $params = ['user' => $user];
-
+        $params = ['user' => $user, 'autoOpen' => $autoOpen];
+        
         if ($user !== false) {
             $status = $this->rems->checkPermission('user', false);
 
