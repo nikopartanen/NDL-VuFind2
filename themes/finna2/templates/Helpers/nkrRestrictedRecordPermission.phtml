@@ -1,6 +1,12 @@
 <!-- START of: finna - Helpers/nkrRestrictedRecordPermission.phtml -->
-<? "status: " . var_export($this->status, true) . ", call: " . var_export($this->callApi, true) . ", not submitted: " . var_export($this->notSubmitted, true) . ", autoopen: " . var_export($this->autoOpen, true) ?>
-<?php $setupJS = false; ?>
+<? "id: " . var_export($this->id, true) . ", status: " . var_export($this->status, true) . ", call: " . var_export($this->callApi, true) . ", not submitted: " . var_export($this->notSubmitted, true) . ", autoopen: " . var_export($this->autoOpen, true) ?>
+<?php
+  $setupJS = false;
+  $registerFormUrl =
+    $this->url('feedback-form', ['id' => 'NkrRegister'])
+      . '?recordId=' . $this->escapeHtmlAttr($this->id)
+      . ($this->collection ? '&collection=1' : '');
+?>
 
 <?php if (!$this->user): ?>
   <?php 
@@ -12,7 +18,7 @@ JS;
   ?>
   <div class="alert alert-info authorization-notification nkr-status">
     <p><?= $this->translate('nkr_restricted_record_note_html') ?></p>
-    <p class="register"><a href="<?=$this->url('feedback-form', ['id' => 'NkrRegister', 'layout' => 'lightbox'])?>" data-lightbox data-lightbox-title="<?=$this->transEsc("nkr_register_form_title")?>" class="btn btn-primary"><?=$this->transEsc("nkr_register")?></a></p>
+    <p class="register"><a href="<?= $registerFormUrl ?>" data-lightbox data-lightbox-title="<?=$this->transEsc("nkr_register_form_title")?>" class="btn btn-primary"><?=$this->transEsc("nkr_register")?></a></p>
   </div>
 <?php elseif ($this->status === 'approved'): ?>
   <div class="alert alert-info authorization-notification check-permission nkr-status nkr-status-approved">
@@ -39,7 +45,7 @@ JS;
   <? endif ?>
   <div class="alert alert-info authorization-notification check-permission nkr-status nkr-status-not-submitted<?= $this->status === null || $this->status !== 'not-submitted' ? ' hide' : ''?>" data-id="<?=$this->escapeHtmlAttr($this->id)?>">
     <p class="txt"><?= $this->translate('nkr_restricted_record_note_html') ?></p>
-    <p class="register"><a href="<?=$this->url('feedback-form', ['id' => 'NkrRegister'])?>" class="btn btn-primary" data-lightbox title="<?=$this->transEsc('nkr_register_form_title')?>"><?=$this->translate('nkr_register')?></a></p>
+    <p class="register"><a href="<?= $registerFormUrl ?>" class="btn btn-primary" data-lightbox title="<?=$this->transEsc('nkr_register_form_title')?>"><?=$this->translate('nkr_register')?></a></p>
   </div>
   <? if (!$this->translationEmpty("nkr_permission_request_status_submitted")): ?>
     <div class="alert alert-info authorization-notification nkr-status nkr-status-submitted<?= $this->status === null || $this->status === 'not-submitted' ? ' hide' : ''?>">

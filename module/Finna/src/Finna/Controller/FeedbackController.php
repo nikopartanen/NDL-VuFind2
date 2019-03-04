@@ -43,6 +43,8 @@ use Finna\RemsService\RemsService;
  */
 class FeedbackController extends \VuFind\Controller\FeedbackController
 {
+    use \Finna\Controller\NkrrecordControllerTrait;
+    
     /**
      * True if form was submitted successfully.
      *
@@ -78,20 +80,46 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
     {
         $formId = $this->params()->fromRoute('id', $this->params()->fromQuery('id'));
         if ($formId === 'NkrRegister') {
+            $recordId = $this->params()->fromQuery('recordId');
+            $collection = (boolean)$this->params()->fromQuery('collection', false);
             // TODO: extend form config to support sendMethod = <callback> ?
 
+            $session = $this->getNkrSession();
             // TODO: check if authenticated with required method
             if (!($user = $this->getUser())) {
+                $session->inLightbox = $this->inLightbox();
+                $session->recordId = $recordId;
+                $session->collection = $collection;
                 return $this->forceLogin();
             } else {
                 $rems = $this->serviceLocator->get('Finna\RemsService\RemsService');
                 $showRegisterForm
                     = RemsService::STATUS_NOT_SUBMITTED
                     === $rems->checkPermission('user', true);
+
                 if (!$showRegisterForm) {
-                    $response = $this->getResponse();
-                    $response->setStatusCode(205);
-                    return '';
+                    $inLightbox = $session->inLightbox;
+                    $recordId = $session->recordId ?? null;
+                    $collection = $session->collection ?? false;
+                    unset($session->inLightbox);
+                    unset($session->recordId);
+                    unset($session->collection);
+
+                    if ($inLightbox) {
+                        $response = $this->getResponse();
+                        $response->setStatusCode(205);
+                        return '';
+                    } else {
+                        if ($recordId) {
+                            return $this->redirect()->toRoute(
+                                $collection
+                                   ? 'nkrcollection-home' : 'nkrrecord-home',
+                                ['id' => $recordId]
+                            );
+                        } else {
+                            return $this->redirect()->toRoute('search-home');
+                        }
+                    }
                 }
             }
 
@@ -211,4 +239,11 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
 
         return [true, null];
     }
+
+    protected function inLightbox()
+    {
+        return $this->getRequest()->getQuery('layout', 'no') === 'lightbox'
+            || 'layout/lightbox' == $this->layout()->getTemplate();
+    }
+
 }

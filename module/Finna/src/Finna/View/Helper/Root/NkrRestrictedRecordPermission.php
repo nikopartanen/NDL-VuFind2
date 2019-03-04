@@ -63,7 +63,12 @@ class NkrRestrictedRecordPermission extends \Zend\View\Helper\AbstractHelper
             return null;
         }
 
-        $params = ['user' => $user, 'autoOpen' => $autoOpen];
+        $params = [
+            'user' => $user,
+            'autoOpen' => $autoOpen,
+            'id' => $driver->getUniqueID(),
+            'collection' => $driver->isCollection()
+        ];
         
         if ($user !== false) {
             $status = $this->rems->checkPermission('user', false);
@@ -76,7 +81,6 @@ class NkrRestrictedRecordPermission extends \Zend\View\Helper\AbstractHelper
                  RemsService::STATUS_NOT_SUBMITTED]
             );
             $params += [
-                'id' => $driver->getUniqueID(),
                 'status' => $status,
                 'notSubmitted' => $notSubmitted,
                 'callApi' => $status === null

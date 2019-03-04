@@ -42,20 +42,13 @@ trait NkrrecordControllerTrait
 {
     protected function handleAutoOpenRegistration($view)
     {
-        $session = new SessionContainer(
-            'nkrRegistration',
-            $this->serviceLocator->get('VuFind\SessionManager')
-        );
+        $session = $this->getNkrSession();
 
         if ($this->getRequest()->getQuery()->get('register') === '1') {
             $session->autoOpen = true;
             $id = $this->params()->fromRoute('id', $this->params()->fromQuery('id'));
             return $this->redirect()->toRoute(null, ['id' => $id]);
         }
-        /*
-        $view = $this->showTab(
-            $this->params()->fromRoute('tab', $this->getDefaultTab())
-            );*/
 
         if (isset($session->autoOpen) && $session->autoOpen === true) {
             $view->autoOpenNkrRegistration = true;
@@ -63,5 +56,14 @@ trait NkrrecordControllerTrait
         }
         
         return $view;        
+    }
+
+    public function getNkrSession()
+    {
+        return new SessionContainer(
+            'nkrRegistration',
+            $this->serviceLocator->get('VuFind\SessionManager')
+        );
+
     }
 }
