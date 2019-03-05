@@ -341,7 +341,53 @@ class SolrEad3 extends SolrEad
     {
         return [];
     }
+
+    /**
+     * Get an array of summary strings for the record.
+     *
+     * @return array
+     */
+    public function getSummary()
+    {
+        $xml = $this->getXmlRecord();
+
+        if (!empty($xml->scopecontent)) {
+            $desc = [];
+            foreach ($xml->scopecontent as $el) {
+                if (isset($el->attributes()->encodinganalog)) {
+                    continue;
+                }
+                if (! isset($el->head) || (string)$el->head !== 'Tietosisältö') {
+                    continue;
+                }
+                if ($desc = $this->getDisplayLabel($el, 'p', true)) {
+                    return $desc;
+                }
+            }
+        }
+        return parent::getSummary();
+    }
+
+    public function getItemHistory()
+    {
+        $xml = $this->getXmlRecord();
+
+        if (!empty($xml->scopecontent)) {
+            foreach ($xml->scopecontent as $el) {
+                if (! isset($el->attributes()->encodinganalog)
+                    || (string)$el->attributes()->encodinganalog !== 'AI10'
+                ) {
+                    continue;
+                }
+                if ($desc = $this->getDisplayLabel($el, 'p')) {
+                    return $desc[0];
+                }
+            }
+        }
+        return null;
+    }
     
+
     /**
      * Get an array of physical descriptions of the item.
      *

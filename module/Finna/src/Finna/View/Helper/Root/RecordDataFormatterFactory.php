@@ -58,11 +58,7 @@ class RecordDataFormatterFactory
 
         $helper->setDefaults('description', $this->getDefaultDescriptionSpecs());
         $helper->setDefaults('authority', $this->getDefaultAuthoritySpecs());
-
-        $helper->setDefaults(
-            'core-ead3', [$this, 'getDefaultCoreEad3Specs']
-        );
-
+        
         return $helper;
     }
 
@@ -136,6 +132,12 @@ class RecordDataFormatterFactory
             'Sisällön luonne', 'getContentDescription', 'data-escapeHtml.phtml',
             ['context' => ['class' => 'recordContentDescription']]
         );
+
+        $spec->setTemplateLine(
+            'Aineiston syntyhistoria', 'getItemHistory', 'data-escapeHtml.phtml',
+            ['context' => ['class' => 'recordHistory']]
+        );
+        
 
         // TODO position field
         $spec->setTemplateLine(
