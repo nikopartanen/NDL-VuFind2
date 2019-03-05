@@ -521,6 +521,31 @@ class SolrEad3 extends SolrEad
         return array_map($callback, array_unique($headings));
     }
 
+    /**
+     * Get the unitdate field.
+     *
+     * @return string
+     */
+    public function getUnitDate()
+    {
+        $unitdate = parent::getUnitDate();
+
+        $record = $this->getXmlRecord();
+        if (!isset($record->did->unittitle)) {
+            return $unitdate;
+        }
+        foreach ($record->did->unittitle as $title) {
+            $attributes = $title->attributes();
+            if (! isset($attributes->encodinganalog)
+                || (string)$attributes->encodinganalog !== 'ahaa:AI55'
+            ) {
+                continue;
+            }
+            return sprintf('%s (%s)', $unitdate, (string)$title);
+        }
+        return $unitdate;
+    }
+
     protected function getTopics()
     {
         $record = $this->getXmlRecord();
