@@ -484,6 +484,62 @@ class SolrEad3 extends SolrEad
         return isset($rights['copyright']) || isset($rights['description'])
             ? $rights : false;
     }
+
+    /**
+     * Get all subject headings associated with this record.  Each heading is
+     * returned as an array of chunks, increasing from least specific to most
+     * specific.
+     *
+     * @param bool $extended Whether to return a keyed array with the following
+     * keys:
+     * - heading: the actual subject heading chunks
+     * - type: heading type
+     * - source: source vocabulary
+     *
+     * @return array
+     */
+    public function getAllSubjectHeadings($extended = false)
+    {
+        $headings = [];
+        $headings = $this->getTopics();
+
+        foreach (['geographic', 'genre', 'era'] as $field) {           
+            if (isset($this->fields[$field])) {
+                $headings = array_merge($headings, $this->fields[$field]);
+            }
+        }
+
+        // The default index schema doesn't currently store subject headings in a
+        // broken-down format, so we'll just send each value as a single chunk.
+        // Other record drivers (i.e. SolrMarc) can offer this data in a more
+        // granular format.
+        $callback = function ($i) use ($extended) {
+            return $extended
+                ? ['heading' => [$i], 'type' => '', 'source' => '']
+                : [$i];
+        };
+        return array_map($callback, array_unique($headings));
+    }
+
+    protected function getTopics()
+    {
+        $record = $this->getXmlRecord();
+
+        $topics = [];
+        if (isset($record->controlaccess->subject)) {
+            foreach ($record->controlaccess->subject as $subject) {
+                if (!isset($subject->attributes()->relator)
+                    || (string)$subject->attributes()->relator !== 'aihe'
+                ) {
+                    continue;
+                }
+                if ($topic = $this->getDisplayLabel($subject, 'part', true, false)) {
+                    $topics[] = $topic[0];
+                }
+            }
+        }
+        return $topics;
+    }
     
     /**
      * Return translated repository display name from metadata.
@@ -505,44 +561,61 @@ class SolrEad3 extends SolrEad
     }
 
     protected function getDisplayLabel(
-        $node, $childNodeName = 'part', $obeyPreferredLanguage = false
+        $node,
+        $childNodeName = 'part',
+        $obeyPreferredLanguage = false,
+        $getLanguageFromChildNode = true
     ) {
         if (! isset($node->$childNodeName)) {
             return null;
         }
+        $defaultLanguage = 'fin';
         $language = $this->preferredLanguage
             ? $this->mapLanguageCode($this->preferredLanguage)
             : null;
 
-
+        $getTermLanguage = function ($node) use ($language, $defaultLanguage) {
+            if (!isset($node->attributes()->lang)) {
+                return null;
+            }
+            $lang = (string)$node->attributes()->lang;
+            return [
+               'default' => $defaultLanguage === $lang,
+               'preferred' => $language === $lang
+            ];
+        };
+        
         $allResults = [];
         $defaultLanguageResults = [];
         $languageResults = [];
-        $defaultLanguage = 'fin';
+        $lang = null;
+        if (!$getLanguageFromChildNode) {
+            $lang = $getTermLanguage($node);
+        }
+
         foreach ($node->{$childNodeName} as $child) {
-            foreach ($child->attributes() as $key => $val) {
-                $name = trim((string)$child);
-                $allResults[] = $name;
-                $lang = (string)$val;
-                
-                if ($key === 'lang'
-                    && ($language !== null
-                    || in_array($lang, [$defaultLanguage, $language]))
-                ) {
-                    if ($lang === $defaultLanguage) {
-                        $defaultLanguageResults[] = $name;
-                    }
-                    if ($lang === $language) {
-                        $languageResults[] = $name;
+            $name = trim((string)$child);
+            $allResults[] = $name;
+
+            if ($getLanguageFromChildNode) {
+                foreach ($child->attributes() as $key => $val) {
+                    $lang = $getTermLanguage($child);
+                    if ($lang) {
+                        break;
                     }
                 }
             }
+            if ($lang['default']) {
+                $defaultLanguageResults[] = $name;
+            }
+            if ($lang['preferred']) {
+                $languageResults[] = $name;
+            }
         }
-
+        
         if ($obeyPreferredLanguage) {
             return $languageResults;
         }
-        
         if (! empty($languageResults)) {
             return $languageResults;
         } elseif (! empty($defaultLanguageResults)) {
