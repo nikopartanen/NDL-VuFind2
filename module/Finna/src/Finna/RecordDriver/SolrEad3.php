@@ -497,25 +497,47 @@ class SolrEad3 extends SolrEad
      *
      * @return string[] Notes
      */
-    public function getAccessRestrictions()
+    public function getExtendedAccessRestrictions()
     {
         $xml = $this->getXmlRecord();
-        if (!isset($xml->accessrestrict->p)) {
+        if (!isset($xml->accessrestrict)) {
             return [];
         }
         $restrictions = [];
+        $types = ['general', 'ahaa:KR5', 'ahaa:KR7', 'ahaa:KR9', 'ahaa:KR4', 'ahaa:KR3', 'ahaa:KR1'];
+        foreach ($types as $type) {
+            $restrictions[$type] = [];
+        }
         foreach ($xml->accessrestrict as $access) {
-            if (empty($access->attributes())) {
-                $restrictions += $this->getDisplayLabel($access, 'p', true);
-            } else if (isset($access->attributes()->encodinganalog) && in_array($access->attributes()->encodinganalog, ['ahaa:KR5'])) {
-                $restrictions += $this->getDisplayLabel($access, 'p', true);
+            $attr = $access->attributes();
+            if (! isset($attr->encodinganalog)) {
+                $restrictions['general']
+                    = $this->getDisplayLabel($access, 'p', true);
+            } else {
+                $type = (string)$attr->encodinganalog;
+                if (in_array($type, $types)) {
+                    $label = $type === 'ahaa:KR7'
+                        ? $this->getDisplayLabel($access->p->name, 'part', true)
+                        : $this->getDisplayLabel($access, 'p', true);
+                    if ($label) {
+                        $restrictions[$type] = $label;
+                    }
+                }
             }
         }
 
-        return $restrictions;
-        //return [$this->getDisplayLabel($xml->accessrestrict, 'p', true)];
+        // Sort and discard empty
+        $result = [];
+        foreach ($restrictions as $type => $values) {
+            if (empty($values)) {
+                unset($restrictions[$type]);
+            }
+            $result[$type] = $values;
+        }
+
+        return $result;
     }
-    
+
     /**
      * Return type of access restriction for the record.
      *

@@ -31,6 +31,8 @@
  */
 namespace Finna\View\Helper\Root;
 
+use Finna\View\Helper\Root\RecordDataFormatter\SpecBuilder;
+
 /**
  * Factory for record driver data formatting view helper
  *
@@ -69,7 +71,7 @@ class RecordDataFormatterFactory
      */
     public function getDefaultCoreSpecs()
     {
-        $spec = new \VuFind\View\Helper\Root\RecordDataFormatter\SpecBuilder();
+        $spec = new SpecBuilder();
 
         $fields = $this->getDefaultCoreFields();
         
@@ -89,24 +91,29 @@ class RecordDataFormatterFactory
     public function getDefaultCoreEad3Specs()
     {
         $fields = $this->getDefaultCoreFields();
+        unset($fields['Access Restrictions']);
+        unset($fields['Access']);
 
-        $spec = new \VuFind\View\Helper\Root\RecordDataFormatter\SpecBuilder();
 
+        
+        $spec = new SpecBuilder();
+        
         foreach ($fields as $key => $data) {
             list($dataMethod, $template, $options) = $data;
             $spec->setTemplateLine($key, $dataMethod, $template, $options);
         }
         
         // Add arcrole-relations as multiple fields with role as field header
-        $getRelations = function ($data, $options) {
+        $getRelations = function ($data, $options) use ($spec) {
             $final = [];
+            $cnt = $spec->getMaxPos();
             foreach ($data as $type => $values) {
                 $final[] = [
                     'label' => isset($values['role'])
                         ? ('CreatorRoles::' . $values['role']) : null,
                     'values' => [$type => $values],
                     'options' => [
-                        //'pos' => 1,
+                        'pos' => $cnt++,
                         'renderType' => 'RecordDriverTemplate',
                         'template' => 'data-authors.phtml',
                         'context' => [
@@ -139,16 +146,32 @@ class RecordDataFormatterFactory
         );
         
 
-        // TODO position field
-        $spec->setTemplateLine(
-            'Käyttöluvan myöntäjä',
-            'getAccessRestrictGranter',
-            'data-escapeHtml.phtml',
-            [
-                'context' => ['class' => 'recordAccessRestrictGranter']
-            ]
+        // Add arcrole-relations as multiple fields with role as field header
+        $getAccessRestrictions = function ($data, $options) use ($spec) {
+            $final = [];
+            $cnt = $spec->getMaxPos();
+            foreach ($data as $type => $values) {
+                $final[] = [
+                    'label' => "Access Restrictions:$type",
+                    'values' => array_values($values),
+                    'options' => [
+                        'pos' => $cnt++,
+                        'renderType' => 'RecordDriverTemplate',
+                        'template' => 'data-escapeHtml.phtml',
+                        'context' => [
+                            'class' => 'extendedAccess',
+                            'type' => "Access Restrictions::$type",
+                            'schemaLabel' => null,
+                        ],
+                    ],
+                 ];
+            }
+            return $final;
+        };
+              
+        $spec->setMultiLine(
+            '', 'getExtendedAccessRestrictions', $getAccessRestrictions
         );
-
         
         $spec->reorderKeys(
             ['Archive Origination', 'Archive', 'Archive Series', 'Relations']
@@ -914,7 +937,7 @@ class RecordDataFormatterFactory
      */
     public function getDefaultDescriptionSpecs()
     {
-        $spec = new \VuFind\View\Helper\Root\RecordDataFormatter\SpecBuilder();
+        $spec = new SpecBuilder();
         $spec->setLine('Summary', 'getSummary');
         $spec->setLine('Published', 'getDateSpan');
         $spec->setLine('Item Description', 'getGeneralNotes');
@@ -944,7 +967,7 @@ class RecordDataFormatterFactory
      */
     public function getDefaultAuthoritySpecs()
     {
-        $spec = new \VuFind\View\Helper\Root\RecordDataFormatter\SpecBuilder();
+        $spec = new SpecBuilder();
         $spec->setLine('Title', 'getTitle');
         $spec->setLine('Other Titles', 'getAlternativeTitles');
         return $spec->getArray();
