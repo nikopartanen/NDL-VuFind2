@@ -387,6 +387,50 @@ class SolrEad3 extends SolrEad
         return null;
     }
     
+    /**
+     * Return an array of image URLs associated with this record with keys:
+     * - urls        Image URLs
+     *   - small     Small image (mandatory)
+     *   - medium    Medium image (mandatory)
+     *   - large     Large image (optional)
+     * - description Description text
+     * - rights      Rights
+     *   - copyright   Copyright (e.g. 'CC BY 4.0') (optional)
+     *   - description Human readable description (array)
+     *   - link        Link to copyright info
+     *
+     * @param string $language Language for copyright information
+     *
+     * @return array
+     */
+    public function getAllImages($language = 'fi')
+    {
+        $result = [];
+
+        $xml = $this->getXmlRecord();
+        if (isset($xml->did->daoset->dao)) {
+            foreach ($xml->did->daoset->dao as $dao) {
+                $urls = [];
+                $attr = $dao->attributes();
+                // TODO properly detect image urls
+                if (! isset($attr->linktitle)
+                    || strpos((string)$attr->linktitle, 'Kuva/Aukeama') !== 0
+                    || ! $attr->href
+                ) {
+                    continue;
+                }
+
+                $href = (string)$attr->href; 
+                $result[] = [
+                    'urls' => ['small' => $href, 'medium' => $href],
+                    'description' => (string)$attr->linktitle,
+                    'rights' => null
+                ];
+            }
+        }
+
+        return $result;
+    }
 
     /**
      * Get an array of physical descriptions of the item.
