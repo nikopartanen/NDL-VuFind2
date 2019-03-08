@@ -11,6 +11,7 @@
   $translatedFormat = $this->transEsc(end($formats));
   $recordType = $this->driver->tryMethod('getRecordType');
   $largeImageLayout = in_array($this->driver->tryMethod('getRecordType'), ['lido', 'forward', 'ead', 'qdc']);
+  $videoScripts = $this->partial('Helpers/videojs-urls.phtml');
 ?>
 <div class="imagepopup-holder <?=$this->escapeHtmlAttr($recordType) ?>" data-type="<?=$this->escapeHtmlAttr($recordType) ?>" data-id="<?=$this->escapeHtmlAttr($this->driver->getUniqueID()) ?>">
   <div class="imagepopup-container">
@@ -113,16 +114,16 @@
 
                 <div class="record-online-link">
                   <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($url['url'])) ?>"
-                      <?php if (!empty($url['videoSources'])): ?> data-video-sources="<?= $this->escapeHtmlAttr(json_encode($url['videoSources'])) ?>"<?php endif; ?>
+                      <?php if (!empty($url['videoSources'])): ?> data-video-sources="<?=$this->escapeHtmlAttr(json_encode($url['videoSources'])) ?>" data-scripts="<?=$this->escapeHtmlAttr($videoScripts)?>"<?php endif; ?>
                       <?=!empty($url['embed']) && $url['embed'] == 'video' ? ' data-embed-video' : '' ?>
-                      <?= $this->recordLink()->getEmbeddedVideo($url['url']) ?>
+                      <?=$this->recordLink()->getEmbeddedVideo($url['url']) ?>
                       target="_blank" title="<?=$this->escapeHtmlAttr($url['url']) ?>">
-                    <i class="fa fa-external-link"></i> <?php if (count($urls) == 1): ?>  <?=$this->transEsc('open_online_link', ['%%format%%' => $translatedFormat])?><?php else: ?><?=$this->transEsc('default::link_' . $desc, null, $desc) ?><?php endif; ?></a></div>
-
-                  <?php $index++; ?>
-                <?php if ($index > 4): ?>
-                <div>...</div>
-                <?php break; endif; ?>
+                    <i class="fa fa-external-link"></i> <?php if (count($urls) == 1): ?><?=$this->transEsc('open_online_link', ['%%format%%' => $translatedFormat])?><?php else: ?><?=$this->transEsc('default::link_' . $desc, null, $desc) ?><?php endif; ?></a>
+                </div>
+                <?php if (++$index > 4): ?>
+                  <div>...</div>
+                <?php break; ?>
+              <?php endif; ?>
               <?php endforeach; ?>
             <?php endif; ?>
             <?php if (!empty($onlineURLs) || !empty($mergedData['urls'])): ?>
