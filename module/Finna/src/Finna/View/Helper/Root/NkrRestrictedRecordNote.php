@@ -38,15 +38,18 @@ namespace Finna\View\Helper\Root;
  */
 class NkrRestrictedRecordNote extends \Zend\View\Helper\AbstractHelper
 {
+    protected $enabled;
     protected $collectionRoutes;
     
     /**
      * Constructor
      *
-     * @param \Zend\Config\Config $config VuFind configuration
+     * @param bool                $enabled Is Nkr enabled?
+     * @param \Zend\Config\Config $config  VuFind configuration
      */
-    public function __construct(\Zend\Config\Config $config
+    public function __construct(bool $enabled, \Zend\Config\Config $config
     ) {
+        $this->enabled = $enabled;
         $this->collectionRoutes = isset($config->Collections->route)
             ? $config->Collections->route->toArray() : null;
     }
@@ -54,11 +57,13 @@ class NkrRestrictedRecordNote extends \Zend\View\Helper\AbstractHelper
     /**
      * Render info box.
      *
+     * @param RecordDriver $driver Record driver
+     *
      * @return null|html
      */
     public function __invoke($driver)
     {
-        if (!$driver->hasRestrictedAlternative()) {
+        if (!$this->enabled || !$driver->hasRestrictedAlternative()) {
             return null;
         }
 

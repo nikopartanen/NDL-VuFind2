@@ -61,7 +61,12 @@ class NkrRestrictedRecordNoteFactory implements FactoryInterface
         if (!empty($options)) {
             throw new \Exception('Unexpected options sent to factory.');
         }
+
+        $enabled = $container->get(\VuFind\Config\PluginManager::class)
+            ->get('Nkr')->General->enabled ?? false;
+
         return new $requestedName(
+            $enabled,
             $container->get('VuFind\Config\PluginManager')->get('config')
         );
     }

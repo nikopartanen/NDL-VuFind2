@@ -40,15 +40,19 @@ use Finna\RemsService\RemsService;
  */
 class NkrRestrictedRecordPermission extends \Zend\View\Helper\AbstractHelper
 {
+    protected $enabled;
+    
     protected $rems;
 
     /**
      * Constructor
      *
-     * @param \Zend\Config\Config $config VuFind configuration
+     * @param bool                $enabled Is Nkr enabled?
+     * @param \Zend\Config\Config $config  VuFind configuration
      */
-    public function __construct(RemsService $rems
+    public function __construct(bool $enabled, RemsService $rems
     ) {
+        $this->enabled = $enabled;
         $this->rems = $rems;
     }
 
@@ -59,7 +63,7 @@ class NkrRestrictedRecordPermission extends \Zend\View\Helper\AbstractHelper
      */
     public function __invoke($driver, $autoOpen = false, $user = null)
     {
-        if (!$driver->hasRestrictedMetadata()) {
+        if (!$this->enabled || !$driver->hasRestrictedMetadata()) {
             return null;
         }
 
