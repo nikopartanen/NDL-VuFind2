@@ -224,10 +224,10 @@ $config = [
     ],
     'controller_plugins' => [
         'factories' => [
-            'Finna\Controller\Plugin\Recaptcha' => 'Finna\Controller\Plugin\Factory::getRecaptcha',
+            'Finna\Controller\Plugin\Recaptcha' => 'Finna\Controller\Plugin\RecaptchaFactory',
         ],
         'aliases' => [
-            'VuFind\Controller\Plugin\Recaptcha' => 'Finna\Controller\Plugin\Recaptcha',
+            'VuFind\Controller\Plugin\Recaptcha' => 'Finna\Controller\Plugin\Recaptcha'
         ],
     ],
     'service_manager' => [
@@ -240,23 +240,24 @@ $config = [
             'Finna\Config\SearchSpecsReader' => 'VuFind\Config\YamlReaderFactory',
             'Finna\Config\YamlReader' => 'VuFind\Config\YamlReaderFactory',
             'Finna\Cover\Loader' => 'VuFind\Cover\LoaderFactory',
-            'Finna\Feed\Feed' => 'Finna\Service\Factory::getFeed',
+            'Finna\Feed\Feed' => 'Finna\Feed\FeedFactory',
             'Finna\Form\Form' => 'Finna\Form\FormFactory',
             'Finna\ILS\Connection' => 'VuFind\ILS\ConnectionFactory',
-            'Finna\LocationService\LocationService' => 'Finna\Service\Factory::getLocationService',
+            'Finna\LocationService\LocationService' => 'Finna\LocationService\LocationServiceFactory',
             'Finna\Mailer\Mailer' => 'VuFind\Mailer\Factory',
-            'Finna\OnlinePayment\OnlinePayment' => 'Finna\Service\Factory::getOnlinePaymentManager',
-            'Finna\OnlinePayment\Session' => 'Finna\Service\Factory::getOnlinePaymentSession',
-            'Finna\OrganisationInfo\OrganisationInfo' => 'Finna\Service\Factory::getOrganisationInfo',
+            'Finna\OnlinePayment\OnlinePayment' => 'Finna\OnlinePayment\OnlinePaymentFactory',
+            'Finna\OnlinePayment\Session' => 'Finna\OnlinePayment\OnlinePaymentSessionFactory',
+            'Finna\OrganisationInfo\OrganisationInfo' => 'Finna\OrganisationInfo\OrganisationInfoFactory',
             'Finna\Record\Loader' => 'Finna\Record\LoaderFactory',
             'Finna\RecordDriver\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\RecordTab\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Role\PermissionManager' => 'VuFind\Role\PermissionManagerFactory',
             'Finna\Search\Memory' => 'VuFind\Search\MemoryFactory',
             'Finna\Search\Solr\HierarchicalFacetHelper' => 'Zend\ServiceManager\Factory\InvokableFactory',
-            'Finna\RemsService\RemsService' => 'Finna\Service\Factory::getRemsService',
+            'Finna\RemsService\RemsService' => 'Finna\RemsService\RemsServiceFactory',
             'FinnaSearch\Service' => 'Finna\Service\Factory::getSearchService',
-            
+            'FinnaSearch\Service' => 'VuFind\Service\SearchServiceFactory',
+
             'VuFind\Search\SearchTabsHelper' => 'Finna\Search\SearchTabsHelperFactory',
             
             'Zend\Session\SessionManager' => 'Finna\Session\ManagerFactory',
@@ -331,7 +332,7 @@ $config = [
                     'Finna\AjaxHandler\GetSearchTabsRecommendations' =>
                         'Finna\AjaxHandler\GetSearchTabsRecommendationsFactory',
                     'Finna\AjaxHandler\GetSideFacets' =>
-                        'Finna\AjaxHandler\GetSideFacetsFactory',
+                        'VuFind\AjaxHandler\GetSideFacetsFactory',
                     'Finna\AjaxHandler\GetSimilarRecords' =>
                         'Finna\AjaxHandler\GetSimilarRecordsFactory',
                     'Finna\AjaxHandler\GetUserLists' =>
@@ -364,7 +365,6 @@ $config = [
                     'getPiwikPopularSearches' => 'Finna\AjaxHandler\GetPiwikPopularSearches',
                     'getRemsPermission' => 'Finna\AjaxHandler\GetRemsPermission',
                     'getSearchTabsRecommendations' => 'Finna\AjaxHandler\GetSearchTabsRecommendations',
-                    'getSideFacets' => 'Finna\AjaxHandler\GetSideFacets',
                     'getSimilarRecords' => 'Finna\AjaxHandler\GetSimilarRecords',
                     'importFavorites' => 'Finna\AjaxHandler\ImportFavorites',
                     'onlinePaymentNotify' => 'Finna\AjaxHandler\OnlinePaymentNotify',
@@ -376,13 +376,14 @@ $config = [
                     'VuFind\AjaxHandler\DeleteRecordComment' => 'Finna\AjaxHandler\DeleteRecordComment',
                     'VuFind\AjaxHandler\GetACSuggestions' => 'Finna\AjaxHandler\GetACSuggestions',
                     'VuFind\AjaxHandler\GetFacetData' => 'Finna\AjaxHandler\GetFacetData',
+                    'VuFind\AjaxHandler\GetSideFacets' => 'Finna\AjaxHandler\GetSideFacets',
                 ]
             ],
             'auth' => [
                 'factories' => [
-                    'Finna\Auth\ILS' => 'Finna\Auth\Factory::getILS',
-                    'Finna\Auth\MultiILS' => 'Finna\Auth\Factory::getMultiILS',
-                    'Finna\Auth\Shibboleth' => 'Finna\Auth\Factory::getShibboleth',
+                    'Finna\Auth\ILS' => 'VuFind\Auth\ILSFactory',
+                    'Finna\Auth\MultiILS' => 'VuFind\Auth\ILSFactory',
+                    'Finna\Auth\Shibboleth' => 'VuFind\Auth\ShibbolethFactory',
                 ],
                 'aliases' => [
                     'VuFind\Auth\ILS' => 'Finna\Auth\ILS',
@@ -580,7 +581,7 @@ $config = [
             ],
             'content_covers' => [
                 'factories' => [
-                    'btj' => 'Finna\Content\Covers\BTJFactory::getBTJ',
+                    'Finna\Content\Covers\BTJ' => 'Finna\Content\Covers\BTJFactory',
                     'Finna\Content\Covers\CoverArtArchive' => 'Finna\Content\Covers\CoverArtArchiveFactory',
                 ],
                 'invokables' => [
@@ -588,6 +589,7 @@ $config = [
                     'natlibfi' => 'Finna\Content\Covers\NatLibFi',
                 ],
                 'aliases' => [
+                    'btj' => 'Finna\Content\Covers\BTJ',
                     'coverartarchive' => 'Finna\Content\Covers\CoverArtArchive',
                 ]
             ],
@@ -792,8 +794,8 @@ $config = [
     'zfc_rbac' => [
         'vufind_permission_provider_manager' => [
             'factories' => [
-                'Finna\Role\PermissionProvider\AuthenticationStrategy' => 'Finna\Role\PermissionProvider\Factory::getAuthenticationStrategy',
-                'Finna\Role\PermissionProvider\IpRange' => 'Finna\Role\PermissionProvider\Factory::getIpRange'
+                'Finna\Role\PermissionProvider\AuthenticationStrategy' => 'Finna\Role\PermissionProvider\AuthenticationStrategyFactory',
+                'Finna\Role\PermissionProvider\IpRange' => 'VuFind\Role\PermissionProvider\IpRangeFactory'
             ],
             'aliases' => [
                 'authenticationStrategy' => 'Finna\Role\PermissionProvider\AuthenticationStrategy',

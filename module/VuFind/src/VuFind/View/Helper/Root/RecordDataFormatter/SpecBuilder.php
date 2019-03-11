@@ -172,4 +172,9 @@ class SpecBuilder
     {
         return $this->spec;
     }
+
+    public function getMaxPos()
+    {
+        return $this->maxPos;
+    }
 }

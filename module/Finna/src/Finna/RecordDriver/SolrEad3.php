@@ -341,7 +341,97 @@ class SolrEad3 extends SolrEad
     {
         return [];
     }
+
+    /**
+     * Get an array of summary strings for the record.
+     *
+     * @return array
+     */
+    public function getSummary()
+    {
+        $xml = $this->getXmlRecord();
+
+        if (!empty($xml->scopecontent)) {
+            $desc = [];
+            foreach ($xml->scopecontent as $el) {
+                if (isset($el->attributes()->encodinganalog)) {
+                    continue;
+                }
+                if (! isset($el->head) || (string)$el->head !== 'Tietosisältö') {
+                    continue;
+                }
+                if ($desc = $this->getDisplayLabel($el, 'p', true)) {
+                    return $desc;
+                }
+            }
+        }
+        return parent::getSummary();
+    }
+
+    public function getItemHistory()
+    {
+        $xml = $this->getXmlRecord();
+
+        if (!empty($xml->scopecontent)) {
+            foreach ($xml->scopecontent as $el) {
+                if (! isset($el->attributes()->encodinganalog)
+                    || (string)$el->attributes()->encodinganalog !== 'AI10'
+                ) {
+                    continue;
+                }
+                if ($desc = $this->getDisplayLabel($el, 'p')) {
+                    return $desc[0];
+                }
+            }
+        }
+        return null;
+    }
     
+    /**
+     * Return an array of image URLs associated with this record with keys:
+     * - urls        Image URLs
+     *   - small     Small image (mandatory)
+     *   - medium    Medium image (mandatory)
+     *   - large     Large image (optional)
+     * - description Description text
+     * - rights      Rights
+     *   - copyright   Copyright (e.g. 'CC BY 4.0') (optional)
+     *   - description Human readable description (array)
+     *   - link        Link to copyright info
+     *
+     * @param string $language Language for copyright information
+     *
+     * @return array
+     */
+    public function getAllImages($language = 'fi')
+    {
+        $result = [];
+
+        $xml = $this->getXmlRecord();
+        if (isset($xml->did->daoset->dao)) {
+            foreach ($xml->did->daoset->dao as $dao) {
+                $urls = [];
+                $attr = $dao->attributes();
+                // TODO properly detect image urls
+                if (! isset($attr->linktitle)
+                    || strpos((string)$attr->linktitle, 'Kuva/Aukeama') !== 0
+                    || ! $attr->href
+                ) {
+                    continue;
+                }
+
+                $href = (string)$attr->href; 
+                $result[] = [
+                    'urls' => ['small' => $href, 'medium' => $href],
+                    'description' => (string)$attr->linktitle,
+                    'rights' => null
+                ];
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * Get an array of physical descriptions of the item.
      *
@@ -407,25 +497,47 @@ class SolrEad3 extends SolrEad
      *
      * @return string[] Notes
      */
-    public function getAccessRestrictions()
+    public function getExtendedAccessRestrictions()
     {
         $xml = $this->getXmlRecord();
-        if (!isset($xml->accessrestrict->p)) {
+        if (!isset($xml->accessrestrict)) {
             return [];
         }
         $restrictions = [];
+        $types = ['general', 'ahaa:KR5', 'ahaa:KR7', 'ahaa:KR9', 'ahaa:KR4', 'ahaa:KR3', 'ahaa:KR1'];
+        foreach ($types as $type) {
+            $restrictions[$type] = [];
+        }
         foreach ($xml->accessrestrict as $access) {
-            if (empty($access->attributes())) {
-                $restrictions += $this->getDisplayLabel($access, 'p', true);
-            } else if (isset($access->attributes()->encodinganalog) && in_array($access->attributes()->encodinganalog, ['ahaa:KR5'])) {
-                $restrictions += $this->getDisplayLabel($access, 'p', true);
+            $attr = $access->attributes();
+            if (! isset($attr->encodinganalog)) {
+                $restrictions['general']
+                    = $this->getDisplayLabel($access, 'p', true);
+            } else {
+                $type = (string)$attr->encodinganalog;
+                if (in_array($type, $types)) {
+                    $label = $type === 'ahaa:KR7'
+                        ? $this->getDisplayLabel($access->p->name, 'part', true)
+                        : $this->getDisplayLabel($access, 'p', true);
+                    if ($label) {
+                        $restrictions[$type] = $label;
+                    }
+                }
             }
         }
 
-        return $restrictions;
-        //return [$this->getDisplayLabel($xml->accessrestrict, 'p', true)];
+        // Sort and discard empty
+        $result = [];
+        foreach ($restrictions as $type => $values) {
+            if (empty($values)) {
+                unset($restrictions[$type]);
+            }
+            $result[$type] = $values;
+        }
+
+        return $result;
     }
-    
+
     /**
      * Return type of access restriction for the record.
      *
@@ -489,6 +601,87 @@ class SolrEad3 extends SolrEad
     {
         return true;
     }
+
+    /**
+     * Get all subject headings associated with this record.  Each heading is
+     * returned as an array of chunks, increasing from least specific to most
+     * specific.
+     *
+     * @param bool $extended Whether to return a keyed array with the following
+     * keys:
+     * - heading: the actual subject heading chunks
+     * - type: heading type
+     * - source: source vocabulary
+     *
+     * @return array
+     */
+    public function getAllSubjectHeadings($extended = false)
+    {
+        $headings = [];
+        $headings = $this->getTopics();
+
+        foreach (['geographic', 'genre', 'era'] as $field) {           
+            if (isset($this->fields[$field])) {
+                $headings = array_merge($headings, $this->fields[$field]);
+            }
+        }
+
+        // The default index schema doesn't currently store subject headings in a
+        // broken-down format, so we'll just send each value as a single chunk.
+        // Other record drivers (i.e. SolrMarc) can offer this data in a more
+        // granular format.
+        $callback = function ($i) use ($extended) {
+            return $extended
+                ? ['heading' => [$i], 'type' => '', 'source' => '']
+                : [$i];
+        };
+        return array_map($callback, array_unique($headings));
+    }
+
+    /**
+     * Get the unitdate field.
+     *
+     * @return string
+     */
+    public function getUnitDate()
+    {
+        $unitdate = parent::getUnitDate();
+
+        $record = $this->getXmlRecord();
+        if (!isset($record->did->unittitle)) {
+            return $unitdate;
+        }
+        foreach ($record->did->unittitle as $title) {
+            $attributes = $title->attributes();
+            if (! isset($attributes->encodinganalog)
+                || (string)$attributes->encodinganalog !== 'ahaa:AI55'
+            ) {
+                continue;
+            }
+            return sprintf('%s (%s)', $unitdate, (string)$title);
+        }
+        return $unitdate;
+    }
+
+    protected function getTopics()
+    {
+        $record = $this->getXmlRecord();
+
+        $topics = [];
+        if (isset($record->controlaccess->subject)) {
+            foreach ($record->controlaccess->subject as $subject) {
+                if (!isset($subject->attributes()->relator)
+                    || (string)$subject->attributes()->relator !== 'aihe'
+                ) {
+                    continue;
+                }
+                if ($topic = $this->getDisplayLabel($subject, 'part', true, false)) {
+                    $topics[] = $topic[0];
+                }
+            }
+        }
+        return $topics;
+    }
     
     /**
      * Return translated repository display name from metadata.
@@ -510,44 +703,61 @@ class SolrEad3 extends SolrEad
     }
 
     protected function getDisplayLabel(
-        $node, $childNodeName = 'part', $obeyPreferredLanguage = false
+        $node,
+        $childNodeName = 'part',
+        $obeyPreferredLanguage = false,
+        $getLanguageFromChildNode = true
     ) {
         if (! isset($node->$childNodeName)) {
             return null;
         }
+        $defaultLanguage = 'fin';
         $language = $this->preferredLanguage
             ? $this->mapLanguageCode($this->preferredLanguage)
             : null;
 
-
+        $getTermLanguage = function ($node) use ($language, $defaultLanguage) {
+            if (!isset($node->attributes()->lang)) {
+                return null;
+            }
+            $lang = (string)$node->attributes()->lang;
+            return [
+               'default' => $defaultLanguage === $lang,
+               'preferred' => $language === $lang
+            ];
+        };
+        
         $allResults = [];
         $defaultLanguageResults = [];
         $languageResults = [];
-        $defaultLanguage = 'fin';
+        $lang = null;
+        if (!$getLanguageFromChildNode) {
+            $lang = $getTermLanguage($node);
+        }
+
         foreach ($node->{$childNodeName} as $child) {
-            foreach ($child->attributes() as $key => $val) {
-                $name = trim((string)$child);
-                $allResults[] = $name;
-                $lang = (string)$val;
-                
-                if ($key === 'lang'
-                    && ($language !== null
-                    || in_array($lang, [$defaultLanguage, $language]))
-                ) {
-                    if ($lang === $defaultLanguage) {
-                        $defaultLanguageResults[] = $name;
-                    }
-                    if ($lang === $language) {
-                        $languageResults[] = $name;
+            $name = trim((string)$child);
+            $allResults[] = $name;
+
+            if ($getLanguageFromChildNode) {
+                foreach ($child->attributes() as $key => $val) {
+                    $lang = $getTermLanguage($child);
+                    if ($lang) {
+                        break;
                     }
                 }
             }
+            if ($lang['default']) {
+                $defaultLanguageResults[] = $name;
+            }
+            if ($lang['preferred']) {
+                $languageResults[] = $name;
+            }
         }
-
+        
         if ($obeyPreferredLanguage) {
             return $languageResults;
         }
-        
         if (! empty($languageResults)) {
             return $languageResults;
         } elseif (! empty($defaultLanguageResults)) {

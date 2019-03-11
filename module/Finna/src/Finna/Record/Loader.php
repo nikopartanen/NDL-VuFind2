@@ -4,7 +4,7 @@
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2016.
+ * Copyright (C) The National Library of Finland 2016-2019.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -69,10 +69,11 @@ class Loader extends \VuFind\Record\Loader
     /**
      * Given an ID and record source, load the requested record object.
      *
-     * @param string $id              Record ID
-     * @param string $source          Record source
-     * @param bool   $tolerateMissing Should we load a "Missing" placeholder
+     * @param string   $id              Record ID
+     * @param string   $source          Record source
+     * @param bool     $tolerateMissing Should we load a "Missing" placeholder
      * instead of throwing an exception if the record cannot be found?
+     * @param ParamBag $params          Search backend parameters
      *
      * @throws \Exception
      * @return \VuFind\RecordDriver\AbstractBase
@@ -128,17 +129,18 @@ class Loader extends \VuFind\Record\Loader
      * Given an array of IDs and a record source, load a batch of records for
      * that source.
      *
-     * @param array  $ids                       Record IDs
-     * @param string $source                    Record source
-     * @param bool   $tolerateBackendExceptions Whether to tolerate backend
+     * @param array    $ids                       Record IDs
+     * @param string   $source                    Record source
+     * @param bool     $tolerateBackendExceptions Whether to tolerate backend
      * exceptions that may be caused by e.g. connection issues or changes in
      * subcscriptions
+     * @param ParamBag $params                    Search backend parameters
      *
      * @throws \Exception
      * @return array
      */
     public function loadBatchForSource($ids, $source = DEFAULT_SEARCH_BACKEND,
-        $tolerateBackendExceptions = false
+        $tolerateBackendExceptions = false, ParamBag $params = null
     ) {
         if ('MetaLib' === $source) {
             $result = [];

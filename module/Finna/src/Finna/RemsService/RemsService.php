@@ -27,7 +27,6 @@
  */
 namespace Finna\RemsService;
 
-use VuFindHttp\HttpService;
 use Zend\Config\Config;
 use Zend\Session\Container;
 
@@ -42,7 +41,8 @@ use Zend\Session\Container;
  * @link     http://vufind.org/wiki/vufind2:developer_manual Wiki
  */
 class RemsService
-    implements \Zend\Log\LoggerAwareInterface
+    implements \VuFindHttp\HttpServiceAwareInterface,
+    \Zend\Log\LoggerAwareInterface
 {
     use \VuFind\Log\LoggerAwareTrait {
         logError as error;
@@ -55,13 +55,6 @@ class RemsService
     const STATUS_CLOSED = 'closed';
     
     /**
-     * HTTP service
-     *
-     * @var VuFind\Http
-     */
-    protected $http;
-
-    /**
      * Configuration
      *
      * @var Config
@@ -72,20 +65,18 @@ class RemsService
 
     protected $session;
 
-    const USER_ID = 'finna-test-user-23';
+    const USER_ID = 'RDapplicant1@funet.fi';
     
     /**
      * Constructor.
      *
-     * @param Config         $config         Configuration
-     * @param HttpService    $http           Http service
-     * @param SessionManager $sessionManager Session manager
+     * @param Config         $config  Configuration
+     * @param SessionManager $session Session container
      */
     public function __construct(
-        Config $config, HttpService $http, Container $session = null
+        Config $config, Container $session = null
     ) {
         $this->config = $config;
-        $this->http = $http;
         $this->session = $session;
     }
 
@@ -225,7 +216,7 @@ class RemsService
     {
         $url = $this->config->apiUrl . '/' . $url;
 
-        $client = $this->http->createClient($url);
+        $client = $this->httpService->createClient($url);
         $client->setOptions(['timeout' => 30, 'useragent' => 'Finna']);
         $headers = $client->getRequest()->getHeaders();
         $headers->addHeaderLine(
