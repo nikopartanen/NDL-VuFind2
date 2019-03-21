@@ -220,6 +220,9 @@ class SolrEad3 extends SolrEad
 
         $result = [];
         foreach ($xml->altformavail->altformavail as $altform) {
+            if (!isset($altform->list)) {
+                continue;
+            }
             $id = (string)$altform->attributes()->id;
             $owner = $label = $serviceLocation = $itemType = null;
             foreach ($altform->list->defitem as $defitem) {
