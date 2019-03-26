@@ -611,11 +611,13 @@ class SolrEad3 extends SolrEad
         $headings = [];
         $headings = $this->getTopics();
 
-        foreach (['geographic', 'genre', 'era'] as $field) {
+        foreach (['genre', 'era'] as $field) {
             if (isset($this->fields[$field])) {
                 $headings = array_merge($headings, $this->fields[$field]);
             }
         }
+        $geoTopics = $this->getTopicsHelper('geogname', 'aihe');
+        $headings = array_merge($headings, $geoTopics);
 
         // The default index schema doesn't currently store subject headings in a
         // broken-down format, so we'll just send each value as a single chunk.
@@ -627,6 +629,23 @@ class SolrEad3 extends SolrEad
                 : [$i];
         };
         return array_map($callback, array_unique($headings));
+    }
+
+    /**
+     * Get geographical coverage subject terms.
+     *
+     * @return array
+     */    
+    public function getGeographicalCoverage()
+    {
+        $callback = function ($i) {
+            return [$i];
+        };
+        
+        return array_map(
+            $callback,
+            $this->getTopicsHelper('geogname', 'alueellinen kattavuus')
+        );
     }
 
     /**
@@ -715,24 +734,37 @@ class SolrEad3 extends SolrEad
      */
     protected function getTopics()
     {
+        return $this->getTopicsHelper('subject', 'aihe');
+    }
+
+    /**
+     * Helper function for getting topics
+     *
+     * @param string      $nodeName Name of node that contains the topic terms
+     * @param string|null $relator  Value of topic node relator-attribute 
+     *
+     * @return string[]
+     */
+    protected function getTopicsHelper($nodeName, $relator = null)
+    {
         $record = $this->getXmlRecord();
 
-        $topics = [];
-        if (isset($record->controlaccess->subject)) {
-            foreach ($record->controlaccess->subject as $subject) {
-                if (!isset($subject->attributes()->relator)
-                    || (string)$subject->attributes()->relator !== 'aihe'
-                ) {
-                    continue;
-                }
-                if ($topic = $this->getDisplayLabel($subject, 'part', true, false)) {
-                    $topics[] = $topic[0];
+        $result = [];
+        if (!isset($record->controlaccess->{$nodeName})) {
+            return $result;
+        }
+
+        foreach ($record->controlaccess->{$nodeName} as $node) {
+            $attr = $node->attributes();
+            if ((!$relator || (string)$attr->relator === $relator)) {
+                if ($topic = $this->getDisplayLabel($node, 'part', true, false)) {
+                    $result[] = $topic[0];
                 }
             }
         }
-        return $topics;
+        return array_unique($result);
     }
-
+    
     /**
      * Return translated repository display name from metadata.
      *

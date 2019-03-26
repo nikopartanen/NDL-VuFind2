@@ -464,6 +464,13 @@ class RecordDataFormatterFactory
             ]
         );
         $setTemplateLine(
+            'Geographical Coverage', 'getGeographicalCoverage',
+            'data-allSubjectHeadings.phtml',
+            [
+                'context' => ['class' => 'recordGeographicCoverage']
+            ]
+        );
+        $setTemplateLine(
             'Manufacturer', 'getManufacturer', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'recordManufacturer']
