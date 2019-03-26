@@ -137,7 +137,7 @@ finna.record = (function finnaRecord() {
   }
 
   function setupLocationsEad3Tab() {
-    $('.holdings-container-heading').click(function onClickHeading(e) {
+    $('.holdings-container-heading').click(function onClickHeading() {
       $(this).nextUntil('.holdings-container-heading').toggleClass('collapsed');
       if ($('.location .fa', this).hasClass('fa-arrow-down')) {
         $('.location .fa', this).removeClass('fa-arrow-down');
@@ -146,7 +146,6 @@ finna.record = (function finnaRecord() {
       else {
         $('.location .fa', this).removeClass('fa-arrow-right');
         $('.location .fa', this).addClass('fa-arrow-down');
-        var rows = $(this).nextUntil('.holdings-container-heading');
       }
     });
   }
@@ -263,6 +262,9 @@ finna.record = (function finnaRecord() {
 
   function loadSimilarRecords()
   {
+    if ($('.similar-records').length === 0) {
+      return;
+    }
     $.getJSON(
       VuFind.path + '/AJAX/JSON',
       {
@@ -313,19 +315,6 @@ finna.record = (function finnaRecord() {
         $authority.removeClass('open');
         return false;
       });
-    });
-  }
-                            
-  function initWorkExpressions() {
-    $('.work-expressions .more-link.toggle').click(function moreClick() {
-      $('.work-expressions .list-group-item.hidden').addClass('was-hidden').removeClass('hidden');
-      $(this).addClass('hidden');
-      $('.work-expressions .less-link.toggle').removeClass('hidden');
-    });
-    $('.work-expressions .less-link.toggle').click(function lessClick() {
-      $('.work-expressions .list-group-item.was-hidden').removeClass('was-hidden').addClass('hidden');
-      $(this).addClass('hidden');
-      $('.work-expressions .more-link.toggle').removeClass('hidden');
     });
   }
 

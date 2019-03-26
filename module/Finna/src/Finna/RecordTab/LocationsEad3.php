@@ -4,7 +4,7 @@
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2018.
+ * Copyright (C) The National Library of Finland 2018-2019.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -62,7 +62,7 @@ class LocationsEad3 extends \VuFind\RecordTab\AbstractBase
      */
     public function isActive()
     {
-        if (empty($this->driver->getLocations())) {
+        if (empty($this->driver->tryMethod('getLocations'))) {
             $this->enabled = false;
         }
         return $this->enabled;

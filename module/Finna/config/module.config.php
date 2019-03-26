@@ -245,6 +245,7 @@ $config = [
             'Finna\ILS\Connection' => 'VuFind\ILS\ConnectionFactory',
             'Finna\LocationService\LocationService' => 'Finna\LocationService\LocationServiceFactory',
             'Finna\Mailer\Mailer' => 'VuFind\Mailer\Factory',
+            'Finna\OAI\Server' => 'VuFind\OAI\ServerFactory',
             'Finna\OnlinePayment\OnlinePayment' => 'Finna\OnlinePayment\OnlinePaymentFactory',
             'Finna\OnlinePayment\Session' => 'Finna\OnlinePayment\OnlinePaymentSessionFactory',
             'Finna\OrganisationInfo\OrganisationInfo' => 'Finna\OrganisationInfo\OrganisationInfoFactory',
@@ -273,6 +274,7 @@ $config = [
             'VuFind\Form\Form' => 'Finna\Form\Form',
             'VuFind\ILS\Connection' => 'Finna\ILS\Connection',
             'VuFind\Mailer\Mailer' => 'Finna\Mailer\Mailer',
+            'VuFind\OAI\Server' => 'Finna\OAI\Server',
             'VuFind\Record\Loader' => 'Finna\Record\Loader',
             'VuFind\RecordDriver\PluginManager' => 'Finna\RecordDriver\PluginManager',
             'VuFind\RecordTab\PluginManager' => 'Finna\RecordTab\PluginManager',
@@ -345,6 +347,8 @@ $config = [
                         'Finna\AjaxHandler\AbstractOnlinePaymentActionFactory',
                     'Finna\AjaxHandler\RegisterRemsUser' =>
                         'Finna\AjaxHandler\RegisterRemsUserFactory',
+                    'Finna\AjaxHandler\SystemStatus' =>
+                        'VuFind\AjaxHandler\SystemStatusFactory'
                 ],
                 'aliases' => [
                     'addToList' => 'Finna\AjaxHandler\AddToList',
@@ -377,6 +381,7 @@ $config = [
                     'VuFind\AjaxHandler\GetACSuggestions' => 'Finna\AjaxHandler\GetACSuggestions',
                     'VuFind\AjaxHandler\GetFacetData' => 'Finna\AjaxHandler\GetFacetData',
                     'VuFind\AjaxHandler\GetSideFacets' => 'Finna\AjaxHandler\GetSideFacets',
+                    'VuFind\AjaxHandler\SystemStatus' => 'Finna\AjaxHandler\SystemStatus',
                 ]
             ],
             'auth' => [
@@ -670,12 +675,14 @@ $config = [
             ],
             'related' => [
                 'factories' => [
+                    'Finna\Related\RecordDriverRelated' => 'Finna\Related\RecordDriverRelatedFactory',
                     'Finna\Related\Nothing' => 'Zend\ServiceManager\Factory\InvokableFactory',
                     'Finna\Related\SimilarDeferred' => 'Zend\ServiceManager\Factory\InvokableFactory',
                     'Finna\Related\WorkExpressions' => 'Finna\Related\WorkExpressionsFactory',
                 ],
                 'aliases' =>  [
                     'nothing' => 'Finna\Related\Nothing',
+                    'recorddriverrelated' => 'Finna\Related\RecordDriverRelated',
                     'similardeferred' => 'Finna\Related\SimilarDeferred',
                     'workexpressions' => 'Finna\Related\WorkExpressions',
                 ]

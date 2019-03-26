@@ -119,7 +119,7 @@ class Loader extends \VuFind\Record\Loader
         }
 
         if ($this->preferredLanguage) {
-            $result->setPreferredLanguage($this->preferredLanguage);
+            $result->tryMethod('setPreferredLanguage', [$this->preferredLanguage]);
         }
 
         return $result;

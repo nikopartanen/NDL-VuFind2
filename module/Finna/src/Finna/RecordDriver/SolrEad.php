@@ -192,7 +192,7 @@ class SolrEad extends \VuFind\RecordDriver\SolrDefault
      */
     public function getBibliographyNotes()
     {
-         $record = $this->getXmlRecord();
+        $record = $this->getXmlRecord();
         $bibliography = [];
         foreach ($record->xpath('//bibliography') as $node) {
             // Filter out Portti links since they're displayed in links
@@ -590,5 +590,26 @@ class SolrEad extends \VuFind\RecordDriver\SolrDefault
             return (string)$unitdate[0];
         }
         return '';
+    }
+
+    /**
+     * Return an XML representation of the record using the specified format.
+     * Return false if the format is unsupported.
+     *
+     * @param string     $format     Name of format to use (corresponds with OAI-PMH
+     * metadataPrefix parameter).
+     * @param string     $baseUrl    Base URL of host containing VuFind (optional;
+     * may be used to inject record URLs into XML when appropriate).
+     * @param RecordLink $recordLink Record link helper (optional; may be used to
+     * inject record URLs into XML when appropriate).
+     *
+     * @return mixed         XML, or false if format unsupported.
+     */
+    public function getXML($format, $baseUrl = null, $recordLink = null)
+    {
+        if ('oai_ead' === $format) {
+            return $this->fields['fullrecord'];
+        }
+        return parent::getXML($format, $baseUrl, $recordLink);
     }
 }

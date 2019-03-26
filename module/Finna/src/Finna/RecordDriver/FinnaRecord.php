@@ -133,6 +133,4 @@ trait FinnaRecord
     {
         return false;
     }
-
-    
 }

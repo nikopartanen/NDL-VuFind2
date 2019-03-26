@@ -5,7 +5,7 @@
  * PHP version 5
  *
  * Copyright (C) Villanova University 2010.
- * Copyright (C) The National Library of Finland 2012-2017.
+ * Copyright (C) The National Library of Finland 2012-2019.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -69,8 +69,6 @@ class SolrEad3 extends SolrEad
     /**
      * Return building from index.
      *
-     * @param string $language User language version (locale)
-     *
      * @return array
      */
     public function getBuilding()
@@ -127,71 +125,50 @@ class SolrEad3 extends SolrEad
      */
     public function getOrigination()
     {
-        $record = $this->getXmlRecord();
-        if (isset($record->did->origination)) {
-            foreach ($record->did->origination->name as $name) {
-                $localType = $name->attributes()->localType;
-                if ($localType === 'http://www.rdaregistry.info/Elements/u/P60672') {
-                    if ($name = $this->getDisplayLabel($name)) {
-                        return current($name);
-                    }
-                }
-            }
+        if ($origination = $this->getOriginationExtended()) {
+            return $origination['name'];
         }
-        return '';
+        return null;
     }
 
     /**
      * Get extended origination info
      *
-     * @return string
+     * @return array
      */
     public function getOriginationExtended()
     {
         $record = $this->getXmlRecord();
-        if (!isset($record->did->origination->name)
-            || !isset($record->did->origination->name->attributes()->identifier)
-        ) {
-            return false;
-        }
-        return [
-           'name' => $this->getOrigination(),
-           'id' => $record->did->origination->name->attributes()->identifier,
-           'type' => 'corporate-author-id'
-        ];
-    }
-
-    /**
-     * Return contributors
-     *
-     * @return array|null
-     */
-    public function getContributors()
-    {
-        $result = [];
-        $xml = $this->getXmlRecord();
-        if (!isset($xml->did->controlaccess->name)) {
-            return $result;
+        if (!isset($record->relations->relation)) {
+            return null;
         }
 
-        foreach ($xml->did->controlaccess->name as $name) {
-            $data = [
-               'id' => $name->attributes()->identifier,
-               'type' => 'author-id',
-               'role' => $name->attributes()->relator
-            ];
-            if (isset($name->part)) {
-                foreach ($name->part as $part) {
-                    if ($part->attributes()->localtype == 'Ensisijainen nimi') {
-                        // Assume first entry is the current name
-                        $data['name'] = (string)$part;
-                        $result[] = $data;
-                        break;
-                    }
+        foreach ($record->relations->relation as $relation) {
+            $attr = $relation->attributes();
+            foreach (['relationtype', 'href', 'arcrole'] as $key) {
+                if (!isset($attr->{$key})) {
+                    continue;
                 }
             }
+            if ((string)$attr->relationtype !== 'cpfrelation'
+                || (string)$attr->arcrole !== 'Arkistonmuodostaja'
+            ) {
+                continue;
+            }
+
+            $name = $this->getDisplayLabel($relation, 'relationentry');
+            if (!$name || !$name[0]) {
+                $name = $this->getOrigination();
+            }
+
+            return [
+                'name' => $name[0],
+                'id' => (string)$attr->href,
+                'type' => 'author-id'
+            ];
         }
-        return $result;
+
+        return null;
     }
 
     /**
@@ -207,63 +184,33 @@ class SolrEad3 extends SolrEad
             return $result;
         }
 
-        foreach ($xml->relations->relation as $relation) {
-            $type = (string)$relation->attributes()->relationtype;
-            if ('cpfrelation' !== $type) {
+        foreach ($xml->controlaccess->name as $node) {
+            $attr = $node->attributes();
+            $relator = (string)$attr->relator;
+            if ($relator === 'Arkistonmuodostaja') {
                 continue;
             }
-            $role = '';
-            $arcRole = trim((string)$relation->attributes()->arcrole);
-            if ($arcRole === 'Arkistonmuodostaja') {
+            $role = $this->translateRole((string)$attr->localtype, $relator);
+            $name = $this->getDisplayLabel($node);
+            if (empty($name) || !$name[0]) {
                 continue;
             }
-            /*
-            switch ($arcRole) {
-            case '':
-            case 'http://www.rdaregistry.info/Elements/u/P60672':
-                $role = 'pro';
-                break;
-            case 'http://www.rdaregistry.info/Elements/u/P60434':
-                $role = 'spk';
-                break;
-            case 'http://www.rdaregistry.info/Elements/u/P60444':
-                $role = 'aut';
-                break;
-            case 'http://www.rdaregistry.info/Elements/u/P60429':
-                $role = 'rcd';
-                break;
-            case 'http://www.rdaregistry.info/Elements/u/P60434':
-                $role = 'drt';
-                break;
-            default:
-            }
-            if ('' === $role) {
-                continue;
-                }*/
-
             $result[] = [
-               'id' => (string)$relation->attributes()->href,
+               'id' => (string)$node->attributes()->identifier,
                'type' => 'author-id',
-               'role' => $arcRole,
-               'name' => current($this->getDisplayLabel($relation, 'relationentry'))
+               'role' => $role,
+               'name' => $name[0]
             ];
         }
-        
-        
+
         return $result;
     }
 
-    
-    public function getRelatedItems()
-    {
-        return [
-            'parents' => ['ahaa-ng.EAD_6336445_87831063', 'fsd.FSD_ess'],
-            'children' => ['ahaa-ng.EAD_6336445_87831063', 'fsd.FSD_ess'],
-            'continued-from' => ['ahaa-ng.EAD_6336445_87831063', 'fsd.FSD_ess'],
-            'other' => ['ahaa-ng.EAD_6336445_87831063', 'fsd.FSD_ess']
-        ];
-    }
-
+    /**
+     * Get location info to be used in LoacationsEad3-record page tab.
+     *
+     * @return array
+     */
     public function getLocations()
     {
         $xml = $this->getXmlRecord();
@@ -273,13 +220,13 @@ class SolrEad3 extends SolrEad
 
         $result = [];
         foreach ($xml->altformavail->altformavail as $altform) {
-            $id = $altform->attributes()->id;
-            $owner = $label = $serviceLocation = null;
+            $id = (string)$altform->attributes()->id;
+            $owner = $label = $serviceLocation = $itemType = null;
             foreach ($altform->list->defitem as $defitem) {
                 $type = $defitem->label;
                 $val = (string)$defitem->item;
-                switch($type) {
-                case 'Tekninen tyyppi':
+                switch ($type) {
+                case 'Tallennusalusta':
                     $label = $val;
                     break;
                 case 'Säilyttävä toimipiste':
@@ -288,10 +235,17 @@ class SolrEad3 extends SolrEad
                 case 'Tietopalvelun tarjoamispaikka':
                     $serviceLocation = $val;
                     break;
+                case 'Tekninen tyyppi':
+                    $itemType = $val;
+                    break;
                 }
             }
-            
-            if (!$id || !$owner || !$label) {
+
+            if (!$owner) {
+                $owner = $serviceLocation;
+            }
+
+            if (!$id || !$owner || !$label || $itemType !== 'Analoginen') {
                 continue;
             }
 
@@ -309,6 +263,11 @@ class SolrEad3 extends SolrEad
         return $result;
     }
 
+    /**
+     * Get unit ids
+     *
+     * @return string[]
+     */
     public function getUnitIds()
     {
         $xml = $this->getXmlRecord();
@@ -322,10 +281,12 @@ class SolrEad3 extends SolrEad
             $val = (string)$id;
             if (!$val) {
                 $val = (string)$id->attributes()->identifier;
+                $label = 'unique';
             }
             if (!$label || !$val) {
                 continue;
             }
+            $label = $this->translate("Unit ID:$label");
             $ids[$label] = $val;
         }
 
@@ -368,6 +329,29 @@ class SolrEad3 extends SolrEad
         return parent::getSummary();
     }
 
+    /**
+     * Get identifier
+     *
+     * @return array
+     */
+    public function getIdentifier()
+    {
+        $xml = $this->getXmlRecord();
+        if (isset($xml->did->unitid)) {
+            foreach ($xml->did->unitid as $unitId) {
+                if (isset($unitId->attributes()->identifier)) {
+                    return [(string)$unitId->attributes()->identifier];
+                }
+            }
+        }
+        return [];
+    }
+
+    /**
+     * Get item history
+     *
+     * @return null|string
+     */
     public function getItemHistory()
     {
         $xml = $this->getXmlRecord();
@@ -386,7 +370,7 @@ class SolrEad3 extends SolrEad
         }
         return null;
     }
-    
+
     /**
      * Return an array of image URLs associated with this record with keys:
      * - urls        Image URLs
@@ -420,7 +404,7 @@ class SolrEad3 extends SolrEad
                     continue;
                 }
 
-                $href = (string)$attr->href; 
+                $href = (string)$attr->href;
                 $result[] = [
                     'urls' => ['small' => $href, 'medium' => $href],
                     'description' => (string)$attr->linktitle,
@@ -447,7 +431,11 @@ class SolrEad3 extends SolrEad
         return $this->getDisplayLabel($xml->did, 'physdesc', true);
     }
 
-    // TODO rename
+    /**
+     * Get description of content.
+     *
+     * @return string
+     */
     public function getContentDescription()
     {
         $xml = $this->getXmlRecord();
@@ -457,45 +445,38 @@ class SolrEad3 extends SolrEad
 
         foreach ($xml->controlaccess->genreform as $genre) {
             if (! isset($genre->attributes()->encodinganalog)
-                || (string)$genre->attributes()->encodinganalog !== 'ahaa:AI46') {
+                || (string)$genre->attributes()->encodinganalog !== 'ahaa:AI46'
+            ) {
                 continue;
             }
-            return $this->getDisplayLabel($genre);
+            if ($label = $this->getDisplayLabel($genre)) {
+                return $label[0];
+            }
         }
 
-        return [];
+        return null;
     }
-    
+
+    /**
+     * Get the statement of responsibility that goes with the title (i.e. "by John
+     * Smith").
+     *
+     * @return string
+     */
     public function getTitleStatement()
     {
         $xml = $this->getXmlRecord();
         if (!isset($xml->bibliography->p)) {
             return null;
         }
-        return current($this->getDisplayLabel($xml->bibliography, 'p', true));
+        $label = $this->getDisplayLabel($xml->bibliography, 'p', true);
+        return $label ? $label[0] : null;
     }
 
-    // TODO rename this
-    public function getAccessRestrictGranter()
-    {
-        $xml = $this->getXmlRecord();
-        if (!isset($xml->accessrestrict->p)) {
-            return [];
-        }
-        $restrictions = [];
-        foreach ($xml->accessrestrict as $access) {
-            if (isset($access->attributes()->encodinganalog) && in_array($access->attributes()->encodinganalog, ['ahaa:KR7'])
-                && isset($access->p->name)
-            ) {
-                return $this->getDisplayLabel($access->p->name, 'part', true);
-            }
-        }
-    }
-        
     /**
-     * Get access restriction notes for the record.
+     * Get extended access restriction notes for the record.
      *
-     * @return string[] Notes
+     * @return string[]
      */
     public function getExtendedAccessRestrictions()
     {
@@ -504,7 +485,10 @@ class SolrEad3 extends SolrEad
             return [];
         }
         $restrictions = [];
-        $types = ['general', 'ahaa:KR5', 'ahaa:KR7', 'ahaa:KR9', 'ahaa:KR4', 'ahaa:KR3', 'ahaa:KR1'];
+        $types = [
+            'general',
+            'ahaa:KR5', 'ahaa:KR7', 'ahaa:KR9', 'ahaa:KR4', 'ahaa:KR3', 'ahaa:KR1'
+        ];
         foreach ($types as $type) {
             $restrictions[$type] = [];
         }
@@ -620,7 +604,7 @@ class SolrEad3 extends SolrEad
         $headings = [];
         $headings = $this->getTopics();
 
-        foreach (['geographic', 'genre', 'era'] as $field) {           
+        foreach (['geographic', 'genre', 'era'] as $field) {
             if (isset($this->fields[$field])) {
                 $headings = array_merge($headings, $this->fields[$field]);
             }
@@ -663,6 +647,65 @@ class SolrEad3 extends SolrEad
         return $unitdate;
     }
 
+    /**
+     * Get related records (used by RecordDriverRelated - Related module)
+     *
+     * Returns an associative array of record ids.
+     * The array may contain the following keys:
+     *   - parents
+     *   - children
+     *   - continued-from
+     *   - other
+     *
+     * @return array
+     */
+    public function getRelatedItems()
+    {
+        $record = $this->getXmlRecord();
+
+        if (!isset($record->relations->relation)) {
+            return [];
+        }
+
+        $relationMap = [
+            'On jatkoa' => 'continued-from',
+            'Sisältyy' => 'part-of',
+            'Sisältää' => 'contains',
+            'Katso myös' => 'see-also'
+        ];
+
+        $relations = [];
+        foreach ($record->relations->relation as $relation) {
+            $attr = $relation->attributes();
+            foreach (['encodinganalog', 'relationtype', 'href', 'arcrole'] as $key) {
+                if (!isset($attr->{$key})) {
+                    continue 2;
+                }
+            }
+            if ((string)$attr->encodinganalog !== 'ahaa:AI30'
+                || (string)$attr->relationtype !== 'resourcerelation'
+            ) {
+                continue;
+            }
+            $role = (string)$attr->arcrole;
+            if (!isset($relationMap[$role])) {
+                continue;
+            }
+            $role = $relationMap[$role];
+            if (!isset($relations[$role])) {
+                $relations[$role] = [];
+            }
+            $relations[$role][] = (string)$attr->href;
+        }
+
+        return $relations;
+    }
+
+    /**
+     * Get topics.
+     *
+     * @return string[]
+     */
     protected function getTopics()
     {
         $record = $this->getXmlRecord();
@@ -682,7 +725,6 @@ class SolrEad3 extends SolrEad
         }
         return $topics;
     }
-    
     /**
      * Return translated repository display name from metadata.
      *
@@ -695,18 +737,30 @@ class SolrEad3 extends SolrEad
         if (isset($record->did->repository->corpname)) {
             foreach ($record->did->repository->corpname as $corpname) {
                 if ($name = $this->getDisplayLabel($corpname, 'part', true)) {
-                    return current($name);
+                    return $name[0];
                 }
             }
         }
         return null;
     }
 
+    /**
+     * Helper function for returning a specific language version of a display label.
+     *
+     * @param SimpleXMLElement $node                  XML node
+     * @param string           $childNodeName         Name of the child node that
+     * contains the display label.
+     * @param bool             $obeyPreferredLanguage If true, returns the
+     * translation that corresponds with the current locale.
+     * If false, the default language version 'fin' is returned. If not found,
+     * the first display label is retured.
+     *
+     * @return string[]
+     */
     protected function getDisplayLabel(
         $node,
         $childNodeName = 'part',
-        $obeyPreferredLanguage = false,
-        $getLanguageFromChildNode = true
+        $obeyPreferredLanguage = false
     ) {
         if (! isset($node->$childNodeName)) {
             return null;
@@ -726,20 +780,15 @@ class SolrEad3 extends SolrEad
                'preferred' => $language === $lang
             ];
         };
-        
         $allResults = [];
         $defaultLanguageResults = [];
         $languageResults = [];
-        $lang = null;
-        if (!$getLanguageFromChildNode) {
-            $lang = $getTermLanguage($node);
-        }
-
+        $lang = $getTermLanguage($node);
+        $resolveLangFromChildNode = $lang === null;
         foreach ($node->{$childNodeName} as $child) {
             $name = trim((string)$child);
             $allResults[] = $name;
-
-            if ($getLanguageFromChildNode) {
+            if ($resolveLangFromChildNode) {
                 foreach ($child->attributes() as $key => $val) {
                     $lang = $getTermLanguage($child);
                     if ($lang) {
@@ -754,7 +803,6 @@ class SolrEad3 extends SolrEad
                 $languageResults[] = $name;
             }
         }
-        
         if ($obeyPreferredLanguage) {
             return $languageResults;
         }
@@ -778,5 +826,47 @@ class SolrEad3 extends SolrEad
     {
         $langMap = ['fi' => 'fin', 'sv' => 'swe', 'en-gb' => 'eng'];
         return $langMap[$languageCode] ?? $languageCode;
+    }
+
+    /**
+     * Get role translation key
+     *
+     * @param string $role     EAD3 role
+     * @param string $fallback Fallback to use when no supported role is found
+     *
+     * @return string Translation key
+     */
+    protected function translateRole($role, $fallback = null)
+    {
+        // Map EAD3 roles to CreatorRole translations
+        $roleMap = [
+            'http://rdaregistry.info/Elements/e/P20047' => 'ive',
+            'http://rdaregistry.info/Elements/e/P20032' => 'ivr',
+            'http://rdaregistry.info/Elements/w/P10046' => 'pbl',
+            'http://www.rdaregistry.info/Elements/w/#P10311' => 'fac',
+            'http://rdaregistry.info/Elements/e/P20042' => 'ctg',
+            'http://rdaregistry.info/Elements/a/P50190' => 'cng',
+            'http://rdaregistry.info/Elements/w/P10058' => 'art',
+            'http://rdaregistry.info/Elements/w/P10066' => 'drt',
+            'http://rdaregistry.info/Elements/e/P20033' => 'drm',
+            'http://rdaregistry.info/Elements/e/P20024' => 'spk',
+            'http://rdaregistry.info/Elements/w/P10204' => 'lyr',
+            'http://rdaregistry.info/Elements/e/P20029' => 'arr',
+            'http://rdaregistry.info/Elements/w/P10053' => 'cmp',
+            'http://rdaregistry.info/Elements/w/P10065' => 'aut',
+            'http://rdaregistry.info/Elements/w/P10298' => 'edt',
+            'http://rdaregistry.info/Elements/w/P10064' => 'pro',
+            'http://www.rdaregistry.info/Elements/u/P60429' => 'pht',
+            'http://www.rdaregistry.info/Elements/e/#P20052' => 'rpy',
+            'http://rdaregistry.info/Elements/w/P10304' => 'rpy',
+
+            'http://rdaregistry.info/Elements/w/P10061' => 'rda:per',
+            'http://rdaregistry.info/Elements/w/P10061' => 'rda:host',
+            'http://rdaregistry.info/Elements/w/P10061' => 'rda:writer',
+            'http://rdaregistry.info/Elements/a/P50045' => 'rda:collector',
+            'http://www.rdaregistry.info/Elements/i/#P40019' => 'rda:former-owner'
+        ];
+
+        return $roleMap[$role] ?? $fallback;
     }
 }

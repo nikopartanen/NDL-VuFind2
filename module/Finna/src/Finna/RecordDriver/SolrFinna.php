@@ -826,7 +826,14 @@ trait SolrFinna
     }
 
     /**
-     * Get related records.
+     * Get related records (used by RecordDriverRelated - Related module)
+     *
+     * Returns an associative array of record ids.
+     * The array may contain the following keys:
+     *   - parents
+     *   - children
+     *   - continued-from
+     *   - other
      *
      * @return array
      */
@@ -834,7 +841,7 @@ trait SolrFinna
     {
         return [];
     }
-    
+
     /**
      * Get work identification keys
      *
