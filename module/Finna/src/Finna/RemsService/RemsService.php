@@ -297,7 +297,7 @@ class RemsService
     protected function sendRequest(
         $url, $params = [], $method = 'GET', $adminAction = false, $body = null
     ) {
-        $userId = $adminAction ? $this->config->apiAdminUser : $this->getUserId();
+        $userId = $adminAction ? $this->config->General->apiAdminUser : $this->getUserId();
 
         $contentType = $body['contentType'] ?? 'application/json';
         
@@ -358,7 +358,7 @@ class RemsService
         $userId, $url, $method = 'GET', $bodyParams = [],
         $contentType = 'application/json'
     ) {
-        $url = $this->config->apiUrl . '/' . $url;
+        $url = $this->config->General->apiUrl . '/' . $url;
 
         $client = $this->httpService->createClient($url);
         $client->setOptions(['timeout' => 30, 'useragent' => 'Finna']);
@@ -366,7 +366,7 @@ class RemsService
         $headers->addHeaderLine(
             'Accept', 'application/json'
         );
-        $headers->addHeaderLine('x-rems-api-key', $this->config->apiKey);
+        $headers->addHeaderLine('x-rems-api-key', $this->config->General->apiKey);
         $headers->addHeaderLine('x-rems-user-id', $userId);
 
 
@@ -417,7 +417,7 @@ class RemsService
      */
     protected function getCatalogItemId($type = 'registration')
     {
-        return (int)$this->config->catalogItem[$type] ?? null;
+        return (int)$this->config->General->catalogItem[$type] ?? null;
     }
     
     /**
