@@ -177,10 +177,6 @@ class RemsService
         }
 
         $this->savePermissionToSession(
-            RemsService::STATUS_APPROVED,
-            $this->getSessionKey($this->getCatalogItemId('registration'))
-        );
-        $this->savePermissionToSession(
             null, $this->getSessionKey($this->getCatalogItemId('entitlement'))
         );
 
