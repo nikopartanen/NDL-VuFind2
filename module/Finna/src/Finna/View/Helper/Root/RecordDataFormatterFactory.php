@@ -85,7 +85,6 @@ class RecordDataFormatterFactory
                 $spec->setTemplateLine($key, $dataMethod, $template, $options);
             }
         }
-
         return $spec->getArray();
     }
 

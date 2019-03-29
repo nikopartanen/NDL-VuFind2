@@ -725,6 +725,7 @@ class SolrEad3 extends SolrEad
         }
         return $topics;
     }
+
     /**
      * Return translated repository display name from metadata.
      *
@@ -780,6 +781,7 @@ class SolrEad3 extends SolrEad
                'preferred' => $language === $lang
             ];
         };
+
         $allResults = [];
         $defaultLanguageResults = [];
         $languageResults = [];
