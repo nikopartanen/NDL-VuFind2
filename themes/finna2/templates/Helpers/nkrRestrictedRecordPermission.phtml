@@ -54,7 +54,7 @@ JS;
   <? endif; ?>
 <? endif; ?>
 
-<?php if ($autoOpen): ?>
+<?php if ($autoOpen && $this->status === null): ?>
   <?php    
   $setupJS .= <<<JS
 $(document).ready(function() {
