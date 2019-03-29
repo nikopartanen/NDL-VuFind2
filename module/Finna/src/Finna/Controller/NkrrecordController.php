@@ -1,6 +1,6 @@
 <?php
 /**
- * NKR Record Controller
+ * Nkr Record Controller
  *
  * PHP version 7
  *
@@ -28,7 +28,7 @@
 namespace Finna\Controller;
 
 /**
- * NKR Record Controller
+ * Nkr Record Controller
  *
  * @category VuFind
  * @package  Controller
@@ -38,7 +38,7 @@ namespace Finna\Controller;
  */
 class NkrrecordController extends RecordController
 {
-    use \Finna\Controller\NkrrecordControllerTrait;
+    use \Finna\Controller\NkrControllerTrait;
 
     /**
      * Type of record to display
@@ -47,6 +47,11 @@ class NkrrecordController extends RecordController
      */
     protected $searchClassId = 'Nkr';
 
+    /**
+     * Home (default) action -- forward to requested (or default) tab.
+     *
+     * @return mixed
+     */
     public function homeAction()
     {
         $view = parent::homeAction();
@@ -79,7 +84,18 @@ class NkrrecordController extends RecordController
      */
     public function loadRecordWithRestrictedData()
     {
-        $params = ['foo' => 'bar'];
+        $params = [];
+        try {
+            $response = $this->permission()->check('finna.authorized', false);
+            // TODO verify
+            if ($response === null) {
+                if ($user = $this->getUser()) {
+                    $params['user'] = $user->username;
+                }
+            }
+        } catch (\Exception $e) {
+        }
+        
         $recordLoader
             = $this->serviceLocator->build('VuFind\Record\Loader', $params);
 

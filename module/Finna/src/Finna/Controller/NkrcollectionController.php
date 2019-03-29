@@ -47,6 +47,11 @@ class NkrcollectionController extends CollectionController
      */
     protected $searchClassId = 'Nkr';
 
+    /**
+     * Home (default) action -- forward to requested (or default) tab.
+     *
+     * @return mixed
+     */
     public function homeAction()
     {
         $view = parent::homeAction();

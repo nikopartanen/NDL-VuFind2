@@ -27,6 +27,7 @@
  */
 namespace Finna\RemsService;
 
+use VuFind\Auth\Manager;
 use Zend\Config\Config;
 use Zend\Session\Container;
 
@@ -53,6 +54,7 @@ class RemsService
     const STATUS_NOT_SUBMITTED = 'not-submitted';
     const STATUS_SUBMITTED = 'submitted';
     const STATUS_CLOSED = 'closed';
+    const STATUS_DRAFT = 'draft';
     
     /**
      * Configuration
@@ -61,159 +63,305 @@ class RemsService
      */
     protected $config;
 
-    protected $url;
-
+    /**
+     * Session container
+     *
+     * @var Container
+     */
     protected $session;
 
-    const USER_ID = 'RDapplicant1@funet.fi';
+    /**
+     * Auth manager
+     *
+     * @var Manager
+     */
+    protected $auth;
     
     /**
      * Constructor.
      *
      * @param Config         $config  Configuration
      * @param SessionManager $session Session container
+     * @param Manager        $auth    Auth manager
      */
     public function __construct(
-        Config $config, Container $session = null
+        Config $config, Container $session = null, Manager $auth
     ) {
         $this->config = $config;
         $this->session = $session;
+        $this->auth = $auth;
     }
 
-    public function registerUser($userId, $email, $name)
-    {
-        $userId = RemsService::USER_ID;
-
-        $params = ['eppn' => $userId, 'mail' => $email, 'commonName' => $name];
-        $client = $this->getClient(
-            $this->config->apiAdminUser, 'users/create', 'POST', $params
-        );
-        $response = $client->send();
-        $response = json_decode($response->getBody(), true);
-        $success = $response['success'] ?? false;
-
-        if (! $success) {
-            return ['success' => false];
+    /**
+     * Register user to REMS
+     *
+     * @param string $email     Email
+     * @param string $firstname First name
+     * @param string $lastname  Last name
+     *
+     * @return bool 
+     */
+    public function registerUser(
+        $email, $firstname = null, $lastname = null
+    ) {
+        $commonName = $firstname;
+        if ($lastname) {
+            $commonName = $commonName ? " $lastname" : $lastname;
         }
+        
+        // 1. Create user
+        $params = [
+            'eppn' => $this->getUserId(),
+            'mail' => $email,
+            'commonName' => $commonName
+        ];
+        try {
+            $this->sendRequest('users/create', $params, 'POST', true);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+        
+        // 2. Create draft application
+        $catItemId = $this->getCatalogItemId('entitlement');
+        $params = ['catalogue-item-ids' => [$catItemId]];
 
+        try {
+            $response
+                = $this->sendRequest('v2/applications/create', $params, 'POST');
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+        if (!isset($response['application-id'])) {
+            return 'REMS: error creating draft application';
+        }
+        $applicationId = $response['application-id'];
+
+
+        // 3. Save draft
+        
+        /*
         $params =  [
             'command' => 'submit',
-            'catalogue-items' => [$this->getCatalogItemId()],
+            'catalogue-items' => [$this->getCatalogItemId('registration')],
             'items' =>  ['1' => 'Test 1', '2' => 'Test 2'],
             'licenses' => ['1' => 'approved', '2' => 'approved']
         ];
-
+        
         $client = $this->getClient($userId, 'applications/save', 'POST', $params);
-        $response = $client->send();
-        $response = json_decode($response->getBody(), true);
+        */
 
-        $success = $response['success'] ?? false;
         
-        if ($success && isset($response['state'])) {
-            $status = $this->mapRemsStatus($response['state']);
-            $this->savePermissionToSession($status);
+        // TODO: use transit for now...
+        $body = '["^ ","~:type","~:rems.workflow.dynamic/save-draft","~:application-id",' . $applicationId . ',"~:field-values",["^ ","~i1","test","~i2","test","~i3","","~i4","","~i5","","~i6","","~i7","","~i8",""],"~:accepted-licenses",["~#set",[1,2]]]';
+        
+        try {
+            $response = $this->sendRequest(
+                'applications/command', $params, 'POST', false,
+                ['contentType' => 'application/transit+json', 'content' => $body]
+            );
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
-        
-        return $success;
+
+        // 4. Submit application
+        $params = [
+             'type' => 'rems.workflow.dynamic/submit',
+             'application-id' => $applicationId
+        ];
+        try {
+            $response = $this->sendRequest(
+                'applications/command', $params, 'POST'
+            );
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+        $this->savePermissionToSession(
+            RemsService::STATUS_APPROVED,
+            $this->getSessionKey($this->getCatalogItemId('registration'))
+        );
+        $this->savePermissionToSession(
+            null, $this->getSessionKey($this->getCatalogItemId('entitlement'))
+        );
+
+        return true;        
     }
 
-    public function checkPermission($userId, $callApi = false)
+    /**
+     * Check permission
+     *
+     * @param bool $callApi Call REMS API if permission is not already
+     * checked and saved to session.
+     *
+     * @return bool 
+     */
+    public function checkPermission($callApi = false)
     {
-        //return RemsService::STATUS_APPROVED;
-        
-        $userId = RemsService::USER_ID;
-
-        $catItemId = $this->getCatalogItemId();
+        $catItemId = $this->getCatalogItemId('entitlement');
         $sessionKey = $this->getSessionKey($catItemId);
-        $status = null;
-        $error = false;
         
-        if (isset($this->session->{$sessionKey})) {
+        if (!$callApi && isset($this->session->{$sessionKey})) {
             return $this->session->{$sessionKey};
         } elseif (!$callApi) {
             return null;
         }
 
-        if ($callApi) {
-            try {
-                $result = $this->sendRequest('applications', $userId);
+        try {
+            $applications = $this->getApplications();
+            $status = RemsService::STATUS_NOT_SUBMITTED;
 
-                $status = RemsService::STATUS_NOT_SUBMITTED;
-                foreach ($result as $application) {
-                    $application = $application;
-                    $catItemFound = false;
-                    if (isset($application['catalogue-items'])) {
-                        foreach ($application['catalogue-items'] as $catItem) {
-                            if ($catItem['id'] === $catItemId) {
-                                $catItemFound = true;
-                                break;
-                            }
-                        }
-                    }
-                    
-                    if ($catItemFound) {
-                        $status = $application['state'];
-                        $status = $this->mapRemsStatus($status);
-                        if ($status === RemsService::STATUS_APPROVED) {
-                            break;
-                        }
+            foreach ($applications as $application) {
+                if ($application['catalogItemId'] !== $catItemId) {
+                    continue;
+                }
+                if (isset($application['status'])) {
+                    $appStatus = $application['status'];
+                    switch($appStatus) {
+                    case RemsService::STATUS_SUBMITTED:
+                        $status = $appStatus;
+                        break;
+                    case RemsService::STATUS_APPROVED:
+                        $status = $appStatus;
+                        break 2;
                     }
                 }
-                //$status = RemsService::STATUS_CLOSED;
-                $this->savePermissionToSession($status);
-
-                return $status;
-            } catch (\Exception $e) {
-                return $e->getMessage();
             }
+
+            //die("save: $status");
+            $this->savePermissionToSession($status, $sessionKey);
+            return $status;
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
 
         return null;
     }
 
-    protected function sendRequest($url, $userId, $method = 'GET')
+    /**
+     * Return applications
+     *
+     * @param string $locale Local for title
+     *
+     * @return array
+     */
+    public function getApplications($locale = 'fi')
     {
-        $client = $this->getClient($userId, $url, $method);
+        $result = $this->sendRequest('v2/applications');
+        $catItemId = $this->getCatalogItemId('entitlement');
+
+        $applications = [];
+        foreach ($result as $application) {
+            $data = ['id' => $catItemId];
+            $catalogItemId = $catItemId;
+            $id = $application['application/id'];
+            $status = $application['application/workflow']
+                ['workflow.dynamic/state'] ?? null;
+            $status = $this->mapRemsStatus($status);
+            $created = $application['application/created'] ?? null;
+            $modified = $application['application/modified'] ?? null;
+            foreach ($application['application/resources'] as $catItem) {
+                if ($catItem['catalogue-item/id'] === $catItemId) {
+                    $titles = $catItem['catalogue-item/title'];
+                    $title = $titles[$locale] ?? $titles['fi'];
+                    break;
+                }
+            }
+            $applications[]
+                = compact('id', 'catalogItemId', 'status', 'created', 'modified');
+        }
+
+        return $applications;
+    }
+    
+    /**
+     * Return REMS user id (eppn) of the current authenticated user.
+     *
+     * @return string 
+     */
+    protected function getUserId()
+    {
+        // TODO remove organisation prefix?
+        if (!$user = $this->auth->isLoggedIn()) {
+            throw new Exception('REMS: user not logged');
+        }
+        return $user->username;
+    }
+    
+    /**
+     * Send a request to REMS api.
+     *
+     * @param string $url         URL (relative)
+     * @param array  $params      Request parameters
+     * @param string $method      GET|POST
+     * @param bool   $adminAction Use admin API user id?
+     * @param string $body        Request body
+     *
+     * @return bool 
+     */
+    protected function sendRequest(
+        $url, $params = [], $method = 'GET', $adminAction = false, $body = null
+    ) {
+        $userId = $adminAction ? $this->config->apiAdminUser : $this->getUserId();
+
+        $contentType = $body['contentType'] ?? 'application/json';
+        
+        $client = $this->getClient($userId, $url, $method, $params, $contentType);
+        if (isset($body['content'])) {
+            $client->setRawBody($body['content']);
+        }
+
+        $formatError = function ($response) use ($client, $params) {
+            $err = "RMS: request failed: " . $client->getRequest()->getUriString()
+            . ', params: ' . var_export($params, true)
+            . ', statusCode: ' . $response->getStatusCode() . ': '
+            . $response->getReasonPhrase()
+            . ', response content: ' . $response->getBody();
+
+            return $err;
+        };
+        
         try {
             $response = $client->send();
         } catch (\Exception $e) {
-            $this->error(
-                "REMS request for '$url' failed: " . $e->getMessage()
-            );
-            return "err: " . $e->getMessage();
-            throw new \Exception('Problem calling REMS API');
-        }
-        if (!$response->isSuccess()) {
-            if (in_array((int)$response->getStatusCode(), [401, 403])) {
-                return false;
-            }
-            $this->error(
-                "Request for '" . $client->getRequest()->getUriString()
-                . "' did not succeed: "
-                . $response->getStatusCode() . ': '
-                . $response->getReasonPhrase()
-                . ', response content: ' . $response->getBody()
-            );
-
-            return "Request for '" . $client->getRequest()->getUriString()
-                . "' did not succeed: "
-                . $response->getStatusCode() . ': '
-                . $response->getReasonPhrase()
-                . ', response content: ' . $response->getBody();
-
-            throw new \Exception('Problem calling REMS API');
+            $err = $formatError($response);
+            $this->error($err);
+            throw new \Exception($err);
         }
 
-        return json_decode($response->getBody(), true);
+        $err = $formatError($response);
+
+        if (!$response->isSuccess() || $response->getStatusCode() !== 200) {
+            $this->error($err);
+            throw new \Exception($err);
+        }
+
+        $response = json_decode($response->getBody(), true);
+        // Verify 'success' field for POST requests
+        if ($method === 'POST'
+            && (!isset($response['success']) || !$response['success'])
+        ) {
+            $this->error($err);
+            throw new \Exception($err);
+        }
+
+        return $response;
     }
 
-    protected function getSessionKey($permissionId)
-    {
-        return "permission-$permissionId";
-    }
-
-    protected function getClient($userId, $url, $method = 'GET', $bodyParams = [])
-    {
+    /**
+     * Return HTTP client
+     *
+     * @param string $userId      User Id
+     * @param string $url         URL (relative)
+     * @param string $method      GET|POST
+     * @param array  $bodyParams  Body parameters
+     * @param string $contentType Content-Type
+     *
+     * @return string
+     */
+    protected function getClient(
+        $userId, $url, $method = 'GET', $bodyParams = [],
+        $contentType = 'application/json'
+    ) {
         $url = $this->config->apiUrl . '/' . $url;
 
         $client = $this->httpService->createClient($url);
@@ -228,24 +376,61 @@ class RemsService
 
         $body = json_encode($bodyParams);
         $client->setRawBody($body);
-        $client->getRequest()->getHeaders()->addHeaderLine('Content-type', 'application/json');
+        $client->getRequest()->getHeaders()
+            ->addHeaderLine('Content-Type', $contentType);
         
         $client->setMethod($method);
         return $client;
     }
 
-    protected function savePermissionToSession($status)
+    /**
+     * Return session key for a permission
+     *
+     * @param int $permissionId Id
+     *
+     * @return string
+     */
+    protected function getSessionKey($permissionId)
     {
-        $catItemId = $this->getCatalogItemId();
-        $sessionKey = $this->getSessionKey($catItemId);
-        $this->session->{$sessionKey} = $status;
+        return "permission-$permissionId";
     }
 
-    protected function getCatalogItemId()
+    /**
+     * Save permission to session
+     *
+     * @param string $status     Permission status
+     * @param string $sessionKey Session key
+     *
+     * @return void
+     */
+    protected function savePermissionToSession($status, $sessionKey)
     {
-        return (int)$this->config->catalogItemId;
+        if ($status === null) {
+            unset($this->session->{$sessionKey});
+        } else {
+            $this->session->{$sessionKey} = $status;
+        }
     }
 
+    /**
+     * Get REMS catalogue item id from configuration
+     *
+     * @param string $type Catalogue item type
+     *
+     * @return string|null
+     */
+    protected function getCatalogItemId($type = 'registration')
+    {
+        return (int)$this->config->catalogItem[$type] ?? null;
+    }
+    
+    /**
+     * Map REMS application status
+     *
+     * @param string $remsStatus REMS status
+     *
+     * @return string
+     */
     protected function mapRemsStatus($remsStatus)
     {
         $statusMap = [
@@ -256,7 +441,8 @@ class RemsService
             'rems.workflow.dynamic/submitted'
                 => RemsService::STATUS_SUBMITTED,
             'closed' => RemsService::STATUS_CLOSED,
-            'rems.workflow.dynamic/closed' => RemsService::STATUS_CLOSED
+            'rems.workflow.dynamic/closed' => RemsService::STATUS_CLOSED,
+            'rems.workflow.dynamic/draft' => RemsService::STATUS_DRAFT
          ];
 
         return $statusMap[$remsStatus] ?? 'unknown';

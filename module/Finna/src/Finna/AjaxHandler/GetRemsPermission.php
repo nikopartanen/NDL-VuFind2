@@ -75,6 +75,6 @@ class GetRemsPermission extends \VuFind\AjaxHandler\AbstractBase
             return $this->formatResponse('', self::STATUS_HTTP_BAD_REQUEST);
         }
 
-        return $this->formatResponse($this->rems->checkPermission('user', true));
+        return $this->formatResponse($this->rems->checkPermission(true));
     }
 }

@@ -43,8 +43,10 @@ use Finna\RemsService\RemsService;
  */
 class FeedbackController extends \VuFind\Controller\FeedbackController
 {
-    use \Finna\Controller\NkrrecordControllerTrait;
+    use NkrControllerTrait;
     
+    protected $nkrRegisterForm = 'NkrRegister';
+
     /**
      * True if form was submitted successfully.
      *
@@ -79,72 +81,9 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
     public function formAction()
     {
         $formId = $this->params()->fromRoute('id', $this->params()->fromQuery('id'));
-        if ($formId === 'NkrRegister') {
-            $recordId = $this->params()->fromQuery('recordId');
-            $collection = (boolean)$this->params()->fromQuery('collection', false);
-            // TODO: extend form config to support sendMethod = <callback> ?
-
-            $session = $this->getNkrSession();
-            // TODO: check if authenticated with required method
-            if (!($user = $this->getUser())) {
-                $session->inLightbox = $this->inLightbox();
-                $session->recordId = $recordId;
-                $session->collection = $collection;
-                return $this->forceLogin();
-            } else {
-                $rems = $this->serviceLocator->get('Finna\RemsService\RemsService');
-                $showRegisterForm
-                    = RemsService::STATUS_NOT_SUBMITTED
-                    === $rems->checkPermission('user', true);
-
-                if (!$showRegisterForm) {
-                    $inLightbox = $session->inLightbox;
-                    $recordId = $session->recordId ?? null;
-                    $collection = $session->collection ?? false;
-                    unset($session->inLightbox);
-                    unset($session->recordId);
-                    unset($session->collection);
-
-                    if ($inLightbox) {
-                        $response = $this->getResponse();
-                        $response->setStatusCode(205);
-                        return '';
-                    } else {
-                        if ($recordId) {
-                            return $this->redirect()->toRoute(
-                                $collection
-                                   ? 'nkrcollection-home' : 'nkrrecord-home',
-                                ['id' => $recordId]
-                            );
-                        } else {
-                            return $this->redirect()->toRoute('search-home');
-                        }
-                    }
-                }
-            }
-
-            if ($this->formWasSubmitted('submit')) {
-                $user = $this->getUser();
-
-                $form = $this->serviceLocator->get('VuFind\Form\Form');
-                $form->setFormId($formId);
-                
-                $view = $this->createViewModel(compact('form', 'formId', 'user'));
-                $params = $this->params();
-                $form->setData($params->fromPost());            
-                
-                if (! $form->isValid()) {
-                    return $view;
-                }
-                
-                $rems = $this->serviceLocator->get('Finna\RemsService\RemsService');
-                $rems->registerUser('user', 'email@email.com', 'name name');
-                
-                // Request lightbox to refresh page
-                $response = $this->getResponse();
-                $response->setStatusCode(205);
-                
-                return '';
+        if ($formId === $this->nkrRegisterForm) {
+            if ($view = $this->renderNkrRegisterForm()) {
+                return $view;
             }
         }
         

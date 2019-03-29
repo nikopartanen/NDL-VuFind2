@@ -71,7 +71,8 @@ class RemsServiceFactory implements FactoryInterface
         return new $requestedName(
             $container->get(\VuFind\Config\PluginManager::class)
                 ->get('Nkr')->REMS,
-            $sessionContainer
+            $sessionContainer,
+            $container->get('VuFind\Auth\Manager')
         );
     }
 }

@@ -1,10 +1,10 @@
 <?php
 /**
- * Default Controller
+ * NKR Search and Form Controller
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2015-2016.
+ * Copyright (C) The National Library of Finland 2019.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -28,7 +28,7 @@
 namespace Finna\Controller;
 
 /**
- * Redirects the user to the appropriate default VuFind action.
+ * NKR Search and Form Controller
  *
  * @category VuFind
  * @package  Controller
@@ -38,13 +38,14 @@ namespace Finna\Controller;
  */
 class NkrController extends SearchController
 {
+    const NKR_REGISTER_FORM = 'NkrRegister';
+    
     /**
      * Search class family to use.
      *
      * @var string
      */
     protected $searchClassId = 'Nkr';
-
 
     /**
      * Create a new ViewModel.
