@@ -102,7 +102,7 @@ class RemsService
      * @return bool 
      */
     public function registerUser(
-        $email, $firstname = null, $lastname = null
+        $email, $firstname = null, $lastname = null, $formParams = []
     ) {
         $commonName = $firstname;
         if ($lastname) {
@@ -152,7 +152,7 @@ class RemsService
 
         
         // TODO: use transit for now...
-        $body = '["^ ","~:type","~:rems.workflow.dynamic/save-draft","~:application-id",' . $applicationId . ',"~:field-values",["^ ","~i1","test","~i2","test","~i3","","~i4","","~i5","","~i6","","~i7","","~i8",""],"~:accepted-licenses",["~#set",[1,2]]]';
+        $body = '["^ ","~:type","~:application.command/save-draft","~:application-id",' . $applicationId . ',"~:field-values",["^ ","~i1","test","~i2","test","~i3","","~i4","","~i5","","~i6","","~i7","","~i8",""],"~:accepted-licenses",["~#set",[1,2]]]';
         
         try {
             $response = $this->sendRequest(

@@ -45,8 +45,6 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
 {
     use NkrControllerTrait;
     
-    protected $nkrRegisterForm = 'NkrRegister';
-
     /**
      * True if form was submitted successfully.
      *
