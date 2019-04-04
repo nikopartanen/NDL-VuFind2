@@ -182,7 +182,8 @@ button.multiselect {
     width: auto;
   }
 }
-.template-dir-feedback .template-name-form {
+.template-dir-feedback .template-name-form form,
+.modal-dialog .feedback-content form {
     input[name='url'] {
         margin-bottom: 30px;
     }
@@ -205,6 +206,8 @@ button.multiselect {
         position: absolute;
         margin-left: -20px;
     }
+
+    .form-group.checkbox,
     .form-group.radio {
         padding-left: 0;
         margin-bottom: 15px;
@@ -226,6 +229,15 @@ button.multiselect {
             font-weight: 700;
         }
     }
+    .form-group.checkbox {
+        input[type=checkbox] {
+            display: inline-block;
+            + label {
+                display: inline-block;
+            }
+        }
+    }
+
 
 }
 
