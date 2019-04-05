@@ -386,7 +386,8 @@ class Form extends \Zend\Form\Form implements
             foreach ($options as $key => $val) {
                 $optionElements[] = [
                     'label' => $val,
-                    'value' => $key
+                    'value' => $key,
+                    'attributes' => ['id' => $val]
                 ];
             }
             $conf['options'] = ['value_options' => $optionElements];
@@ -400,8 +401,8 @@ class Form extends \Zend\Form\Form implements
             $first = true;
             foreach ($options as $key => $val) {
                 $optionElements[] = [
-                    'label' => $key,
-                    'value' => $val,
+                    'label' => $val,
+                    'value' => $key,
                     'label_attributes' => ['for' => $val],
                     'attributes' => ['id' => $val],
                     'selected' => $first
@@ -594,11 +595,16 @@ class Form extends \Zend\Form\Form implements
 
             if (in_array($type, ['radio', 'select'])) {
                 $value = $this->translate($value);
+            } elseif ($type === 'checkbox') {
+                $translated = [];
+                foreach ($value as $val) {
+                    $translated[] = $this->translate($val);
+                }
+                $value = implode(', ', $translated);
             }
 
-            $label = $this->translate($el['label']);
-
-            $params[$label] = ['type' => $type, 'value' => $value];
+            $label = isset($el['label']) ? $this->translate($el['label']) : null;
+            $params[] = ['type' => $type, 'value' => $value, 'label' => $label];
         }
 
         return [$params, 'Email/form.phtml'];
