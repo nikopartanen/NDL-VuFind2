@@ -150,13 +150,20 @@ class RemsService
         $client = $this->getClient($userId, 'applications/save', 'POST', $params);
         */
 
-        
+
         // TODO: use transit for now...
-        $body = '["^ ","~:type","~:application.command/save-draft","~:application-id",' . $applicationId . ',"~:field-values",["^ ","~i1","test","~i2","test","~i3","","~i4","","~i5","","~i6","","~i7","","~i8",""],"~:accepted-licenses",["~#set",[1,2]]]';
-        
+        $body = sprintf(
+            '["^ ","~:type","~:application.command/save-draft","~:application-id",%d,"~:field-values",["^ ","~i1","%s","~i2","%s","~i3","","~i4","","~i5","","~i6","","~i7","","~i8","%s"],"~:accepted-licenses",["~#set",[1,2]]]',
+            $applicationId,
+            $firstname,
+            $lastname,
+            //$formParams['usage_purpose'],
+            $formParams['usage_desc']
+        );
+
         try {
             $response = $this->sendRequest(
-                'applications/command', $params, 'POST', false,
+                'applications/command', [], 'POST', false,
                 ['contentType' => 'application/transit+json', 'content' => $body]
             );
         } catch (\Exception $e) {
@@ -165,7 +172,7 @@ class RemsService
 
         // 4. Submit application
         $params = [
-             'type' => 'rems.workflow.dynamic/submit',
+             'type' => 'application.command/submit',
              'application-id' => $applicationId
         ];
         try {
@@ -250,8 +257,7 @@ class RemsService
             $data = ['id' => $catItemId];
             $catalogItemId = $catItemId;
             $id = $application['application/id'];
-            $status = $application['application/workflow']
-                ['workflow.dynamic/state'] ?? null;
+            $status = $application['application/state'] ?? null;
             $status = $this->mapRemsStatus($status);
             $created = $application['application/created'] ?? null;
             $modified = $application['application/modified'] ?? null;
@@ -430,15 +436,11 @@ class RemsService
     protected function mapRemsStatus($remsStatus)
     {
         $statusMap = [
-            'approved' => RemsService::STATUS_APPROVED,
-            'rems.workflow.dynamic/approved' => RemsService::STATUS_APPROVED,
-            'submitted' => RemsService::STATUS_SUBMITTED,
-            'applied' => RemsService::STATUS_SUBMITTED,
-            'rems.workflow.dynamic/submitted'
+            'application.state/approved' => RemsService::STATUS_APPROVED,
+            'application.state/submitted'
                 => RemsService::STATUS_SUBMITTED,
-            'closed' => RemsService::STATUS_CLOSED,
-            'rems.workflow.dynamic/closed' => RemsService::STATUS_CLOSED,
-            'rems.workflow.dynamic/draft' => RemsService::STATUS_DRAFT
+            'application.state/closed' => RemsService::STATUS_CLOSED,
+            'application.state/draft' => RemsService::STATUS_DRAFT
          ];
 
         return $statusMap[$remsStatus] ?? 'unknown';

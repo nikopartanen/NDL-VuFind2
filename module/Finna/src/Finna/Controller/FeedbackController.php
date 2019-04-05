@@ -80,7 +80,7 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
     {
         $formId = $this->params()->fromRoute('id', $this->params()->fromQuery('id'));
         if ($formId === $this->nkrRegisterForm) {
-            if ($view = $this->renderNkrRegisterForm()) {
+            if ($view = $this->processNkrRegisterForm()) {
                 return $view;
             }
         }

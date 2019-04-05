@@ -130,3 +130,51 @@ forms:
           - Yes
           - No
 
+  NkrRegister:
+    allowLocalOverride: false
+    title: "nkr_register_form_title"
+    enabled: false
+    useCaptcha: false
+    onlyForLoggedUsers: true
+    response: Thank you for your feedback.
+    senderInfoRequired: false 
+    senderInfoHelp: feedback_info
+    hideSenderInfo: true
+    hideRecipientInfo: true
+    help:
+      pre: nkr_register_form_help_pre
+
+    fields:
+      - name: license
+        type: checkbox
+        options:
+          - nkr_register_form_license_accept
+        required: true
+      - name: firstname
+        type: text
+        required: true
+        label: First Name
+        settings:
+          - [disabled, disabled]
+      - name: lastname
+        type: text
+        required: true
+        label: Last Name
+        settings:
+          - [disabled, disabled]
+      - name: email
+        type: email
+        required: true
+        label: Email
+      - name: usage_purpose
+        type: select
+        options:
+          - nkr_register_form_usage_1
+          - nkr_register_form_usage_2
+          - nkr_register_form_usage_3
+        label: nkr_register_form_usage
+      - name: usage_desc
+        type: textarea
+        label: nkr_register_form_usage_desc
+        
+

@@ -41,14 +41,15 @@ use Zend\Session\Container as SessionContainer;
  */
 trait NkrControllerTrait
 {
+    protected $nkrRegisterForm = 'NkrRegister';
+
     /**
      * Handles submit of REMS forms.
      *
      * @return void
      */
-    protected function renderNkrRegisterForm()
+    protected function processNkrRegisterForm()
     {
-        
         $recordId = $this->params()->fromQuery('recordId');
         $collection = (boolean)$this->params()->fromQuery('collection', false);
         // TODO: extend form config to support sendMethod = <callback> ?
@@ -96,20 +97,38 @@ trait NkrControllerTrait
             $user = $this->getUser();
             
             $form = $this->serviceLocator->get('VuFind\Form\Form');
-            $form->setFormId($this->nkrRegisterForm);
+            $formId = $this->nkrRegisterForm;
+            $form->setFormId($formId);
 
             $view = $this->createViewModel(compact('form', 'formId', 'user'));
             $view->setTemplate('feedback/form');
-            $params = $this->params();
-            $form->setData($params->fromPost());            
+            $params = $this->params()->fromPost();
+            $form->setData($params);
             
             if (! $form->isValid()) {
                 return $view;
             }
-            
+
             $rems = $this->serviceLocator->get('Finna\RemsService\RemsService');
+            
+            $formParams = [];
+            foreach (['usage_purpose', 'usage_desc']
+                as $param
+            ) {
+                $formParams[$param] = $this->translate($params[$param]) ?? null;
+            }
+
+            $firstname = !empty($user->firstname)
+                ? $user->firstname : $params['firstname'];
+
+            $lastname = !empty($user->lastname)
+                ? $user->lastname : $params['lastname'];
+
             $success = $rems->registerUser(
-                $user->username, $user->email, $user->firstname, $user->lastname
+                $user->email,
+                $firstname,
+                $lastname,
+                $formParams
             );
             
             if ($success !== true) {
