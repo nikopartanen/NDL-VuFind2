@@ -1,0 +1,71 @@
+<!-- START of: finna - Helpers/R2RestrictedRecordPermission.phtml -->
+<? "id: " . var_export($this->id, true) . ", status: " . var_export($this->status, true) . ", call: " . var_export($this->callApi, true) . ", not submitted: " . var_export($this->notSubmitted, true) . ", autoopen: " . var_export($this->autoOpen, true) ?>
+<?php
+  $setupJS = false;
+  $registerFormUrl =
+    $this->url('feedback-form', ['id' => 'R2Register'])
+      . '?recordId=' . $this->escapeHtmlAttr($this->id)
+      . ($this->collection ? '&collection=1' : '');
+?>
+
+<?php if (!$this->user): ?>
+  <?php 
+    $setupJS = <<<JS
+$(document).ready(function() {
+   finna.R2.initModal();
+});
+JS;
+  ?>
+  <div class="alert alert-info authorization-notification R2-status">
+    <p><?= $this->translate('R2_restricted_record_note_html') ?></p>
+    <p class="register"><a href="<?= $registerFormUrl ?>" data-lightbox data-lightbox-title="<?=$this->transEsc("R2_register_form_title")?>" class="btn btn-primary"><?=$this->transEsc("R2_register")?></a></p>
+  </div>
+<?php elseif ($this->status === 'approved'): ?>
+  <div class="alert alert-info authorization-notification check-permission R2-status R2-status-approved">
+    <p><?=$this->translate('R2_restricted_record_registered_note_html')?></p>
+  </div>
+<?php else: ?>
+  <? if ($this->callApi): ?>
+    <?php 
+      $setupJS = <<<JS
+$(document).ready(function() {
+   finna.R2.initModal();
+   finna.R2.initCheckPermission("{$this->id}");
+});
+JS;
+    ?>
+  <?php else: ?>
+    <?php 
+      $setupJS = <<<JS
+$(document).ready(function() {
+   finna.R2.initModal();
+});
+JS;
+    ?>
+  <? endif ?>
+  <div class="alert alert-info authorization-notification check-permission R2-status R2-status-not-submitted<?= $this->status === null || $this->status !== 'not-submitted' ? ' hide' : ''?>" data-id="<?=$this->escapeHtmlAttr($this->id)?>">
+    <p class="txt"><?= $this->translate('R2_restricted_record_note_html') ?></p>
+    <p class="register"><a href="<?= $registerFormUrl ?>" class="btn btn-primary" data-lightbox title="<?=$this->transEsc('R2_register_form_title')?>"><?=$this->translate('R2_register')?></a></p>
+  </div>
+  <? if (!$this->translationEmpty("R2_permission_request_status_submitted")): ?>
+    <div class="alert alert-info authorization-notification R2-status R2-status-submitted<?= $this->status === null || $this->status === 'not-submitted' ? ' hide' : ''?>">
+      <p class="txt"><?= $this->transEsc('R2_permission_request_status_submitted') ?></p>
+    </div>
+  <? endif; ?>
+<? endif; ?>
+
+<?php if ($autoOpen && $this->status === null): ?>
+  <?php    
+  $setupJS .= <<<JS
+$(document).ready(function() {
+   finna.R2.initAutoOpen();
+});
+JS;
+  ?>
+<?php endif ?>
+    
+<?php if ($setupJS): ?>
+  <?= $this->headScript()->appendFile('finna-R2.js'); ?>
+  <? $this->headScript()->appendScript($setupJS); ?>  
+<?php endif ?>
+<!-- END of: finna - Helpers/R2RestrictedRecordPermission.phtml -->

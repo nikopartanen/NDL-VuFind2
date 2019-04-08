@@ -43,7 +43,7 @@ use Finna\RemsService\RemsService;
  */
 class FeedbackController extends \VuFind\Controller\FeedbackController
 {
-    use NkrControllerTrait;
+    use R2ControllerTrait;
     
     /**
      * True if form was submitted successfully.
@@ -79,12 +79,12 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
     public function formAction()
     {
         $formId = $this->params()->fromRoute('id', $this->params()->fromQuery('id'));
-        if ($formId === $this->nkrRegisterForm) {
-            if ($view = $this->processNkrRegisterForm()) {
+        if ($formId === \Finna\Form\Form::R2_REGISTER_FORM) {
+            if (null !== ($view = $this->processR2RegisterForm())) {
                 return $view;
             }
         }
-        
+
         $view = parent::formAction();
         
         if (!$this->submitOk) {
@@ -182,5 +182,4 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
         return $this->getRequest()->getQuery('layout', 'no') === 'lightbox'
             || 'layout/lightbox' == $this->layout()->getTemplate();
     }
-
 }

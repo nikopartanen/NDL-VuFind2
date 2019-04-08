@@ -1,6 +1,6 @@
 <?php
 /**
- * Model for Nkr records.
+ * R2 Search Parameters
  *
  * PHP version 7
  *
@@ -20,39 +20,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  RecordDrivers
+ * @package  Search_Solr
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
+ * @link     https://vufind.org Main Page
  */
-namespace Finna\RecordDriver;
+namespace Finna\Search\R2;
 
 /**
- * Model for Nkr records.
+ * Solr Search Parameters
  *
  * @category VuFind
- * @package  RecordDrivers
+ * @package  Search_Solr
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
+ * @link     https://vufind.org Main Page
  */
-class Nkr extends SolrEad3
+class Params extends \Finna\Search\Solr\Params
 {
-    /**
-     * Used for identifying search backends
-     *
-     * @var string
-     */
-    protected $sourceIdentifier = 'Nkr';
-
-    public function hasRestrictedAlternative()
-    {
-        return false;
-    }
-
-    public function hasRestrictedMetadata()
-    {
-        return true;
-    }
-
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Nkr record controller trait.
+ * R2 record controller trait.
  *
  * PHP version 7
  *
@@ -31,7 +31,7 @@ use Finna\RemsService\RemsService;
 use Zend\Session\Container as SessionContainer;
 
 /**
- * Nkr record controller trait.
+ * R2 record controller trait.
  *
  * @category VuFind
  * @package  Controller
@@ -39,22 +39,20 @@ use Zend\Session\Container as SessionContainer;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:controllers Wiki
  */
-trait NkrControllerTrait
+trait R2ControllerTrait
 {
-    protected $nkrRegisterForm = 'NkrRegister';
-
     /**
-     * Handles submit of REMS forms.
+     * Handles submit of R2 registration forms.
      *
      * @return void
      */
-    protected function processNkrRegisterForm()
+    protected function processR2RegisterForm()
     {
         $recordId = $this->params()->fromQuery('recordId');
         $collection = (boolean)$this->params()->fromQuery('collection', false);
         // TODO: extend form config to support sendMethod = <callback> ?
         
-        $session = $this->getNkrSession();
+        $session = $this->getR2Session();
         // TODO: check if authenticated with required method
         if (!($user = $this->getUser())) {
             $session->inLightbox = $this->inLightbox();
@@ -83,7 +81,7 @@ trait NkrControllerTrait
                     if ($recordId) {
                         return $this->redirect()->toRoute(
                             $collection
-                            ? 'nkrcollection-home' : 'nkrrecord-home',
+                            ? 'r2collection-home' : 'r2record-home',
                             ['id' => $recordId]
                         );
                     } else {
@@ -97,14 +95,14 @@ trait NkrControllerTrait
             $user = $this->getUser();
             
             $form = $this->serviceLocator->get('VuFind\Form\Form');
-            $formId = $this->nkrRegisterForm;
+            $formId = \Finna\Form\Form::R2_REGISTER_FORM;
             $form->setFormId($formId);
 
             $view = $this->createViewModel(compact('form', 'formId', 'user'));
             $view->setTemplate('feedback/form');
             $params = $this->params()->fromPost();
             $form->setData($params);
-            
+
             if (! $form->isValid()) {
                 return $view;
             }
@@ -118,14 +116,18 @@ trait NkrControllerTrait
                 $formParams[$param] = $this->translate($params[$param]) ?? null;
             }
 
+            // Take firstname, lastname and email from profile if available
             $firstname = !empty($user->firstname)
                 ? $user->firstname : $params['firstname'];
 
             $lastname = !empty($user->lastname)
                 ? $user->lastname : $params['lastname'];
 
+            $email = !empty($user->email)
+                ? $user->email : $params['email'];
+
             $success = $rems->registerUser(
-                $user->email,
+                $email,
                 $firstname,
                 $lastname,
                 $formParams
@@ -142,11 +144,13 @@ trait NkrControllerTrait
             
             return '';
         }
+
+        return null;
     }
 
     protected function handleAutoOpenRegistration($view)
     {
-        $session = $this->getNkrSession();
+        $session = $this->getR2Session();
 
         if ($this->getRequest()->getQuery()->get('register') === '1') {
             $session->autoOpen = true;
@@ -155,17 +159,17 @@ trait NkrControllerTrait
         }
 
         if (isset($session->autoOpen) && $session->autoOpen === true) {
-            $view->autoOpenNkrRegistration = true;
+            $view->autoOpenR2egistration = true;
             unset($session->autoOpen);
         }
         
         return $view;        
     }
 
-    public function getNkrSession()
+    public function getR2Session()
     {
         return new SessionContainer(
-            'nkrRegistration',
+            'R2Registration',
             $this->serviceLocator->get('VuFind\SessionManager')
         );
 

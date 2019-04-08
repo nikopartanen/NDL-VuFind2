@@ -1,6 +1,6 @@
 <?php
 /**
- * NKR Search and Form Controller
+ * Model for R2 records.
  *
  * PHP version 7
  *
@@ -20,56 +20,39 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  Controller
+ * @package  RecordDrivers
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org/wiki/development:plugins:controllers Wiki
+ * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
  */
-namespace Finna\Controller;
+namespace Finna\RecordDriver;
 
 /**
- * NKR Search and Form Controller
+ * Model for R2 records.
  *
  * @category VuFind
- * @package  Controller
+ * @package  RecordDrivers
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org/wiki/development:plugins:controllers Wiki
+ * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
  */
-class NkrController extends SearchController
+class R2 extends SolrEad3
 {
-    const NKR_REGISTER_FORM = 'NkrRegister';
-    
     /**
-     * Search class family to use.
+     * Used for identifying search backends
      *
      * @var string
      */
-    protected $searchClassId = 'Nkr';
+    protected $sourceIdentifier = 'R2';
 
-    /**
-     * Create a new ViewModel.
-     *
-     * @param array $params Parameters to pass to ViewModel constructor.
-     *
-     * @return ViewModel
-     */
-    protected function createViewModel($params = null)
+    public function hasRestrictedAlternative()
     {
-        $view = parent::createViewModel($params);
-        $view->searchClassId = $this->searchClassId;
-        return $view;
+        return false;
     }
 
-    /**
-     * Results action.
-     *
-     * @return mixed
-     */
-    public function searchAction()
+    public function hasRestrictedMetadata()
     {
-        $view = parent::resultsAction();
-        $view->setTemplate('nkr/results');
-        return $view;
+        return true;
     }
+
 }

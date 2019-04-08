@@ -1,6 +1,6 @@
 <?php
 /**
- * Nkr restricted record note helper factory.
+ * R2 restricted record note helper factory.
  *
  * PHP version 7
  *
@@ -31,7 +31,7 @@ use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
- * Nkr restricted record note helper factory.
+ * R2 restricted record note helper factory.
  *
  * @category VuFind
  * @package  View_Helpers
@@ -39,7 +39,7 @@ use Zend\ServiceManager\Factory\FactoryInterface;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class NkrRestrictedRecordNoteFactory implements FactoryInterface
+class R2RestrictedRecordNoteFactory implements FactoryInterface
 {
     /**
      * Create an object
@@ -63,7 +63,7 @@ class NkrRestrictedRecordNoteFactory implements FactoryInterface
         }
 
         $enabled = $container->get(\VuFind\Config\PluginManager::class)
-            ->get('Nkr')->General->enabled ?? false;
+            ->get('R2')->General->enabled ?? false;
 
         return new $requestedName(
             $enabled,

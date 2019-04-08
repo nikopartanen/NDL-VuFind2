@@ -39,14 +39,15 @@ namespace Finna\RecordDriver;
 class PluginManager extends \VuFind\RecordDriver\PluginManager
 {
     /**
-     * Convenience method to retrieve a populated Nkr record driver.
+     * Convenience method to retrieve a populated R2 record driver.
      *
      * @param array $data Raw Solr data
      *
      * @return AbstractBase
      */
-    public function getNkrRecord($data) {
-        $driver = $this->get('nkr');
+    public function getR2Record($data)
+    {
+        $driver = $this->get('R2');
         $driver->setRawData($data);
         return $driver;
     }

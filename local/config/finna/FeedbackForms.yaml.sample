@@ -130,7 +130,7 @@ forms:
           - Yes
           - No
 
-  NkrRegister:
+  R2Register:
     allowLocalOverride: false
     title: "nkr_register_form_title"
     enabled: false

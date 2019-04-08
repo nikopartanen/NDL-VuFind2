@@ -1,5 +1,5 @@
 /*global finna, jQuery */
-finna.nkr = (function finnaNkr() {
+finna.R2 = (function finnaR2() {
 
   function initModal() {
     // Transform form h1-element to a h2 so that the modal gets a proper title bar
@@ -12,11 +12,12 @@ finna.nkr = (function finnaNkr() {
         h2.prependTo(body);
         title.remove();
       }
+      var email = $(this).find('
     });
   }
 
   function initAutoOpen() {
-    $('.nkr-status .register .btn-primary').trigger('click');
+    $('.R2-status .register .btn-primary').trigger('click');
   }
   
   function initCheckPermission() {
@@ -34,8 +35,8 @@ finna.nkr = (function finnaNkr() {
         .done(function onCheckPermissionDone(result) {
           var status = result.data;
           if (status !== null) {            
-            $('.nkr-status').toggleClass('hide', true);
-            $('.nkr-status-' + status).removeClass('hide');
+            $('.R2-status').toggleClass('hide', true);
+            $('.R2-status-' + status).removeClass('hide');
           }
         })
         .fail(function onCheckPermissionFail() {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Helper class for linking between EAD3 records in local and restricted NKR index.
+ * Helper class for linking between EAD3 records in local and restricted R2 index.
  *
  * PHP version 7
  *
@@ -27,8 +27,10 @@
  */
 namespace Finna\View\Helper\Root;
 
+use Finna\RemsService\RemsService;
+
 /**
- * Helper class for linking between EAD3 records in local and restricted NKR index.
+ * Helper class for linking between EAD3 records in local and restricted R2 index.
  *
  * @category VuFind
  * @package  View_Helpers
@@ -36,45 +38,61 @@ namespace Finna\View\Helper\Root;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/vufind2:developer_manual Wiki
  */
-class NkrRestrictedRecordNote extends \Zend\View\Helper\AbstractHelper
+class R2RestrictedRecordPermission extends \Zend\View\Helper\AbstractHelper
 {
     protected $enabled;
-    protected $collectionRoutes;
     
+    protected $rems;
+
     /**
      * Constructor
      *
-     * @param bool                $enabled Is Nkr enabled?
-     * @param \Zend\Config\Config $config  VuFind configuration
+     * @param bool        $enabled Is R2 enabled?
+     * @param RemsService $rems    REMS service
      */
-    public function __construct(bool $enabled, \Zend\Config\Config $config
+    public function __construct(bool $enabled, RemsService $rems
     ) {
         $this->enabled = $enabled;
-        $this->collectionRoutes = isset($config->Collections->route)
-            ? $config->Collections->route->toArray() : null;
+        $this->rems = $rems;
     }
 
     /**
      * Render info box.
      *
-     * @param RecordDriver $driver Record driver
-     *
      * @return null|html
      */
-    public function __invoke($driver)
+    public function __invoke($driver, $autoOpen = false, $user = null)
     {
-        if (!$this->enabled || !$driver->hasRestrictedAlternative()) {
+        if (!$this->enabled || !$driver->hasRestrictedMetadata()) {
             return null;
         }
 
-        $route = 'nkrrecord';
-        if ($driver->isCollection()) {
-            $route = $this->collectionRoutes[$route] ?? 'collection';
-        }
+        $params = [
+            'user' => $user,
+            'autoOpen' => $autoOpen,
+            'id' => $driver->getUniqueID(),
+            'collection' => $driver->isCollection()
+        ];
+        
+        if ($user !== false) {
+            $status = $this->rems->checkPermission(false);
 
+            // TODO allow new submit if permission has been closed?
+            $notSubmitted = in_array(
+                $status,
+                [null,
+                 RemsService::STATUS_CLOSED,
+                 RemsService::STATUS_NOT_SUBMITTED]
+            );
+            $params += [
+                'status' => $status,
+                'notSubmitted' => $notSubmitted,
+                'callApi' => $status === null
+             ];
+        }
+        
         return $this->getView()->render(
-            'Helpers/nkrRestrictedRecordNote.phtml',
-            ['route' => $route, 'id' => $driver->getUniqueID()]
+            'Helpers/R2RestrictedRecordPermission.phtml', $params
         );
     }
 }

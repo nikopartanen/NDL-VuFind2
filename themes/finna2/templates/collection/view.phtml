@@ -62,8 +62,8 @@
   <div class="record-main mainbody left">
     <?=$this->flashmessages()?>
     <h2 class="collection-title"><?=$this->driver->getTitle();?></h2>
-    <?= $this->nkrRestrictedRecordNote($this->driver)?>
-    <?= $this->nkrRestrictedRecordPermission($this->driver, $this->autoOpenNkrRegistration, $this->auth()->isLoggedIn())?>
+    <?= $this->R2RestrictedRecordNote($this->driver)?>
+    <?= $this->R2RestrictedRecordPermission($this->driver, $this->autoOpenR2Registration, $this->auth()->isLoggedIn())?>
     <?php $formats = $this->driver->getFormats(); if (!empty($formats)): ?>
        <div class="recordFormat collection-format">
          <?=$this->record($this->driver)->getFormatList()?><br/>

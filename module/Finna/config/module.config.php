@@ -168,9 +168,9 @@ $config = [
             'Finna\Controller\PrimoRecordController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\RecordController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
             'Finna\Controller\CollectionController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
-            'Finna\Controller\NkrrecordController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
-            'Finna\Controller\NkrcollectionController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
-            'Finna\Controller\NkrController' => 'VuFind\Controller\AbstractBaseFactory',
+            'Finna\Controller\R2recordController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
+            'Finna\Controller\R2collectionController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
+            'Finna\Controller\R2Controller' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\SearchController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\ListController' => 'Finna\Controller\ListControllerFactory',
         ],
@@ -183,12 +183,12 @@ $config = [
             'feedcontent' => 'Finna\Controller\FeedContentController',
             'LocationService' => 'Finna\Controller\LocationServiceController',
             'locationservice' => 'Finna\Controller\LocationServiceController',
-            'NkrCollection' => 'Finna\Controller\NkrcollectionController',
-            'nkrcollection' => 'Finna\Controller\NkrcollectionController',
-            'NkrRecord' => 'Finna\Controller\NkrrecordController',
-            'nkrrecord' => 'Finna\Controller\NkrrecordController',
-            'nkr' => 'Finna\Controller\NkrController',
-            'Nkr' => 'Finna\Controller\NkrController',
+            'R2Collection' => 'Finna\Controller\R2collectionController',
+            'r2collection' => 'Finna\Controller\R2collectionController',
+            'R2Record' => 'Finna\Controller\R2recordController',
+            'r2record' => 'Finna\Controller\R2recordController',
+            'r2' => 'Finna\Controller\R2Controller',
+            'R2' => 'Finna\Controller\R2Controller',
             'MetaLib' => 'Finna\Controller\MetaLibController',
             'metalib' => 'Finna\Controller\MetaLibController',
             'MetaLibRecord' => 'Finna\Controller\MetaLibrecordController',
@@ -524,7 +524,7 @@ $config = [
             ],
             'search_backend' => [
                 'factories' => [
-                    'Nkr' => 'Finna\Search\Factory\NkrBackendFactory',
+                    'R2' => 'Finna\Search\Factory\R2BackendFactory',
                     'Primo' => 'Finna\Search\Factory\PrimoBackendFactory',
                     'Solr' => 'Finna\Search\Factory\SolrDefaultBackendFactory',
                 ],
@@ -533,7 +533,7 @@ $config = [
                 'factories' => [
                     'Finna\Search\Combined\Options' => 'VuFind\Search\OptionsFactory',
                     'Finna\Search\EDS\Options' => 'VuFind\Search\EDS\OptionsFactory',
-                    'Finna\Search\Nkr\Options' => 'VuFind\Search\Options\OptionsFactory',
+                    'Finna\Search\R2\Options' => 'VuFind\Search\Options\OptionsFactory',
                     'Finna\Search\Primo\Options' => 'VuFind\Search\OptionsFactory',
                 ],
                 'aliases' => [
@@ -544,7 +544,7 @@ $config = [
                     // Counterpart for EmptySet Params:
                     'Finna\Search\EmptySet\Options' => 'VuFind\Search\EmptySet\Options',
 
-                    'Nkr' => 'Finna\Search\Nkr\Options',
+                    'R2' => 'Finna\Search\R2\Options',
                 ]
             ],
             'search_params' => [
@@ -553,7 +553,7 @@ $config = [
                     'Finna\Search\EDS\Params' => 'VuFind\Search\Params\ParamsFactory',
                     'Finna\Search\EmptySet\Params' => 'VuFind\Search\Params\ParamsFactory',
                     'Finna\Search\Favorites\Params' => 'VuFind\Search\Params\ParamsFactory',
-                    'Finna\Search\Nkr\Params' => 'Finna\Search\Solr\ParamsFactory',
+                    'Finna\Search\R2\Params' => 'Finna\Search\Solr\ParamsFactory',
                     'Finna\Search\MixedList\Params' => 'VuFind\Search\Params\ParamsFactory',
                     'Finna\Search\Solr\Params' => 'Finna\Search\Solr\ParamsFactory',
                 ],
@@ -565,14 +565,14 @@ $config = [
                     'VuFind\Search\MixedList\Params' => 'Finna\Search\MixedList\Params',
                     'VuFind\Search\Solr\Params' => 'Finna\Search\Solr\Params',
 
-                    'nkr' => 'VuFind\Search\Solr\Params',
+                    'r2' => 'VuFind\Search\Solr\Params',
                 ]
             ],
             'search_results' => [
                 'factories' => [
                     'Finna\Search\Combined\Results' => 'VuFind\Search\Results\ResultsFactory',
                     'Finna\Search\Favorites\Results' => 'Finna\Search\Favorites\ResultsFactory',
-                    'Finna\Search\Nkr\Results' => 'VuFind\Search\Results\ResultsFactory',
+                    'Finna\Search\R2\Results' => 'VuFind\Search\Results\ResultsFactory',
                     'Finna\Search\Primo\Results' => 'VuFind\Search\Results\ResultsFactory',
                     'Finna\Search\Solr\Results' => 'VuFind\Search\Solr\ResultsFactory',
                 ],
@@ -581,7 +581,7 @@ $config = [
                     'VuFind\Search\Favorites\Results' => 'Finna\Search\Favorites\Results',
                     'VuFind\Search\Primo\Results' => 'Finna\Search\Primo\Results',
                     'VuFind\Search\Solr\Results' => 'Finna\Search\Solr\Results',
-                    'Nkr' => 'Finna\Search\Nkr\Results',
+                    'R2' => 'Finna\Search\R2\Results',
                 ]
             ],
             'content_covers' => [
@@ -602,7 +602,7 @@ $config = [
                 'factories' => [
                     'Finna\RecordDriver\EDS' =>
                         'VuFind\RecordDriver\NameBasedConfigFactory',
-                    'Finna\RecordDriver\Nkr' =>
+                    'Finna\RecordDriver\R2' =>
                         'VuFind\RecordDriver\NameBasedConfigFactory',
                     'Finna\RecordDriver\SolrDefault' =>
                         'VuFind\RecordDriver\SolrDefaultFactory',
@@ -624,7 +624,7 @@ $config = [
                         'VuFind\RecordDriver\NameBasedConfigFactory',
                 ],
                 'aliases' => [
-                    'nkr' => 'Finna\RecordDriver\Nkr',
+                    'r2' => 'Finna\RecordDriver\R2',
                     'SolrAuthEaccpf' => 'Finna\RecordDriver\SolrAuthEaccpf',
                     'SolrEad' => 'Finna\RecordDriver\SolrEad',
                     'SolrEad3' => 'Finna\RecordDriver\SolrEad3',
@@ -815,8 +815,8 @@ $config = [
 ];
 
 $recordRoutes = [
-   'nkrrecord' => 'NkrRecord',
-   'nkrcollection' => 'NkrCollection',
+   'r2record' => 'R2Record',
+   'r2collection' => 'R2Collection',
    'metalibrecord' => 'MetaLibRecord'
 ];
 
@@ -831,7 +831,7 @@ $staticRoutes = [
     'Browse/Database', 'Browse/Journal',
     'LibraryCards/Recover', 'LibraryCards/ResetPassword',
     'LocationService/Modal',
-    'Nkr/Home', 'Nkr/Search',
+    'R2/Home', 'R2/Search',
     'MetaLib/Home', 'MetaLib/Search', 'MetaLib/Advanced',
     'MyResearch/SaveCustomOrder', 'MyResearch/PurgeHistoricLoans',
     'OrganisationInfo/Home',

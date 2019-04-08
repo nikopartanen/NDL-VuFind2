@@ -1,6 +1,6 @@
 <?php
 /**
- * Nkr Collection Controller
+ * R2 Record Controller
  *
  * PHP version 7
  *
@@ -28,7 +28,7 @@
 namespace Finna\Controller;
 
 /**
- * Nkr Collection Controller
+ * R2 Record Controller
  *
  * @category VuFind
  * @package  Controller
@@ -36,16 +36,16 @@ namespace Finna\Controller;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org   Main Site
  */
-class NkrcollectionController extends CollectionController
+class R2recordController extends RecordController
 {
-    use \Finna\Controller\NkrrecordControllerTrait;
-    
+    use \Finna\Controller\R2ControllerTrait;
+
     /**
      * Type of record to display
      *
      * @var string
      */
-    protected $searchClassId = 'Nkr';
+    protected $searchClassId = 'R2';
 
     /**
      * Home (default) action -- forward to requested (or default) tab.
@@ -56,6 +56,53 @@ class NkrcollectionController extends CollectionController
     {
         $view = parent::homeAction();
         $view = $this->handleAutoOpenRegistration($view);
+
         return $view;
+    }
+    
+    /**
+     * Create a new ViewModel.
+     *
+     * @param array $params Parameters to pass to ViewModel constructor.
+     *
+     * @return \Zend\View\Model\ViewModel
+     */
+    protected function createViewModel($params = null)
+    {
+        $view = parent::createViewModel($params);
+        $this->layout()->searchClassId = $view->searchClassId = $this->searchClassId;
+        $view->driver = $this->loadRecord();
+        $view->unrestrictedDriver = $this->loadRecordWithRestrictedData();
+        
+        return $view;
+    }
+
+    /**
+     * Load record with restricted metadata.
+     *
+     * @return \VuFind\RecordDriver\AbstractBase
+     */
+    public function loadRecordWithRestrictedData()
+    {
+        $params = [];
+        try {
+            $response = $this->permission()->check('finna.authorized', false);
+            // TODO verify
+            if ($response === null) {
+                if ($user = $this->getUser()) {
+                    $params['user'] = $user->username;
+                }
+            }
+        } catch (\Exception $e) {
+        }
+        
+        $recordLoader
+            = $this->serviceLocator->build('VuFind\Record\Loader', $params);
+
+        return $recordLoader->load(
+            $this->params()->fromRoute('id', $this->params()->fromQuery('id')),
+            $this->searchClassId,
+            false
+        );
     }
 }

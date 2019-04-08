@@ -54,8 +54,8 @@
   <?php endif; ?>
   <div class="media-body record-information">
       <h1 property="name" class="record-title hidden-xs"><?=$this->escapeHtml($this->driver->getTitle())?></h1>
-      <?= $this->nkrRestrictedRecordNote($this->driver)?>
-      <?= $this->nkrRestrictedRecordPermission($this->driver, $this->autoOpenNkrRegistration, $this->auth()->isLoggedIn())?>
+      <?= $this->R2RestrictedRecordNote($this->driver)?>
+      <?= $this->R2RestrictedRecordPermission($this->driver, $this->autoOpenR2Registration, $this->auth()->isLoggedIn())?>
       <?php if ($serviceURLs = $this->driver->getServiceURLs()): ?>
         <div class="recordURLs">
           <?php foreach ($serviceURLs as $current): ?>

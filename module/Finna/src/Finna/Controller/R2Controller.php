@@ -1,10 +1,10 @@
 <?php
 /**
- * Solr aspect of the Search Multi-class (Options)
+ * R2 Search and Form Controller
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2015-2016.
+ * Copyright (C) The National Library of Finland 2019.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -20,48 +20,56 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  Search_Solr
+ * @package  Controller
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org Main Page
+ * @link     https://vufind.org/wiki/development:plugins:controllers Wiki
  */
-namespace Finna\Search\Nkr;
+namespace Finna\Controller;
 
 /**
- * Solr Search Options
+ * R2 Search and Form Controller
  *
  * @category VuFind
- * @package  Search_Solr
+ * @package  Controller
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org Main Page
+ * @link     https://vufind.org/wiki/development:plugins:controllers Wiki
  */
-class Options extends \Finna\Search\Solr\Options
+class R2Controller extends SearchController
 {
-
+    const R2_REGISTER_FORM = 'R2Register';
+    
     /**
-     * Configuration file to read facet settings from
+     * Search class family to use.
      *
      * @var string
      */
-    protected $facetsIni = 'facets-nkr';
+    protected $searchClassId = 'R2';
 
     /**
-     * Configuration file to read search settings from
+     * Create a new ViewModel.
      *
-     * @var string
-     */
-    protected $searchIni = 'searches-nkr';
-
-    /**
-     * Return the route name for the search results action.
+     * @param array $params Parameters to pass to ViewModel constructor.
      *
-     * @return string
+     * @return ViewModel
      */
-    public function getSearchAction()
+    protected function createViewModel($params = null)
     {
-        return 'nkr-search';
+        $view = parent::createViewModel($params);
+        $view->searchClassId = $this->searchClassId;
+        return $view;
+    }
+
+    /**
+     * Results action.
+     *
+     * @return mixed
+     */
+    public function searchAction()
+    {
+        $view = parent::resultsAction();
+        $view->setTemplate('r2/results');
+        return $view;
     }
 }

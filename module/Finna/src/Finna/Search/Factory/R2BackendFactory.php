@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Abstract factory for Nkr backends.
+ * Abstract factory for R2 backends.
  *
  * PHP version 7
  *
@@ -34,7 +34,7 @@ use VuFindSearch\Backend\Solr\Response\Json\RecordCollectionFactory;
 use Interop\Container\ContainerInterface;
 
 /**
- * Abstract factory for Nkr backends.
+ * Abstract factory for R2 backends.
  *
  * @category VuFind
  * @package  Search
@@ -42,23 +42,21 @@ use Interop\Container\ContainerInterface;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org   Main Site
  */
-class NkrBackendFactory
+class R2BackendFactory
     extends SolrDefaultBackendFactory
 {
-    protected $nkrConfig;
+    protected $R2Config;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->facetConfig = 'foo';
-
         parent::__construct();
-        $this->facetConfig = 'facets-nkr';
-        $this->searchConfig = 'searches-nkr';
+        $this->facetConfig = 'facets-r2';
+        $this->searchConfig = 'searches-r2';
         $this->searchYaml
-            = $this->nkrConfig->General->config->searchSpecs ?? $this->searchYaml;
+            = $this->R2Config->General->config->searchSpecs ?? $this->searchYaml;
     }
 
     /**
@@ -74,8 +72,8 @@ class NkrBackendFactory
      */
     public function __invoke(ContainerInterface $sm, $name, array $options = null)
     {
-        $this->nkrConfig = $sm->get('VuFind\Config\PluginManager')->get('Nkr');
-        $this->solrCore = $this->nkrConfig->Index->default_core;
+        $this->R2Config = $sm->get('VuFind\Config\PluginManager')->get('R2');
+        $this->solrCore = $this->R2Config->Index->default_core;
         return parent::__invoke($sm, $name, $options);
     }
 
@@ -91,7 +89,7 @@ class NkrBackendFactory
         $backend = parent::createBackend($connector);
         $manager = $this->serviceLocator->get('VuFind\RecordDriverPluginManager');
         $factory = new RecordCollectionFactory(
-            [$manager, 'getNkrRecord'],
+            [$manager, 'getR2Record'],
             'FinnaSearch\Backend\Solr\Response\Json\RecordCollection'
         );
         $backend->setRecordCollectionFactory($factory);
@@ -107,7 +105,7 @@ class NkrBackendFactory
      */
     protected function getSolrUrl($config = null)
     {
-        $url = $this->nkrConfig->Index->url;
+        $url = $this->R2Config->Index->url;
         return "$url/" . $this->solrCore;
     }
 
