@@ -27,8 +27,6 @@
  */
 namespace Finna\Controller;
 
-use Zend\Mail as Mail;
-
 /**
  * Record Controller
  *
