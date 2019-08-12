@@ -109,29 +109,15 @@ class RecordController extends \VuFind\Controller\RecordController
                 $emailMessage .= "\n" . $message . "\n\n";
             }
 
-            // This sets up the email to be sent
-            $mail = new Mail\Message();
-            $mail->setEncoding('UTF-8');
-            $mail->setBody($emailMessage);
-            $mail->setFrom($senderEmail, $senderName);
-            $mail->setReplyTo($replyToEmail);
-            $mail->addTo($recipientEmail);
-            try {
-                $mail->setSubject($emailSubject);
-            } catch (\Exception $e) {
-                // Uhh.. PHP bug https://bugs.php.net/bug.php?id=53891 causes trouble
-                // when trying to encode a subject containing non-ascii characters.
-                // Try to convert the subject to ascii..
-                // TODO: Remove this when PHP works properly..
-                $emailSubject = iconv('UTF-8', 'ascii//TRANSLIT', $emailSubject);
-                $mail->setSubject($emailSubject);
-            }
-            $headers = $mail->getHeaders();
-            $headers->removeHeader('Content-Type');
-            $headers->addHeaderLine('Content-Type', 'text/plain; charset=UTF-8');
-
-            $this->serviceLocator->get(\VuFind\Mailer\Mailer::class)->getTransport()
-                ->send($mail);
+            $mailer = $this->serviceLocator->get(\VuFind\Mailer\Mailer::class);
+            $mailer->send(
+                $recipientEmail,
+                new \Zend\Mail\Address($senderEmail, $senderName),
+                $emailSubject,
+                $emailMessage,
+                null,
+                $replyToEmail
+            );
 
             $flashMsg->addSuccessMessage('Thank you for your feedback.');
             if ($this->getRequest()->getQuery('layout', 'no') !== 'lightbox'
