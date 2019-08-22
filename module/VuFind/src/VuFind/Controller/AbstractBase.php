@@ -132,10 +132,9 @@ class AbstractBase extends AbstractActionController
      */
     protected function createViewModel($params = null)
     {
-        $layout = $this->params()
-            ->fromPost('layout', $this->params()->fromQuery('layout', false));
-        if ('lightbox' === $layout) {
+        if ($this->inLightbox()) {
             $this->layout()->setTemplate('layout/lightbox');
+            $params['inLightbox'] = true;
         }
         return new ViewModel($params);
     }
@@ -673,11 +672,24 @@ class AbstractBase extends AbstractActionController
     /**
      * Get the tab configuration for this controller.
      *
-     * @return array
+     * @return \VuFind\RecordTab\TabManager
      */
-    protected function getRecordTabConfig()
+    protected function getRecordTabManager()
     {
-        $cfg = $this->serviceLocator->get('Config');
-        return $cfg['vufind']['recorddriver_tabs'];
+        return $this->serviceLocator->get(\VuFind\RecordTab\TabManager::class);
+    }
+
+    /**
+     * Are we currently in a lightbox context?
+     *
+     * @return bool
+     */
+    protected function inLightbox()
+    {
+        return
+            $this->params()->fromPost(
+                'layout', $this->params()->fromQuery('layout', false)
+            ) === 'lightbox'
+            || 'layout/lightbox' == $this->layout()->getTemplate();
     }
 }

@@ -49,83 +49,24 @@ class RecordController extends \VuFind\Controller\RecordController
      */
     public function feedbackAction()
     {
-        $view = $this->createViewModel();
+        $driver = $this->loadRecord();
+        $recordPlugin = $this->getViewRenderer()->plugin('record');
 
-        if ($this->formWasSubmitted('submitFeedback')) {
-            $flashMsg = $this->flashMessenger();
+        $data = [
+           'record' => $driver->getBreadcrumb(),
+           'record_info' => $recordPlugin($driver)->getEmail()
+        ];
 
-            $message = $this->params()->fromPost('feedback_message');
-            $replyToEmail = $this->params()->fromPost('from');
-            $validator = new \Zend\Validator\EmailAddress();
-            if (!$validator->isValid($replyToEmail)) {
-                $flashMsg->setNamespace('error')
-                    ->addMessage('Email address is invalid');
-                return $view;
-            }
-
-            $driver = $this->loadRecord();
-            $dataSource = $driver->getDataSource();
-            $dataSources = $this->serviceLocator
-                ->get(\VuFind\Config\PluginManager::class)->get('datasources');
-
-            $inst = $dataSources->$dataSource ?? null;
-            $recipientEmail = isset($inst->feedbackEmail) ?
-                $inst->feedbackEmail : null;
-            if ($recipientEmail == null) {
-                throw new \Exception(
-                    'Feedback Module Error:'
-                    . 'Recipient Email Unset (see datasources.ini)'
-                );
-            }
-
-            $config = $this->getConfig();
-            $feedback = isset($config->Feedback) ? $config->Feedback : null;
-            $senderEmail = isset($feedback->sender_email)
-                ? $feedback->sender_email : 'noreply@vufind.org';
-            $senderName = isset($feedback->sender_name)
-                ? $feedback->sender_name : 'VuFind Feedback';
-
-            $emailSubject = $this->translate(
-                'feedback_on_record',
-                ['%%record%%' => $driver->getBreadcrumb()]
-            );
-            $serverUrl = $this->getRequest()->getServer('REQUEST_SCHEME');
-            $serverUrl .= '://' . $this->getRequest()->getServer('HTTP_HOST');
-
-            $emailMessage = "\n" . $this->translate('This email was sent from');
-            $emailMessage .= ": " . $replyToEmail . "\n";
-            $emailMessage .=
-                "------------------------------------------------------------\n";
-            // Use the record plugin to render the template for the correct driver
-            $recordPlugin = $this->getViewRenderer()->plugin('record');
-            $emailMessage .= $recordPlugin($driver)->getEmail();
-            $emailMessage .=
-                "\n\n------------------------------------------------------------\n";
-            if (!empty($message)) {
-                $emailMessage .= "\n" . $this
-                    ->translate('Message From Sender') . ":\n";
-                $emailMessage .= "\n" . $message . "\n\n";
-            }
-
-            $mailer = $this->serviceLocator->get(\VuFind\Mailer\Mailer::class);
-            $mailer->send(
-                $recipientEmail,
-                new \Zend\Mail\Address($senderEmail, $senderName),
-                $emailSubject,
-                $emailMessage,
-                null,
-                $replyToEmail
-            );
-
-            $flashMsg->addSuccessMessage('Thank you for your feedback.');
-            if ($this->getRequest()->getQuery('layout', 'no') !== 'lightbox'
-                || 'layout/lightbox' != $this->layout()->getTemplate()
-            ) {
-                $this->redirectToRecord('');
-            }
-        }
-
-        return $view;
+        return $this->redirect()->toRoute(
+            'feedback-form',
+            ['id' => 'FeedbackRecord'],
+            ['query' => [
+                'data' => $data,
+                'layout' => $this->getRequest()->getQuery('layout', false),
+                'record_id'
+                => $driver->getSourceIdentifier() . '|' . $driver->getUniqueID()
+            ]]
+        );
     }
 
     /**
@@ -155,12 +96,34 @@ class RecordController extends \VuFind\Controller\RecordController
         );
         $response = $client->send();
         if (!$response->isSuccess()) {
-            throw new \Exception(
-                'Failed to load preview: ' . $response->getStatusCode() . ' '
-                . $response->getReasonPhrase()
-            );
+            if ($response->getStatusCode() === 400) {
+                $this->flashMessenger()->addErrorMessage('Failed to load preview');
+                $result = json_decode($response->getBody(), true);
+                foreach (explode("\n", $result['error_message']) as $msg) {
+                    if ($msg) {
+                        $this->flashMessenger()->addErrorMessage($msg);
+                    }
+                }
+                $metadata = [
+                    'id' => '1',
+                    'record_format' => $format,
+                    'title' => 'Failed to load preview',
+                    'title_short' => 'Failed to load preview',
+                    'title_full' => 'Failed to load preview',
+                    // This works for MARC and other XML loaders too
+                    'fullrecord'
+                        => '<collection><record><leader/></record></collection>'
+                ];
+            } else {
+                throw new \Exception(
+                    'Failed to load preview: ' . $response->getStatusCode() . ' '
+                    . $response->getReasonPhrase()
+                );
+            }
+        } else {
+            $body = $response->getBody();
+            $metadata = json_decode($body, true);
         }
-        $metadata = json_decode($response->getBody(), true);
         $recordFactory = $this->serviceLocator
             ->get(\VuFind\RecordDriver\PluginManager::class);
         $this->driver = $recordFactory->getSolrRecord($metadata);
@@ -732,5 +695,88 @@ class RecordController extends \VuFind\Controller\RecordController
         );
         $view->setTemplate('record/illrequest');
         return $view;
+    }
+
+    /**
+     * Action for record preview form.
+     *
+     * @return mixed
+     */
+    public function previewFormAction()
+    {
+        $config = $this->getConfig();
+        if (empty($config->NormalizationPreview->url)) {
+            throw new \Exception('Normalization preview URL not configured');
+        }
+
+        $httpService = $this->serviceLocator->get(\VuFindHttp\HttpService::class);
+        $client = $httpService->createClient(
+            $config->NormalizationPreview->url,
+            \Zend\Http\Request::METHOD_POST
+        );
+        $client->setParameterPost(
+            ['func' => 'get_sources']
+        );
+        $response = $client->send();
+        if (!$response->isSuccess()) {
+            throw new \Exception(
+                'Failed to load source list: ' . $response->getStatusCode() . ' '
+                . $response->getReasonPhrase()
+            );
+        }
+        $body = $response->getBody();
+        $sources = json_decode($body, true);
+        array_walk(
+            $sources,
+            function (&$a) {
+                if ($a['institution'] === '_preview') {
+                    $a['institutionName'] = $this->translate('Generic Preview');
+                } else {
+                    $a['institutionName'] = $this->translate(
+                        '0/' . $a['institution'] . '/', [], $a['institution']
+                    );
+                }
+            }
+        );
+        usort(
+            $sources,
+            function ($a, $b) {
+                $res = strcmp($a['institutionName'], $b['institutionName']);
+                if ($res === 0) {
+                    $res = strcasecmp($a['id'], $b['id']);
+                }
+                return $res;
+            }
+        );
+        $view = new \Zend\View\Model\ViewModel(
+            [
+                'sources' => $sources
+            ]
+        );
+        return $view;
+    }
+
+    /**
+     * ProcessSave -- store the results of the Save action.
+     *
+     * @return mixed
+     */
+    protected function processSave()
+    {
+        $result = parent::processSave();
+        if ($this->inLightbox()) {
+            if ($this->flashMessenger()->hasErrorMessages()) {
+                return $result;
+            }
+            // Return HTTP 204 so that the modal gets closed.
+            // Clear success flashmessages so that they dont get shown in
+            // the following modal.
+            $this->flashMessenger()->clearMessagesFromNamespace('success');
+            $this->flashMessenger()->clearCurrentMessages('success');
+            $response = $this->getResponse();
+            $response->setStatusCode(204);
+            return $response;
+        }
+        return $result;
     }
 }
