@@ -553,6 +553,10 @@ email = SHIB_mail
 ;major = HTTP_MAJOR
 ;home_library = HTTP_HOME_LIBRARY
 
+; IdP-specific mappings from an attribute to ILS account identifier. The key is the
+; IdP identifier and value contains the user attribute and ILS driver separated by a
+; colon.
+;idp_to_ils_map[https://testidp.funet.fi/idp/shibboleth] = "SHIB_mail:almasandbox"
 
 ; Shibboleth Suomi.fi is optional.
 ; This section is only needed if Suomi.fi is to be used as an authentication method.
@@ -1305,6 +1309,9 @@ url_blacklist[] = '/booky\.fi\/(image\.php\?|description\.php\?)/'
 ;video_sources[] = "kavi|application/x-mpegURL|https://elo.salama.tv.funet.fi/vod/live/smil:{videoname}/playlist.m3u8|smil"
 ;video_sources[] = "kavi|application/dash+xml|http://elo.salama.tv.funet.fi/vod/_definst_/mp4:{videoname}/manifest.mpd"
 ;video_sources[] = "kavi|application/x-mpegURL|http://elo.salama.tv.funet.fi/vod/_definst_/mp4:{videoname}/playlist.m3u8"
+
+; Source url for Vimeo videos, leave blank or comment out to disable Vimeo videos
+;vimeo_url = "https://vimeo.com/{videoid}"
 
 ; Video poster source configuration keyed by data source. {filename} is replaced with
 ; the actual filename.
