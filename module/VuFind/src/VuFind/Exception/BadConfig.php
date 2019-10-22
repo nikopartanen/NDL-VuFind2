@@ -1,10 +1,10 @@
 <?php
 /**
- * VuFind Theme Initializer
+ * Bad Configuration Exception
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2015.
+ * Copyright (C) Villanova University 2019.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -20,22 +20,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  Theme
- * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
+ * @package  Exceptions
+ * @author   Demian Katz <demian.katz@villanova.edu>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org   Main Site
+ * @link     https://vufind.org/wiki/development Wiki
  */
-namespace FinnaTheme;
+namespace VuFind\Exception;
 
 /**
- * VuFind Theme Initializer
+ * Bad Configuration Exception
  *
  * @category VuFind
- * @package  Theme
- * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
+ * @package  Exceptions
+ * @author   Demian Katz <demian.katz@villanova.edu>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org   Main Site
+ * @link     https://vufind.org/wiki/development Wiki
  */
-class Initializer extends \VuFindTheme\Initializer
+class BadConfig extends \Exception
 {
 }
