@@ -1137,7 +1137,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
            'holdable' => $holdable,
            'availability' => null,
            'callnumber' => null,
-           'location' => null
+           'location' => '__HOLDINGSSUMMARYLOCATION__'
         ];
     }
 
