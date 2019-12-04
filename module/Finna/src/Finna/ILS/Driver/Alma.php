@@ -871,6 +871,7 @@ class Alma extends \VuFind\ILS\Driver\Alma
      */
     public function checkRequestIsValid($id, $data, $patron)
     {
+        $patronId = $patron['id'];
         $level = $data['level'] ?? 'copy';
         if ('copy' === $level) {
             if (isset($this->config['Holds']['enableItemHolds'])
@@ -878,8 +879,41 @@ class Alma extends \VuFind\ILS\Driver\Alma
             ) {
                 return false;
             }
+
+            // Call the request-options API for the logged-in user
+            $requestOptionsPath = '/bibs/' . urlencode($id)
+                . '/holdings/' . urlencode($data['holding_id']) . '/items/'
+                . urlencode($data['item_id']) . '/request-options?user_id='
+                . urlencode($patronId);
+
+            // Make the API request
+            $requestOptions = $this->makeRequest($requestOptionsPath);
+        } elseif ('title' === $level) {
+            $hmac = explode(':', $this->config['Holds']['HMACKeys'] ?? '');
+            if (!in_array('level', $hmac) || !in_array('description', $hmac)) {
+                return false;
+            }
+            // Call the request-options API for the logged-in user
+            $requestOptionsPath = '/bibs/' . urlencode($id)
+                . '/request-options?user_id=' . urlencode($patronId);
+
+            // Make the API request
+            $requestOptions = $this->makeRequest($requestOptionsPath);
+        } else {
+            return false;
         }
-        return parent::checkRequestIsValid($id, $data, $patron);
+
+        // Check possible request types from the API answer
+        $requestTypes = $requestOptions->xpath(
+            '/request_options/request_option//type'
+        );
+        foreach ($requestTypes as $requestType) {
+            if (in_array((string)$requestType, ['HOLD', 'PURCHASE'])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -1040,8 +1074,7 @@ class Alma extends \VuFind\ILS\Driver\Alma
         $results['total'] = 0;
         $results['holdings'] = [];
 
-        // Correct copy count in case of paging
-        $copyCount = $options['offset'] ?? 0;
+        $itemHolds = $this->config['Holds']['enableItemHolds'] ?? null;
 
         // Paging parameters for paginated API call. The "limit" tells the API how
         // many items the call should return at once (e. g. 10). The "offset" defines
@@ -1096,6 +1129,15 @@ class Alma extends \VuFind\ILS\Driver\Alma
                     $description = (string)$item->item_data->description;
                 }
 
+                $addLink = $patron ? 'check' : false;
+                if ($addLink && null !== $itemHolds) {
+                    if ('description' === $itemHolds) {
+                        $addLink = null !== $description;
+                    } elseif (!$itemHolds) {
+                        $addLink = false;
+                    }
+                }
+
                 $results['holdings'][] = [
                     'id' => $id,
                     'source' => 'Solr',
@@ -1114,7 +1156,7 @@ class Alma extends \VuFind\ILS\Driver\Alma
                     'item_id' => $itemId,
                     'holding_id' => $holdingId,
                     'holdtype' => 'auto',
-                    'addLink' => $patron ? 'check' : false,
+                    'addLink' => $addLink,
                     // For Alma title-level hold requests
                     'description' => $description ?? null
                 ];
@@ -1170,16 +1212,6 @@ class Alma extends \VuFind\ILS\Driver\Alma
                 $results['holdings'][] = $entry;
                 ++$results['total'];
             }
-        }
-
-        // Clear out hold check flag if item holds are disabled
-        if (isset($this->config['Holds']['enableItemHolds'])
-            && !$this->config['Holds']['enableItemHolds']
-        ) {
-            foreach ($results['holdings'] as &$holding) {
-                $holding['addLink'] = false;
-            }
-            unset($holding);
         }
 
         // Add summary
