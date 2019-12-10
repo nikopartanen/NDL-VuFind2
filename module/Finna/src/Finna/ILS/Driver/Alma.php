@@ -701,6 +701,14 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
                 }
             }
         }
+        if ($config && 'Holds' === $function) {
+            if (isset($config['titleHoldBibLevels'])
+                && !is_array($config['titleHoldBibLevels'])
+            ) {
+                $config['titleHoldBibLevels']
+                    = explode(':', $config['titleHoldBibLevels']);
+            }
+        }
         return $config;
     }
 
