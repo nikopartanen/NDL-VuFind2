@@ -25,6 +25,7 @@
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @author   Konsta Raunio <konsta.raunio@helsinki.fi>
+ * @author   Juha Luoma <juha.luoma@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:ils_drivers Wiki
  */
@@ -47,6 +48,7 @@ use Zend\Db\Sql\Ddl\Column\Boolean;
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @author   Konsta Raunio <konsta.raunio@helsinki.fi>
+ * @author   Juha Luoma <juha.luoma@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development:plugins:ils_drivers Wiki
  */
@@ -139,6 +141,13 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
     protected $loans_wsdl = '';
 
     /**
+     * Wsdl file name or url for accessing the loansaurora section of aws
+     *
+     * @var string
+     */
+    protected $loansaurora_wsdl = '';
+
+    /**
      * Wsdl file name or url for accessing the payment section of AWS
      *
      * @var string
@@ -203,7 +212,17 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
         'pickUpNotice' => [],
         'overdueNotice' => [],
         'dueDateAlert' => []
-     ];
+    ];
+
+    /**
+     * Messaging settings status code mappings
+     *
+     * @var array
+     */
+    protected $statuses =  [
+        'snailMail'             => 'print',
+        'ilsDefined'            => 'inactive',
+    ];
 
     /**
      * SOAP Options
@@ -263,8 +282,6 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
      */
     public function getMyProfile($patron)
     {
-        $this->debug("getMyProfile called");
-
         $username = $patron['cat_username'];
         $cacheKey = $this->getPatronCacheKey($username);
         $profile = $this->getCachedData($cacheKey);
@@ -317,6 +334,11 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 = $this->getWsdlPath($this->config['Catalog']['loans_wsdl']);
         } else {
             throw new ILSException('loans_wsdl configuration needs to be set.');
+        }
+
+        if (isset($this->config['Catalog']['loansaurora_wsdl'])) {
+            $this->loansaurora_wsdl
+                = $this->getWsdlPath($this->config['Catalog']['loansaurora_wsdl']);
         }
 
         if (isset($this->config['Catalog']['payments_wsdl'])) {
@@ -1137,7 +1159,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
            'holdable' => $holdable,
            'availability' => null,
            'callnumber' => null,
-           'location' => null
+           'location' => '__HOLDINGSSUMMARYLOCATION__'
         ];
     }
 
@@ -1202,6 +1224,14 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
         $lastname = array_pop($names);
         $firstname = implode(' ', $names);
 
+        $loanHistoryEnabled = $info->isLoanHistoryEnabled ?? false;
+
+        /**
+         * Request an authentication id used in certain requests e.g:
+         * GetTransactionHistory
+         */
+        $patronId = $this->authenticatePatron($username, $password);
+
         $user = [
             'id' => $info->backendPatronId,
             'cat_username' => $username,
@@ -1209,7 +1239,8 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
             'lastname' => $lastname,
             'firstname' => $firstname,
             'major' => null,
-            'college' => null
+            'college' => null,
+            'patronId' => $patronId
         ];
 
         $userCached = [
@@ -1230,7 +1261,9 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
             'phoneLocalCode' => '',
             'phoneAreaCode' => '',
             'major' => null,
-            'college' => null
+            'college' => null,
+            'patronId' => $patronId,
+            'loan_history' => (bool)$loanHistoryEnabled
         ];
 
         if (!empty($info->emailAddresses->emailAddress)) {
@@ -1239,10 +1272,8 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
 
             foreach ($emailAddresses as $emailAddress) {
                 if ($emailAddress->isActive == 'yes') {
-                    $userCached['email'] = isset($emailAddress->address)
-                        ? $emailAddress->address : '';
-                    $userCached['emailId']
-                        = isset($emailAddress->id) ? $emailAddress->id : '';
+                    $userCached['email'] = $emailAddress->address ?? '';
+                    $userCached['emailId'] = $emailAddress->id ?? '';
                 }
             }
         }
@@ -1251,16 +1282,11 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
             $addresses = $this->objectToArray($info->addresses->address);
             foreach ($addresses as $address) {
                 if ($address->isActive == 'yes') {
-                    $userCached['address1'] = isset($address->streetAddress)
-                        ? $address->streetAddress : '';
-                    $userCached['zip'] = isset($address->zipCode)
-                        ? $address->zipCode : '';
-                    $userCached['city'] = isset($address->city)
-                        ? $address->city : '';
-                    $userCached['country'] = isset($address->country)
-                        ? $address->country : '';
-                    $userCached['addressId'] = isset($address->id)
-                        ? $address->id : '';
+                    $userCached['address1'] = $address->streetAddress ?? '';
+                    $userCached['zip'] = $address->zipCode ?? '';
+                    $userCached['city'] = $address->city ?? '';
+                    $userCached['country'] = $address->country ?? '';
+                    $userCached['addressId'] = $address->id ?? '';
                 }
             }
         }
@@ -1269,8 +1295,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
             $phoneNumbers = $this->objectToArray($info->phoneNumbers->phoneNumber);
             foreach ($phoneNumbers as $phoneNumber) {
                 if ($phoneNumber->sms->useForSms == 'yes') {
-                    $userCached['phone'] = isset($phoneNumber->areaCode)
-                        ? $phoneNumber->areaCode : '';
+                    $userCached['phone'] = $phoneNumber->areaCode ?? '';
                     $userCached['phoneAreaCode'] = $userCached['phone'];
                     if (isset($phoneNumber->localCode)) {
                         $userCached['phone'] .= $phoneNumber->localCode;
@@ -1283,95 +1308,64 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
             }
         }
 
-        $validServices = [
-           'pickUpNotice'  => [
-               'letter', 'email', 'sms', 'none'
-           ],
-           'overdueNotice' => [
-               'letter', 'email', 'sms', 'none'
-           ],
-           'dueDateAlert' => [
-               'email', 'none'
-           ]
-        ];
-
+        $infoServices = $info->messageServices->messageService ?? [];
         $services = [];
-        foreach ($validServices as $service => $validMethods) {
-            $typeLabel = 'dueDateAlert' === $service
-                ? $this->translate(
-                    "messaging_settings_type_dueDateAlertEmail"
-                )
-                : $this->translate("messaging_settings_type_$service");
-            $data = [
-                'active' => false,
-                'type' => $typeLabel,
-                'sendMethods' => []
+        $messagingSettings = [];
+
+        foreach ($infoServices as $service => $options) {
+            $current = [
+                'transport_type' =>
+                    (string)$options->sendMethods->sendMethod->value,
             ];
-            if ($this->messagingSettings[$service]) {
-                foreach ($this->messagingSettings[$service] as $methodKey) {
-                    if (in_array($methodKey, $validMethods)
-                    ) {
-                        $data['sendMethods'] += [
-                            "$methodKey" => [
-                                'active' => false,
-                                'type' => $methodKey
-                            ]
-                        ];
-                    } else {
-                        $this->error(
-                            "Messaging settings for $service are invalid: $methodKey"
-                        );
-                    }
-                }
+            if (isset($options->nofDays)) {
+                $current['nofDays'] = $options->nofDays->value;
             }
-            $services[$service] = $data;
+            $services[$options->serviceType] = $current;
         }
 
-        if (isset($info->messageServices)) {
-            foreach ($info->messageServices->messageService as $service) {
-                $methods = [];
-                $serviceType = $service->serviceType;
-                $numOfDays = isset($service->nofDays->value)
-                    ? $service->nofDays->value : 'none';
-                $active = $service->isActive === 'yes';
-
-                $sendMethods = $this->objectToArray($service->sendMethods);
-
-                foreach ($sendMethods as $method) {
-                    $methodType = isset($method->sendMethod->value)
-                        ? $this->mapCode($method->sendMethod->value) : 'none';
-                    $services[$serviceType]['sendMethods'][$methodType]['active']
-                        = isset($method->sendMethod->isActive)
-                            && $method->sendMethod->isActive === 'yes';
-                }
-
-                foreach ($services[$serviceType]['sendMethods'] as $key => &$data) {
-                    $methodLabel
-                        = $this->translate("messaging_settings_method_$key");
-
-                    if ($numOfDays > 0 && $key == 'email') {
-                        $methodLabel =  $this->translate(
-                            $numOfDays == 1
-                            ? 'messaging_settings_num_of_days'
+        // We need to find proper options for current service
+        foreach ($this->getMessageServices($user) as $service => $methods) {
+            $settings = [
+                'type' => $service,
+                'settings' => [
+                    'transport_types' => [
+                        'type' => 'select',
+                        'options' => [],
+                        'value' => $this->mapCodeToStatus(
+                            $services[$service]['transport_type']
+                        )
+                    ],
+                ]
+            ];
+            if ($service === 'dueDateAlert') {
+                $options = [];
+                for ($i = 0; $i <= 4; $i++) {
+                    $options[$i] = [
+                        'name' => $this->translate(
+                            1 === $i ? 'messaging_settings_num_of_days'
                             : 'messaging_settings_num_of_days_plural',
-                            ['%%days%%' => $numOfDays]
-                        );
-                    }
-
-                    if (!$active) {
-                        $methodLabel
-                            =  $this->translate("messaging_settings_method_none");
-                    }
-                    $data['method'] = $methodLabel;
+                            ['%%days%%' => $i]
+                        ),
+                        'active' => $i === $services[$service]['nofDays']
+                    ];
                 }
-
-                if (isset($services[$serviceType])) {
-                    $services[$serviceType]['active'] = $active;
-                    $services[$serviceType]['numOfDays'] = $numOfDays;
-                }
+                $settings['settings']['days_in_advance'] = [
+                    'type' => 'select',
+                    'value' => $services[$service]['nofDays'],
+                    'options' => $options,
+                    'readonly' => false
+                ];
             }
+            foreach ($methods as $methodId => $method) {
+                $coded = $this->mapCodeToStatus($method);
+                $settings['settings']['transport_types']['options'][$coded] = [
+                        'active' => $services[$service]['transport_type']
+                            === $method
+                    ];
+            }
+            $messagingSettings[$service] = $settings;
         }
-        $userCached['messagingServices'] = $services;
+        $userCached['messagingServices'] = $messagingSettings;
 
         $this->putCachedData($cacheKey, $userCached);
 
@@ -1498,6 +1492,321 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
         }
 
         return $transList;
+    }
+
+    /**
+     * Get Patron Transaction History
+     *
+     * This is responsible for retrieving all historical transactions
+     * (i.e. checked out items)
+     * by a specific patron.
+     *
+     * @param array $patron The patron array from patronLogin
+     * @param array $params Parameters
+     *
+     * @throws DateException
+     * @throws ILSException
+     * @return array        Array of the patron's transactions on success.
+     */
+    public function getMyTransactionHistory($patron, $params)
+    {
+        $sort = explode(
+            ' ',
+            !empty($params['sort'])
+                ? $params['sort'] : 'CHECK_OUT_DATE DESCENDING', 2
+        );
+
+        $sortField = $sort[0] ?? 'CHECK_OUT_DATE';
+        $sortKey = $sort[1] ?? 'DESCENDING';
+
+        $username = $patron['cat_username'];
+
+        $function = 'GetLoanHistory';
+        $functionResult = 'loanHistoryResponse';
+        $pageSize = $params['limit'] ?? 50;
+        $conf = [
+            'arenaMember' => $this->arenaMember,
+            'language' => $this->getLanguage(),
+            'patronId' => $patron['patronId'],
+            'start' => isset($params['page'])
+                ? ($params['page'] - 1) * $pageSize : 0,
+            'count' => $pageSize,
+            'sortField' => $sortField,
+            'sortDirection' => $sortKey
+        ];
+
+        $result = $this->doSOAPRequest(
+            $this->loansaurora_wsdl, $function, $functionResult, $username,
+            ['loanHistoryRequest' => $conf]
+        );
+
+        $statusAWS = $result->$functionResult->status;
+
+        if ($statusAWS->type != 'ok') {
+            $message = $this->handleError($function, $statusAWS, $username);
+            if ($message == 'ils_connection_failed') {
+                throw new ILSException($message);
+            }
+            return [];
+        }
+
+        $formatted = [];
+        $transList = [];
+        $transactions = $this->objectToArray(
+            $result->loanHistoryResponse->loanHistoryItems->loanHistoryItem ?? []
+        );
+        foreach ($transactions as $transaction => $record) {
+            $obj = $record->catalogueRecord;
+            $trans = [
+                'id' => $obj->id,
+                'title' => $obj->title,
+                'checkoutdate' => $this->formatDate($record->checkOutDate),
+                'returndate' => isset($record->checkInDate)
+                    ? $this->formatDate($record->checkInDate) : ''
+            ];
+            $transList[] = $trans;
+        }
+
+        $formatted['success'] = $statusAWS->type === 'ok';
+        $formatted['transactions'] = $transList;
+        $formatted['count'] = $result->loanHistoryResponse
+            ->loanHistoryItems->totalCount;
+
+        return $formatted;
+    }
+
+    /**
+     * Returns an id which is used to authenticate current session in SOAP API
+     *
+     * @param string $username patron username
+     * @param string $password patron password
+     *
+     * @return mixed id as string if succesfull, null if failed
+     */
+    public function authenticatePatron($username, $password)
+    {
+        $function = 'authenticatePatron';
+        $functionResult = 'authenticatePatronResult';
+        $conf = [
+            'arenaMember' => $this->arenaMember,
+            'user' => $username,
+            'password' => $password
+        ];
+
+        $result = $this->doSOAPRequest(
+            $this->patron_wsdl, $function, $functionResult, $username,
+            ['authenticatePatronParam' => $conf]
+        );
+
+        $statusAWS = $result->$functionResult->status;
+        if ($statusAWS->type != 'ok') {
+            $message = $this->handleError($function, $statusAWS, $username);
+            if ($message == 'ils_connection_failed') {
+                throw new ILSException($message);
+            }
+            return null;
+        }
+
+        return $result->authenticatePatronResult->patronId;
+    }
+
+    /**
+     * Update patron messaging settings
+     *
+     * @param array $patron The patron array from patronLogin
+     * @param array $params Parameters
+     *
+     * @return array        Status of request and if it was successful.
+     */
+    public function updateMessagingSettings($patron, $params)
+    {
+        $result = [
+            'success' => true,
+            'status' => 'request_change_done'
+        ];
+
+        foreach ($params as $service => $settings) {
+            $transport = $settings['settings']['transport_types'] ?? '';
+            if (empty($transport)) {
+                continue;
+            }
+            $coded = $this->mapStatusToCode($transport['value']);
+            $current = [
+                'serviceType' => $service,
+                'sendMethod' => $coded
+            ];
+            if ($coded === 'ilsDefined') {
+                $status = $this->removeMessageService($patron, $current);
+            } else {
+                if (isset($settings['settings']['days_in_advance'])) {
+                    $current['nofDays']
+                        = $settings['settings']['days_in_advance']['value'];
+                }
+                $status = $this->changeMessageService($patron, $current);
+            }
+            if (!$status['success']) {
+                $result = $status;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Get message services available
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @throws DateException
+     * @throws ILSException
+     * @return array        Array of used message services and methods.
+     */
+    protected function getMessageServices($patron)
+    {
+        $function = 'getMessageServices';
+        $functionResult = 'messageServicesResponse';
+
+        $username = $patron['cat_username'];
+        $password = $patron['cat_password'];
+
+        $conf = [
+            'arenaMember' => $this->arenaMember,
+            'language' => $this->getLanguage(),
+            'user' => $username,
+            'password' => $password,
+        ];
+
+        $result = $this->doSOAPRequest(
+            $this->patronaurora_wsdl, $function, $functionResult, $username,
+            ['messageServicesRequest' => $conf]
+        );
+
+        $statusAWS = $result->$functionResult->status;
+
+        if ($statusAWS->type != 'ok') {
+            $message = $this->handleError($function, $statusAWS, $username);
+            if ($message == 'ils_connection_failed') {
+                throw new ILSException($message);
+            }
+            return [];
+        }
+
+        $resultArray = $this->objectToArray(
+            $result->$functionResult->messageServices->messageService
+        );
+        $returnable = [];
+        foreach ($resultArray as $service => $sendMethods) {
+            $current = [];
+            $currentMethods = $sendMethods->sendMethods->sendMethod;
+            foreach ($currentMethods as $key => $value) {
+                $current[] = $value->value;
+            }
+            $returnable[$sendMethods->serviceType] = $current;
+        }
+
+        return $returnable;
+    }
+
+    /**
+     * Function to change message service in SOAP API
+     *
+     * @param array $patron The patron array from patronLogin
+     * @param array $params Parameters
+     *
+     * @throws DateException
+     * @throws ILSException
+     * @return array        Status of request and if it was successful.
+     */
+    protected function changeMessageService($patron, $params)
+    {
+        $function = 'changeMessageService';
+        $functionResult = 'changeMessageServiceResponse';
+
+        $username = $patron['cat_username'];
+        $password = $patron['cat_password'];
+
+        $conf = [
+            'arenaMember' => $this->arenaMember,
+            'language' => $this->getLanguage(),
+            'user' => $username,
+            'password' => $password,
+            'sendMethod' => [
+                'value' => $params['sendMethod']
+            ],
+            'serviceType' => $params['serviceType']
+        ];
+
+        if ($params['serviceType'] === 'dueDateAlert') {
+            $conf['nofDays'] = [
+                'value' => $params['nofDays']
+            ];
+        }
+
+        $result = $this->doSOAPRequest(
+            $this->patronaurora_wsdl, $function, $functionResult, $username,
+            ['changeMessageServiceRequest' => $conf]
+        );
+
+        $statusAWS = $result->$functionResult->status;
+
+        if ($statusAWS->type != 'ok') {
+            $message = $this->handleError($function, $statusAWS, $username);
+            if ($message == 'ils_connection_failed') {
+                throw new ILSException($message);
+            }
+            return [
+                'success' => false,
+                'status' => $statusAWS
+            ];
+        }
+
+        return ['success' => true];
+    }
+
+    /**
+     * Function to remove message service from use in SOAP API
+     *
+     * @param array $patron The patron array from patronLogin
+     * @param array $params Parameters
+     *
+     * @throws DateException
+     * @throws ILSException
+     * @return array        Status of request and if it was successful.
+     */
+    protected function removeMessageService($patron, $params)
+    {
+        $function = 'removeMessageService';
+        $functionResult = 'removeMessageServiceResponse';
+
+        $username = $patron['cat_username'];
+        $password = $patron['cat_password'];
+
+        $conf = [
+            'arenaMember' => $this->arenaMember,
+            'language' => $this->getLanguage(),
+            'user' => $username,
+            'password' => $password,
+            'serviceType' => $params['serviceType']
+        ];
+
+        $result = $this->doSOAPRequest(
+            $this->patronaurora_wsdl, $function, $functionResult, $username,
+            ['removeMessageServiceRequest' => $conf]
+        );
+
+        $statusAWS = $result->$functionResult->status;
+
+        if ($statusAWS->type != 'ok') {
+            $message = $this->handleError($function, $statusAWS, $username);
+            if ($message == 'ils_connection_failed') {
+                throw new ILSException($message);
+            }
+            return [
+                'success' => false,
+                'status' => $statusAWS
+            ];
+        }
+
+        return ['success' => true];
     }
 
     /**
@@ -1949,6 +2258,52 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 'status' => 'Phone number changed',
                 'sys_message' => ''
             ];
+    }
+
+    /**
+     * Update Patron Transaction History State
+     *
+     * Enable or disable patron's transaction history
+     *
+     * @param array $patron The patron array from patronLogin
+     * @param mixed $state  Any of the configured values
+     *
+     * @return array Associative array of the results
+     */
+    public function updateTransactionHistoryState($patron, $state)
+    {
+        $username = $patron['cat_username'];
+        $function = 'changeLoanHistoryStatus';
+        $functionResult = 'changeLoanHistoryStatusResult';
+
+        $conf = [
+            'arenaMember' => $this->arenaMember,
+            'patronId' => $patron['patronId'],
+            'isLoanHistoryEnabled' => $state
+        ];
+
+        $result = $this->doSOAPRequest(
+            $this->patronaurora_wsdl, $function, $functionResult, $username,
+            ['changeLoanHistoryStatusParam' => $conf]
+        );
+
+        $statusAWS = $result->$functionResult->status;
+
+        if ($statusAWS->type != 'ok') {
+            $message = $this->handleError($function, $statusAWS, $username);
+            if ($message == 'ils_connection_failed') {
+                throw new ILSException($message);
+            }
+            return [
+                'success' => false,
+                'status' => 'Changing the checkout history state failed'
+            ];
+        }
+
+        return [
+            'success' => true,
+            'status' => 'request_change_done',
+        ];
     }
 
     /**
@@ -2538,24 +2893,31 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
     }
 
     /**
-     * Map codes
+     * Code to status
      *
      * @param string $code as a string
      *
      * @return string Mapped code
      */
-    protected function mapCode($code)
+    protected function mapCodeToStatus($code)
     {
-        $statuses =  [
-            //Map messaging settings
-            'snailMail'             => 'letter',
-            'ilsDefined'            => 'none'
-        ];
-
-        if (isset($statuses[$code])) {
-            return $statuses[$code];
+        if (isset($this->statuses[$code])) {
+            return $this->statuses[$code];
         }
         return $code;
+    }
+
+    /**
+     * Status to code
+     *
+     * @param string $status as a string
+     *
+     * @return string Mapped status
+     */
+    protected function mapStatusToCode($status)
+    {
+        $found = array_search($status, $this->statuses);
+        return $found !== false ? $found : $status;
     }
 
     /**
@@ -2612,11 +2974,16 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
      */
     public function supportsMethod($method, $params)
     {
-        //Special case: change password is only available if properly configured.
-        if ($method == 'changePassword') {
+        switch ($method) {
+        case 'changePassword':
             return isset($this->config['changePassword']);
+        case 'getMyTransactionHistory':
+            return !empty($this->loansaurora_wsdl);
+        case 'updateAddress':
+            return !empty($this->patronaurora_wsdl);
+        default:
+            return is_callable([$this, $method]);
         }
-        return is_callable([$this, $method]);
     }
 
     /**

@@ -90,8 +90,8 @@ class CoverController extends \VuFind\Controller\CoverController
 
         $params = $this->params();
 
-        $width = $params->fromQuery('w');
-        $height = $params->fromQuery('h');
+        $width = (int)$params->fromQuery('w');
+        $height = (int)$params->fromQuery('h');
         $size = $params->fromQuery('fullres')
             ? 'large' : $params->fromQuery('size');
         $this->loader->setParams($width, $height, $size);
@@ -106,8 +106,10 @@ class CoverController extends \VuFind\Controller\CoverController
         $this->loader->setDatasourceConfig($datasourceCovers);
 
         if ($id = $params->fromQuery('id')) {
-            $driver = $this->recordLoader->load($id, 'Solr');
-            $index = $params->fromQuery('index');
+            $driver = $this->recordLoader->load(
+                $id, $params->fromQuery('source') ?? DEFAULT_SEARCH_BACKEND
+            );
+            $index = (int)$params->fromQuery('index');
             $this->loader->loadRecordImage($driver, $index, $size);
             $response = parent::displayImage();
         } else {

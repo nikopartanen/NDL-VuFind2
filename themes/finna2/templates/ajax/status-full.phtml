@@ -8,14 +8,14 @@ $holdings = $this->statusItems;
 $summary = array_pop($holdings);
 $onlyUnknownStatuses = true;
 $holdingsConfig = $this->ils()->getConfig('Holdings', [$id]);
-if (isset($summary['total'])) {
+if (($summary['location'] ?? '') === '__HOLDINGSSUMMARYLOCATION__') {
   $itemsTotal = $summary['total'];
   $availableTotal = $summary['available'];
   $reservationsTotal
      = $summary['reservations'] ?? null;
   $orderedTotal
      = $summary['ordered'] ?? null;
-  $locations = $summary['locations'];
+  $locations = $summary['locations'] ?? null;
 } else {
   $holdings[] = $summary;
 }
@@ -285,9 +285,9 @@ if (!$disableTitleHold
       $logged = $account->isLoggedIn();
       $link = null;
       if (!$logged) {
-        $link = $holdingsLink . '?login=true&amp;catalogLogin=true';
+        $link = $this->escapeHtmlAttr($holdingsLink . '?login=true&catalogLogin=true');
       } elseif ($journal) {
-        $link = $holdingsLink;
+        $link = $this->escapeHtmlAttr($holdingsLink);
       } else {
         $holdingTitleHold = $driver->tryMethod('getRealTimeTitleHold');
         if (!empty($holdingTitleHold)) {
@@ -313,7 +313,7 @@ if (!$disableTitleHold
 ?>
 <?php if ($this->holdingsSettings()->showLinkToRecordPage()): ?>
   <div class="all-holdings">
-    <a href="<?=$holdingsLink;?>"><?=$this->transEsc('See all holdings')?></a>
+    <a href="<?=$this->escapeHtmlAttr($holdingsLink)?>"><?=$this->transEsc('See all holdings')?></a>
   </div>
 <?php endif; ?>
 </div>
