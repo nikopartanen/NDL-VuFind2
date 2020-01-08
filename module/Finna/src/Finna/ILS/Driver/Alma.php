@@ -1195,7 +1195,7 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
             '/request_options/request_option//type'
         );
         foreach ($requestTypes as $requestType) {
-            if (in_array((string)$requestType, ['HOLD', 'PURCHASE'])) {
+            if (in_array((string)$requestType, ['HOLD'])) {
                 $result = true;
                 break;
             }
@@ -1336,11 +1336,6 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
         default:
             $errorMsg = $error->errorList->error[0]->errorMessage
                 ?? 'hold_error_fail';
-        }
-
-        if ('Missing mandatory field: Description.' === $errorMsg) {
-            $errorMsg = $this->translate('This field is required') . ': '
-                . $this->translate('hold_issue');
         }
 
         return [
