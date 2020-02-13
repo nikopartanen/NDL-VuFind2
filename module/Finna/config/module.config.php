@@ -372,6 +372,8 @@ $config = [
                         'VuFind\AjaxHandler\GetSideFacetsFactory',
                     'Finna\AjaxHandler\GetSimilarRecords' =>
                         'Finna\AjaxHandler\GetSimilarRecordsFactory',
+                    'Finna\AjaxHandler\GetUserList' =>
+                        'Finna\AjaxHandler\GetUserListFactory',
                     'Finna\AjaxHandler\GetUserLists' =>
                         'Finna\AjaxHandler\GetUserListsFactory',
                     'Finna\AjaxHandler\ImportFavorites' =>
@@ -405,6 +407,7 @@ $config = [
                     'getRecordVersions' => 'Finna\AjaxHandler\GetRecordVersions',
                     'getSearchTabsRecommendations' => 'Finna\AjaxHandler\GetSearchTabsRecommendations',
                     'getSimilarRecords' => 'Finna\AjaxHandler\GetSimilarRecords',
+                    'getUserList' => 'Finna\AjaxHandler\GetUserList',
                     'importFavorites' => 'Finna\AjaxHandler\ImportFavorites',
                     'onlinePaymentNotify' => 'Finna\AjaxHandler\OnlinePaymentNotify',
                     'registerOnlinePayment' => 'Finna\AjaxHandler\RegisterOnlinePayment',
@@ -690,14 +693,8 @@ $config = [
             ],
             'recordtab' => [
                 'factories' => [
-                    'Finna\RecordTab\DescriptionFWD' => 'Finna\RecordTab\Factory::getDescriptionFWD',
-                    'Finna\RecordTab\Distribution' => 'Finna\RecordTab\Factory::getDistribution',
-                    'Finna\RecordTab\InspectionDetails' => 'Finna\RecordTab\Factory::getInspectionDetails',
-                    'Finna\RecordTab\ItemDescription' => 'Finna\RecordTab\Factory::getItemDescription',
                     'Finna\RecordTab\LocationsEad3' => 'Finna\RecordTab\Factory::getLocationsEad3',
                     'Finna\RecordTab\Map' => 'Finna\RecordTab\Factory::getMap',
-                    'Finna\RecordTab\Music' => 'Finna\RecordTab\Factory::getMusic',
-                    'Finna\RecordTab\PressReviews' => 'Finna\RecordTab\Factory::getPressReviews',
                     'Finna\RecordTab\UserComments' => 'Finna\RecordTab\Factory::getUserComments',
                     'Finna\RecordTab\Versions' => 'Finna\RecordTab\VersionsFactory',
                 ],
@@ -706,13 +703,7 @@ $config = [
                 ],
                 'aliases' => [
                     'componentparts' => 'Finna\RecordTab\ComponentParts',
-                    'descriptionFWD' => 'Finna\RecordTab\DescriptionFWD',
-                    'distribution' => 'Finna\RecordTab\Distribution',
-                    'inspectionDetails' => 'Finna\RecordTab\InspectionDetails',
-                    'itemdescription' => 'Finna\RecordTab\ItemDescription',
                     'LocationsEad3' => 'Finna\RecordTab\LocationsEad3',
-                    'music' => 'Finna\RecordTab\Music',
-                    'pressreview' => 'Finna\RecordTab\PressReviews',
                     'versions' => 'Finna\RecordTab\Versions',
 
                     // Overrides:
