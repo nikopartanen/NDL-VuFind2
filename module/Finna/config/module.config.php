@@ -272,6 +272,7 @@ $config = [
             'Finna\Feed\Feed' => 'Finna\Feed\FeedFactory',
             'Finna\Form\Form' => 'Finna\Form\FormFactory',
             'Finna\ILS\Connection' => 'VuFind\ILS\ConnectionFactory',
+            'Finna\ILS\Logic\Holds' => 'VuFind\ILS\Logic\LogicFactory',
             'Finna\LocationService\LocationService' => 'Finna\LocationService\LocationServiceFactory',
             'Finna\Mailer\Mailer' => 'VuFind\Mailer\Factory',
             'Finna\OAI\Server' => 'VuFind\OAI\ServerFactory',
@@ -304,6 +305,7 @@ $config = [
             'VuFind\Favorites\FavoritesService' => 'Finna\Favorites\FavoritesService',
             'VuFind\Form\Form' => 'Finna\Form\Form',
             'VuFind\ILS\Connection' => 'Finna\ILS\Connection',
+            'VuFind\ILS\Logic\Holds' => 'Finna\ILS\Logic\Holds',
             'VuFind\Mailer\Mailer' => 'Finna\Mailer\Mailer',
             'VuFind\OAI\Server' => 'Finna\OAI\Server',
             'VuFind\Record\Loader' => 'Finna\Record\Loader',
@@ -521,7 +523,6 @@ $config = [
                     'Finna\ILS\Driver\Alma' => 'VuFind\ILS\Driver\AlmaFactory',
                     'Finna\ILS\Driver\AxiellWebServices' => 'Finna\ILS\Driver\AxiellWebServicesFactory',
                     'Finna\ILS\Driver\Demo' => 'VuFind\ILS\Driver\DemoFactory',
-                    'Finna\ILS\Driver\Gemini' => '\VuFind\ILS\Driver\DriverWithDateConverterFactory',
                     'Finna\ILS\Driver\KohaRestSuomi' => 'Finna\ILS\Driver\KohaRestSuomiFactory',
                     'Finna\ILS\Driver\Mikromarc' => '\VuFind\ILS\Driver\DriverWithDateConverterFactory',
                     'Finna\ILS\Driver\MultiBackend' => 'Finna\ILS\Driver\MultiBackendFactory',
@@ -531,7 +532,6 @@ $config = [
                 ],
                 'aliases' => [
                     'axiellwebservices' => 'Finna\ILS\Driver\AxiellWebServices',
-                    'gemini' => 'Finna\ILS\Driver\Gemini',
                     'mikromarc' => 'Finna\ILS\Driver\Mikromarc',
                     // TODO: remove the following line when KohaRest driver is available upstream:
                     'koharest' => 'Finna\ILS\Driver\KohaRestSuomi',
@@ -757,7 +757,7 @@ $dynamicRoutes = [
 ];
 
 $staticRoutes = [
-    'Browse/Database', 'Browse/Journal',
+    'Browse/Database', 'Browse/Journal', 'Cover/Download',
     'LibraryCards/Recover', 'LibraryCards/Register',
     'LibraryCards/RegistrationDone', 'LibraryCards/RegistrationForm',
     'LibraryCards/ResetPassword',
