@@ -1,4 +1,4 @@
-/*global VuFind, finna */
+/*global VuFind, finna, checkSaveStatuses */
 finna.userListEmbed = (function userListEmbed() {
   var my = {
     init: function init() {
@@ -9,7 +9,6 @@ finna.userListEmbed = (function userListEmbed() {
         var showMore = embed.find('.show-more');
         var spinner = embed.find('.fa-spinner');
         embed.find('.btn.load-more').click(function initLoadMore() {
-          var resultsContainer = embed.find('.search-grid');
           spinner.removeClass('hide').show();
 
           var btn = $(this);
@@ -18,8 +17,14 @@ finna.userListEmbed = (function userListEmbed() {
           var offset = btn.data('offset');
           var indexStart = btn.data('start-index');
           var view = btn.data('view');
+          var sort = btn.data('sort');
 
           btn.hide();
+
+          var resultsContainer = embed.find(
+            view === 'grid' ? '.search-grid' : '.result-view-' + view
+          );
+
           $.getJSON(
             VuFind.path + '/AJAX/JSON?method=getUserList',
             {
@@ -27,6 +32,7 @@ finna.userListEmbed = (function userListEmbed() {
               offset: offset,
               indexStart: indexStart,
               view: view,
+              sort: sort,
               method: 'getUserList' 
             }
           )
@@ -38,6 +44,15 @@ finna.userListEmbed = (function userListEmbed() {
               
               finna.myList.init();
               finna.imagePaginator.reindexPaginators();
+              finna.layout.initCondensedList(resultsContainer);
+              finna.layout.initTruncate();
+              finna.openUrl.initLinks(resultsContainer);
+              finna.itemStatus.initItemStatuses(resultsContainer);
+              finna.itemStatus.initDedupRecordSelection(resultsContainer);
+              finna.record.initRecordVersions(resultsContainer);
+              VuFind.lightbox.bind(resultsContainer);
+              VuFind.cart.init(resultsContainer);
+              checkSaveStatuses(resultsContainer);
             })
             .fail(function onLoadListFail() {
               btn.show();
