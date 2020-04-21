@@ -104,7 +104,9 @@ class CoverController extends \VuFind\Controller\CoverController
             $highResolution = $images[$index]['highResolution'] ?? [];
             if (isset($highResolution[$size][$format]['url'])) {
                 $url = $highResolution[$size][$format]['url'];
-                $res = $this->loader->loadExternalImage($url, $format);
+                $res = $this->loader->loadExternalImage(
+                    $url, $format, "{$id}_{$index}_{$size}.{$format}"
+                );
                 if (!$res) {
                     $response->setStatusCode(500);
                 }
@@ -133,6 +135,13 @@ class CoverController extends \VuFind\Controller\CoverController
         $height = (int)$params->fromQuery('h');
         $size = $params->fromQuery('fullres')
             ? 'large' : $params->fromQuery('size');
+
+        if (!in_array($size, ['master', 'large', 'medium', 'small'])) {
+            $response = $this->getResponse();
+            $response->setStatusCode(400);
+            return $response;
+        }
+
         $this->loader->setParams($width, $height, $size);
 
         // Cover image configuration for current datasource
