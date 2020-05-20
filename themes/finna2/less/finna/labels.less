@@ -11,3 +11,21 @@
 .result .iconlabel {
   font-size: 0.9em;
 }
+.record-labels {
+  .iconlabel {
+    font-size: 0.8em;
+    text-transform: uppercase;
+  }
+  .iconlabel::before {
+    font-size: 1.2em;
+  }
+  .iconlabel.full-text-available::before {
+    color: @full-text-icon-color;
+  }
+  .iconlabel.peer-reviewed::before {
+    color: @peer-reviewed-icon-color;
+  }
+  .iconlabel.open-access::before {
+    color: @open-access-icon-color;
+  }
+}
