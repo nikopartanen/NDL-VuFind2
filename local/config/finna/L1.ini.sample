@@ -181,6 +181,10 @@ educational_level_str_mv = "Koulutusaste"
 educational_aim_str_mv = "Tavoite ja sisältöalue"
 educational_material_type_str_mv = "Oppimateriaalin tyyppi"
 educational_subject_str_mv = "Oppiaine/tutkinto/tieteenala"
+topic_facet = Topic
+usage_rights_str_mv = "Usage Rights"
+author_facet = Author
+language = Language
 
 [ResultsTop]
 ;topic_facet        = "Suggested Topics"
@@ -202,6 +206,7 @@ dateRange[] = publishDate
 ;numericRange[] = example_field_str
 ;genericRange[] = example_field_str
 ;hierarchical[] = building
+hierarchical[] = educational_level_str_mv
 ;hierarchicalFacetSortOptions[building] = top
 ;hierarchicalFacetDisplayStyles[format] = full
 ;hierarchicalFacetSeparators[format] = " > "
@@ -237,6 +242,9 @@ special_facets   = "illustrated,daterange"
 ;translated_facets[] = building
 translated_facets[] = format
 translated_facets[] = callnumber-first:CallNumberFirst
+translated_facets[] = educational_level_str_mv
+translated_facets[] = educational_material_type_str_mv
+translated_facets[] = educational_audience_str_mv
 ;delimited_facets[] = author_id_str
 ;delimited_facets[] = "author_id_str|:::"
 
