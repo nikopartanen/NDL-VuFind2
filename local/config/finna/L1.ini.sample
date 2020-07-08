@@ -176,13 +176,13 @@ content[] = FacetList:L1
 ; ---------- facets.ini settings ----------
 
 [Results]
+usage_rights_str_mv = "Usage Rights"
 educational_audience_str_mv = "Kohderyhmä"
 educational_level_str_mv = "Koulutusaste"
-educational_aim_str_mv = "Tavoite ja sisältöalue"
 educational_material_type_str_mv = "Oppimateriaalin tyyppi"
 educational_subject_str_mv = "Oppiaine/tutkinto/tieteenala"
+educational_aim_str_mv = "Tavoite ja sisältöalue"
 topic_facet = Topic
-usage_rights_str_mv = "Usage Rights"
 author_facet = Author
 language = Language
 
@@ -223,7 +223,7 @@ top_rows = 2
 top_cols = 3
 ;exclude = *
 ;orFacets = *
-;collapsedFacets = *
+collapsedFacets = usage_rights_str_mv,educational_audience_str_mv,educational_material_type_str_mv,educational_subject_str_mv,educational_aim_str_mv,topic_facet,author_facet,language
 ;sorted_by_index[] = building;
 ;sorted_by_index[] = institution;
 
