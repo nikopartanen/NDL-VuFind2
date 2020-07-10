@@ -598,6 +598,59 @@ class RecordDataFormatterFactory
             ]
         );
         $setTemplateLine(
+            'Educational Audience', 'getEducationalAudiences',
+            'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'record-educational-audience']
+            ]
+        );
+        $setTemplateLine(
+            'Educational uses', 'getEducationalUse', 'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'record-educational-uses']
+            ]
+        );
+        $setTemplateLine(
+            'Educational levels', 'getEducationalLevels', 'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'record-eductaional-levels']
+            ]
+        );
+        $setTemplateLine(
+            'Educational subjects', 'getEducationalSubjects',
+            'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'record-educational-subjects']
+            ]
+        );
+        $setTemplateLine(
+            'Educational material type', 'getEducationalMaterialType',
+            'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'record-educational-material-type']
+            ]
+        );
+        $setTemplateLine(
+            'Educational aim', 'getEducationalAim', 'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'record-educational-aim']
+            ]
+        );
+        $setTemplateLine(
+            'Accessibility features', 'getAccessibilityFeatures',
+            'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'record-accessibility-features']
+            ]
+        );
+        $setTemplateLine(
+            'Accessibility hazards', 'getAccessibilityHazards',
+            'data-escapeHtml.phtml',
+            [
+                'context' => ['class' => 'record-accessibility-hazard']
+            ]
+        );
+        $setTemplateLine(
             'Publication Frequency', 'getPublicationFrequency',
             'data-escapeHtml.phtml',
             [
