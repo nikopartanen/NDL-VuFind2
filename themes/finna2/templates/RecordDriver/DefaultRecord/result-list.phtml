@@ -8,7 +8,6 @@
   if ($img) {
     $thumbnail = $img->render('list', ['small' => ['w' => 100, 'h' => 100], 'medium' => ['w' => 250, 'h' => 250]]);
   }
-  $record = $this->record($this->driver);
   $recordType = $this->driver->tryMethod('getRecordType');
 ?>
 <div class="record-container<?=$recordType?" record-type-$recordType":''?><?=$this->driver->supportsAjaxStatus()?' ajaxItem ':''?> list-view">
