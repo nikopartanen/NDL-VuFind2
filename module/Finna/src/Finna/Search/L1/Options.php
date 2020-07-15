@@ -79,6 +79,6 @@ class Options extends \Finna\Search\Solr\Options
      */
     public function getAdvancedSearchAction()
     {
-        return 'l1-advanced';
+        return false;
     }
 }
