@@ -279,6 +279,7 @@ class RecordImage extends \Laminas\View\Helper\AbstractHelper
         $disableModal = $extraParams['disableModal'] ?? false;
         $imageRightsLabel = $extraParams['imageRightsLabel'] ?? 'Image Rights';
         $numOfImages = $extraParams['numOfImages'] ?? null;
+        $displayIcon = $extraParams['displayIcon'] ?? false;
 
         $view = $this->getView();
         $images = $this->getAllImagesAsCoverLinks(
@@ -294,7 +295,8 @@ class RecordImage extends \Laminas\View\Helper\AbstractHelper
             'images' => $images,
             'disableModal' => $disableModal,
             'imageRightsLabel' => $imageRightsLabel,
-            'numOfImages' => $numOfImages
+            'numOfImages' => $numOfImages,
+            'displayIcon' => $displayIcon
         ];
 
         return $this->record->renderTemplate('record-image.phtml', $context);

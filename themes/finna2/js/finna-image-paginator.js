@@ -15,6 +15,7 @@ finna.imagePaginator = (function imagePaginator() {
     imagesPerRow: 8,
     enableImageZoom: false,
     recordType: 'default-type',
+    displayIcon: false,
     leaflet: {
       offsetPercentage: 4
     }
@@ -314,7 +315,7 @@ finna.imagePaginator = (function imagePaginator() {
         clearTimeout(timeOut);
         timeOut = null;
       }
-      if (_.leafletHolder.length === 0) {
+      if (_.leafletHolder.length === 0 || typeof _.canvasElements.leaflet === 'undefined') {
         return;
       }
 
@@ -544,7 +545,9 @@ finna.imagePaginator = (function imagePaginator() {
         if (!_.isList && _.images.length <= 1) {
           _.root.closest('.media-left').not('.audio').addClass('hidden-xs');
           _.root.closest('.media-left').find('.organisation-menu').hide();
-          _.root.css('display', 'none');
+          if (!_.settings.displayIcon) {
+            _.root.css('display', 'none');
+          }
           _.root.siblings('.image-details-container:not(:has(.image-rights))').hide();
           $('.record.large-image-layout').addClass('no-image-layout').removeClass('large-image-layout');
           $('.large-image-sidebar').addClass('visible-xs visible-sm');

@@ -9,7 +9,7 @@
   <?= $this->record($this->driver)->renderTemplate(
     'record-image-paginator.phtml',
     ['images' => $images, 'type' => $type, 'largeImageLayout' => $largeImageLayout, 'formats' => $formats, 'enableImagePopupZoom' => $enableImagePopupZoom,
-     'numOfImages' => $numOfImages ?? null
+     'numOfImages' => $numOfImages ?? null, 'displayIcon' => $displayIcon ?? false
     ]
   ); ?>
   </div>
