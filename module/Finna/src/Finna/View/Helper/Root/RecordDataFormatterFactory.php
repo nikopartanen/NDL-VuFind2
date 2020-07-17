@@ -613,7 +613,7 @@ class RecordDataFormatterFactory
         $setTemplateLine(
             'Educational levels', 'getEducationalLevels', 'data-escapeHtml.phtml',
             [
-                'context' => ['class' => 'record-eductaional-levels']
+                'context' => ['class' => 'record-educational-levels']
             ]
         );
         $setTemplateLine(

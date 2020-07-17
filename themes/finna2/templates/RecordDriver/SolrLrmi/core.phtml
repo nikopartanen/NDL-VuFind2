@@ -50,13 +50,12 @@
       <?/* Display Main Details */?>
       <?php
         $formatter = $this->recordDataFormatter();
-        $coreFields = $formatter->getData(
-            $driver, $formatter->filterLrmiFields($formatter->getDefaults('core'))
-        );
+        $filteredFields = $formatter->filterLrmiFields($formatter->getDefaults('core'));
+        $coreFields = $formatter->getGroupedData($driver, $formatter->getGroupedFields([],$filteredFields));
       ?>
       <?php if (!empty($coreFields)): ?>
-        <table class="table table-finna-record record-details record-details-more">
-          <?=$this->record($this->driver)->renderTemplate('core-fields.phtml', ['coreFields' => $coreFields]);?>
+        <table class="table table-finna-record record-details record-details-more record-field-groups">
+          <?=$this->record($this->driver)->renderTemplate('core-field-groups.phtml', ['data' => $coreFields]);?>
         </table>
         <button class="btn show-details-button hidden"><?=$this->transEsc('show_more_details');?> <i class="fa fa-arrow-down"></i></button>
         <button class="btn hide-details-button hidden"><?=$this->transEsc('show_less_details');?> <i class="fa fa-arrow-up"></i></button>

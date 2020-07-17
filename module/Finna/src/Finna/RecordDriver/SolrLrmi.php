@@ -237,19 +237,12 @@ class SolrLrmi extends SolrQdc
         $xml = $this->getSimpleXML();
         $materials = [];
         foreach ($xml->material as $material) {
-            $url = '';
-            $format = '';
-            if (isset($material->name)) {
+            if (isset($material->format)) {
                 $format = $this->getFileFormat((string)$material->name);
-                if ($this->checkAllowedFileFormat($format)) {
-                    $url = (string)$material->url;
-                }
+                $url = $this->checkAllowedFileFormat($format)
+                    ? (string)$material->url : '';
                 $title = 'Title Placeholder';
-                $materials[] = [
-                    'url' => $url,
-                    'title' => $title,
-                    'format' => $format
-                ];
+                $materials[] = compact('url', 'title', 'format');
             }
         }
         return $materials;
@@ -307,7 +300,6 @@ class SolrLrmi extends SolrQdc
      */
     public function getEducationalAim()
     {
-        $xml = $this->getSimpleXml();
         $aims = [];
         if (isset($this->fields['educational_aim_str_mv'])) {
             foreach ($this->fields['educational_aim_str_mv'] as $aim) {
