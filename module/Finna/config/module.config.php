@@ -287,6 +287,7 @@ $config = [
     'service_manager' => [
         'allow_override' => true,
         'factories' => [
+            'Finna\Autocomplete\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\Auth\ILSAuthenticator' => 'VuFind\Auth\ILSAuthenticatorFactory',
             'Finna\Auth\Manager' => 'VuFind\Auth\ManagerFactory',
             'Finna\Cache\Manager' => 'VuFind\Cache\ManagerFactory',
@@ -320,6 +321,7 @@ $config = [
             'Laminas\Session\SessionManager' => 'Finna\Session\ManagerFactory',
         ],
         'aliases' => [
+            'VuFind\Autocomplete\PluginManager' => 'Finna\Autocomplete\PluginManager',
             'VuFind\Auth\Manager' => 'Finna\Auth\Manager',
             'VuFind\Auth\ILSAuthenticator' => 'Finna\Auth\ILSAuthenticator',
             'VuFind\Cache\Manager' => 'Finna\Cache\Manager',
@@ -473,6 +475,7 @@ $config = [
             'autocomplete' => [
                 'factories' => [
                     'Finna\Autocomplete\Solr' => 'Finna\Autocomplete\SolrFactory',
+                    'Finna\Autocomplete\L1' => 'Finna\Autocomplete\SolrFactory',
                 ],
                 'aliases' => [
                     'VuFind\Autocomplete\Solr' => 'Finna\Autocomplete\Solr',
