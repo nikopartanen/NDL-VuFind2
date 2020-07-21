@@ -816,12 +816,8 @@ $staticRoutes = [
     'OrganisationInfo/Home',
     'PCI/Home', 'PCI/Search', 'PCI/Record',
     'Search/StreetSearch',
-<<<<<<< Updated upstream
-    'Barcode/Show', 'Search/MapFacet', 'Search/Blended'
-=======
     'Barcode/Show', 'Search/MapFacet', 'Search/Blended',
     'L1/Advanced', 'L1/FacetList', 'L1/Home', 'L1/Results', 'L1/Search'
->>>>>>> Stashed changes
 ];
 
 $routeGenerator = new \VuFind\Route\RouteGenerator();
