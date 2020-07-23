@@ -5,9 +5,8 @@
   $img = $this->recordImage($this->record($this->driver));
   $thumbnail = false;
   $thumbnailAlignment = $this->record($this->driver)->getThumbnailAlignment('result');
-  $audiences = $this->driver->getEducationalAudiences();
-  $levels = $this->driver->getEducationalLevels();
-  $subjects = $this->driver->getEducationalSubjects();
+  $levels = $this->driver->getRootEducationalLevels();
+  $topics = $this->driver->getYsoTopics();
   $showExtraDetails = $this->layout()->templateDir === 'l1';
   $coverDetails = $this->record($this->driver)->getCoverDetails('result-list', 'medium', $this->recordLink()->getUrl($this->driver));
   if ($img) {
@@ -133,19 +132,15 @@
             <?php endif; ?>
             <?php if ($showExtraDetails): ?>
               <div class="targeted-informations">
-                <?php if ($audiences): ?>
-                  <?php foreach($audiences as $audience): ?>
-                    <a target="_blank" href="<?=$this->url('l1-results') . '?type=AllFields&amp;filter%5B%5D=educational_audience_str_mv%3A' . $audience ?>" class="targeted-element"><?=$this->transEsc($audience)?></a>
-                  <?php endforeach; ?>
-                <?php endif; ?>
-                <?php if ($subjects): ?>
-                  <?php foreach($subjects as $subject): ?>
-                    <a target="_blank" href="<?=$this->url('l1-results') . '?type=AllFields&amp;filter%5B%5D=educational_subject_str_mv%3A' . $subject?>" class="targeted-element"><?=$this->transEsc($subject)?></a>
-                  <?php endforeach; ?>
-                <?php endif; ?>
+              <?php $lateralUrl = $this->url('l1-results') . '?type=AllFields&amp;filter%5B%5D={{search}}%3A{{for}}'; ?>
                 <?php if ($levels): ?>
                   <?php foreach($levels as $level): ?>
-                    <a target="_blank" href="<?=$this->url('l1-results') . '?type=AllFields&amp;filter%5B%5D=educational_level_str_mv%3A' . $level?>" class="targeted-element"><?=$this->transEsc($level)?></a>
+                    <a target="_blank" href="<?= str_replace(['{{search}}', '{{for}}'], ['educational_level_str_mv', $level], $lateralUrl) ?>" class="targeted-element"><?=$this->transEsc($level)?></a>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+                <?php if ($topics): ?>
+                  <?php foreach($topics as $topic): ?>
+                    <a target="_blank" href="<?= str_replace(['{{search}}', '{{for}}'], ['topic_facet', $topic], $lateralUrl) ?>" class="targeted-element"><?=$this->transEsc($topic)?></a>
                   <?php endforeach; ?>
                 <?php endif; ?>
               </div>
