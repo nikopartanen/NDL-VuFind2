@@ -46,7 +46,7 @@ class SolrLrmi extends SolrQdc
      */
     protected $downloadableFileFormats = [
         'pdf', 'pptx', 'ppt', 'docx', 'mp4', 'mp3',
-        'avi', 'odt', 'rtf', 'txt', 'odp'
+        'avi', 'odt', 'rtf', 'txt', 'odp', 'png', 'jpeg', 'm4a'
     ];
 
     /**
@@ -155,8 +155,23 @@ class SolrLrmi extends SolrQdc
      */
     public function getEducationalLevels()
     {
-        return isset($this->fields['educational_level_str_mv']) ?
-            $this->fields['educational_level_str_mv'] : [];
+        return $this->fields['educational_level_str_mv'] ?? [];
+    }
+
+    /**
+     * Return root educational levels
+     *
+     * @return array
+     */
+    public function getRootEducationalLevels()
+    {
+        $rootLevels = [];
+        foreach ($this->fields['educational_level_str_mv'] ?? [] as $key => $level) {
+            if (substr($level, 0, 1) === '0') {
+                $rootLevels[] = $level;
+            }
+        }
+        return $rootLevels;
     }
 
     /**
@@ -193,6 +208,24 @@ class SolrLrmi extends SolrQdc
     public function getEducationalMaterialType()
     {
         return $this->fields['educational_material_type_str_mv'] ?? [];
+    }
+
+    /**
+     * Get topics
+     *
+     * @return array
+     */
+    public function getYsoTopics()
+    {
+        $xml = $this->getSimpleXML();
+        $topics = [];
+        foreach ($xml->about as $about) {
+            $thing = $about->thing;
+            if ($val = $thing->name ?? null) {
+                $topics[] = (string)trim($val);
+            }
+        }
+        return $topics;
     }
 
     /**
@@ -241,10 +274,18 @@ class SolrLrmi extends SolrQdc
                 $format = $this->getFileFormat((string)$material->name);
                 $url = $this->checkAllowedFileFormat($format)
                     ? (string)$material->url : '';
-                $title = 'Title Placeholder';
-                $materials[] = compact('url', 'title', 'format');
+                $title = 'Title Placeholder ' . $material->position;
+                $position = $material->position ?? 0;
+                $materials[] = compact('url', 'title', 'format', 'position');
             }
         }
+
+        usort(
+            $materials, function ($a, $b) {
+                return (int)$a['position'] <=> (int)$b['position'];
+            }
+        );
+
         return $materials;
     }
 
@@ -317,7 +358,7 @@ class SolrLrmi extends SolrQdc
      */
     public function getAccessibilityFeatures()
     {
-        $xml = $this->getSimpleXml();
+        $xml = $this->getSimpleXML();
         $features = [];
         foreach ($xml->accessibilityFeature as $feature) {
             $features[] = $feature;

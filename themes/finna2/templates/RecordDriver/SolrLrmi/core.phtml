@@ -12,9 +12,7 @@
   $formats = $this->driver->getFormats();
   ob_start(); ?>
   <div class="media-<?=$thumbnailAlignment ?>">
-
     <?=$this->record($this->driver)->renderTemplate('record-image-information.phtml', ['img' => $img, 'displayIcon' => true]);?>
-
     <?=$this->record($this->driver)->renderTemplate('record-post-thumbnail.phtml');?>
   </div>
   <?php $thumbnail = ob_get_contents(); ?>
@@ -51,7 +49,7 @@
       <?php
         $formatter = $this->recordDataFormatter();
         $filteredFields = $formatter->filterLrmiFields($formatter->getDefaults('core'));
-        $coreFields = $formatter->getGroupedData($driver, $formatter->getGroupedFields([],$filteredFields));
+        $coreFields = $formatter->getGroupedData($driver, $formatter->getGroupedFields([], $filteredFields));
       ?>
       <?php if (!empty($coreFields)): ?>
         <table class="table table-finna-record record-details record-details-more record-field-groups">
