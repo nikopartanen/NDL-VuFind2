@@ -10,7 +10,7 @@
   $showExtraDetails = $this->layout()->templateDir === 'l1';
   $coverDetails = $this->record($this->driver)->getCoverDetails('result-list', 'medium', $this->recordLink()->getUrl($this->driver));
   if ($img) {
-    $thumbnail = $img->render('list', ['small' => ['w' => 100, 'h' => 100], 'medium' => ['w' => 250, 'h' => 250]]);
+    $thumbnail = $img->render('list', ['small' => ['w' => 158, 'h' => 228], 'medium' => ['w' => 158, 'h' => 228]]);
   }
   $recordType = $this->driver->tryMethod('getRecordType');
 ?>
@@ -46,28 +46,6 @@
         <?php endif; ?>
         <div class="dateyeartype">
           <div class="resultItemFormat"><?=$this->record($this->driver)->getFormatList() ?> <?=$this->record($this->driver)->getSourceIdElement() ?></div>
-
-          <?php if ($results = $this->driver->tryMethod('getOtherLinks')): ?>
-            <div class="resultOtherLinks">
-              <?php $prevOtherLinkHeading = ''; ?>
-              <?php foreach ($results as $result): ?>
-                <?=$prevOtherLinkHeading != $result['heading'] ? $this->transEsc('default::link_' . $result['heading'], null, $result['heading']) : '&nbsp;' ?>
-                <?php if (!empty($result['isn'])): ?>
-                  <?php $otherLinkTitle = !empty($result['title']) ? $result['title'] : $result['isn']; ?>
-                  <a title="<?=$this->escapeHtmlAttr($otherLinkTitle) ?>" href="<?=$this->record($this->driver)->getLink('isn', $result['isn']) ?>">
-                    <?=$this->escapeHtml($otherLinkTitle); ?>
-                  </a>
-                <?php elseif (!empty($result['title'])): ?>
-                  <a title="<?=$this->escapeHtmlAttr($result['title']) ?>" href="<?=$this->record($this->driver)->getLink('title', $result['title']) ?>">
-                    <?=$this->escapeHtml($result['title']); ?>
-                  </a>
-                <?php endif; ?>
-                <?php if (!empty($result['author'])): ?>
-                  (<?=$this->escapeHtml($result['author']); ?>)
-                <?php endif; ?>
-              <?php endforeach; ?>
-            </div>
-          <?php endif; ?>
 
           <?php if ($this->driver->isCollection()): ?>
             <?=implode('<br>', $this->driver->getSummary()); ?>
@@ -131,16 +109,16 @@
               </div>
             <?php endif; ?>
             <?php if ($showExtraDetails): ?>
-              <div class="targeted-informations">
-              <?php $lateralUrl = $this->url('l1-results') . '?type=AllFields&amp;filter%5B%5D={{search}}%3A{{for}}'; ?>
+              <div class="targeted-informations truncate-field" data-rows="3">
+                <?php $lateralUrl = $this->url('l1-results'); ?>
                 <?php if ($levels): ?>
                   <?php foreach($levels as $level): ?>
-                    <a target="_blank" href="<?= str_replace(['{{search}}', '{{for}}'], ['educational_level_str_mv', $level], $lateralUrl) ?>" class="targeted-element"><?=$this->transEsc($level)?></a>
+                    <a target="_blank" href="<?=$lateralUrl . "?type=AllFields&amp;filter%5B%5D=educational_level_str_mv%3A$level"?>" class="targeted-element"><?=$this->transEsc($level)?></a>
                   <?php endforeach; ?>
                 <?php endif; ?>
                 <?php if ($topics): ?>
                   <?php foreach($topics as $topic): ?>
-                    <a target="_blank" href="<?= str_replace(['{{search}}', '{{for}}'], ['topic_facet', $topic], $lateralUrl) ?>" class="targeted-element"><?=$this->transEsc($topic)?></a>
+                    <a target="_blank" href="<?= $lateralUrl . "?type=AllFields&amp;filter%5B%5D=topic_facet%3A$topic"?>" class="targeted-element"><?=$this->transEsc($topic)?></a>
                   <?php endforeach; ?>
                 <?php endif; ?>
               </div>
@@ -156,28 +134,8 @@
                 </div>
               <?php endif; ?>
             <?php endif; ?>
-            <?php $summInCollection = $this->driver->getContainingCollections(); if (!empty($summInCollection)): ?>
-              <?php foreach ($summInCollection as $collId => $collText): ?>
-                <div>
-                  <b><?=$this->transEsc("in_collection_label")?></b>
-                  <a class="collectionLinkText" href="<?=$this->url('collection', ['id' => $collId])?>?recordID=<?=urlencode($this->driver->getUniqueID())?>">
-                    <?=$this->escapeHtml($collText)?>
-                  </a>
-                </div>
-              <?php endforeach; ?>
-            <?php endif; ?>
           <?php endif; ?>
         </div>
-        <?php if (!$this->driver->isCollection()): ?>
-          <?php if ($snippet = $this->driver->getHighlightedSnippet()): ?>
-            <?php if (!empty($snippet['caption'])): ?>
-              <strong><?=$this->transEsc($snippet['caption']) ?>:</strong>
-            <?php endif; ?>
-            <?php if (!empty($snippet['snippet'])): ?>
-              <span class="quotestart">&#8220;</span>...<?=$this->highlight($snippet['snippet']) ?>...<span class="quoteend">&#8221;</span><br/>
-            <?php endif; ?>
-          <?php endif; ?>
-        <?php endif; ?>
         
         <?php if ($this->driver->tryMethod('getWorkKeys') && !empty($this->config()->get('config')->Record->display_versions)): ?>
           <div class="record-versions ajax"></div>
