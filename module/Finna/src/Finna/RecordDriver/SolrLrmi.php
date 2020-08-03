@@ -237,10 +237,7 @@ class SolrLrmi extends SolrQdc
      */
     public function checkAllowedFileFormat($format)
     {
-        if (in_array($format, $this->downloadableFileFormats)) {
-            return true;
-        }
-        return false;
+        return in_array($format, $this->downloadableFileFormats);
     }
 
     /**
@@ -253,8 +250,38 @@ class SolrLrmi extends SolrQdc
     public function getFileFormat($filename)
     {
         $parts = explode('.', $filename);
-        $ext = array_pop($parts);
-        return $ext;
+        return end($parts);
+    }
+
+    /**
+     * Get all image urls
+     *
+     * @param string $language   language from parent call
+     * @param string $includePdf from parent call
+     *
+     * @return array
+     */
+    public function getAllImages($language = 'fi', $includePdf = true)
+    {
+        $xml = $this->getSimpleXML();
+        $result = [];
+        foreach ($xml->description as $desc) {
+            $attr = $desc->attributes();
+            if (isset($attr['format']) && (string)$attr['format'] === 'image/png') {
+                $url = (string)$desc;
+                $result[] = [
+                    'urls' => [
+                        'small' => $url,
+                        'medium' => $url,
+                        'large' => $url
+                     ],
+                    'description' => '',
+                    'rights' => []
+                ];
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -262,19 +289,30 @@ class SolrLrmi extends SolrQdc
      * -url: download link for allowed file types, otherwise empty
      * -title: material title
      * -format: material format
+     * -position: order of listing
+     *
+     * @param string $lang language fi,sv,en
      *
      * @return array
      */
-    public function getMaterials()
+    public function getMaterials($lang = 'fi')
     {
         $xml = $this->getSimpleXML();
         $materials = [];
+        $lang = $lang === 'en-gb' ? 'en' : $lang;
         foreach ($xml->material as $material) {
             if (isset($material->format)) {
-                $format = $this->getFileFormat((string)$material->name);
+                $format = '.';
+                if ((string)$material->format !== 'text/html') {
+                    $format .= $this->getFileFormat((string)$material->url);
+                } else {
+                    $format = 'format_webresource';
+                }
+
                 $url = $this->checkAllowedFileFormat($format)
                     ? (string)$material->url : '';
-                $title = 'Title Placeholder ' . $material->position;
+                $titles = $this->getMaterialTitles($material->name, $lang);
+                $title = $titles[$lang] ?? $titles['default'];
                 $position = $material->position ?? 0;
                 $materials[] = compact('url', 'title', 'format', 'position');
             }
@@ -287,6 +325,27 @@ class SolrLrmi extends SolrQdc
         );
 
         return $materials;
+    }
+
+    /**
+     * Get material titles in an assoc array
+     *
+     * @param object $names to look for
+     * @param string $lang  language to search
+     *
+     * @return array
+     */
+    public function getMaterialTitles($names, $lang)
+    {
+        $titles = ['default' => (string)$names];
+
+        foreach ($names as $name) {
+            $attr = $name->attributes();
+            $titles[(string)$attr->lang] = (string)$name;
+        }
+
+        // If nothing has been found, then try t
+        return $titles;
     }
 
     /**

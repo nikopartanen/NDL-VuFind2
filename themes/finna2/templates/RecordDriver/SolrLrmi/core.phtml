@@ -3,7 +3,7 @@
   $rights = $this->driver->getAccessRestrictionsType($this->layout()->userLang);
   $descriptions = $this->driver->getDescription();
   $aoeLink = $this->driver->getAoeLink();
-  $materials = $this->driver->getMaterials();
+  $materials = $this->driver->getMaterials($this->layout()->userLang);
   $dateCreated = $this->driver->getDateCreated();
   $dateModified = $this->driver->getDateModified();
   $img = $this->recordImage($this->record($this->driver));
@@ -68,7 +68,7 @@
                 <div class="fulltextField">
                   <span><?= $this->escapeHtml($material['title']) ?></span>
                   <?php if ($material['format']): ?>
-                    <span>(.<?=$this->escapeHtml($material['format'])?>)</span>
+                    <span>(<?=$this->escapeHtml($material['format'])?>)</span>
                   <?php endif; ?>
                   <?php if (!empty($material['url'])): ?>
                     <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($material['url'])) ?>" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>"><b><i class="fa fa-download"></i><?= $this->transEsc('Download') ?></b></a>
