@@ -11,8 +11,8 @@
   $thumbnailAlignment = $this->record($this->driver)->getThumbnailAlignment('result');
   $formats = $this->driver->getFormats();
   ob_start(); ?>
-  <div class="media-<?=$thumbnailAlignment ?>">
-    <?=$this->record($this->driver)->renderTemplate('record-image-information.phtml', ['img' => $img, 'displayIcon' => true]);?>
+  <div class="media-<?=$thumbnailAlignment?>">
+    <?=$this->record($this->driver)->renderTemplate('record-image-information.phtml', ['img' => $img, 'displayIcon' => true, 'source' => 'L1']);?>
     <?=$this->record($this->driver)->renderTemplate('record-post-thumbnail.phtml');?>
   </div>
   <?php $thumbnail = ob_get_contents(); ?>
@@ -64,14 +64,22 @@
         <?php if (!empty($materials)): ?>
           <div class="recordURLs local-available-online-record">
             <div class="truncate-field">
+              <?php
+                $externalLink = $this->escapeHtmlAttr($this->translate('external_online_link'));
+                $go = $this->transEsc('Go');
+                $download = $this->transEsc('Download');
+              ?>
               <?php foreach ($materials as $material): ?>
+                <?php $html = $material['format'] === 'html'; ?>
                 <div class="fulltextField">
                   <span><?= $this->escapeHtml($material['title']) ?></span>
-                  <?php if ($material['format']): ?>
+                  <?php if ($material['format'] && !$html): ?>
                     <span>(<?=$this->escapeHtml($material['format'])?>)</span>
                   <?php endif; ?>
-                  <?php if (!empty($material['url'])): ?>
-                    <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($material['url'])) ?>" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>"><b><i class="fa fa-download"></i><?= $this->transEsc('Download') ?></b></a>
+                  <?php if (!empty($material['url']) && !$html): ?>
+                    <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($material['url'])) ?>" aria-label="<?=$externalLink?>"><b><i class="fa fa-download"></i><?=$download?></b></a>
+                  <?php elseif (!empty($material['url']) && $html): ?>
+                    <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($material['url'])) ?>" aria-label="<?=$externalLink?>"><b><?=$go?></b></a>
                   <?php endif; ?>
                 </div>
               <?php endforeach; ?>
