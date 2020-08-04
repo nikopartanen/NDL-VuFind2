@@ -10,7 +10,7 @@
   $showExtraDetails = $this->layout()->templateDir === 'l1';
   $coverDetails = $this->record($this->driver)->getCoverDetails('result-list', 'medium', $this->recordLink()->getUrl($this->driver));
   if ($img) {
-    $thumbnail = $img->render('list', ['small' => ['w' => 158, 'h' => 228], 'medium' => ['w' => 158, 'h' => 228]]);
+    $thumbnail = $img->render('list', ['small' => ['w' => 158, 'h' => 228], 'medium' => ['w' => 158, 'h' => 228]], 'L1');
   }
   $recordType = $this->driver->tryMethod('getRecordType');
 ?>
@@ -136,7 +136,12 @@
             <?php endif; ?>
           <?php endif; ?>
         </div>
-        
+        <?php $recordSource = $this->driver->tryMethod('getDataSource'); ?>
+        <?php if ($recordSource && !$showExtraDetails): ?>
+          <div class="dedupInformation">
+            <strong><?=$this->transEsc("source_$recordSource", null, $recordSource) ?></strong>
+          </div>
+        <?php endif; ?>
         <?php if ($this->driver->tryMethod('getWorkKeys') && !empty($this->config()->get('config')->Record->display_versions)): ?>
           <div class="record-versions ajax"></div>
         <?php endif; ?>
@@ -151,19 +156,6 @@
           <div class="savedLists">
             <strong><?=$this->transEsc("Saved in")?>:</strong>
           </div>
-        <?php endif; ?>
-
-        <?php /* Hierarchy tree link */ ?>
-        <?php $trees = $this->driver->tryMethod('getHierarchyTrees'); if (!empty($trees)): ?>
-            <?php foreach ($trees as $hierarchyID => $hierarchyTitle): ?>
-            <div class="hierarchyTreeLink">
-              <input type="hidden" value="<?=$this->escapeHtmlAttr($hierarchyID)?>" class="hiddenHierarchyId" />
-              <i class="fa fa-sitemap" aria-hidden="true"></i>
-              <a class="hierarchyTreeLinkText" data-lightbox href="<?=$this->recordLink()->getTabUrl($this->driver, 'HierarchyTree', ['hierarchy' => $hierarchyID])?>#tabnav" title="<?=$this->transEsc('hierarchy_tree')?>">
-                  <?=$this->transEsc('hierarchy_view_context')?><?php if (count($trees) > 1): ?>: <?=$this->escapeHtml($hierarchyTitle)?><?php endif; ?>
-              </a>
-            </div>
-            <?php endforeach; ?>
         <?php endif; ?>
 
         <div class="hidden-print add-to-favorite-col">
