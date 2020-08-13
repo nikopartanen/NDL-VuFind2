@@ -113,12 +113,12 @@
                 <?php $lateralUrl = $this->url('l1-results'); ?>
                 <?php if ($levels): ?>
                   <?php foreach($levels as $level): ?>
-                    <a target="_blank" href="<?=$lateralUrl . "?type=AllFields&amp;filter%5B%5D=educational_level_str_mv%3A$level"?>" class="targeted-element"><?=$this->transEsc($level)?></a>
+                    <a href="<?=$lateralUrl . "?type=AllFields&amp;filter%5B%5D=educational_level_str_mv%3A$level"?>" class="targeted-element"><?=$this->transEsc($level)?></a>
                   <?php endforeach; ?>
                 <?php endif; ?>
                 <?php if ($topics): ?>
                   <?php foreach($topics as $topic): ?>
-                    <a target="_blank" href="<?= $lateralUrl . "?type=AllFields&amp;filter%5B%5D=topic_facet%3A$topic"?>" class="targeted-element"><?=$this->transEsc($topic)?></a>
+                    <a href="<?= $lateralUrl . "?type=AllFields&amp;filter%5B%5D=topic_facet%3A$topic"?>" class="targeted-element"><?=$this->transEsc($topic)?></a>
                   <?php endforeach; ?>
                 <?php endif; ?>
               </div>
