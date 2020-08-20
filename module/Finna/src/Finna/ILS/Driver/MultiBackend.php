@@ -63,7 +63,7 @@ class MultiBackend extends \VuFind\ILS\Driver\MultiBackend
         // Remove old credentials from the cache regardless of whether the change
         // was successful
         $cacheKey = 'patron|' . $details['patron']['cat_username'];
-        $item = $this->putCachedData($cacheKey, null);
+        $this->putCachedData($cacheKey, null);
 
         return parent::changePassword($details);
     }
@@ -173,6 +173,28 @@ class MultiBackend extends \VuFind\ILS\Driver\MultiBackend
             return $driver->updateSmsNumber(
                 $this->stripIdPrefixes($patron, $source), $number
             );
+        }
+        throw new ILSException('No suitable backend driver found');
+    }
+
+    /**
+     * Get title lists from ILS
+     *
+     * @param array $params Query specific params
+     *
+     * @throws ILSException
+     *
+     * @return array Associative array of the results
+     */
+    public function getTitleList($params)
+    {
+        $source = $this->getSource($params['id']);
+        $driver = $this->getDriver($source);
+        if ($driver
+            && $this->methodSupported($driver, 'getTitleList', [$params])
+        ) {
+            $results = $driver->getTitleList($params);
+            return $this->addIdPrefixes($results, $source);
         }
         throw new ILSException('No suitable backend driver found');
     }
@@ -585,7 +607,7 @@ class MultiBackend extends \VuFind\ILS\Driver\MultiBackend
                     return $config;
                 }
             }
-        } catch (\Zend\Config\Exception\RuntimeException $e) {
+        } catch (\Laminas\Config\Exception\RuntimeException $e) {
             // Fall through
         }
         return parent::getDriverConfig($source);

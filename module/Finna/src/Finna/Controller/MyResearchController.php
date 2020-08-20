@@ -89,6 +89,22 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
     }
 
     /**
+     * Login Action
+     *
+     * @return mixed
+     */
+    public function loginAction()
+    {
+        $view = parent::loginAction();
+        if ($view instanceof \Laminas\View\Model\ViewModel) {
+            if ($defaultTarget = $this->params()->fromQuery('target')) {
+                $view->defaultTarget = $defaultTarget;
+            }
+        }
+        return $view;
+    }
+
+    /**
      * Send list of checked out books to view.
      * Added profile to view, so borrow blocks can be shown.
      *
@@ -319,7 +335,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
     public function editlistAction()
     {
         $view = parent::editlistAction();
-        if ($view instanceof \Zend\Http\PhpEnvironment\Response
+        if ($view instanceof \Laminas\Http\PhpEnvironment\Response
             && !empty($url = $this->getFollowupUrl())
         ) {
             return $this->redirect()->toUrl($url);
@@ -458,7 +474,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
         }
 
         if ($this->formWasSubmitted('saveUserProfile')) {
-            $validator = new \Zend\Validator\EmailAddress();
+            $validator = new \Laminas\Validator\EmailAddress();
             $showSuccess = $showError = false;
             if ('' === $values->email || $validator->isValid($values->email)) {
                 $user->email = $values->email;
@@ -1087,7 +1103,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
      * @param boolean $checkFunction Use checkFunction() if true,
      * checkCapability() otherwise
      *
-     * @return mixed \Zend\View if the function is not supported, false otherwise
+     * @return mixed \Laminas\View if the function is not supported, false otherwise
      */
     protected function createViewIfUnsupported($function, $checkFunction = false)
     {
@@ -1183,7 +1199,7 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
 
         $success = true;
         if (isset($values->profile_email)) {
-            $validator = new \Zend\Validator\EmailAddress();
+            $validator = new \Laminas\Validator\EmailAddress();
             if ($validator->isValid($values->profile_email)
                 && $catalog->checkFunction('updateEmail', compact('patron'))
             ) {

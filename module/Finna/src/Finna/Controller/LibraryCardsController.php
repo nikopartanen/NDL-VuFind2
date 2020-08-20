@@ -93,7 +93,7 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
 
         $view = parent::editCardAction();
 
-        if (!($view instanceof \Zend\View\Model\ViewModel)) {
+        if (!($view instanceof \Laminas\View\Model\ViewModel)) {
             return $view;
         }
 
@@ -205,10 +205,10 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
         if (!$recoveryConfig) {
             $view->recoveryDisabled = true;
         }
-        $view->useRecaptcha = $this->recaptcha()->active('passwordRecovery');
+        $view->useCaptcha = $this->captcha()->active('passwordRecovery');
         // If we have a submitted form
         if ($recoveryConfig
-            && $this->formWasSubmitted('submit', $view->useRecaptcha)
+            && $this->formWasSubmitted('submit', $view->useCaptcha)
         ) {
             // Check if we have a submitted form, and use the information
             // to get the user's information
@@ -284,9 +284,9 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
                 'introductionText' => $registerConfig['introductionText'] ?? ''
             ]
         );
-        $view->useRecaptcha = $this->recaptcha()->active('passwordRecovery');
+        $view->useCaptcha = $this->captcha()->active('passwordRecovery');
         // If we have a submitted form
-        if ($this->formWasSubmitted('submit', $view->useRecaptcha)) {
+        if ($this->formWasSubmitted('submit', $view->useCaptcha)) {
             $email = trim($this->params()->fromPost('email'));
             if (empty($email)) {
                 $this->flashMessenger()->addErrorMessage('no_email_address');
@@ -345,7 +345,7 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
     {
         // Verify hash
         $sessionManager = $this->serviceLocator->get(\VuFind\SessionManager::class);
-        $session = new \Zend\Session\Container('registerPatron', $sessionManager);
+        $session = new \Laminas\Session\Container('registerPatron', $sessionManager);
         $hash = $this->params()->fromQuery(
             'hash',
             $this->params()->fromPost('hash', '')
@@ -490,7 +490,7 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
     {
         // Verify hash
         $sessionManager = $this->serviceLocator->get(\VuFind\SessionManager::class);
-        $session = new \Zend\Session\Container('registerPatron', $sessionManager);
+        $session = new \Laminas\Session\Container('registerPatron', $sessionManager);
         $hash = $this->params()->fromQuery(
             'hash',
             $this->params()->fromPost('hash', '')
@@ -589,9 +589,9 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
                 'passwordPolicy' => $policy
             ]
         );
-        $view->useRecaptcha = $this->recaptcha()->active('changePassword');
-        // Check reCaptcha
-        if ($this->formWasSubmitted('submit', $view->useRecaptcha)) {
+        $view->useCaptcha = $this->captcha()->active('changePassword');
+        // Check Captcha
+        if ($this->formWasSubmitted('submit', $view->useCaptcha)) {
             $password = $this->params()->fromPost('password', '');
             $password2 = $this->params()->fromPost('password2', '');
             if ($password !== $password2) {

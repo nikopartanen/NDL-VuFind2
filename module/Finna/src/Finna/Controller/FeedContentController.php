@@ -45,7 +45,7 @@ class FeedContentController extends ContentController
     /**
      * Default action if none provided
      *
-     * @return Zend\View\Model\ViewModel
+     * @return Laminas\View\Model\ViewModel
      */
     public function contentAction()
     {
@@ -67,6 +67,19 @@ class FeedContentController extends ContentController
         return $this->createViewModel(
             ['page' => 'feed-content', 'feed' => $page,
              'element' => $element, 'modal' => $modal, 'feedUrl' => $feedUrl]
+        );
+    }
+
+    /**
+     * Linked events action
+     *
+     * @return Zend\View\Model\ViewModel
+     */
+    public function linkedEventsAction()
+    {
+        $event = $this->params()->fromQuery();
+        return $this->createViewModel(
+            ['page' => 'linked-events', 'event' => $event]
         );
     }
 }
