@@ -28,7 +28,7 @@
 namespace Finna\View\Helper\Root;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**
  * UserListEmbed helper factory.
@@ -61,11 +61,17 @@ class UserListEmbedFactory implements FactoryInterface
         if (!empty($options)) {
             throw new \Exception('Unexpected options sent to factory.');
         }
+
+        $check = $container
+            ->get(\VuFind\Config\AccountCapabilities::class);
+
         return new $requestedName(
             $container->get(\VuFind\Search\Results\PluginManager::class)
                 ->get('Favorites'),
             $container->get(\VuFind\Db\Table\PluginManager::class)->get('UserList'),
-            $container->get('ViewManager')->getViewModel()
+            $container->get(\VuFind\Db\Table\PluginManager::class)->get('Tags'),
+            $container->get('ViewManager')->getViewModel(),
+            $check->getListTagSetting() === 'enabled'
         );
     }
 }

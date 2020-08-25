@@ -28,9 +28,9 @@
  */
 namespace Finna\Controller;
 
+use Laminas\Stdlib\Parameters;
 use VuFind\Exception\ListPermission as ListPermissionException;
 use VuFind\Exception\RecordMissing as RecordMissingException;
-use Zend\Stdlib\Parameters;
 
 /**
  * Controller for the public favorite lists.
@@ -105,11 +105,18 @@ class ListController extends \Finna\Controller\MyResearchController
 
             $this->rememberCurrentSearchUrl();
 
+            $listTags = null;
+            if ($this->listTagsEnabled()) {
+                $listTags = $this->getTable('Tags')
+                    ->getForList($listObj->id, $listObj->user_id);
+            }
+
             $view = $this->createViewModel(
                 [
                     'params' => $params,
                     'results' => $results,
-                    'sortList' => $this->createSortList($listObj)
+                    'sortList' => $this->createSortList($listObj),
+                    'listTags' => $listTags
                 ]
             );
             return $view;

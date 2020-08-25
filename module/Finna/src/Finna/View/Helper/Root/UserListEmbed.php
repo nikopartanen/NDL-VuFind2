@@ -27,7 +27,7 @@
  */
 namespace Finna\View\Helper\Root;
 
-use Zend\Stdlib\Parameters;
+use Laminas\Stdlib\Parameters;
 
 /**
  * View helper for embedding a user list.
@@ -38,7 +38,7 @@ use Zend\Stdlib\Parameters;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org   Main Site
  */
-class UserListEmbed extends \Zend\View\Helper\AbstractHelper
+class UserListEmbed extends \Laminas\View\Helper\AbstractHelper
 {
     /**
      * Favorites results
@@ -55,6 +55,20 @@ class UserListEmbed extends \Zend\View\Helper\AbstractHelper
     protected $listTable;
 
     /**
+     * Tags table
+     *
+     * @var \VuFind\Db\Table\Tags
+     */
+    protected $tagsTable;
+
+    /**
+     * Whether list tags are enabled.
+     *
+     * @var bool
+     */
+    protected $listTagsEnabled;
+
+    /**
      * Counter used to ensure unique id attributes when several lists are displayed
      *
      * @var int
@@ -64,7 +78,7 @@ class UserListEmbed extends \Zend\View\Helper\AbstractHelper
     /**
      * View model
      *
-     * @var \Zend\View\Model\ViewModel
+     * @var \Laminas\View\Model\ViewModel
      */
     protected $viewModel;
 
@@ -73,16 +87,23 @@ class UserListEmbed extends \Zend\View\Helper\AbstractHelper
      *
      * @param \VuFind\Search\Favorites\Results $results   Results
      * @param \VuFind\Db\Table\UserList        $listTable UserList table
-     * @param \Zend\View\Model\ViewModel       $viewModel View model
+     * @param \VuFind\Db\Table\Tags            $tagsTable Tags table
+     * @param \Laminas\View\Model\ViewModel    $viewModel View model
+     * @param bool                             $listTags  Whether list tags
+     *                                                    are enabled
      */
     public function __construct(
         \VuFind\Search\Favorites\Results $results,
         \VuFind\Db\Table\UserList $listTable,
-        \Zend\View\Model\ViewModel $viewModel
+        \VuFind\Db\Table\Tags $tagsTable,
+        \Laminas\View\Model\ViewModel $viewModel,
+        bool $listTags
     ) {
         $this->results = $results;
         $this->listTable = $listTable;
+        $this->tagsTable = $tagsTable;
         $this->viewModel = $viewModel;
+        $this->listTagsEnabled = $listTags;
     }
 
     /**
@@ -101,7 +122,7 @@ class UserListEmbed extends \Zend\View\Helper\AbstractHelper
         foreach (array_keys($opt) as $key) {
             if (!in_array(
                 $key, ['id', 'view', 'sort', 'limit', 'page',
-                       'title', 'description', 'date', 'headingLevel',
+                       'title', 'description', 'date', 'tags', 'headingLevel',
                        'allowCopy', 'showAllLink']
             )
             ) {
@@ -145,6 +166,12 @@ class UserListEmbed extends \Zend\View\Helper\AbstractHelper
         $resultsCopy->performAndProcessSearch();
         $list = $resultsCopy->getListObject();
 
+        $listTags = null;
+        if (($opt['tags'] ?? false) && $this->listTagsEnabled) {
+            $listTags = $this->tagsTable
+                ->getForList($list->id, $list->user_id);
+        }
+
         $html = $this->getView()->render(
             'Helpers/userlist.phtml',
             [
@@ -167,6 +194,7 @@ class UserListEmbed extends \Zend\View\Helper\AbstractHelper
                 'date' =>
                     (isset($opt['date']) && $opt['date'] === false)
                     ? null : $list->finna_updated ?? $list->created,
+                'listTags' => $listTags,
                 'headingLevel' => $opt['headingLevel'] ?? 2,
                 'allowCopy' => $opt['allowCopy'] ?? false
             ]
