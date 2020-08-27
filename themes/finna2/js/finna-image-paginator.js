@@ -15,6 +15,7 @@ finna.imagePaginator = (function imagePaginator() {
     imagesPerRow: 8,
     enableImageZoom: false,
     recordType: 'default-type',
+    triggerClick: 'modal', // [modal, open, none]
     displayIcon: false,
     leaflet: {
       offsetPercentage: 4
@@ -35,7 +36,6 @@ finna.imagePaginator = (function imagePaginator() {
    *
    * @param {object} images
    * @param {object} settings
-   * @param {boolean} isList
    */
   function FinnaPaginator(images, settings) {
     var _ = this;
@@ -862,7 +862,17 @@ finna.imagePaginator = (function imagePaginator() {
     _.setCurrentVisuals();
     var modal = $('#imagepopup-modal').find('.imagepopup-holder').clone();
 
-    _.trigger.not('[data-disable-modal="1"]').finnaPopup({
+    if (_.settings.triggerClick === 'none') {
+      var noneTrigger = $('<span class="image-popup-trigger"></span>');
+      _.trigger.children().appendTo(noneTrigger);
+      _.trigger.replaceWith(noneTrigger);
+      _.trigger = noneTrigger;
+      return;
+    } else if (_.settings.triggerClick === 'open') {
+      return;
+    }
+
+    _.trigger.finnaPopup({
       modal: modal,
       id: 'paginator',
       translations: translations,

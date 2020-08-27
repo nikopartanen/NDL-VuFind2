@@ -12,7 +12,7 @@
   $formats = $this->driver->getFormats();
   ob_start(); ?>
   <div class="media-<?=$thumbnailAlignment?>">
-    <?=$this->record($this->driver)->renderTemplate('record-image-information.phtml', ['img' => $img, 'displayIcon' => true, 'source' => 'L1']);?>
+    <?=$this->record($this->driver)->renderTemplate('record-image-information.phtml', ['img' => $img, 'displayIcon' => true, 'source' => 'L1', 'imageClick' => 'none']);?>
     <?=$this->record($this->driver)->renderTemplate('record-post-thumbnail.phtml');?>
   </div>
   <?php $thumbnail = ob_get_contents(); ?>

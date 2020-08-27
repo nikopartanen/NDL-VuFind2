@@ -264,8 +264,9 @@ class RecordImage extends \Laminas\View\Helper\AbstractHelper
      *                            value pairs: - w  Width - h  Height
      * @param string $source      Record source
      * @param array  $extraParams Optional extra parameters:
-     *                            - boolean $disableModal
-     *                            Whether to disable FinnaPopup modal
+     *                            - string  $imageClick
+     *                            [open, modal, none] Open as a link,
+     *                            modal or do nothing
      *                            - string  $imageRightsLabel
      *                            Label for image rights statement
      *                            - array   $numOfImages
@@ -276,10 +277,11 @@ class RecordImage extends \Laminas\View\Helper\AbstractHelper
     public function render(
         $type = 'list', $params = null, $source = 'Solr', $extraParams = []
     ) {
-        $disableModal = $extraParams['disableModal'] ?? false;
+        $imageClick = $extraParams['imageClick'] ?? 'modal';
         $imageRightsLabel = $extraParams['imageRightsLabel'] ?? 'Image Rights';
         $numOfImages = $extraParams['numOfImages'] ?? null;
         $displayIcon = $extraParams['displayIcon'] ?? false;
+        $imageToRecord = $extraParams['imageToRecord'] ?? false;
 
         $view = $this->getView();
         $images = $this->getAllImagesAsCoverLinks(
@@ -293,7 +295,8 @@ class RecordImage extends \Laminas\View\Helper\AbstractHelper
         $context = [
             'type' => $type,
             'images' => $images,
-            'disableModal' => $disableModal,
+            'imageClick' => $imageClick,
+            'imageToRecord' => $imageToRecord,
             'imageRightsLabel' => $imageRightsLabel,
             'numOfImages' => $numOfImages,
             'displayIcon' => $displayIcon
