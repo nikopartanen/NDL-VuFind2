@@ -10,7 +10,7 @@
   $showExtraDetails = $this->layout()->templateDir === 'l1';
   $coverDetails = $this->record($this->driver)->getCoverDetails('result-list', 'medium', $this->recordLink()->getUrl($this->driver));
   if ($img) {
-    $thumbnail = $img->render('list', ['small' => ['w' => 158, 'h' => 228], 'medium' => ['w' => 158, 'h' => 228]], 'L1');
+    $thumbnail = $img->render('list', ['small' => ['w' => 158, 'h' => 228], 'medium' => ['w' => 158, 'h' => 228]], 'L1', ['imageClick' => 'open']);
   }
   $recordType = $this->driver->tryMethod('getRecordType');
 ?>
