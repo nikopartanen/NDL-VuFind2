@@ -45,9 +45,8 @@
       </div>
       <?php if ($occupations = $this->driver->getOccupations()): ?>
         <div class="occupation"><?=implode(', ', $occupations)?></div>
-      <?php endif; ?>
-      <?php if ($this->driver->isPerson()): ?>
-        <?= $this->record($this->driver)->getAuthorityBirthDeathWithPlace()?>
+      <?php elseif ($corporateType = $this->driver->getCorporateType()): ?>
+        <div class="corporate-type"><?=$corporateType?></div>
       <?php endif; ?>
       <?/* Display anchor links to authority records tabs */?>
       <?php if ($authSummary = $this->record($this->driver)->getAuthoritySummary(true)): ?>
@@ -80,9 +79,11 @@
         $coreFields = $formatter->getData($driver, $coreFields);
       ?>
       <?php if (!empty($coreFields)): ?>
-        <table class="table table-finna-record record-details">
+        <table class="table table-finna-record record-details record-details-more">
           <?=$this->record($this->driver)->renderTemplate('core-fields.phtml', ['coreFields' => $coreFields]);?>
         </table>
+        <button class="btn show-details-button hidden"><?=$this->transEsc('show_more_details');?> <i class="fa fa-arrow-down"></i></button>
+        <button class="btn hide-details-button hidden"><?=$this->transEsc('show_less_details');?> <i class="fa fa-arrow-up"></i></button>
       <?php endif; ?>
       <?/* End Main Details */?>
 

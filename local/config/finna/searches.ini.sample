@@ -56,6 +56,7 @@ default_side_recommend[] = SideFacetsDeferred:Results:CheckboxFacets
 default_noresults_recommend[] = SwitchType
 default_noresults_recommend[] = SwitchQuery
 default_noresults_recommend[] = SpellingSuggestions
+;default_noresults_recommend[] = "FinnaSuggestionsDeferred:api.finna.fi/api/v1/search?lookfor=%%lookfor%%:finna.fi/Search/Results?lookfor=%%lookfor%%&lng=%%lng%%"
 
 ; Set this to true in order to highlight keywords from the search query when they
 ; appear in fields displayed in search results.
@@ -119,16 +120,17 @@ Title               = adv_search_title
 ;JournalTitle        = adv_search_journaltitle
 Author              = adv_search_author
 Subject             = adv_search_subject
-;CallNumber          = adv_search_callnumber
-Holdings            = adv_search_callnumber
-Classification      = adv_search_classification
-ISN                 = adv_search_isn
-publisher           = adv_search_publisher
-Series              = adv_search_series
-year                = adv_search_year
-toc                 = adv_search_toc
-PublicationPlace    = adv_search_publication_place
+description         = adv_search_description
 geographic          = adv_search_geographic
+Classification      = adv_search_classification
+;CallNumber          = adv_search_callnumber
+ISN                 = adv_search_isn
+Series              = adv_search_series
+toc                 = adv_search_toc
+publisher           = adv_search_publisher
+PublicationPlace    = adv_search_publication_place
+year                = adv_search_year
+Holdings            = adv_search_callnumber
 
 ; This section defines the sort options available on standard search results.
 ; Values on the left of the equal sign are either the reserved term "relevance"
@@ -318,6 +320,12 @@ author = sort_author
 ;       suggesting that the user try switching to [field].  [field description]
 ;       is the human-readable description of [field].  Default values are
 ;       'AllFields' and 'All Fields' respectively.
+; FinnaSuggestions:[apiUrl]:[siteUrl]
+;       Performs the same search to another Finna site via API [apiUrl].
+;       When results are found, displays a link to the search results [siteUrl].
+;       Recommendations are presented only for basic searches using AllFields handler
+;       and no filters. URLs are configured without protocol, for example:
+;       api.finna.fi/Search/Results?querystring
 ;
 ; You can build your own recommendations modules if you wish.  See the developer's
 ; guide here:

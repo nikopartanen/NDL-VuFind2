@@ -57,6 +57,20 @@ $config = [
                     ]
                 ],
             ],
+            'linked-events-content' => [
+                'type'    => 'Zend\Router\Http\Segment',
+                'options' => [
+                    'route'    => '/FeedContent/LinkedEvents[/:id]',
+                    'constraints' => [
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ],
+                    'defaults' => [
+                        'controller' => 'FeedContent',
+                        'action'     => 'LinkedEvents',
+                    ]
+                ],
+            ],
             'list-save' => [
                 'type'    => 'Laminas\Router\Http\Segment',
                 'options' => [
@@ -296,6 +310,7 @@ $config = [
             'Finna\Config\YamlReader' => 'VuFind\Config\YamlReaderFactory',
             'Finna\Cover\Loader' => 'VuFind\Cover\LoaderFactory',
             'Finna\Feed\Feed' => 'Finna\Feed\FeedFactory',
+            'Finna\Feed\LinkedEvents' => 'Finna\Feed\LinkedEventsFactory',
             'Finna\Form\Form' => 'Finna\Form\FormFactory',
             'Finna\ILS\Connection' => 'VuFind\ILS\ConnectionFactory',
             'Finna\LocationService\LocationService' => 'Finna\LocationService\LocationServiceFactory',
@@ -388,6 +403,8 @@ $config = [
                         'Finna\AjaxHandler\GetHoldingsDetailsFactory',
                     'Finna\AjaxHandler\GetImageInformation' =>
                         'Finna\AjaxHandler\GetImageInformationFactory',
+                    'Finna\AjaxHandler\GetLinkedEvents' =>
+                        'Finna\AjaxHandler\GetLinkedEventsFactory',
                     'Finna\AjaxHandler\GetItemStatuses' =>
                         'VuFind\AjaxHandler\GetItemStatusesFactory',
                     'Finna\AjaxHandler\GetOrganisationInfo' =>
@@ -435,6 +452,7 @@ $config = [
                     'getFeed' => 'Finna\AjaxHandler\GetFeed',
                     'getHoldingsDetails' => 'Finna\AjaxHandler\GetHoldingsDetails',
                     'getImageInformation' => 'Finna\AjaxHandler\GetImageInformation',
+                    'getLinkedEvents' => 'Finna\AjaxHandler\GetLinkedEvents',
                     'getOrganisationPageFeed' => 'Finna\AjaxHandler\GetOrganisationPageFeed',
                     'getMyLists' => 'Finna\AjaxHandler\GetUserLists',
                     'getOrganisationInfo' => 'Finna\AjaxHandler\GetOrganisationInfo',
@@ -587,11 +605,15 @@ $config = [
                     'VuFind\Recommend\SideFacets' => 'Finna\Recommend\Factory::getSideFacets',
                     'Finna\Recommend\AuthorityRecommend' => 'Finna\Recommend\AuthorityRecommendFactory',
                     'Finna\Recommend\LearningMaterial' => 'Finna\Recommend\LearningMaterialFactory',
+                    'Finna\Recommend\FinnaSuggestions' => 'Finna\Recommend\FinnaSuggestionsFactory',
+                    'Finna\Recommend\FinnaSuggestionsDeferred' => 'Finna\Recommend\FinnaSuggestionsDeferredFactory',
                     'Finna\Recommend\SideFacetsDeferred' => 'Finna\Recommend\Factory::getSideFacetsDeferred',
                 ],
                 'aliases' => [
                     'authorityrecommend' => 'Finna\Recommend\AuthorityRecommend',
                     'learningmaterial' => 'Finna\Recommend\LearningMaterial',
+                    'finnasuggestions' => 'Finna\Recommend\FinnaSuggestions',
+                    'finnasuggestionsdeferred' => 'Finna\Recommend\FinnaSuggestionsDeferred',
                     'sidefacetsdeferred' => 'Finna\Recommend\SideFacetsDeferred',
                 ]
             ],
