@@ -35,10 +35,9 @@
         </li>
       <?php endforeach; ?>
   </ul>
-  <?php if (!$this->translationEmpty("search_tab_tip_{$module}") && !$this->translationEmpty("search_tab_tip_{$module}_header")) :?>
+  <?php if (!$this->translationEmpty("search_tab_tip_{$module}_html")) :?>
     <div class="search-tab-tip">
-      <p class="tip-header"><?=$this->transEsc("search_tab_tip_{$module}_header");?></p>
-      <p><?=$this->transEsc("search_tab_tip_{$module}");?></p>
+      <?=$this->transEsc("search_tab_tip_{$module}_html");?>
     </div>
   <?php endif; ?>
   <div class="mobile-main-tabs <?=count($searchTabs) > 2 ? 'visible-xs' : 'hidden';?>">
