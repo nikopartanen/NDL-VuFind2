@@ -37,7 +37,7 @@
   </ul>
   <?php if (!$this->translationEmpty("search_tab_tip_{$module}_html")) :?>
     <div class="search-tab-tip">
-      <?=$this->transEsc("search_tab_tip_{$module}_html");?>
+      <?=$this->translate("search_tab_tip_{$module}_html");?>
     </div>
   <?php endif; ?>
   <div class="mobile-main-tabs <?=count($searchTabs) > 2 ? 'visible-xs' : 'hidden';?>">
