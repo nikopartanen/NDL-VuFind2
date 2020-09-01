@@ -599,19 +599,19 @@ class RecordDataFormatterFactory
         );
         $setTemplateLine(
             'Educational Audience', 'getEducationalAudiences',
-            'data-escapeHtml.phtml',
+            'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-educational-audience']
             ]
         );
         $setTemplateLine(
-            'Educational uses', 'getEducationalUse', 'data-escapeHtml.phtml',
+            'Educational uses', 'getEducationalUse', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-educational-uses']
             ]
         );
         $setTemplateLine(
-            'Educational levels', 'getEducationalLevels', 'data-escapeHtml.phtml',
+            'Educational levels', 'getEducationalLevels', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-educational-levels']
             ]
