@@ -106,7 +106,7 @@
             <h4><?= $this->transEsc('Image Rights') ?></h4>
             <span class="rights-icons">
               <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights['copyrights']]);?>
-              <span><?= $this->escapeHtml($rights['copyrights']); ?></span>
+              <span class="material-copyright"><?= $this->escapeHtml($rights['copyrights']); ?></span>
             </span>
             <?php if ($rights['link']): ?>
               <span class="rights-link">
