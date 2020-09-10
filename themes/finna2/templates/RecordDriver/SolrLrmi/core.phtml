@@ -63,34 +63,44 @@
         <h3><?= $this->transEsc('Contains'); ?></h3>
         <?php if (!empty($materials)): ?>
           <div class="recordURLs local-available-online-record">
-            <div class="truncate-field">
+            <ul class="truncate-field outer">
               <?php
                 $externalLink = $this->escapeHtmlAttr($this->translate('external_online_link'));
-                $go = $this->transEsc('Go');
-                $download = $this->transEsc('Download');
+                $link = $this->transEsc('link');
+                $linkedFormats = ['html', 'avi', 'mp4', 'mp3', 'pdf', 'docx', 'doc', 'odt', 'rtf', 'txt', 'ppt', 'pptx', 'odp', 'm4a', 'png', 'jpeg'];
+                $toolTipNoMaterialLink = $this->escapeHtmlAttr(
+                  $this->translate('tooltip_aoe_no_material_link_html',
+                  ['%%link%%' => '<a href="' . ($aoeLink ?? 'https://aoe.fi') . '" target="_blank">aoe.fi</a>' ])
+                );
               ?>
               <?php foreach ($materials as $material): ?>
                 <?php $html = $material['format'] === 'html'; ?>
-                <div class="fulltextField">
-                  <span><?= $this->escapeHtml($material['title']) ?></span>
-                  <?php if ($material['format'] && !$html): ?>
-                    <span>(<?=$this->escapeHtml($material['format'])?>)</span>
+                <li class="fulltextField">
+                  <?php if (in_array($material['format'], $linkedFormats)): ?>
+                    <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($material['url'])) ?>"
+                      aria-label="<?=$externalLink?>"><i class="fa <?= $html ? 'fa-external-link' : 'fa-download' ?>"></i>
+                      <?= $this->escapeHtml($material['title']) ?></a>
+                      (<?= $html ? $link : $this->escapeHtml($material['format']) ?>)
+                  <?php elseif ($html): ?>
+                  <?php else: ?>
+                    <button class="btn-reset" type="button" data-toggle="tooltip"
+                      data-placement="bottom" data-original-title="<?= $toolTipNoMaterialLink ?>"
+                      data-html="true" aria-label="<?= $this->transEsc('Search Tips') ?>">
+                      <i class="fa fa-info3"></i>
+                    </button>
+                    <?= $this->escapeHtml($material['title']) ?>
                   <?php endif; ?>
-                  <?php if (!empty($material['url']) && !$html): ?>
-                    <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($material['url'])) ?>" aria-label="<?=$externalLink?>"><b><i class="fa fa-download"></i><?=$download?></b></a>
-                  <?php elseif (!empty($material['url']) && $html): ?>
-                    <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($material['url'])) ?>" aria-label="<?=$externalLink?>"><b><?=$go?></b></a>
-                  <?php endif; ?>
-                </div>
+                </li>
               <?php endforeach; ?>
-            </div>
+            </ul>
           </div>
         <?php endif; ?>
-        <?php if ($aoeLink): ?>
-          <div class="aoe-link">
-            <a href="<?= $aoeLink ?>" target="_blank"><i class="fa fa-external-link"></i><?= $this->transEsc('material_aoe_link') ?></a>
-          </div>
-        <?php endif; ?>
+        <div class="alert-info aoe-alert">
+          <p><?= $this->transEsc('material_aoe_disclaimer') ?></p>
+          <?php if ($aoeLink): ?>
+            <p><a href="<?= $aoeLink ?>" target="_blank" class="btn btn-primary"><?= $this->transEsc('go_to_aoe.fi') ?></a></p>
+          <?php endif; ?>
+        </div>
         <?php if ($rights): ?>
           <div class="material-rights">
             <h4><?= $this->transEsc('Image Rights') ?></h4>
