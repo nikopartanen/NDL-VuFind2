@@ -119,7 +119,7 @@ class FinnaSuggestions implements
      *
      * @var array
      */
-    protected $supportedSearchHandlers = ['AllFields'];
+    protected $supportedSearchHandlers = ['AllFields', 'Title', 'Author', 'Subject'];
 
     /**
      * FinnaSuggestions constructor.
