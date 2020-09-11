@@ -115,6 +115,13 @@ class FinnaSuggestions implements
     protected $urlHelper;
 
     /**
+     * Search handlers that are supported in Finna.fi
+     *
+     * @var array
+     */
+    protected $supportedSearchHandlers = ['AllFields'];
+
+    /**
      * FinnaSuggestions constructor.
      *
      * @param Client $client HTTP client
@@ -122,6 +129,7 @@ class FinnaSuggestions implements
     public function __construct(Client $client = null)
     {
         $this->client = $client;
+        $this->resetSearch();
     }
 
     /**
@@ -141,8 +149,8 @@ class FinnaSuggestions implements
     public function init($params, $request)
     {
         $lookfor = $request->get('lookfor');
-        $searchHandler
-            = $params->getSearchHandler() ?: $request->get('searchHandler');
+        $searchHandler = $params->getSearchHandler()
+            ?: $request->get('searchHandler');
         $searchType
             = $params->getSearchType() ?: $request->get('searchType');
 
@@ -150,12 +158,14 @@ class FinnaSuggestions implements
         // AllFields handler and no filters.
         if (!empty($lookfor)
             && !$params->getRawFilters()
-            && $searchHandler === 'AllFields'
+            && in_array($searchHandler, $this->supportedSearchHandlers)
             && $searchType === 'basic'
         ) {
             $this->lookfor = $lookfor;
             $this->searchHandler = $searchHandler;
             $this->searchType = $searchType;
+        } else {
+            $this->resetSearch();
         }
     }
 
@@ -203,7 +213,11 @@ class FinnaSuggestions implements
             return;
         }
 
-        $url = str_replace('%%lookfor%%', urlencode($this->lookfor), $this->apiUrl);
+        $url = str_replace(
+            ['%%lookfor%%', '%%handler%%'],
+            [urlencode($this->lookfor), urlencode($this->searchHandler)],
+            $this->apiUrl
+        );
         $client = $this->client->setUri($url);
         $client->setOptions(
             [
@@ -232,6 +246,18 @@ class FinnaSuggestions implements
     }
 
     /**
+     * Reset search parameters
+     *
+     * @return void
+     */
+    protected function resetSearch()
+    {
+        $this->lookfor = '';
+        $this->searchHandler = 'AllFields';
+        $this->searchType = 'basic';
+    }
+
+    /**
      * Get search link to Finna
      *
      * @return string
@@ -239,8 +265,12 @@ class FinnaSuggestions implements
     protected function getSearchLink()
     {
         return str_replace(
-            ['%%lookfor%%', '%%lng%%'],
-            [urlencode($this->lookfor), urlencode($this->getTranslatorLocale())],
+            ['%%lookfor%%', '%%handler%%', '%%lng%%'],
+            [
+                urlencode($this->lookfor),
+                urlencode($this->searchHandler),
+                urlencode($this->getTranslatorLocale())
+            ],
             $this->searchUrl
         );
     }
