@@ -1,0 +1,321 @@
+<!-- START of: custom - content/suomi-vanhoissa-kartoissa_fi.phtml -->
+<?php $this->headTitle('Suomi vanhoissa kartoissa');?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Suomi vanhoissa kartoissa</h2>
+<p><strong>Aineistopaketin koonnut:</strong> Kansalliskirjasto
+</p>
+<p>Suomi ilmestyi Euroopan kartoille keskiajan lopulla samalla kun muutkin Pohjoismaat. Suomi oli tällöin osa Ruotsin kuningaskuntaa. Kartoissa Suomesta käytettiin latinankielistä nimeä Finlandia.
+</p>
+<p>Vanhimmat Pohjois-Eurooppaa kuvanneet kartat julkaistiin osana suuria karttakirjoja eli atlaksia 1400-luvun viimeisinä vuosikymmeninä. Niiden käsitys Pohjolan maantieteestä oli erittäin epätarkka.
+</p>
+<p>1530-luvulla ruotsalainen oppinut kirkonmies Olaus Magnus (1490-1557) laati Pohjoismaista aiempaa paremman kartan, joka tunnetaan nimellä Carta marina. Carta marina merkitsi huomattavaa edistysaskelta myös Suomen karttakuvan kehityksessä. Olaus Magnuksen kartta säilyi käytössä 1600-luvun alkuun, jolloin Anders Buren (1571-1646) tarkempi kartta korvasi sen. Buren karttaa hyödynnettiin lukuisissa julkaisuissa 1700-luvulle asti.
+</p>
+<p>Tämä Kansalliskirjaston laatima aineistopaketti tutustuttaa kahdeksan kartan avulla siihen, miten Suomi on näkynyt kartoissa jo 1400-luvun lopulta lähtien. Kaikki alla olevat kartat on digitoitu Kansalliskirjaston (Helsinki) kokoelmista.
+</p>
+<h3>Kohderyhmä:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-alakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#alakoulu">
+          Alakoulu: <small><strong>historia, kuvataide, ympäristöoppi</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="alakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-alakoulu">
+      <div class="panel-body">
+        <p>Oppiaineiden sisältöalueet:
+        </p>
+         <ul class="content-list">
+            <li>Historia: S4 Uuden ajan murrosvaihe</li>
+            <li>Kuvataide: S1 Omat kuvakulttuurit, S2 Ympäristön kuvakulttuurit</li>
+            <li>Ympäristöoppi: S3 Löytöretkelle monimuotoiseen maailmaan</li>
+        </ul>
+        <p>Tavoite: Tutustuttaa oppilas historiallisiin karttoihin. Aineisto auttaa oppilasta huomaamaan muutoksia eurooppalaisessa tieteessä ja maailmankuvassa. Monialaisen oppimiskokonaisuuden toteuttaminen.
+        </p>
+      </div>
+    </div>
+    </div>
+      <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Lukio: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Oppiaineet ja kurssit:
+        </p>
+        <ul class="content-list">
+            <li>Historia: HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa, HI4 Eurooppalaisen maailmankuvan synty, HI5 Ruotsin itämaasta Suomeksi</li>
+        </ul>
+            <p>Tavoite: Opiskelija oppii käyttämään karttoja historiallisena lähteenä. Aineisto auttaa opiskelijaa arvioimaan mm. eurooppalaisen tieteen ja maailmankuvan muutosta.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketti">Aineisto</a>
+  </li>
+  <li><a data-toggle="tab" href="#tehtavaideat">Tehtäväideat</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketti" class="tab-pane fade in active">
+    <?=$this->userlistEmbed(['id' => 63, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'allowCopy' => true])?>
+  </div>
+  <div id="tehtavaideat" class="tab-pane fade">
+    <p>Tehtäväideat on suunniteltu antamaan ideoita siihen, kuinka voit tarkastella aineistopakettia. Voit lähestyä aihetta valitsemalla tehtävistä yhden tai useamman. Tehtävät voi tehdä yksilö-, pari- tai ryhmätehtävinä. Muokkaa tehtäväideoita eri oppiasteisiin ja oppiaineisiin haluamallasi tavalla.
+    </p>
+    <h4>Alakoulu</h4>
+    <div class="panel-group" id="accordion-tehtavaideat" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-1500">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#1500">
+              Suomi mainittu! Tutki miltä Pohjoismaat ja erityisesti Suomi on näyttänyt 1500-luvun kartalla.
+            </a>
+          </h3>
+        </div>
+        <div id="1500" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-1500">
+          <div class="panel-body">
+            <p><strong>Taustatietoa:</strong> 1500-luvun alussa ruotsalainen oppinut kirkonmies Olaus Magnus (synt. 1490 – k. 1557) laati Pohjoismaista kartan, joka tunnetaan nimellä Carta Marina (suomeksi merikartta). Kartta on ensimmäinen Pohjoismaita kuvaava kartta, jossa on paikannimiä ja kuvauksia paikoista. Kartan teko oli hidasta ja tarkkaa; Olaus Magnus teki karttaa jopa 12 vuotta. Carta Marina oli paljon tarkempi kuin aiemmat kartat ja siinä oli paljon elävöittäviä piirroksia. Carta Marina oli myös suuri kartta, joka koostui yhdeksästä palasta. Valmiina kartan koko oli huimat 170x125cm. Olaus Magnuksen kartta säilyi käytössä noin sata vuotta, aina 1600-luvun alkuun.
+            </p>
+            <p>Tässä tehtävässä tutkitaan <a target="_blank" href="/Record/doria.10024_147788">vuoden 1572 Carta Marina -karttaa</a>. Kartta on visuaalisesti erittäin tarkka ja sitä on hauska tutkia oppilaiden kanssa. Carta Marina soveltuu erinomaisesti esimerkiksi:
+            </p>
+            <p><strong>Historian opetukseen:</strong> Soveltuu uuden ajan alun opetuksen tueksi. Aineistopakettia voi hyödyntää, kun tutustutaan, miten eri tavoin ihminen hahmotti maailmaa ja miten tämä näkyy kartoissa.
+            </p>
+            <p><strong>Ympäristöopin opetukseen</strong>: Carta Marina soveltuu ympäristöoppiin, kun tutustutaan nykypäivän Suomen ja Euroopan karttoihin. Karttoja voidaan vertailla ja yhdessä pohtia niiden eroavaisuuksia ja syitä eroavaisuuksille. Aineiston avulla voi pohtia karttojen laadintatapoja ennen ja nyt.
+            </p>
+            <p>Pohdittavaa historian ja/tai ympäristöopin oppitunneille:
+            </p>
+            <ul class="content-list">
+              <li>Löydätkö kartalta Suomen? Entäpä Ruotsin? Osaatko sanoa missä on Islanti?
+              </li>
+              <li>Mitä tuttuja nimiä muistuttavia sanoja/nimiä löydät kartalta? Mihin nykypäivän kaupungin nimeen ne voisivat viitata?
+              </li>
+              <li>Onko kartta sinun mielestäsi selkeä? Pohtikaa, miksi kartta on tehty.
+              </li>
+              <li>Mitä kieltä kartassa on käytetty? Miksi?
+              </li>
+              <li>Olaus Magnukselta meni 12 vuotta kartan tekoon ja hän teki karttaa Venetsiassa. Mitä ongelmia kartanteossa on saattanut olla 1500-luvulla?
+              </li>
+              <li>Karttaan on piirretty useita piirroksia, tutustukaa niihin. Pohtikaa, miksi karttaan on uuden ajan alussa piirretty piirroksia.
+              </li>
+              <li>Mitä eläimiä löydät kartalta?
+              </li>
+              <li>Mitä eri kulkuneuvoja löydät kartalta?
+              </li>
+              <li>Mitä kartan piirrokset kertovat 1500-luvun elämästä?
+              </li>
+              <li>Vertaa vuoden 1572 karttaa nykypäivän karttaan. Miten kartat eroavat toisistaan? Entäpä näyttävätkö kartat joltain osin samanlaisilta? Keksi muutama esimerkki.
+              </li>
+              <li>Pohtikaa, miksi Suomi ei näytä samanlaiselta 1500-luvun kartassa kuin se näyttää nykypäivän kartassa.
+              </li>
+            </ul>
+            <p><strong>Kuvataiteen opetukseen:</strong>
+            </p>
+            <p>Tehtäväidea 1 kuvataiteen tunnille: Tehtäväideana on suunnitella oman lähialueen kartta. Käyttäkää Carta Marinaa inspiraation lähteenä. Tehtävän voi tehdä yksilö-, pari- tai ryhmätyönä.
+            </p>
+            <p>Tehtäväidea 2 kuvataiteen tunnille: Oppilaat suunnittelevat uuden Pohjoismaiden kartan Carta Marinan tyyliin. Karttaan piirretään kuvia nykypäivän ihmisten elämästä, tavaroista, kulkuneuvoista, eläimistä ja luonnosta. Tehtävän voi tehdä yksilö-, pari- tai ryhmätyönä.
+            </p>
+            <p>Pohdittavaa kuvataiteen tehtävän tueksi:
+            </p>
+            <ul class="content-list">
+              <li>Mitkä tekijät vaikuttavat kartan tekoon?
+              </li>
+              <li>Millaista kartan tekeminen oli?
+              </li>
+              <li>Mitä voidaan päätellä karttojen tekemisestä tehtävän pohjalta?
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <h4>Lukio</h4>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-1493">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#1493">
+              Vuoden 1493 kartta (Europa centralis et septentrionalis)
+            </a>
+          </h3>
+        </div>
+        <div id="1493" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-1493">
+          <div class="panel-body">
+            <p>Kartta: <a target="_blank" href="/Record/doria.10024_123053#image">vuoden 1493 kartta (Europa centralis et septentrionalis)</a>
+            </p>
+            <h6>Tehtävä</h6>
+            <p>Tutki Europa centralis et septentrionalis -karttaa vuodelta 1493 ja tee alla olevat tehtävät.
+            </p>
+            <ol class="content-list">
+              <li>Sijoita Euroopan ja Pohjolan kartalle
+                <ul class="content-list">
+                  <li>Suomi</li>
+                  <li>Ruotsi</li>
+                  <li>Tanska</li>
+                  <li>Islanti</li>
+                  <li>Grönlanti</li>
+                  <li>Pariisi</li>
+                  <li>Lontoo</li>
+                  <li>Moskova</li>
+                  <li>München</li>
+                  <li>Basel</li>
+                  <li>Budapest</li>
+                  <li>Marseille</li>
+                </ul>
+              </li>
+              <li>Osaatko selvittää, missä teoksessa tämä kartta on alun perin julkaistu? Millainen tämä teos oli?
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-1572">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#1572">
+              Vuoden 1572 Carta marina 
+            </a>
+          </h3>
+        </div>
+        <div id="1572" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-1572">
+          <div class="panel-body">
+            <p>Kartta: <a target="_blank" href="/Record/doria.10024_123053#image">vuoden 1572 Carta marina</a>
+            </p>
+            <h6>Tehtävä 1</h6>
+            <p>Kartan resoluutio on erittäin korkea ja se on visuaalisesti erittäin rikasta. Suunnitelkaa ja toteuttakaa sen pohjalta valitsemanne taiteellinen projekti.
+            </p>
+            <h6>Tehtävä 2</h6>
+            <p>Tutki vuoden 1572 Carta marina -karttaa Suomen alueen osalta
+            </p>
+            <ol class="content-list">
+              <li>Yhdistä mahdollisimman monta kartalla mainittua paikkaa nykyiseen paikkaan (esim. Hange = Hanko jne.)
+              </li>
+              <li>Pohdi paikannimien tarkastelun pohjalta seuraavia kysymyksiä:
+                <ul class="content-list">
+                  <li>Millä tavalla ja millä alueilla kartta on suhteellisen tarkka?
+                  </li>
+                  <li>Millä alueilla se on epätarkka?
+                  </li>
+                  <li>Mistä tämä johtuu? Entä miksi Suomi on lounaaseen kurottuva suippo niemi?
+                  </li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-1635">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#1635">
+              Vuoden 1635 kartta
+            </a>
+          </h3>
+        </div>
+        <div id="1635" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-1635">
+          <div class="panel-body">
+            <p>Kartta: <a target="_blank" href="/Record/doria.10024_123053#image">vuoden 1635 kartta</a>
+            </p>
+            <h6>Tehtävä</h6>
+            <p>Vuoden 1635 kartan laatineen Gerard Mercatorin maine perustuu niin sanottuun Mercator-projektioon. Etsi verkosta lisätietoa projektiosta ja vastaa alla oleviin kysymyksiin.
+            </p>
+            <ol class="content-list">
+              <li>Mikä on projektio?
+              </li>
+              <li>Entä missä Mercator-projektiota käytetään nykyään?
+              </li>
+              <li>Mitä muita projektioita on olemassa?
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-1700">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#1700">
+              Vuoden 1721 ja vuosiin 1743-1809 ajoittuvat kartat
+            </a>
+          </h3>
+        </div>
+        <div id="1700" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-1700">
+          <div class="panel-body">
+            <p>Kartat:
+            </p>
+            <ul class="content-list">
+              <li><a target="_blank" href="/Record/doria.10024_146925#image">Vuoteen 1721 ajoittuva kartta</a>
+              </li>
+              <li><a target="_blank" href="/Record/doria.10024_123031#image">Vuosiin 1743-1809 ajoittuva kartta</a>
+              </li>
+            </ul>
+            <h6>Tehtävä</h6>
+            <ol class="content-list">
+              <li>Vertaile vuoden 1721 ja vuosien 1743-1809 karttoja. Miten Ruotsin valtakunnan rajat poikkeavat toisistaan niissä? Mihin tämä liittyy, ja mitä tapahtui vuonna 1721?
+              </li>
+              <li>Myöhemmästä kartasta puuttuu tarkka painovuosi. Mistä voidaan kuitenkin päätellä, että se on painettu vuosien 1743 ja 1809 välillä?
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-1820">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#1820">
+              Vuoden 1820 kartta
+            </a>
+          </h3>
+        </div>
+        <div id="1820" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-1820">
+          <div class="panel-body">
+            <p>Kartat:
+            </p>
+            <p>Kartta: <a target="_blank" href="/Record/doria.10024_63988">vuoden 1820 kartta</a>
+            </p>
+            <h6>Tehtävä 1</h6>
+            <p>Suomi näkyy vuoden 1820 kartalla Venäjän keisarikunnan osana. Miksi nykyinen Suomi jakautuu kartalla kahdelle eri alueelle (keltaiset rajat)?
+            </p>
+            <h6>Tehtävä 2</h6>
+            <p>Vuoden 1820 kartta on painettu Weimarissa. Suurin osa tämän Finna-kokonaisuuden kartoista on painettu vilkkaissa kauppakaupungeissa, kuten Amsterdamissa tai Pariisissa. Weimar on sen sijaan saksalainen sisämaan pikkukaupunki. Miksi siellä kuitenkin painettiin muun muassa karttoja 1820-luvulla?
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-vastaukset">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#vastaukset">
+              Vastaukset
+            </a>
+          </h3>
+        </div>
+        <div id="vastaukset" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-vastaukset">
+          <div class="panel-body">
+            <p><strong>Vuoden 1572 Carta marina</strong>
+            </p>
+            <p>Tehtävä 2
+            </p>
+            <ol class="content-list" start="2">
+              <li>Ideana olisi havaita, että rannikolla kartta on varsin tarkka siinä suhteessa, että se esittää paikat enimmäkseen oikein suhteessa toisiinsa. Sen sijaan sisämaahan liikuttaessa kartasta tulee koko ajan mielikuvituksellisempi. Tämä heijastaa sitä, että Suomen rannikko oli jo keskiajalla hyvin tunnettua aluetta. Se oli kiinteä osa Ruotsin valtakuntaa, ja sen kauppayhteydet Baltiaan, Venäjälle ja Saksaan olivat vilkkaat. Keskiajan ja 1500-luvun maailmassa meri yhdisti, pitkät maataipaleet erottivat.
+              </li>
+            </ol>
+            <p>Suomen muoto johtuu samasta syystä. Rannikko tunnettiin ja paikat osattiin suhteuttaa toisiinsa. Sen esittämiseen haluttiin siksi käyttää enemmän tilaa kuin tuntemattoman sisämaan.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END of: custom - content/suomi-vanhoissa-kartoissa_fi.phtml -->

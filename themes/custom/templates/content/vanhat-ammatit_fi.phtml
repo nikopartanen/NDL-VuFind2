@@ -1,0 +1,111 @@
+<!-- START of: national - content/vanhat-ammatit_fi.phtml -->
+<?php $this->headTitle($this->translate('Vanhat ammatit'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+    <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Vanhat ammatit</h2>
+<p><strong>Aineistopaketin koonnut:</strong> Finna.fi</p>
+<p>Tämä aineistopaketti esittelee vanhoja ammatteja 1800-luvun puolivälistä aina 1970-luvulle saakka. Osa ammateista ja ammattinimikkeistä on jo kadonnut historiaan hämärään, mutta niiden taustalla olevat elämiseen liittyvät tarpeet ovat edelleen olemassa.</p>
+<h3>Kohderyhmä:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-alakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#alakoulu">
+          Alakoulu: <small><strong>käsityö, yhteiskuntaoppi, ympäristöoppi</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="alakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-alakoulu">
+      <div class="panel-body">
+          <p>Oppiaineiden sisältöalueet:</p>
+          <ul class="content-list">
+          <li>Käsityö: S1 Ideointi, S5 Soveltaminen</li>
+          <li>Yhteiskuntaoppi: S1 Arkielämä ja oman elämän hallinta, S4 Taloudellinen toiminta</li> 
+          <li>Ympäristöoppi: S2 Arjen tilanteissa ja yhteisöissä toimiminen, S6 Kestävän tulevaisuuden rakentaminen</li>
+          </ul>
+          <p>Tavoite: Tutustua erilaisiin entisaikojen ammatteihin. Auttaa oppilasta havainnoimaan jatkuvuutta ja muutosta työn historiassa Suomessa.</p>
+      </div>
+    </div>
+    </div>
+      <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#ylakoulu">
+          Yläkoulu: <small><strong>historia, käsityö, yhteiskuntaoppi</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+          <p>Oppiaineiden sisältöalueet:</p> 
+           <ul class="content-list">
+          <li>Historia: S1 teollisuusyhteiskunnan synty ja kehitys, S3 Suomea luodaan, rakennetaan ja puolustetaan, S5 Hyvinvointiyhteiskunnan rakentaminen</li>
+          <li>Käsityö: S2 Muotoilu, S6 Työturvallisuus, S7 Yrittäjämäinen oppiminen, S8 Tiedostaminen ja osallistuminen</li>
+          <li>Yhteiskuntaoppi: S1 Arkielämä ja oman elämän hallinta, S4 Taloudellinen toiminta</li>
+          </ul>
+          <p>Tavoite: Tutustuttaa erilaisiin entisaikojen ammatteihin. Ohjata oppilasta pohtimaan ja analysoimaan talouden rakennemuutosta Suomessa.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+    <li class="active"><a data-toggle="tab" href="#aineistopaketit">Aineisto</a></li>
+    <li><a data-toggle="tab" href="#tehtavaideat">Tehtäväideat</a></li>
+</ul>
+<div class="tab-content">
+     <div id="aineistopaketit" class="tab-pane fade in active">
+<?= $this->userlistEmbed(['id' => 9, 'view' => 'grid', 'title' => true, 'description' => true, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+<hr>
+<?= $this->userlistEmbed(['id' => 8, 'view' => 'grid', 'title' => true, 'description' => true, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+<hr>
+<?= $this->userlistEmbed(['id' => 16, 'view' => 'grid', 'title' => true, 'description' => true, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+<hr>
+<?= $this->userlistEmbed(['id' => 15, 'view' => 'grid', 'title' => true, 'description' => true, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+    </div>
+ <div id="tehtavaideat" class="tab-pane fade">
+        <div class="panel-group" id="accordion-tehtavaideat" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-tehtavaidea">
+      <h3 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#tehtavaidea">
+            Tehtäväidea alakouluun:
+        </a>
+      </h3>
+    </div>
+    <div id="tehtavaidea" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-tehtavaidea">
+      <div class="panel-body">
+          <p>Tämä tehtäväidea on suunniteltu alakoulun opetukseen. Tehtävän tarkoituksena on havainnollistaa työn muutosta ja jatkuvuutta Suomessa 1800-luvulta tähän päivään.</p>
+          <p>Moniosaisen tehtävän voi toteuttaa kokonaisuudessaan tai tehdä siitä vain osia. Ensimmäinen osio sopii alemmille luokille. Toinen ja kolmas osa sopii alakoulun ylemmille luokille.</p>
+          <h4>Tehtävän eteneminen:</h4>
+                <ol class="content-list" type="1">
+      <li style="list-style-type: decimal;">Tehtävän voi aloittaa opettajajohtoisella lyhyellä pohdinnalla:
+      <ul><li style="list-style-type: disc">Mitä työtä vanhempasi tai läheisesi tekevät? Mitä muita ammatteja tiedät? Entä mitä sellaisia ammatteja tiedät, joita ei ehkä enää ole?</li></ul></li>
+      <li style="list-style-type: decimal;">Opettaja tutustuu etukäteen aineistopaketteihin vanhoista ammateista. Hän valitsee muutamia kuvia eri ammateista ja jakaa yhden kuvan ryhmää kohden. Ryhmät tutkivat annettua kuvaa ja kirjaavat ylös asioita, jotka ihmetyttävät tai mietityttävät heitä kuvassa ja/tai entisajan ammatissa. Lopuksi ryhmien kysymykset nostetaan yleiseen keskusteluun opettajajohtoisesti.</li>
+      <li style="list-style-type: decimal;">Oppilaat valitsevat itse aineistopaketeista haluamansa ammatin ja yhden tai useamman kuvan, joihin tutustuvat tarkemmin. Valmiita aineistopaketteja on neljä, joten opettaja voi jakaa ryhmät niiden mukaan. Ryhmän tavoitteena on tuottaa esitelmä valitsemastaan ammatista. Oppilaat miettivät itse, miten he haluavat esitellä ammatin ja lähtevät tästä näkökulmasta käsin etsimään lisätietoja verkosta. Opettaja voi kuitenkin antaa ohjaavia kysymyksiä esitelmän teon tueksi tarvittaessa. Halutessaan oppilaita voi myös kannustaa etsimään lisää kuvallista materiaalia <a target="_blank" href="https://finna.fi">Finna.fi</a>:stä.
+<h5 style="margin-top: 1em;">Mahdollisia ohjaavia kysymyksiä:</h5>
+<ul class="content-list">
+<li>Esitelkää ammatti ja tutkikaa sen historiaa ja nykypäivää:</li>
+<li>Miksi valitsitte juuri tämän ammatin? Oliko ammatti teille jo etukäteen tuttu?</li>
+<li>Mitä taitoja työssä on tarvittu? Onko sitä varten täytynyt opiskella erikseen?</li>
+<li>Kuka työtä tyypillisesti teki? Oliko työntekijöiden sukupuolella merkitystä? Miksi?</li>
+<li>Millaisilla välineillä työtä tehtiin? Eroavatko välineet tämän päivän välineistä?</li>
+<li>Vieläkö ammattia harjoitetaan Suomessa tai muualla maailmassa? Jos harjoitetaan, miten työ on muuttunut vuosien aikana tai nykypäivään verrattaessa? Jos työtä ei enää ole, mikä sen on korvannut? Miten työtä tehdään nykyään?</li>
+<li>Esitelmässä on hyvä miettiä, miten ammatit näkyvät nykypäivänä. Mahdollisuuksien mukaan oppilaat voivatkin liittää mukaan itse ottamansa valokuvan valitsemastaan ammatista nykypäivän ympäristössä. Kuvan parissa voi harjoitella kuvanmuokkaamista yhdistämällä sen esitelmään. Toinen vaihtoehto on etsiä kuva verkosta.</li>
+<li>Oppilaat voivat esittää tuotoksensa opettajan valitsemassa muodossa (esim. PowerPoint, näytelmä).</li>
+</ul>
+</li>
+<li style="list-style-type: decimal;">Tehtävä on mahdollista integroida myös taito- ja taideaineisiin tai jopa koulun ulkopuoliseen retkeen. Luokka voi yhdessä pohtia, olisiko heidän mahdollista tutustua lisää johonkin esiteltyyn ammattiin ja vierailla tuon ammatin työpaikalla. Vierailua varten luokka voi koota haastattelukysymyksiä, joita he voivat esittää tämän ammatinharjoittajalle. Vaihtoehtoisesti luokka voi miettiä vierailua museoon tai näyttelyyn.</li>
+            </ol>
+       </div>
+    </div>
+  </div>
+  
+  
+    </div>
+  </div>
+</div>
+<!-- END of: national -  content/vanhat-ammattit_fi.phtml -->

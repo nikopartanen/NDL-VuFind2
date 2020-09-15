@@ -1,0 +1,16 @@
+<?
+$this->jsTranslations()->addStrings(['street_search_feedback_notification' => 'street_search_feedback_notification', 'street_search_feedback_remove_url' => 'street_search_feedback_remove_url']);
+
+$script = <<<JS
+$(document).ready(function() {
+  if (window.location.href.includes("streetsearch%3D1")) {
+    var feedback1 = '<div class="alert alert-info"><p>' + VuFind.translate('street_search_feedback_notification') + '<a href="#" class="clear-url-field">' + VuFind.translate('street_search_feedback_remove_url') + '</a>.</p></div>';
+    $( "input[type=url]" ).after(feedback1);
+    $(".clear-url-field").click(function() {
+      $("form :input[type=url]").val("");
+    });
+  }
+});
+JS;
+?>
+<?=$this->inlineScript(\Zend\View\Helper\HeadScript::SCRIPT, $script, 'SET'); ?>

@@ -1,0 +1,61 @@
+<!-- START of: custom - content//luokkahuone-vinkkeja_sv.phtml -->
+<?php $this->headTitle($this->translate('tabs_luokkahuone-vinkkeja'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+<?php if ($this->resolver('content/luokkahuone-tabs.phtml')): ?>
+  <?=$this->render('content/luokkahuone-tabs.phtml', ['activeTab' => 'luokkahuone-vinkkeja'])?>
+<?php endif; ?>
+<div class="sidebar left">
+  <div class="content-navigation-menu">
+  </div>
+</div>
+<div class="mainbody right">
+  <?php if ($this->resolver('content/Additions/helpBegin.phtml')): ?>
+    <?=$this->render('content/Additions/helpBegin.phtml')?>
+  <?php endif; ?>
+  <div id="begin1" class="content-section">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2>Favoritlistan som undervisningsredskap</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-7">
+        <p>Favoritlistan är ett behändigt redskap för undervisning och inlärning. Nedan finns tre olika sätt att utnyttja favoritlistan:
+        </p>
+        <ul class="content-list">
+          <li><strong>Samla in och sammanställa:</strong> Spara intressant material. Lägg egna beskrivningar till favoritlistorna och anteckningar till materialet.
+          </li>
+          <li><strong>Presentera och dela:</strong>Plocka material som passar för det ämne du undervisar på favoritlistan. Presentera favoritlistan för elever och kolleger med hjälp av översiktsvyn och dela länken till din favoritlista med dem.
+          </li>
+          <li><strong>Skapa lärostoff:</strong> Skapa lärostoff av din favoritlista genom att lägga till frågor och uppgifter för reflektion i din favoritlistas beskrivning och anteckningarna till materialet. Dela sedan listan med dina elever så att de kan undersöka den.
+          </li>
+        </ul>
+        <p>Se en kort video om att skapa och använda favoritlistor. Du kan också ta del av detaljerade instruktioner <a href="<?=$this->url('content-page', ['page' => 'help'])?>">här</a>.
+        </p>
+      </div>
+      <div class="col-md-5">
+        <div class="speech-bubble">
+          <p>"Tjänsten är praktisk, heltäckande och intressant till sitt innehåll."
+            <br><span class="quoter">lärare, användarenkät 2019</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="embed-responsive embed-responsive-16by9">
+  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/Vj4Y1CJYD3g" allowfullscreen></iframe>
+</div>
+  <div id="begin2" class="content-section">
+    <h2>Spara intressanta sökresultat</h2>
+    <p>Med hjälp av en bra sökterm och tillräckligt mångsidiga avgränsningar kan du skapa intressanta helheter även utan favoritfunktionen. Som inloggad användare kan du behändigt spara dina sökresultat med hjälp av funktionen <strong>Spara sökningen</strong> som finns nederst på sidan över sökresultat. Du kan även dela sökresultatet med andra genom att kopiera och dela ut den länk som visas på adressraden.
+    </p>
+    <p>Ta del av de färdigt avgränsade sökningarna nedan och spara dem som du tycker att är relevanta:
+    </p>
+    <?=$this->feed('group1-luokkahuone') ?>
+    <?=$this->feed('group2-luokkahuone') ?>
+    <?=$this->feed('group3-luokkahuone') ?>
+  </div>
+</div>
+<!-- END of: custom - content//luokkahuone-vinkkeja_sv.phtml -->

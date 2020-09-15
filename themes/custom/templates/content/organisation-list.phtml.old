@@ -1,0 +1,40 @@
+<? $this->headScript()->appendFile('finna-organisation-list.js'); ?>
+
+<!-- START of: custom - content/organisation-list.phtml -->
+<?
+    $orgArray = [
+        "lasipalatsi", "KA", "kansan_arkisto", "KOTUS", "siirtolaisuusinstituutti",
+        "tyovaen_arkisto", "AA_arch", "Ateneum", "designmuseo", "ESPOO_KAUPMUS",
+        "Forum Marinum -säätiö", "HELINAMUSEO", "HKM", "yo-museo", "HOTELLI- JA RAVINTOLAMUSEO",
+        "HYVINKAAMUSEO", "IlomantsinMuseosaatio", "FNG_ARCH", "FNG_LIB", "Suomen kansallismuseo",
+        "KERAVAMUSEO", "KSM", "Nykytaiteen museo Kiasma", "Konversio", "Kouvolan taidemuseo",
+        "kultamuseo", "Kustavin museo", "KYMIMUSEO", "LAHTIMUSEO", "LapinMetsamuseo",
+        "LPRMUSEOT", "Loimaan taidetalo", "Lusto", "mikkelinmuseot", "sarka",
+        "Museovirasto", "MANTSALAMUSEO", "Naantalin museo", "NurmeksenMuseo", "NURMIJARVIMUSEO",
+        "Nykytaiteen museo Kiasma", "PielisenMuseo", "paivalehdenmuseo", "SIIDA",
+        "Salon historiallinen museo", "SATMUSEO", "Sinebrychoff", "SA-kuva", "KELLOMUSEO",
+        "HEVOSENKENKA", "Suomen merimuseo", "Metsastysmuseo", "SRM", "Elektra",
+        "Siiri", "tekniikan_museo", "Turun museokeskus", "Werstas", "VANTAA", "SUM", "Verla",
+        "siirtolaisuusmuseo", "Tuusula", "x", "Uudenkaupungin museo", "Helda", "METKON", "KIFI",
+        "Porstua", "TAMK", "TAY", "TTY", "Haminan kaupungin museot", "Kymenlaakson museo",
+        "Pohjanmaan museo"
+    ];
+?>
+<ul class="organisations">
+  <? foreach($list as $item): ?>
+    <li>
+    <? $name = $this->escapeHtml($item['name'])?>
+    <div class="name page-link">
+    <? if (!in_array($item['organisation'], $orgArray)): ?>
+        <a href="<?=$this->url('home');?>OrganisationInfo/Home?id=<?=$item['organisation'];?>"><?=$name; ?></a>
+    <? else: ?>
+        <?=$name; ?>
+    <? endif;?>
+    </div>
+    <div class="link">
+        <a title="<?=$this->transEsc('Find')?>: <?=$name; ?>" href="<?=$this->url('home'); ?>Search/Results<?=$this->escapeHtmlAttr($item['link']) ?>"><span class="sr-only"><?=$this->transEsc('Find')?>: <?=$name; ?></span><i class="fa fa-search"></i></a>
+    </div>
+    </li>
+  <? endforeach; ?>
+</ul>
+<!-- END of: custom - content/organisation-list.phtml -->

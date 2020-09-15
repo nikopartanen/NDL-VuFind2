@@ -1,0 +1,105 @@
+<!-- START of: custom - content/luokkahuone_sv.phtml -->
+<?php $this->headTitle($this->translate('Finna Luokkahuone'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+<?php if ($this->resolver('content/luokkahuone-tabs.phtml')): ?>
+  <?=$this->render('content/luokkahuone-tabs.phtml', ['activeTab' => 'luokkahuone'])?>
+<?php endif; ?>
+<div class="sidebar left">
+  <div class="content-navigation-menu">
+  </div>
+</div>
+<div class="mainbody right">
+  <div class="row">
+    <div class="col-xs-12">
+      <h2>Välkommen till webbplatsen Finna Klassrum!</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-7">
+      <p><a href="https://finna.fi/?lng=sv">Finna.fi</a> är en fritt tillgänglig söktjänst som med en och samma sökning öppnar de digitaliserade skatterna i finländska arkiv, bibliotek och museer. I dag finns det redan över två miljoner digitaliserade resurser som är tillgängliga på webben, och mängden ökar hela tiden. I söktjänsten hittar du tillförlitligt, intressant och unikt undervisningsmaterial. Vare sig du är lärare i en grundskola, en yrkesskola eller ett gymnasium är <a href="https://finna.fi/?lng=sv">Finna.fi</a> något för dig!
+      </p>
+    </div>
+    <div class="col-md-5">
+      <div class="speech-bubble">
+        <p>"Finna är lätt att använda och där finns 'tryggt' material som kan användas i undervisningen."
+          <br><span class="quoter">lärare, användarenkät 2019</span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div id="begin1" class="content-section">
+    <h2>Utnyttja färdiga materialpaket och uppgiftsidéer</h2>
+    <p>Bekanta dig med materialpaketen. Med hjälp av dem kan du välja tilläggsinnehåll till lektionerna eller du kan låta eleverna bekanta sig med den mångsidiga söktjänsten <a href="https://finna.fi/?lng=sv">Finna.fi</a>.
+    </p>
+  <?php if ($this->resolver('aineistopaketitList_sv.phtml')): ?>
+    <?=$this->render('aineistopaketitList_sv.phtml')?>
+  <?php endif; ?>
+  </div>
+  <div id="begin2" class="content-section">
+    <h2>Varför använda Finna i undervisningen?</h2>
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+          <h3 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              1. Materialet är mångsidigt och tillförlitligt
+            </a>
+          </h3>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            <p>Finna tillhandahåller tillförlitligt och utvalt innehåll som proffs på arkiv, museer och bibliotek ansvarar för.
+            </p>
+            <p>I Finna hittar du till exempel över 1,3 miljoner historiska foton. Det finns foton av människor, platser, konstverk och föremål från olika århundraden.
+            </p>
+            <p>Finna innehåller också en hel del annat intressant material, såsom filmer, gamla kartor, konst, ljudinspelningar, digitaliserade tidningar, brev och annat skriftligt material – sådant som livar upp och kompletterar din lektion.
+            </p>
+            <p>Materialet kan användas så gott som i alla läroämnen. Det hjälper dig också med idéer för mångvetenskapliga lärområden.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              2. Användningen av materialet i undervisningen stärker multilitteracitet och kritiskt tänkande
+            </a>
+          </h3>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            <p>Finna kan utmärkt väl användas i undervisning som främjar multilitteracitet. Via söktjänsten får du tillgång till material som hör ihop med olika läroämnen och vetenskapsgrenar.
+            </p>
+            <p>Med en sökning hittar en hel del medieinnehåll med samma tema och dessutom i olika format: skrivet material, tryckta publikationer, information om föremål och mångsidigt ljud- och bildmaterial.
+            </p>
+            <p>Att utnyttja olika slags material på lektionerna ger en djupare inblick i texten, stöder kritiskt tänkande och uppmuntrar eleverna att använda informationskällor mångsidigt.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              3. Inlärning av informationssök är tryggt och effektivt
+            </a>
+          </h3>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            <p>Finna är en mångsidig söktjänst som är lätt och säker att använda. Den kan användas för informationssökning från och med grundskolan.
+            </p>
+            <p>Det enklaste söksättet i Finna är att söka på ord, men med olika avgränsningar kan man göra sökningen mer kreativ och undersökande. Materialet, som beskrivs av proffs, främjar källkritisk granskning, eftersom det är försett med tydlig referensinformation.
+            </p>
+            <p>I Finna är det lätt för både dig och eleverna att bli bekant med användarrättigheterna till materialet med hjälp av CC-licenser.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END of: custom - content/luokkahuone_sv.phtml -->

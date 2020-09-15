@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <atom:link href="" rel="self" type="application/rss+xml" />
+    <title>We recommend</title>
+             <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/satama.jpg"/>
+       <title>Harbour lights and shadows found in Kotka</title>
+      <description>Kotka Harbour came into being to meet the needs of the sawmill industry in the 1870s. Over the years, the harbour has grown, manpower was taken over by machinery and simple general cargo has turned into massive shipping containers. Kotka has always been one of the most important ports of export in Finland and a gateway of the forest industry to the world.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/satama.jpg"/>
+      <link>       <![CDATA[Search/Results?view=grid&filter%5B%5D=%7Eformat%3A%220%2FImage%2F%22&filter%5B%5D=%7Eformat%3A%220%2FPhysicalObject%2F%22&join=AND&bool0%5B%5D=AND&lookfor0%5B%5D=Kymenlaakson+museo&lookfor0%5B%5D=satamat&lookfor0%5B%5D=Kotka&type0%5B%5D=AllFields&type0%5B%5D=AllFields&type0%5B%5D=AllFields]]>
+      </link>
+    </item>
+             <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/helsinkimaalaus.jpg"/>
+       <title>Helsinki Art Collection</title>
+      <description>Helsinki City Museum’s art collection’s works by famous masters and amateur artists illustrate Helsinki and its residents. The collection contains paintings, graphic art and drawings. The works represent many styles: realism, naivism and expressionism are all there.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/helsinkimaalaus.jpg"/>
+      <link>       <![CDATA[Search/Results?filter%5B%5D=%7Ebuilding%3A%220%2FHKM%2F%22&filter%5B%5D=%7Eformat_ext_str_mv%3A%220%2FWorkOfArt%2F%22&lookfor=kuvasto&type=AllFields&view=grid]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/lentokone.jpg"/>
+      <title>Take a flight to the southern sun with Karhumäki brothers</title>
+      <description>Coronavirus has paralyzed air travel, but the online pictures of Aviation Museum allow you to take a virtual flight trip to exotic holiday destinations. The photographic heritage of Veljekset Karhumäki and Kar-Air Oy covers the history of scheduled and charter air travel, particularly in the 1950s and 1960s.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/lentokone.jpg"/>
+      <link>       <![CDATA[Search/Results?view=grid&filter%5B%5D=%7Ebuilding%3A%220%2Filmailumuseo%2F%22&filter%5B%5D=%7Etopic_facet%3A%22lentomatkustus%22&filter%5B%5D=%7Etopic_facet%3A%22liikennelentokoneet%22&filter%5B%5D=%7Eformat_ext_str_mv%3A%220%2FImage%2F%22&filter%5B%5D=free_online_boolean%3A%221%22&dfApplied=1&lookfor=%2Akarhum%2A+OR+%2Akar-air%2A+OR+%2Akar+air%2A&type=AllFields]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/heinola2.jpg"/>
+       <title>The wooden town of Heinola no longer exists</title>
+      <description>Anja Halla’s street view photos are a 20-year-long reportage of the wooden town of Heinola. Working as a press photographer in the newspaper Itä-Häme she documented the wooden houses and the way of life that no longer exist. She selected photos for an exhibition that feature the change in the small town 1965–1985. The Press Photo Archive of the Finnish Heritage Agency digitized the images.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/heinola2.jpg"/>
+      <link>       <![CDATA[Search/Results?view=grid&filter%5B0%5D=%7Eauthor_facet%3A%22Halla%2C+Anja%22&filter%5B1%5D=%7Ebuilding%3A%220%2FMuseovirasto%2F%22&dfApplied=1&lookfor=halla+anja&type=AllFields]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/talvisota_lahti.jpg"/>
+       <title>Winter War in Lahti</title>
+      <description>Lahti was bombarded a total of 36 times during the Winter War, with traces still being visible in the cityscape. The Lahti City Museum has digitised more than 200 photos of the Winter War and has transferred them to Finna from its photo archives. There are also photos from other parts of Finland. Life in Lahti during the Winter War and the devastation caused by the bombardment was especially recorded by photographer Maija Simola (1911-2012).</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/talvisota_lahti.jpg"/>
+      <link>       <![CDATA[Search/Results?view=grid&filter%5B%5D=free_online_boolean%3A%221%22&filter%5B%5D=%7Eformat_ext_str_mv%3A%220%2FImage%2F%22&filter%5B%5D=%7Ebuilding%3A%220%2FLAHTIMUSEO%2F%22&lookfor=talvisota&type=AllFields]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/turku-palaa.jpg"/>
+       <title>The Bombed Cityscape of Turku</title>
+      <description>Turku was one of the most bombed cities in Finland during the Winter War of 1939—1940. Destroyed build-ings were documented by Yrjö Paldán, a Turku-born photographer. His photographs capture not only a narra-tive of war but also a change in the cityscape of Turku. Altogether 131 of Paldán’s images have been digit-ised and published on Finna.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/elonet.jpg"/>
+      <link>       <![CDATA[Search/Results?limit=50&filter%5B%5D=%7Ebuilding%3A%221%2FTurun+museokeskus%2FValokuva-arkisto%2F%22&dfApplied=1&lookfor=Pald%C3%A1n+Yrj%C3%B6&type=AllFields&view=grid]]>
+      </link>
+    </item>
+        <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/ansaikonen.jpg"/>
+      <title>Learn about Finnish film history!</title>
+      <description>You can now find the collections of the National Audiovisual Institute on Finna! The institute’s collections include beloved classics of Finnish film from The Vagabond’s Waltz (1941) and Juurakon Hulda (1937) to the Finnish Defense Force’s wartime accounts. You can also access a wide variety of video clips and film stills.
+        </description>
+      <media:thumbnail url="themes/custom/images/carousel-images/ansaikonen.jpg"/>
+      <link>       <![CDATA[Search/Results??limit=0&filter%5B%5D=~sector_str_mv%3A%220%2Farc%2F%22&filter%5B%5D=~building%3A%220%2FKAVI%2F%22&filter%5B%5D=~geographic_facet%3A%22Suomi%22&filter%5B%5D=free_online_boolean%3A1&type=AllFields]]>
+      </link>
+    </item>
+        <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/kirjallisuus.jpg"/>
+      <title>Finnish literary classics</title>
+      <description>You can access classic works from writers like Eino Leino, J.L. Runeberg, Minna Canth, and Juhani Aho on Finna…Have you already read them all?</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/kirjallisuus.jpg"/>
+      <link>       <![CDATA[Search/Results?limit=0&lookfor=+%28project_id_str_mv%3AKirjallisuuspankki%29&type=AllFields&filter%5B%5D=free_online_boolean%3A1]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/autopeli.jpg"/>
+       <title>Board games</title>
+      <description>The National Library of Finland has digitised old Finnish and Swedish board games from the 1810s to the 1940s contained in its collections. All the board games are free from copyright and can thus be freely used.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/autopeli.jpg"/>
+      <link>       <![CDATA[Search/Results?filter%5B%5D=%7Ebuilding%3A%221%2FNLF%2FDoria%2F%22&filter%5B%5D=%7Eformat%3A%221%2FOther%2FBoardGame%2F%22&type=AllFields&view=grid]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/sks-nosto.jpg"/>
+      <title>SKS’s digital materials now on Finna </title>
+      <description>Digitized books from the SKS Library’s collections include Finnish literary classics by Aleksis Kivi, Minna Canth and Juhani Aho, along with some 19th-century folklore publications and works by self-taught writers. All of them are openly accessible online. Furthermore, SKS makes a selection of its research publications available in open access. Now you can find these all on Finna!  </description>
+      <media:thumbnail url="themes/custom/images/carousel-images/sks-nosto.jpg"/>
+      <link>       <![CDATA[Search/Results?filter%5B%5D=building%3A"0%2FFINLIT%2F"]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/Ala-Uotinen_28-muokk.jpg"/>
+      <title>The metadata of the Migration Institute of Finland Archives is now in Finna! </title>
+      <description>The Migration Institute of Finland collects and stores materials relating to migration. The collections include photos, letters, interviews and more for example from the Finnish American communities.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/Ala-Uotinen_28-muokk.jpg"/>
+      <link>       <![CDATA[Search/Results?sort=title&limit=50&filter%5B%5D=~building%3A"0%2Fsiirtolaisuusinstituutti%2F"&type=AllFields&view=condensed]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/baari.jpg"/>
+       <title>From lounges to pubs</title>
+      <description>A bar refers to many different kinds of establishments with an alcohol licence, ranging from lounges in high end hotels to neighbourhood pubs. In 2006, the Hotel and Restaurant Museum documented Helsinki bars, some of which no longer exist today. The pictures, covering everything from crystal chandeliers to writings in bathroom stalls, aptly depict the diversity of Helsinki’s bars.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/baari.jpg"/>
+      <link>       <![CDATA[Search/Results?view=list&filter%5B%5D=%7Ebuilding%3A%220%2FHOTELLI-+JA+RAVINTOLAMUSEO%2F%22&filter%5B%5D=%7Eformat%3A%220%2FImage%2F%22&filter%5B%5D=search_daterange_mv%3A%22overlap%7C%5B2006+TO+2006%5D%22&lookfor=baarit&type=AllFields]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/albumit-auki.jpg"/>
+       <title>Open the albums – treasures from home archives</title>
+      <description>In order to ensure that we don’t lose our valuable cultural history, digitised photos from people’s everyday lives have been saved in the Open the albums archives. The photos are from 2014 onwards and come from different places around the country. The first collection to be opened on Finna was the Jyväskylä collection, and new collections continue to be archived as part of this public treasure.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/albumit-auki.jpg"/>
+      <link>       <![CDATA[Search/Results?limit=0&filter%5B%5D=%7Ebuilding%3A%220%2Flasipalatsi%2F%22&filter%5B%5D=free_online_boolean%3A%221%22&filter%5B%5D=%7Etopic_facet%3A%22lapset+%28ik%C3%A4%C3%A4n+liittyv%C3%A4+rooli%29%22&filter%5B%5D=%7Etopic_facet%3A%22lapset+%28perheenj%C3%A4senet%29%22&dfApplied=1&type=AllFields]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/lusto.jpg"/>
+       <title>Back in the classroom – posters on Finna</title>
+      <description>Now there’s the internet, back then it was posters. In the twentieth century, Finnish school teachers taught students about animals, plants, human anatomy, world history, and different cultures with the help of posters. Even many Finnish artists became interested in illustrating these detailed instructional drawings. Take a look at Finna’s collection of posters from across Finland.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/lusto.jpg"/>
+      <link>       <![CDATA[Search/Results?filter%5B%5D=free_online_boolean%3A%221%22&filter%5B%5D=%7Eformat%3A%220%2FMap%2F%22&filter%5B%5D=%7Eformat%3A%220%2FDocument%2F%22&filter%5B%5D=%7Eformat%3A%220%2FImage%2F%22&filter%5B%5D=%7Eformat%3A%220%2FPhysicalObject%2F%22&lookfor=opetustaulu&type=AllFields&view=grid]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/levyt.jpg"/>
+      <title>Old Finnish recordings</title>
+      <description>What kind of music did Finns produce and listen to in the early twentieth century? You can peruse Finnish recordings from the collections of the National Library of Finland on Finna.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/levyt.jpg"/>
+      <link>       <![CDATA[Search/Results?filter%5B%5D=%7Ebuilding%3A%220%2FNLF%2F%22&filter%5B%5D=%7Elanguage%3A%22fin%22&lookfor=copvapaa&type=AllFields&limit=100]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/taide.jpg"/>
+      <title>Veljekset von Wright</title>
+      <description>The trio of brothers Ferdinand, Magnus, and Wilhelm von Wright are remembered for their realistically precise paintings of animals and birds. Right now their works are on display at the art museum Ateneum. Get a taste of the exhibit and browse through the brothers’ paintings with Finna’s help!</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/taide.jpg"/>
+      <link>       <![CDATA[Search/Results?lookfor=&type=AllFields&filter%5B%5D=%7Eformat%3A%220%2FWorkOfArt%2F%22&filter%5B%5D=%7Eauthor_facet%3A%22Wright%2C+Magnus+von%22&filter%5B%5D=%7Eauthor_facet%3A%22Wright%2C+Wilhelm+von%22&filter%5B%5D=%7Eauthor_facet%3A%22Wright%2C+Ferdinand+von%22&dfApplied=1&limit=20&sort=relevance%2Cid+asc]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/raha.jpg"/>
+      <title>Old banknotes</title>
+      <description>When Finland became independent in 1917, it was one of only a handful countries that had its own currency – banks received currency printing presses to produce one mark and twenty mark banknotes on the day the declaration of independence was ratified. Go on a nostalgic journey with banknotes from old Finland and other countries on Finna.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/raha.jpg"/>
+      <link>       <![CDATA[Search/Results?view=grid&filter%5B%5D=%7Eformat%3A%220%2FPhysicalObject%2F%22&filter%5B%5D=free_online_boolean%3A%221%22&filter%5B%5D=%7Etopic_facet%3A%22setelirahat%22&lookfor=seteli%2A&type=AllFields]]>
+      </link>
+    </item>
+     <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/kartta.jpg"/>
+      <title>Navigate your way through maps</title>
+      <description>Finland has been included on maps depicting northern Europe since the sixteenth century. On Finna you can navigate inside Finland’s borders with the help of many different kinds of city maps and city planning maps. You can also find a large number of maps from around the world in the collections.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/kartta.jpg"/>
+      <link>       <![CDATA[Search/Results?limit=0&filter%5B%5D=%7Eformat%3A%220%2FMap%2F%22&filter%5B%5D=free_online_boolean%3A1&lookfor=kartta&type=AllFields]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/metro.jpg"/>
+      <title>The tube from east to west</title>
+      <description>It’s always hustling and bustling on the tube! President Mauno Koivisto opened the Helsinki tube system in 1982. Since then the iconic orange color of the trains has been part of the everyday lives of many Helsinki residents. Go back in time and browse through the tube pictures you can find on Finna!</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/metro.jpg"/>
+      <link>       <![CDATA[Search/Results?limit=0&filter%5B%5D=%7Eformat%3A%220%2FImage%2F%22&filter%5B%5D=%7Egeographic_facet%3A%22Helsinki%22&filter%5B%5D=free_online_boolean%3A1&dfApplied=1&lookfor=metro&type=AllFields]]>
+      </link>
+    </item>
+
+  </channel>
+</rss>

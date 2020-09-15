@@ -1,0 +1,66 @@
+<!-- START of: custom - content/kuuntele-suomenruotsia_fi.phtml -->
+<?php $this->headTitle($this->translate('Kuuntele suomenruotsalaisia murteita sekä puhekieltä'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Kuuntele suomenruotsalaisia murteita sekä puhekieltä</h2>
+<p><strong>Aineistopaketin koonnut:</strong> Svenska litteratursällskapet i Finland (SLS)</p>
+<p>Tämä aineistopaketti koostuu lyhyistä, ruotsinkielisistä äänitteistä eri puolilta Suomea.</p>
+<h3>Kohderyhmä:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#ylakoulu">
+          Yläkoulu: <small><strong>ruotsin kieli ja kirjallisuus</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+          <p>Oppiaineiden sisältöalueet:</p>
+          <ul class="content-list">
+            <li>Ruotsin kieli ja kirjallisuus: I4 Kielen, kirjallisuuden ja kulttuurin ymmärtäminen
+            </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Lukio: <small><strong>ruotsin kieli ja kirjallisuus, toinen kotimainen kieli (ruotsi)</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Oppiaineet ja kurssit:</p>
+        <ul class="content-list">
+          <li>Ruotsin kieli ja kirjallisuus: MO2 Kieli, kulttuuri ja identiteetti
+          </li>
+          <li>Ruotsi toisena kielenä ja kirjallisuus: SV22 Kieli, kulttuuri ja identiteetti, SV27 Puhe- ja vuorovaikutustaitojen syventäminen
+          </li>
+          <li>Toinen kotimainen kieli (ruotsi, äidinkielenomainen oppimäärä): RUÄO1 Ruotsinkielinen maailmani
+          </li>
+          <li>Toinen kotimainen kieli (ruotsi): RUA1 Ruotsinkielinen maailmani, RUA2 Ihminen verkostoissa, RUA8 Viesti ja vaikuta puhuen
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketit">Aineisto</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketti" class="tab-pane fade in active">
+    <?= $this->userlistEmbed(['id' => 60, 'view' => 'list', 'description' => true, 'title' => false, 'date' => false, 'allowCopy' => true])?>
+  </div>
+</div>
+<!-- END of: custom -  content//kuuntele-suomenruotsia_fi.phtml -->

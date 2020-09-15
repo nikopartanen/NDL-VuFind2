@@ -1,0 +1,79 @@
+<!-- START of: custom - content/mainoskuvastoa_sv.phtml -->
+<?php $this->headTitle($this->translate('Reklam från tiden efter krigen'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+    <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Reklam från tiden efter krigen</h2>
+<p>Materialpaketet presenterar finländska reklamer från och med tiden efter kriget och ända fram till 1970-talet. Reklamerna visar hur finländarnas vardag påverkades av andra världskrigets slut, högre levnadsstandard, ökad fritid och 1960-talets internationalisering. Reklamerna kan undersökas till exempel för att upptäcka den tidsbild de förmedlar. När man granskar reklamerna kan man begrunda vad de berättar eller ville berätta om det samtida samhället och könsrollerna. Vad har förändrats och vad har förblivit oförändrat i marknadsföringen och reklamen?
+</p>
+<p>Materialpaketet är indelat i fyra helheter. Var och en av dessa riktas till undervisningen inom ett visst läroämne:</p> 
+  <ul class="content-list">
+    <li>Vi säljer sinnebilder! - bildkonst</li>
+    <li>Resereklamernas Finlandsbild - historia</li>
+    <li>Hemmets kök och matkultur - historia</li>
+    <li>Kläder är mera än yta – egenskaper, skötsel och nya fibrer - slöjd</li>
+  </ul>
+<p>Helheterna och de material de innehåller kan dock med fördel utnyttjas även i andra läroämnen. Ta en titt på färdiga uppgiftsidéer i fältet med anteckningar upptill höger på bilderna. Plocka de bästa idéerna till din undervsining!</p>
+
+<h3>Målgrupp:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-yläkoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#yläkoulu">
+          Högstadier: <small><strong>bildkonst, histori, slöjd</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="yläkoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-yläkoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Bildkonst: I1 Egna bildkulturer, I2 Bildkulturer i omgivningen</li>
+          <li>Historia: I1 Industrisamhällets uppkomst och utveckling, I5 Välfärdssamhällets uppbyggnad</li>
+          <li>Slöjd: I2 Formgivning, I4 Dokumentation och värdering, I7 Företagsamt lärande, I8 Medvetenhet och delaktighet</li>
+        </ul>
+        <p>Mål: Materialpaketet handleder eleverna att begrunda forna dagars reklamer och den tidsbild dessa förmedlar ur olika synvinklar och inom olika läroämnen. Materialen hjälper att gestalta det finländska samhället från krigets nödår till ett välfärdssamhälle där konsumtionskulturen blev starkare och nya produkter och tjänster blev tillgängliga. Helheten uppmuntrar att granska den historiska förändringen och kontinuiteten samt reklamens språk och visuella metoder.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Gymnasier: <small><strong>bildkonst, historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Läroämnens kurser:</p> 
+        <ul class="content-list">
+          <li>Bildkonst: KU3 Medier och delaktighet</li>
+          <li>Historia: HI1 Människan i en föränderlig omvärld, HI3: Det självständiga Finlands historia</li>
+        </ul>
+        <p>Mål: Materialpaketet handleder eleverna att begrunda forna dagars reklamer och den tidsbild dessa förmedlar ur olika synvinklar och inom olika läroämnen. Materialen hjälper att gestalta det finländska samhället från krigets nödår till ett välfärdssamhälle där konsumtionskulturen blev starkare och nya produkter och tjänster blev tillgängliga. Helheten uppmuntrar att granska den historiska förändringen och kontinuiteten samt reklamens språk och visuella metoder.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketit">Material</a></li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketit" class="tab-pane fade in active">
+    <?= $this->userlistEmbed(['id' => 26, 'view' => 'grid', 'description' => true, 'title' => true, 'date' => false, 'allowCopy' => true])?>
+    <hr>
+    <?= $this->userlistEmbed(['id' => 25, 'view' => 'grid', 'description' => true, 'title' => true, 'date' => false, 'allowCopy' => true])?>
+    <hr>
+    <?= $this->userlistEmbed(['id' => 24, 'view' => 'grid', 'description' => true, 'title' => true, 'date' => false, 'allowCopy' => true])?>
+    <hr>
+    <?= $this->userlistEmbed(['id' => 27, 'view' => 'grid', 'description' => true, 'title' => true, 'date' => false, 'allowCopy' => true])?>    
+  </div>
+</div>
+<!-- END of: custom -  content/mainoskuvastoa_sv.phtml -->

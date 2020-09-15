@@ -1,0 +1,44 @@
+<!-- START of: finna - content/help_sv.phtml -->
+<?php if ($this->resolver('content/help-tabs.phtml')): ?>
+  <?=$this->render('content/help-tabs.phtml', ['activeTab' => 'help'])?>
+<?php endif; ?>
+<div>
+  <div class="sidebar left">
+    <div class="content-navigation-menu">
+    </div>
+  </div>
+  <div class="mainbody right">
+    <?php if ($this->resolver('content/Additions/helpBegin.phtml')): ?>
+      <?=$this->render('content/Additions/helpBegin.phtml')?>
+    <?php endif; ?>
+    <div id="begin1" class="content-section">
+      <h2>Hur börjar jag söka i Finna?</h2>
+      <p><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/6DhUJpB-Tf8" allowfullscreen></iframe></div></p>
+      <p>Videon lär dig hur du ska söka material i Finna och hur du kan dra nytta av olika filter för att förfina din sökning. Videon presenterar i synnerhet sökningen av bildmaterial.</p>
+      <p><strong>Det finns flera alternativ:</strong></p>
+      <h3>Fri ordsökning och begränsning <a href="<?=$this->url('home')?>" aria-label="Länk: Fri ordsökning och begränsning"><i class="fa fa-external-link-square" aria-hidden="true"></i></a></h3>
+      <ul class="list-bullets">
+        <li>Det enklaste sättet att börja söka är att i sökrutan skriva in sökord om ämnet eller materialet som du letar efter.</li>
+        <li>I rullgardinsmenyn till höger i sökrutan kan du välja om du vill söka på titel, upphovsman eller ämne. Alternativet "Alla fält" ger en sökning i alla sökbara uppgifter</li>
+        <li>Efter den första sökningen kan du <strong>begränsa sökresultaten</strong> till exempel enligt användningssyfte, innehållstyp eller produktionsår.</li>
+        <li>Idéer för utformning av din sökning får du i anvisningarna för <a href="<?=$this->url('content-page', ['page' => 'help-basic'])?>">Grundläggande sökning</a>.</li>
+      </ul>
+      <h3>Avancerad sökning <a href="<?=$this->url('search-advanced')?>" aria-label="Länk: Avancerad sökning"><i class="fa fa-external-link-square" aria-hidden="true"></i></a></h3>
+      <h3>Finna Street <a href="<?=$this->url('search-streetsearch')?>?go=1" aria-label="Länk: Finna Street"><i class="fa fa-external-link-square" aria-hidden="true"></i></a></h3>
+      <ul class="list-bullets">
+        <li>Finna Street-platssökningen söker bilder i Finna utgående från positionen som din webbläsare ger. Sökningen fungerar bäst med enheter som använder GPS-teknik för positioneringen, det vill säga mobila enheter. Sökresultaten beror på bildernas platsinformation. Du kan också söka material om platser genom att skriva in platsens namn eller adress i sökrutan. Kom ihåg att tillåta positionering i din webbläsare!</li>
+      </ul>
+    </div>
+    <div id="begin2" class="content-section">
+      <h2>Hur tittar jag på sökresultaten?</h2>
+      <p>När du gör en sökning i Finna, öppnas automatiskt sidan med sökresultat där du hittar material som motsvarar dina sökord. Du kan begränsa sökresultaten på resultatsidan (se delen <a href="<?=$this->url('content-page', ['page' => 'help-basic'])?>#narrowsearch">Begränsa sökresultaten</a>). Om det inte finns material i Finna som motsvarar din sökning, meddelar sökfunktionen det.</p>
+      <p>Du kommer till materialets detaljerade uppgifter genom att klicka på rubriken i listan över sökresultat. Klicka på resultatets ikon eller bild för att öppna en större bild och en del av uppgifterna i en förhandsvisning.</p>
+      <p>En del av materialet är nedladdningsbart. Kom dock alltid ihåg att kontrollera t.ex bildernas användningsrättigheter i materialets egna uppgifter.</p>
+      <p>Material kan användas t.ex. som stöd i undervisning och inlärning eller för hobbyverksamhet.</p>
+    </div>
+    <?php if ($this->resolver('content/Additions/helpEnd.phtml')): ?>
+      <?=$this->render('content/Additions/helpEnd.phtml')?>
+    <?php endif; ?>
+  </div>
+</div>
+<!-- END of: finna - content/help_sv.phtml -->
