@@ -245,6 +245,8 @@ translated_facets[] = callnumber-first:CallNumberFirst
 translated_facets[] = educational_level_str_mv
 translated_facets[] = educational_material_type_str_mv
 translated_facets[] = educational_audience_str_mv
+translated_facets[] = usage_rights_str_mv
+translated_facets[] = language
 ;delimited_facets[] = author_id_str
 ;delimited_facets[] = "author_id_str|:::"
 
