@@ -110,15 +110,15 @@
             <?php endif; ?>
             <?php if ($showExtraDetails): ?>
               <div class="targeted-informations truncate-field outer" data-rows="2">
-                <?php $lateralUrl = $this->url('l1-results'); ?>
+                <?php $urlHelper = $this->results->getUrlQuery()->removeAllFilters(); ?>
                 <?php if ($levels): ?>
                   <?php foreach($levels as $level): ?>
-                    <a href="<?=$lateralUrl . "?type=AllFields&amp;filter%5B%5D=educational_level_str_mv%3A$level"?>" class="targeted-element"><?=$this->transEsc($level)?></a>
+                    <a href="<?=$urlHelper->addFilter("educational_level_str_mv:{$level}")?>" class="targeted-element"><?=$this->transEsc($level)?></a>
                   <?php endforeach; ?>
                 <?php endif; ?>
                 <?php if ($topics): ?>
                   <?php foreach($topics as $topic): ?>
-                    <a href="<?= $lateralUrl . "?type=AllFields&amp;filter%5B%5D=topic_facet%3A$topic"?>" class="targeted-element"><?=$this->transEsc($topic)?></a>
+                    <a href="<?=$urlHelper->addFilter("topic_facet:{$topic}")?>" class="targeted-element"><?=$this->transEsc($topic)?></a>
                   <?php endforeach; ?>
                 <?php endif; ?>
               </div>
