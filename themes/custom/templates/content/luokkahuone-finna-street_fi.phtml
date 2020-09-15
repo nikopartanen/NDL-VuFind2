@@ -1,0 +1,148 @@
+<!-- START of: custom - content/luokkahuone-finna-street_fi.phtml -->
+<?php $this->headTitle($this->translate('Finna Street - paikallishistoriaa puhelimen näytöllä'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+<?php if ($this->resolver('content/luokkahuone-tabs.phtml')): ?>
+  <?=$this->render('content/luokkahuone-tabs.phtml', ['activeTab' => 'luokkahuone-finna-street'])?>
+<?php endif; ?>
+<div class="sidebar left">
+  <div class="content-navigation-menu">
+  </div>
+</div>
+<div class="mainbody right">
+  <?php if ($this->resolver('content/Additions/helpBegin.phtml')): ?>
+    <?=$this->render('content/Additions/helpBegin.phtml')?>
+  <?php endif; ?>
+  <div id="begin1" class="content-section">
+    <div class="row">
+      <div class="col-sm-6 col-md-8">
+        <h2>Finna Street - paikallishistoriaa puhelimen näytöllä</h2>
+        <p>Perusopetuksen opetussuunnitelma painottaa oppisisältöjen suhteuttamista oppijan lähiympäristöön. <a target="_blank" href="<?=$this->url('search-streetsearch')?>?go=1">Finna Street -kuvahaulla</a> sinun on mahdollista elävöittää opetustasi aivan uudella tavalla, sillä se hakee historiallisia kuvia sijainnin perusteella.
+        </p>
+        <p>Haluatteko esimerkiksi tietää, miltä seutunne tai koulunne näytti vuosikymmeniä sitten? Lähtekää oppilaiden kanssa ulos, ottakaa mukaan mobiililaitteet ja tehkää löytöretki historiaan.
+        </p> 
+        <p>HUOM! Haku toimii parhaiten kaupungeissa ja ulkosalla. <a target="_blank" href="<?=$this->url('search-streetsearch')?>?go=1">Finna Street</a> löytää ainoastaan kuvallista aineistoa, jossa on tiedossa tarkka sijainti. Jos paikkakunnaltasi ei löydy kuvia <a target="_blank" href="<?=$this->url('search-streetsearch')?>?go=1">Finna Street -kuvahaulla</a>, kokeile tavallista hakua paikkakunnan nimellä.
+        </p>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <a target="_blank" class="finna-nosto" style="margin: auto; max-width:300px" href="<?=$this->url('search-streetsearch')?>?go=1">
+          <img src="<?=$this->imageLink('finna-street-banner-box-fi.png')?>" alt="Finna Street – Löydä historiallisia kuvia sieltä missä olet!">
+        </a>
+      </div>
+    </div>
+  </div>
+  <div id="begin2" class="content-section">
+    <h2>Ideoita Finna Streetin käyttöön</h2>
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+          <h3 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              1. Lähiökävely - tutki miltä tutut maisemat ovat näyttäneet kauan ennen sinua
+            </a>
+          </h3>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            <p>1. Vie oppilaat historiaa ja nykyhetkeä rinnakkain esittelevällä lähiökävelylle. Voit suunnitella pidemmän lähiökävelyn tai mennä ulos oppilaille tuttuun paikkaan.
+            </p>
+            <p>2. Kun olette saapuneet valitsemaanne paikkaan, ohjeista oppilaita siirtymään älylaitteillaan osoitteeseen finna.fi ja klikkaamaan etusivun Finna Street -hakua.
+            </p>
+            <p>3. Laitteiden selaimet kysyvät lupaa käyttää sijaintia kuvien hakemiseen. Neuvo oppilaita antamaan selaimelle lupa paikannukseen. Valitkaa <strong>Käytä sijaintiani</strong> -vaihtoehto.
+            </p>
+            <p>4. Finna Street hakee kaikki sijaintiinne liittyvät valokuvat ja voitte ihastella historiaa ja nykyhetkeä rinnakkain.
+            </p>
+            <h4>Oppilaiden kanssa voi pohtia:</h4>
+            <ul class="content-list">
+              <li>Miten oma lähiympäristö on muuttunut?
+              </li>
+              <li>Mitä kohteita ylipäänsä on kuvattu ja minkälaisissa tilanteissa kuvia on eri aikoina otettu? Miten nämä vaikuttavat kuvien sisältöihin?
+              </li>
+              <li>Mitä on mahdollisesti jäänyt kuvaamatta?
+              </li>
+              <li>Onko kuva luotettava menneisyyden dokumentti?
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              2. Aina ei ehdi poistua neljän seinän sisältä – ei hätää! Finna Street toimii myös luokkahuoneesta käsin
+            </a>
+          </h3>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            <p><a href="/Search/StreetSearch?go=1">Finna Street</a> -hakupalvelu sopii myös luokkahuonetyöskentelyyn. Voitte etsiä paikallisia tuloksia määrittelemällä alueen itse.
+            </p>
+            <p>Alueen määrittely:
+            </p>
+            <p>1. Mene osoitteeseen <a href="/">Finna.fi</a> ja klikkaa etusivun Finna Street -hakua.
+            </p>
+            <p>2. Määrittele alue itse, mistä <a target="_blank" href="<?=$this->url('search-streetsearch')?>?go=1">Finna Street</a> etsii valokuvia. Valitse sivuston vasemmalla puolella olevasta <strong>Rajaa hakua</strong> -palkista <strong>Rajaa alue kartalta</strong> -vaihtoehto ja klikkaa kartta auki.
+            </p>
+            <p>3. Nyt pääset zoomaamaan vaikka kotiseudullesi. Aseta ympyränmuotoinen valitsin alueelle, jota haluat tutkia. Karttaa voi lähentää tai loitontaa sen mukaan, kuinka laajalta alueelta haluat saada tuloksia.
+            </p>
+            <p>Vinkki! Etenkin kahden kaupungin rajalla karttaa kannattaa rajata tarkasti, jotta naapurikaupungin kuvat eivät sisälly hakutulokseen.
+            </p>
+            <h4>Tehtäväidea:</h4>
+            <p>Luokkahuoneessa <a target="_blank" href="<?=$this->url('search-streetsearch')?>?go=1">Finna Street -hakupalvelua</a> voi hyödyntää usealla tavalla. Etsikää vaikka valokuvia lähialueeltanne tiettynä ajanjaksona tai useina ajanjaksoina. Etsikää sen jälkeen esimerkiksi Google Maps -karttapalvelun avulla kuvia nykyisestä paikasta. Oppilaat tekevät valitsemastaan kuvaparista PowerPoint -esityksen ja jakavat tai esittävät sen toisille.
+            </p>
+            <h4>Oppilaat voivat pohtia esimerkiksi:</h4>
+            <ul class="content-list">
+              <li>Millaisia valokuvia Finna Streetistä löytyy? Miltä ajalta ja kenen ottamia kuvat ovat?
+              </li>
+              <li>Mitä kuvissa tapahtuu?
+              </li>
+              <li>Mikä on muuttunut verrattaessa nykyhetkeen?
+              </li>
+              <li>Mikä taas on pysynyt ennallaan?
+              </li>
+              <li>Syitä pysyvyydelle ja muutoksille
+              </li>
+            </ul>
+            <p>vinkki! Tehtäväidea voidaan toteuttaa osittain myös luokkahuoneen ulkopuolella kotitehtävän muodossa. Tällöin <a href="/Search/StreetSearch?go=1">Finna Street</a> -hakupalvelun tarjoamiin lähialueen valokuviin tutustutaan ensin luokkahuoneessa. Oppilaiden kotitehtäväksi tulee käydä ottamassa valokuva samasta paikasta. Kuvaparia ”ennen ja jälkeen” on mahdollista käyttää sellaisenaan tai se voidaan liittää vaikka osaksi isompaakin monialaista oppimiskokonaisuutta omasta lähialueesta. Oppilaat voivat esimerkiksi visioida alueesta tulevaisuuden näkymää.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              3. Eläydy vanhassa miljöössä elämiseen ja opeta samalla tiedonhakua (monialainen oppimiskokonaisuus, historia ja äidinkieli ja kirjallisuus, 7. lk.)
+            </a>
+          </h3>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            <p>Suomalainen sääty-yhteiskunta aiheena antaa hyvän mahdollisuuden yhdistää kaksi oppiainetta, historian sekä äidinkielen ja kirjallisuuden, keskenään. Oppimiskokonaisuuden ovat suunnitelleet ja toteuttaneet kaksi aineenopettajaa vantaalaisessa Kilterin koulussa.
+            </p>
+            <p>Monialainen oppimiskokonaisuus tutustuttaa oppilaat suomalaisen sääty-yhteiskunnan aikaan, tiedonhakuun ja kirjeen kirjoittamiseen. Ajatuksena on eläytyä kuvitteellisen, 1800-luvulla eläneen ihmisen arkeen ja kirjoittaa kirje hänen äänellään. Kokonaisuus sisältää sekä yksilötehtäviä että parin tai pienryhmän kanssa tehtäviä osuuksia. Tutkiva ote ja opittujen asioiden luova soveltaminen tekevät työskentelystä mielekästä monenlaisille oppijoille.
+            </p>
+            <p>Monialaiseen oppimiskokonaisuuteen kuuluu
+            </p>
+            <ul class="content-list">
+              <li>Ohjeet opettajille (<a target="_blank" href="/themes/custom/files/saaty-ohjeet-opettajille.pdf">PDF</a>)
+              </li>
+              <li>Monialaisen oppimiskokonaisuuden rakenne oppilaille (<a target="_blank" href="/themes/custom/files/monialaisen-oppimiskokonaisuuden-rakenne-oppilaille.pptx">ppt</a>, <a target="_blank" href="/themes/custom/files/monialaisen-oppimiskokonaisuuden-rakenne-oppilaille.pdf">PDF</a>)
+              </li>
+              <li>Historian oppitunnit: Suomalainen sääty-yhteiskunta, roolihahmosuunnitelma (<a target="_blank" href="/themes/custom/files/historian-oppitunnit-suomalainen-saaty-yhteiskunta-roolihahmosuunnitelma.pptx">ppt</a>, <a target="_blank" href="/themes/custom/files/historian-oppitunnit-suomalainen-saaty-yhteiskunta-roolihahmosuunnitelma.pdf">PDF</a>)
+              </li>
+              <li>Äidinkielen ja kirjallisuuden oppitunnit: Suomalainen sääty-yhteiskunta, haastattelu, vertaisarviointi, kuvanhakutehtävä ja kirje (<a href="/themes/custom/files/aidinkielen-ja-kirjallisuuden-oppitunnit-suomalainen-saaty-yhteiskunta-haastattelu-vertaisarviointi-kuvanhakutehtava-kirje.pptx">ppt</a>, <a href="/themes/custom/files/aidinkielen-ja-kirjallisuuden-oppitunnit-suomalainen-saaty-yhteiskunta-haastattelu-vertaisarviointi-kuvanhakutehtava-kirje.pdf">PDF</a>)
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <?php if ($this->resolver('content/Additions/helpEnd.phtml')): ?>
+    <?=$this->render('content/Additions/helpEnd.phtml')?>
+  <?php endif; ?>
+</div>
+<!-- END of: custom - content/luokkahuone-finna-street_fi.phtml -->

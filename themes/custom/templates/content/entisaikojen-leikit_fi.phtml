@@ -1,0 +1,42 @@
+<!-- START of: national - content/entisaikojen-leikit_fi.phtml -->
+<?php $this->headTitle($this->translate('Entisaikojen leikit'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+    <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Entisaikojen leikit</h2>
+<p><strong>Aineistopaketin koonnut:</strong> Svenska litteratursällskapet i Finland (SLS)</p>
+<p>Svenska Litteratursällskapet i Finland on koonnut tämän aineistopaketin, jonka kanssa pääset tutustumaan entisaikojen perinneleikkeihin.</p>
+<h3>Kohderyhmä:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-peruskoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#peruskoulu">
+          Peruskoulu: <small><strong>historia, liikunta</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="peruskoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-peruskoulu">
+      <div class="panel-body">
+          <p>Oppiaineiden sisältöalueet:</p>
+           <ul class="content-list">
+          <li>Liikunta: S1 Fyysinen toimintakyky, S2 Sosiaalinen toimintakyky</li>
+          <li>Historia: S2 Ihmiset muuttavat maailmaa (yläkoulu)</li>
+          </ul>
+          <p>Tavoite: Leikkien avulla on helppoa tutustua aineettomaan kulttuuriperintöön, joka on osa arkielämää.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+    <li class="active"><a data-toggle="tab" href="#aineistopaketit">Aineisto</a></li>
+</ul>
+<div class="tab-content">
+     <div id="aineistopaketti" class="tab-pane fade in active">
+    <?= $this->userlistEmbed(['id' => 62, 'view' => 'grid', 'description' => true, 'title' => false, 'date' => false, 'allowCopy' => true])?>
+    </div>
+</div>
+<!-- END of: national -  content//entisaikojen-leikit_fi.phtml -->

@@ -1,0 +1,9 @@
+<!-- START of: finna - search/home/home-right.phtml -->
+    <div class="finna-campaign-item">
+        <h3 class="finna-campaign-title"><?=$this->translate('Finna Street')?></h3>
+        <p><?=$this->translate('Löydä historiallisia kuvia sieltä missä olet!')?></p>
+    <div class="finna-campaign-content">
+      <a class="btn btn-lg btn-primary" href="<?=$this->url('search-streetsearch')?>?go=1"><i class="fa fa-lg fa-crosshairs" aria-hidden="true"></i> <span><?=$this->transEsc('street_search_button')?></span></a>
+      </div>
+    </div>
+<!-- END of: finna - search/home/home-right.phtml -->

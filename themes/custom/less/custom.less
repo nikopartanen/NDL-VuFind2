@@ -1,1 +1,354 @@
-/* All custom less-code here */
+// Pakotetaan latamaan uusin taustakuva
+
+@background-image-url: url('../images/logo_background.jpg?_=4');
+
+// Ylävalikon tyylimuutokset
+
+.finna-navbar .navbar-nav>li>a {
+    font-size: 1em;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.finna-navbar .navbar-collapse .custom a {
+    display: inline-block;
+    padding: 0 5px;
+}
+
+.finna-navbar .fa-facebook-button, .finna-navbar .fa-instagram, .finna-navbar .fa-twitter, .finna-navbar .fa-youtube-play {
+    background: tint(@link-color,88%);
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    text-align: center;
+    color: @link-color;
+    &:before {
+        line-height: 2em;
+    }
+} 
+
+// Etusivun hakuosion tyylimuutokset
+
+.template-dir-search.template-name-home .searchContent {
+    background-position: center center;
+    background-size: cover;
+}
+
+.template-dir-search.template-name-home .search-form-container {
+    padding-top: 5em;
+    padding-bottom: 5em;
+}
+
+.introduction-text {
+    background-color: @brand-primary;
+    position: relative;
+    display: inline-block;
+    max-width: 45rem;
+    padding: 1em;
+    margin-bottom: 1em;
+    border-radius: @border-radius-small @border-radius-small @border-radius-small 0;
+    @media (min-width: @screen-lg) {
+        transform: scale(1.15);
+        transform-origin: 0 bottom; 
+    }
+    h3 {
+        margin:0;
+        padding: 0;
+        text-shadow: none;
+        font-weight: 400;
+        font-size: 1.25em;
+    }
+    :before {
+        content: "";
+        position: absolute;
+        bottom: -12px;
+        margin: auto;
+        left:0;
+        border-width: 0 0 12px 12px;
+        border-style: solid;
+        border-color: transparent @brand-primary;
+    }
+}
+
+h1.introductionText em {
+    color: tint(@brand-primary, 50%) !important;
+}
+
+// Etusivun tyylimuutokset
+
+.main.template-name-home h2, .carousel h2.carousel-header  {
+  font-size: 0.9em;
+  font-weight: 600;
+  background: none;
+  color: @text-color;
+  text-transform: uppercase;
+  width: 100%;
+  letter-spacing: 1px;
+  padding: 0;
+  &.content-header {
+    border-bottom: 1px solid @gray-lighter; 
+  }
+}
+
+.info-col {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    @media (min-width: @screen-md) {
+        width: 50%;
+    }
+    & p {
+        font-size: 1.2em;
+    }
+    & h3 {
+        font-size: 1.85em;
+        font-weight: 400;
+    }
+}
+
+.finna-about {
+    padding-bottom: 1em;
+}
+
+.about-container {
+    display:table;
+    margin-left: 2em;
+    margin-right: 2em;
+    & img { 
+        margin-right: 1em;
+        max-width: none;
+        width: 64px;
+        height: 64px;
+    }
+    & span {
+        vertical-align: middle;
+        display: table-cell;
+        font-size: 1.2em;
+    }
+}
+
+// Karusellin tyylimuutokset
+
+.carousel .slick-dots {
+    bottom: 0;
+    margin-top: 0;
+}
+.carousel .carousel-text span.carousel-description {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    border-top: none;
+    font-weight: 600;
+    text-decoration: none;
+}  
+.carousel .carousel-slide-header p { 
+    font-size: 1em;
+    font-weight: 600;
+}
+.carousel .carousel-text p {
+    padding: 5px 0px;
+    font-size: 0.9em;
+}
+.carousel .slick-slide.slick-active:hover .carousel-text {
+    height: 100%;
+}
+.carousel .slick-initialized.slick-slider:not(.slick-vertical) {
+    margin-bottom: 2em;
+}
+
+// Etusivun ajankohtaista karusellin tyylimuutokset
+
+.news-finna .carousel .carousel-slide-header p {
+    font-size: 0.9em;
+    font-weight: 600;
+    background: none;
+    text-shadow: none;
+    color: @link-color;
+}
+
+.news-finna .slick-dots {
+    display: none;
+}
+
+.news-finna .carousel .carousel-text {
+    background: none;
+}
+
+// Etusivun nostot
+
+.finna-nostot {
+    margin-top: 2em;
+    display: flex;
+    justify-content: center;
+    @media (max-width: @screen-xs) {
+        flex-wrap: wrap;
+    }
+}
+.finna-nosto {
+    margin-bottom: 12px;
+    margin-right: 12px;
+    max-width: 640px;
+}
+
+// Finna Street
+
+.template-name-streetsearch .search-form-container {
+    background-image: url('../images/customstreetsearchbg?_=1');
+    background-size: cover;
+    background-position: center;
+    padding-top: 5em;
+    padding-bottom: 5em;
+    @media (min-width: @screen-md) {
+        padding-top: 10em;
+        padding-bottom: 10em;
+    }
+    @media (min-width: @screen-lg) {
+        padding-top: 12.5em;
+        padding-bottom: 12.5em;
+    }
+}
+
+.template-name-streetsearch .introduction .introduction-text {
+    max-width: 60rem;
+    h3.introductionText {
+        font-size: 1.5em;
+    }
+    @media (min-width: @screen-lg) {
+        transform: scale(1.15);
+        transform-origin: 0 center; 
+    }
+}
+
+// Organisaatiosivun tyylimuutokset
+
+.main.template-dir-content.template-name-content {
+    ul.organisations {
+        & li:nth-child(even) {
+            background: @table-bg-accent;
+          }
+        & li {
+            clear: both;
+            overflow: auto;
+            padding-left: 5px;
+            padding-right: 5px;
+
+            & .name {
+                float: left;
+                padding-top: 8px;
+                padding-bottom: 8px;
+            }
+            & .link {
+                float: right;
+                & i {
+                    font-size: 16px;
+                    padding-top: 6px;
+                    padding-bottom: 6px;
+                }
+            }
+            & a .page-link {
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+#usage-rights {
+    background: @gray-ultralight;
+    border-top: 10px @brand-primary solid;
+}
+
+// RSS-feedin sisältösivun tyylimuutokset
+
+.main.template-dir-feedcontent.template-name-content ul {
+  font-size: @content-font-size-base;
+  line-height: @content-line-height-base;
+  padding-left: 1.2em;
+  padding-bottom: 0.9em;
+  
+  > li {
+    list-style-type: disc;
+  }
+}
+
+// Hakurajainten ryhmitys hakutulossivulla
+
+.list-group.facet.facet-group{
+  &#side-panel-usage_rights_str_mv,
+  &#side-panel-hierarchy_parent_title,
+  &#side-panel-building{
+    margin-bottom: 20px;
+  }
+}
+
+// Palautelomake
+
+.template-name-email .alert-info {
+    margin-top: 1em;
+}
+
+// Sisäsivun välilehdet
+@media (max-width: @screen-md-max) {
+  ul.nav-tabs.help-tabs li {
+    font-size: 18px;
+  }
+}
+
+// Luokkahuone
+
+img.creative-commons {
+  max-width: 40px;
+}  
+.center-vertically-creative-commons {
+  > p {
+    display: inline;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+  }
+  & .iconlabel {
+    font-size: 2em;
+    line-height: 1.1em;
+  }
+}
+.panel-creative-commons.public-domain {
+  background-color: #f5f5f5;
+}
+
+// CC-ikonit
+
+.cc-0:before {
+  content: "\e869";  
+}
+.imagepopup-holder .image-information-holder .access-rights .image-rights i {
+  padding-right: 0;
+}
+.cc-rights .iconlabel {
+  font-size: @content-font-size-base;
+  line-height: @content-font-size-base;
+  margin-right: 0;
+  padding: 0;
+  &:before {
+    padding-right: 0;
+  }
+}
+
+// Kysely-popup
+
+#finna-survey {
+  background: url('../images/Kuvitus_FinnaSurvey.png') no-repeat 180px 115px;
+  background-color: #ffffff;
+  background-size: 85px;
+}
+#finna-survey h2 {
+  margin-bottom: 41px;
+  width: 100%;
+}
+#finna-survey h3 {
+  font-weight: normal;
+  margin-bottom: 58px;
+  width: 160px;
+}
+#finna-survey > a {
+  float: left;
+}
+#finna-survey > p {
+  float: right;
+  margin: 10px 5px;
+}

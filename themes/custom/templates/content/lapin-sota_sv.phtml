@@ -1,0 +1,89 @@
+<!-- START of: custom - content/lapin-sota_sv.phtml -->
+<?php $this->headTitle('Försvarsmaktens bildmaterial från Lapplandskriget');?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Försvarsmaktens bildmaterial från Lapplandskriget</h2>
+<p><strong>Materialet har sammanställts av:</strong> Krigsmuseet
+</p>
+<p>Materialet som är avsett för undervisningen i krigshistoria har insamlats från Krigsmuseets SA-bildarkiv, som innehåller ca 160 000 foton tagna av Försvarsmaktens frontfotografer (TK-fotografer) under 1939–1945. Materialpaket innehåller foton från Lapplandskriget 1945.
+</p>
+<p>I början av fortsättningskriget sommaren 1941 bildades informationskompanier (TK) under Huvudstaben. Så kallade TK-fotografer verkade i dem. Fotografernas uppgift var att fotografera strider samt krigshistoriskt och folkloristiskt material. Bildmaterialet stödde och påverkade opinionen på både hemma- och krigsfronten, och många foton publicerades i dåtida tidskrifter och dagstidningar.
+</p>
+<p>När foton används gäller det att komma ihåg deras ursprungliga syfte. Bildtexterna har skrivits av fotograferna, och de bör läsas med beaktande av den rådande tidsandan. Språket i texterna är mycket tillspetsat, och det kan också förekomma kränkande ord i dem. Det är också bra att komma ihåg att en del av fotona är iscensättningar eller komponerade på annat sätt.
+</p>
+<h3>Målgrupp:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#ylakoulu">
+          Högstadier: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Historia: I3 Finland skapas, byggs och försvaras, I4 De stora krigen
+          </li>
+        </ul>
+        <p>Mål: Bildmaterialet kan användas för att visualisera historiska händelser och för att bekanta sig med livet under denna tidsperiod. Fotona är också utmärkt material för undervisning i medie- och informationskunnighet. Som propagandamaterial är de ett bra exempel på hur opinionen kan påverkas med hjälp av fotografisk kommunikation.
+        </p>
+      </div>
+    </div>
+    </div>
+      <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio" >
+          Gymnasier: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Läroämnens kurser:</p>
+        <ul class="content-list">
+          <li>Historia: HI3 Det självständiga Finlands historia
+          </li>
+        </ul>
+        <p>Mål: Bildmaterialet kan användas för att visualisera historiska händelser och för att bekanta sig med livet under denna tidsperiod. Fotona är också utmärkt material för undervisning i medie- och informationskunnighet. Som propagandamaterial är de ett bra exempel på hur opinionen kan påverkas med hjälp av fotografisk kommunikation.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketti">Material</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketti" class="tab-pane fade in active">
+    <p>Fotona har ordnats enligt ort börjande från evakueringen av Lappland och landstigningen i Torneå samt därefter erövringen av Kemi, Rovaniemi och Muonio. Informationskompaniernas fotografer följde efter tyskarna, och därför finns det inga foton på tyskar som håller på att förstöra Lappland.
+    </p>
+    <?=$this->userlistEmbed(['id' => 703635, 'view' => 'grid', 'title' => false,  'description' => false, 'date' => false, 'allowCopy' => true])?>
+<?php /*
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h3>Vinkkejä vastaavan aineiston hakemiseen</h3>
+        <p>Kaipaatko lisää aineistoa talvisodan käsittelyyn Sotamuseon aineistoista? Etsi vastaavaa aineistoa <a href="/">Finna.fi</a>-hakupalvelusta seuraavin keinoin:
+        </p>
+        <p><strong>Hakusana:</strong> Hae aineistopaketin aineistojen otsikoista löytyvillä hakusanoilla, esimerkiksi ”ilmatorjunta” tai ”lotta OR lotat”.
+        </p>
+        <p><strong>Organisaatio:</strong> Valitse organisaatioksi Sotamuseo.
+        </p>
+        <p><strong>Parhaat rajaimet:</strong> Rajaa tuloksia valitsemalla <strong>Verkossa saatavilla</strong> olevaa aineistoa. Rajaa aineisto koskemaan talvisotaa valitsemalla <strong>Valmistusvuosi</strong>-valikosta itseäsi kiinnostavat vuodet.
+        </p>
+        <p><strong>Lisätietoja aineistoista:</strong> Mikäli kaipaat lisätietoja tietystä aineistosta, löydät sen <a href="http://sa-kuva.fi">www.sa-kuva.fi</a> -palvelusta.
+        </p>
+      </div>
+    </div>
+*/ ?>
+  </div>
+</div>
+<!-- END of: custom - content/lapin-sota_sv.phtml -->

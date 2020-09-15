@@ -1,0 +1,368 @@
+<!-- START of: custom - content/kolttasaamelaisten-historiaa_sv.phtml -->
+<?php $this->headTitle('Om skoltsamernas historia');?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Om skoltsamernas historia</h2>
+<p><strong>Materialpaketet har sammanställts av</strong> Samemuseet Siida
+</p>
+<p>Detta materialpaket har sammanställts av Samemuseet Siida, och det ger dig information om skoltsamernas historia och kultur genom en kortfilm och 60 foton. Materialet presenterar skoltsamernas liv i Suonikylä i Petsamo före andra världskriget. I materialet ingår även bilder på olika föremål som vittnar om skoltsamernas rika hantverkskultur som lever och utvecklas starkt även i dag.
+</p>
+<p>I år har det gått 70 sedan skoltsamerna placerades ut i Sevettijärvi-Näätämö och Keväjärvi-Nellim. Genom detta materialpaket vill vi lyfta fram en av de samiska grupper som bor i Finland, nämligen skoltsamerna, och öka kännedomen om dem. Fotona i materialpaketet vittnar om skoltsamernas historia, kultur och näringar i de ursprungliga bosättningsområdena i Petsamo. Genom gamla bilder kan du ta del av det skoltsamiska livet i en sådan form som resande, forskare och tjänstemän har avbildat livet i Petsamo före krigen.
+</p>
+<p>I dag är skoltsamerna ett livskraftigt folk trots de stora förändringar som de har mött till följd av förlust av sina traditionella bosättningsområden. Material om skoltsamernas nuläge finns bifogat till detta paket. Läs materialet i Finna parallellt med materialet om skoltsamernas kultur idag och jämför dem med varandra.
+</p>
+<p>Materialpaketet inspirerar till reflektion över hur och varför olika kulturer förändras med tiden genom att tillämpa nya idéer och innovationer för sina behov. Dessutom är det intressant att dryfta hur en utomstående fotografs syn på skoltsamernas kultur och intressanta fotograferingsteman i kulturen eventuellt skiljer sig från vad en fotograf inom kulturen kan tänkas se. Materialpaketet utmanar förhoppningsvis dig även att tänka på stereotypier – varifrån stereotypierna härrör, vad som stärker dem och hur vi kan motverka dem.
+</p>
+<h3>Målgrupp:</h3>
+<div class="panel-group" id="accordion-kohderyhmat" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-alakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhmat" href="#alakoulu">
+          Lågstadier: <small><strong>modersmål och litteratur, omgivningslära, religion, samhällslära</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="alakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-alakoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Evangelisk-luthersk tro: I2 Religionernas värld
+          </li>
+          <li>Modersmål och litteratur: I4 Att förstå språk, litteratur och kultur
+          </li>
+          <li>Omgivningslära: I3 På upptäcktsfärd i en pluralistisk värld
+          </li>
+          <li>Ortodox tro: I2 Religionernas värld
+          </li>
+          <li>Samhällslära: I2 Ett demokratiskt samhälle
+          </li>
+        </ul>
+        <p>Mål: Ge en introduktion i skoltsamernas kultur och historia. Med hjälp av materialpaketet är det även möjligt att studera det immateriella kulturarvet och dess natur som en del av det dagliga livet.
+        </p>
+      </div>
+    </div>
+    </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhmat" href="#ylakoulu">
+          Högstadier: <small><strong>geografi, historia, modersmål och litteratur, religion, samhällslära, slöjd</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Evangelisk-luthersk tro: I2 Religionernas värld
+          </li>
+          <li>Geografi: I5 Människor och kultur i världen
+          </li>
+          <li>Historia: I3 Finland skapas, byggs och försvaras, I6 Bakgrunden till dagens världspolitik
+          </li>
+          <li>Modersmål och litteratur: I4 Att förstå språk, litteratur och kultur
+          </li>
+          <li>Ortodox tro: I1 Förhållandet till den egna religionen, I2 Religionernas värld
+          </li>
+          <li>Samhällslärä: I1 Vardagskompetens och kontroll över det egna livet, I2 Ett demokratiskt samhälle
+          </li>
+          <li>Slöjd: I2 Formgivning, I8 Medvetenhet och delaktighet
+          </li>
+        </ul>
+        <p>Mål: Ge en introduktion i skoltsamernas kultur och historia. Med hjälp av materialpaketet är det även möjligt att studera det immateriella kulturarvet och dess natur som en del av det dagliga livet.
+        </p>
+      </div>
+    </div>
+    </div>
+      <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhmat" href="#lukio">
+          Gymnasier: <small><strong>filosofi, historia, livsåskådningskunskap, modersmål och litteratur, religion, samhällslära</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Läroämnens kurser:</p>
+        <ul class="content-list">
+          <li>Evangelisk-luthersk tro: UE4 Religion i det finska samhället, UE5 Religion inom vetenskapen, konsten och populärkulturen
+          </li>
+          <li>Filosofi: FI3 Samhällsfilosofi
+          </li>
+          <li>Historia: HI1 Människan i en föränderlig omvärld, HI3 Det självständiga Finlands historia, HI4 En europeisk världsbild växer fram, HI5 Sveriges östra rikshalva blir Finland, HI6 Globala kulturmöten
+          </li>
+          <li>Livsåskådningskunskap: ET1 Världsåskådning och kritiskt tänkande, ET4 Kulturens inverkan på människans livsåskådning
+          </li>
+          <li>Modersmål och litteratur: MO2 Språk, kultur och identitet
+          </li>
+          <li>Ortodox tro: UO2 Ortodoxin i världen, UO4 Religion i det finska samhället
+          </li>
+          <li>Samhällslärä: YH1 Det finländska samhället, YH3 Finland, Europa och en värld i förändring
+          </li>
+        </ul>
+        <p>Mål: Ge en introduktion i skoltsamernas kultur och historia. Med hjälp av materialpaketet är det även möjligt att studera det immateriella kulturarvet och dess natur som en del av det dagliga livet.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h4>Diskussionsförslag på lektioner:</h4>
+    <ul class="content-list">
+      <li>Vad betyder ordet ”urbefolkning”?
+      </li>
+      <li>Vilka andra urbefolkningar i världen känner du till?
+      </li>
+      <li>I de samiska områdena i Finland bor även andra samegrupper än skoltsamer. Kan du nämna andra samegrupper?
+      </li>
+    </ul>
+  </div>
+</div>
+
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketti">Material</a>
+  </li>
+<?php /*
+  <li><a data-toggle="tab" href="#tehtavaideat">Tehtäväideat</a>
+  </li>
+*/?>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketti" class="tab-pane fade in active">
+    <?=$this->userlistEmbed(['id' => 71, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'allowCopy' => true])?>
+  </div>
+<?php /*
+  <div id="tehtavaideat" class="tab-pane fade">
+    <p>Tehtäväideat on suunniteltu antamaan ideoita siihen, kuinka voit tarkastella aineistopakettia. Voit lähestyä aihetta valitsemalla tehtävistä yhden tai useamman. Tehtävät voi tehdä yksilö-, pari- tai ryhmätehtävinä. Muokkaa tehtäväideoita eri oppiasteisiin ja oppiaineisiin haluamallasi tavalla.
+    </p>
+    <div class="panel-group" id="accordion-tehtavaideat" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-tietoa">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#tietoa">
+              Tietoa kolttasaamelaisista
+            </a>
+          </h3>
+        </div>
+        <div id="tietoa" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-tietoa">
+          <div class="panel-body">
+            <p>Kolttasaamelaiset ovat Kuolan niemimaan alkuperäisväestöä, jotka toisen maailmansodan seurauksena menettivät perinteiset sukualueensa Petsamossa. Nykyisin kolttasaamelaiset asuvat Inarin kunnan itäosissa, Inarijärven etelä-, kaakkois- ja koilliskulmalla, ns. koltta-alueella. Kolttasaamelaisia arvioidaan olevan Suomessa noin 700 henkeä. Heistä noin kolmannes asuu koltta-alueen ja myös saamelaisalueen ulkopuolella, eri puolilla Suomea sekä Ruotsissa ja Norjassa.
+            </p>
+            <p>Kolttasaamelaiset kuuluvat itäsaamelaisiin sekä kielensä että perinteidensä puolesta. Koltansaamea Suomessa puhuu arviolta 300 henkeä. Kolttasaamelaiset ovat uskonnoltaan ortodokseja. Itäisiä piirteitä on nähtävissä myös pukeutumisessa, musiikkiperinteessä, juhla- ja tapaperinteessä sekä ruokaperinteessä.
+            </p>
+            <p>Vielä 1900-luvun alussa kolttasaamelaiset elivät vuotuiskiertoon perustavaa elämää eli he muuttivat paikasta toiseen vuodenaikojen ja niihin liittyvien elinkeinojen mukaan. Aikaisemmin kolttasaamelaiset ovat saaneet elantonsa luontaiselinkeinoista – poronhoidosta, kalastuksesta, metsästyksestä ja marjastuksesta. Nykyään näiden elinkeinojen rinnalle on tullut uusia tulonlähteitä, kuten palvelualojen työt.
+            </p>
+            <p>Kolttasaamelaiset ovat mukana saamelaishallinnossa asettamalla ehdokkaitaan saamelaiskäräjävaaleihin. Sen lisäksi he jatkavat omaa kylähallintoperinnettään valitsemalla heimolle luottamushenkilön kolmivuotiskausittain. Kolttien kyläkokouksissa käsitellään heimoa koskevia asioita ja annetaan niistä lausuntoja valtion ja kunnan viranomaisille. Luottamushenkilön toimintaa hoidetaan Sevettijärvellä sijaitsevasta toimistosta käsin.
+            </p>
+            <h4>Tehtävä</h4>
+            <p>Lue yllä oleva teksti kolttasaamelaisista ja vastaa alla oleviin kysymyksiin.
+            </p>
+            <ol class="content-list" type="a">
+              <li>Keitä ovat kolttasaamelaiset?
+              </li>
+              <li>Kuinka paljon heitä asuu nykyään Suomessa? Missä päin he asuvat?
+              </li>
+              <li>Millainen on kolttasaamelaisten luontosuhde? Tutustu ylläolevan tekstin lisäksi Kolttien kyläkokouksen ja Kolttakulttuurisäätiön yhteisiin <a target="_blank" href="https://www.kolttasaamelaiset.fi/kolttakulttuuri/luontosuhde/">verkkosivuihin</a>.
+              </li>
+              <li>Mitä tarkoittaa vuotuiskierron mukaan eläminen?
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-asumuksia">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#asumuksia">
+              Erilaisia asumuksia
+            </a>
+          </h3>
+        </div>
+        <div id="asumuksia" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-asumuksia">
+          <div class="panel-body">
+            <h4>Tehtävä 1</h4>
+            <p>Tutustu aineistopaketin valokuviin ja vastaa alla oleviin kysymyksiin.
+            </p>
+            <ol class="content-list" type="a">
+              <li>Millaisia erilaisia rakennuksia löydät kuvista?
+              </li>
+              <li>Pohdi, miksi kolttasaamelaisille on ollut erilaisia asuinrakennuksia.
+              </li>
+            </ol>
+            <h4>Tehtävä 2</h4>
+            <p>Tutustu aineistopaketin valokuvaan <a target="_blank" href="https://www.finna.fi/Record/musketti.M012:SUK266:6">”aitta, nili”</a>.
+            </p>
+            <p>Etsi tämän jälkeen <a href="htts://finna.fi">Finna.fi</a>:stä valokuvia suomalaisista aitoista samalta ajalta. Mene osoitteeseen <a target="_blank" href="htts://finna.fi">finna.fi</a> ja kirjoita hakukenttään hakusana ”aitta”.
+            </p>
+            <p>Pohdi, mitä erilaista kolttasaamelaisten aitassa on verrattaessa tyypilliseen suomalaiseen aittaan. Pohdi myös syitä näille eroille.
+            </p>
+          </div>
+        </div>
+      </div>   
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-esineet">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#esineet">
+              Kolttasaamelaista esinekulttuuria
+            </a>
+          </h3>
+        </div>
+        <div id="esineet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-esineet">
+          <div class="panel-body">
+            <h4>Tehtävä 1</h4>
+            <p>Tutustu aineistopaketin valokuviin <a target="_blank" href="/Record/musketti.M012:SUK282:103">”nainen hoitaa kolmea komsiossa olevaa lasta”</a> ja <a target="_blank" href="/Record/musketti_siida.M030:S%C3%812055:8">”komsio; ǩiõtkâm”</a>.
+            </p>
+            <ol class="content-list" type="a">
+              <li>Mikä oli komsio? Mihin sitä käytettiin?
+              </li>
+              <li>Etsi verkosta lisätietoja komsiosta. Mistä se on tehty?
+              </li>
+            </ol>
+            <h4>Tehtävä 2</h4>
+            <p>Tutustu aineistopaketin valokuvaan <a target="_blank" href="/Record/musketti.M012:SUK282:94">”Paavali Sverloff pukeutuneena peskiin ja talvilakkiin”</a>.
+            </p>
+            <ol class="content-list" type="a">
+              <li>Mikä oli peski?
+              </li>
+              <li>Mihin sitä käytettiin?
+              </li>
+            </ol>
+            <h4>Tehtävä 3</h4>
+            <p>Tutustu aineistopaketin valokuvaan <a target="_blank" href="/Record/musketti.M012:SUK266:61">”Vjätsi Semenov valmistaa suoninyöriä” </a>.
+            </p>
+            <ol class="content-list" type="a">
+              <li>Selvitä verkkoa käyttäen, mitä on suoninyöri? Mihin sitä on käytetty?
+              </li>
+              <li>Katso lyhytelokuvasta <a target="_blank" href="/Record/kavi.elonet_elokuva_164475 ">”Suonikylän talvielämää”</a> pätkä suoninyörin tekemisestä. Miten sitä tehtiin? (Vinkki: suoninyöriä tehdään kohdasta 04.09 alkaen)
+              </li>
+            </ol>
+            <h4>Tehtävä 4</h4>
+            <p>Tutustu aineistopaketin kuviin erilaisista kolttasaamelaisista päähineistä. Missä tilanteissa eri päähineitä käytettiin?
+            </p>
+          </div>
+        </div>
+      </div>   
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-elinkeinot">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#elinkeinot">
+              Kolttasaamelaisten elinkeinot ja kulttuuriset vaikutteet
+            </a>
+          </h3>
+        </div>
+        <div id="elinkeinot" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-elinkeinot">
+          <div class="panel-body">
+            <h4>Tehtävä 1</h4>
+            <p>Aineistopaketin valokuvissa on esitelty kolttasaamelaisten perinteisiä elinkeinoja. Tehtävän tarkoituksena on havainnoida perinteisten elinkeinojen muutos ja jatkuvuus nykypäivään verrattaessa.
+            </p>
+            <ol class="content-list" type="a">
+              <li>Millaisia elinkeinoja valokuvissa on nähtävissä?
+              </li>
+              <li>Selvitä kolttasaamelaisten nykypäivän luontaiselinkeinoja Kolttien kyläkokouksen ja Kolttakulttuurisäätiön yhteisiltä verkkosivuilta  ja Saamelaiskäräjien tuottamasta Oktavuohta-verkkolehdestä. Miten elinkeinot ovat muuttuneet ja mikä siihen on vaikuttanut?
+              </li>
+            </ol>
+            <h4>Tehtävä 2</h4>
+            <p>Kolttasaamelaiset kuuluvat itäsaamelaisiin kielensä ja perinteidensä puolesta. Heidän kulttuurissaan onkin nähtävissä useita itäisiä vaikutteita.
+            </p>
+            <p>Löydätkö aineistopaketin valokuvista tietoa siitä, mitä nämä itäiset vaikutteet ovat olleet?
+            </p>
+          </div>
+        </div>
+      </div>   
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-kulttuuri">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#kulttuuri">
+              Aineeton kulttuuriperintö
+            </a>
+          </h3>
+        </div>
+        <div id="kulttuuri" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-kulttuuri">
+          <div class="panel-body">
+            <h4>Tehtävä 1</h4>
+            <ol class="content-list" type="a">
+              <li>Tutustu valokuvaan <a target="_blank" href="/Record/musketti.M012:SUK262:15c">”Kolttatyttöjä nuoraleikissä”</a> ja tutki miten perinteistä kolttasaamelaista nuoraleikkiä on leikitty. Voit myös katsoa <a target="_blank" href="/Record/kavi.elonet_elokuva_164475">lyhytelokuvasta</a> pätkän leikistä kohdasta 8.20 alkaen. Kokeilkaa ryhmässä leikkiä.
+              </li>
+              <li>Nuoraleikki on kolttasaamelaisten aineetonta kulttuuriperintöä, eli elävää perinnettä arjessa ja juhlassa.
+                <ul class="content-list">
+                  <li>Millaiset pelit tai leikit ovat sinulle tärkeitä?</li>
+                  <li>Keltä olet ne oppinut?</li>
+                  <li>Kenen kanssa niitä leikit?</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div> 
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-lisatietoa">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#lisatietoa">
+              Syvennä tietojasi kolttasaamelaisista
+            </a>
+          </h3>
+        </div>
+        <div id="lisatietoa" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-kulttuuri">
+          <div class="panel-body">
+            <p>Kolttien kyläkokouksen ja Kolttakulttuurisäätiön yhteiset verkkosivut, joissa laajasti tietoa kolttasaamelaisista ja kolttasaamelaisen yhteisön ajankohtaisista asioista. <a target="_blank" href="https://www.kolttasaamelaiset.fi/">https://www.kolttasaamelaiset.fi/</a>
+            </p>
+            <p>Saamelaiskäräjien tuottamassa Oktavuohta-verkkolehdessä on hyvä perustietopaketti kolttasaamelaisista. Artikkelin lopusta löytyy mielenkiintoisia linkkejä kolttasaamelaisiin liittyen. <a target="_blank" href="https://www.oktavuohta.com/kolttasa/">https://www.oktavuohta.com/kolttasa</a>
+            </p>
+            <p>Saamelaismuseo Siidan tuottama verkkonäyttely kertoo kolttasaamelaisten historiasta ja tapakulttuurista. Sivusto on koltansaameksi, suomeksi ja englanniksi. <a target="_blank" href="http://www.samimuseum.fi/saamjiellem/">http://www.samimuseum.fi/saamjiellem/</a>
+            </p>
+            <p>Tutustu myös kolttasaamelaiseen musiikkiperinteeseen Kansanmusiikin ja kansatanssin edistämiskeskuksen videon kautta. <a target="_blank" href="https://vimeo.com/142115749">https://vimeo.com/142115749</a>
+            </p>
+          </div>
+        </div>
+      </div> 
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-vastaukset">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#vastaukset">
+              Vastaukset
+            </a>
+          </h3>
+        </div>
+        <div id="vastaukset" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-vastaukset">
+          <div class="panel-body">
+            <h4>Erilaisia asumuksia</h4>
+            <h5>Tehtävä 1</h5>
+            <ol class="content-list" type="a">
+              <li>Turvekodat, erilaiset aitat, hirsituvat.
+              </li>
+            </ol>
+            <h5>Tehtävä 2</h5>
+            <p>Niliaitassa on perinteisesti säilytetty elintarvikkeita. Aitta rakennettiin korkean jalan päähän, jotta petoeläimet eivät pääse ruokiin käsiksi.
+            </p>
+            <h4>Kolttasaamelaista esinekulttuuria</h4>
+            <h5>Tehtävä 1</h5>
+            <ol class="content-list" type="a">
+              <li>Lapsen kehto ja kuljetusväline. Saamelaiset kuljettivat vauvaikäistä lasta komsiossa. Kesäisin komsio oli äidin selässä tai poron selkään kiinnitettynä ja talvella ahkiossa eli poron reessä.
+              </li>
+              <li>Komsion pohja veistetään puusta ja sen päälle pingotetaan poron nahka eli sisna. Komsion etuosaan lapsen kasvojen suojaksi kiinnitetään yleensä puuvillakangas. Lapsi kapaloidaan komsion sisään villasta kudotuilla tiuhtanauhoilla ja samanlaiset nauhat toimivat myös komsion ripustusnauhoina.
+              </li>
+            </ol>
+            <h5>Tehtävä 2</h5>
+            <p>Poron turkiksesta valmistettu takki, joka on umpinainen samaan tapaan kuin anorakki. Peski puettiin muiden vaatteiden päälle talvella ulkotöissä tai liikkumisen ajaksi.
+            </p>
+            <h5>Tehtävä 3</h5>
+            <p>Suoninyöri valmistetaan poron suonista. Ennen vanhaan suoninyöriä käytettiin pukimien ompelussa ompelulangan tapaan. Nyöri on kestävää ja turpoaa kostuessaan, jolloin se toimii myös tiivisteenä esimerkiksi karvakengissä.
+            </p>
+            <h5>Tehtävä 4</h5>
+            <p>Tyttö ottaa tytön tai neidon päähineen käyttöönsä päästyään ripille. Tytön lakki vaihtuu vaimon päähineeksi kun nuori nainen menee naimisiin. Nainen ottaa leskin päähineen käyttöön jäädessään leskeksi.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+*/?>
+</div>
+<!-- END of: custom - content/kolttasaamelaisten-historiaa_sv.phtml -->

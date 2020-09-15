@@ -1,0 +1,9 @@
+<?
+    // Set page title
+    $this->headTitle($this->translate('Feedback'));
+    // Get rid of the feedback tab since this uses the same variables
+    $this->layout()->feedbacktab = false;
+?>
+
+<?=$this->render('feedback/form.phtml');?>
+<?=$this->render('feedback/feedback-street.phtml');?>

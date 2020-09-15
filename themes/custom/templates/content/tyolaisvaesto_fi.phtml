@@ -1,0 +1,60 @@
+<!-- START of: national - content//tyolaisvaesto_fi.phtml -->
+<?php $this->headTitle($this->translate('Työläisväestö ryhtyy sivistämään itseään'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+    <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Työläisväestö ryhtyy sivistämään itseään</h2>
+<p><strong>Aineistopaketin koonnut:</strong> Iris Olavinen & Jani Kaunismäki / Työväen Arkisto</p>
+<p>Tämä Työväen Arkiston aineistopaketti keskittyy sisällissodan (1918) jälkeiseen tilanteeseen. Aineistopaketti tarkastelee, miten sodan hävinnyt osapuoli pääsi jälleen jaloilleen. Yksi näkökulma aiheeseen on työväen sivistystyö erilaisine harraste- ja urheilupiireineen ja opintokerhoineen. Omien tietojen ja taitojen lisääminen ja yhdessä harrastaminen oli voimaannuttavaa työväestön keskuudessa.</p>
+<p>Aineistopaketin kuvat kertovat sosiaalidemokraattien vuonna 1919 perustaman Työväen Sivistysliiton (TSL) sivistystyöstä eri paikkakuntien työväenyhdistyksissä ja niiden opintokerhoissa. TSL:n henkilökuntaa kiersi työväenyhdistyksissä luennoimassa ja pitämässä kursseja mm. kunnallistiedosta, taloudesta, kansainvälisistä kysymyksistä, sosialismista, ammattiyhdistysliikkeestä, sielutieteestä ja siveysopista. Aineistopaketissa on mukana myös valokuvia muusta harrastustoiminnasta työväenyhdistyksissä ja työväentaloilla.</p>
+<p>Kaikki Työväen Arkiston valokuvat ovat CC BY-NC-ND 4.0. -lisenssillä (kuvaa saa jakaa, levittää ja näyttää. Nimeä aina aineiston lähde ja tekijä. Älä muokkaa aineistoa.).</p>
+<h3>Kohderyhmä:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#ylakoulu">
+          Yläkoulu: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+          <p>Oppiaineiden sisältöalueet:</p>
+          <ul class="content-list">
+              <li>Historia: S1 Teollisuusyhteiskunnan synty ja kehitys, S2 Ihmiset muuttavat maailmaa, S3 Suomea luodaan, rakennetaan ja puolustetaan, S4 Suurten sotien aika</li>
+          </ul>
+      </div>
+    </div>
+    </div>
+      <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Lukio: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+          <p>Oppiaineet ja kurssit:</p>
+          <ul class="content-list">
+              <li>Historia HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa, HI3 Itsenäisen Suomen historia</li>
+          </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+    <li class="active"><a data-toggle="tab" href="#aineistopaketti">Aineisto</a></li>
+</ul>
+<div class="tab-content">
+     <div id="aineistopaketti" class="tab-pane fade in active">
+<?= $this->userlistEmbed(['id' => 716285, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'allowCopy' => true])?>
+</div>
+</div>
+<!-- END of: national -  content/tyolaisvaesto_fi.phtml -->

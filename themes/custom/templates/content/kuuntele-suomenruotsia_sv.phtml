@@ -1,0 +1,65 @@
+<!-- START of: custom - content/kuuntele-suomenruotsia_sv.phtml -->
+<?php $this->headTitle($this->translate('Lyssna på dialekter och talspråk'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Lyssna på dialekter och talspråk</h2>
+<p><strong>Materialet har sammanställts av:</strong> Svenska litteratursällskapet i Finland (SLS)
+</p>
+<p>Denna materialhelhet består av ljudklipp på svenska från olika delar av Finland.</p>
+<h3>Målgrupp:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#ylakoulu">
+          Högstadier <small><strong>svenska och litteratur</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Svenska och litteratur: I4 Att förstå språk, litteratur och kultur
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Gymnasier <small><strong>svenska och litteratur, det andra inhemska språket (svenska)</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Läroämnens kurser:</p>
+        <ul class="content-list">
+          <li>Svenska och litteratur: MO2 Språk, kultur och identitet
+          </li>
+          <li>Svenska som andra språk och litteratur: SV22 Språk, kultur och identitet, SV27 Fördjupad muntlig kommunikation
+          </li>
+          <li>Det andra inhemska språket (svenska, modersmålsinriktad lärokurs): RUÄO1 Min svenska värld</li>
+          <li>Det andra inhemska språket (svenska): RUA1 Min svenska värld, RUA2 Människans sociala nätverk, RUA8 Muntlig kommunikation och påverkan</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketit">Material</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketti" class="tab-pane fade in active">
+    <?=$this->userlistEmbed(['id' => 60, 'view' => 'list', 'description' => true, 'title' => false, 'date' => false, 'allowCopy' => true])?>
+  </div>
+</div>
+<!-- END of: custom - content/kuuntele-suomenruotsia_sv.phtml -->

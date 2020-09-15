@@ -1,0 +1,66 @@
+<!-- START of: custom - content/tyolaisvaesto_sv.phtml -->
+<?php $this->headTitle('Arbetarbefolkningen börjar bilda sig');?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Arbetarbefolkningen börjar bilda sig</h2>
+<p><strong>Materialet har sammanställts av</strong> Iris Olavinen & Jani Kaunismäki / Arbetararkivet
+</p>
+<p>Detta materialpaket från Arbetararkivet fokuserar på situationen efter inbördeskriget (1918). Materialpaketet granskar hur den part som hade förlorat kriget kom på fötter igen. En synvinkel på ämnet är arbetarklassens bildningsarbete som skedde inom ramen för olika intresse- och idrottscirklar samt studiecirklar. Genom att tillsammans öka sina kunskaper och färdigheter samt gemensamma intressen fick arbetarklassen kraft.
+</p>
+<p>Materialpaketets bilder berättar om det bildningsarbete Arbetarnas Bildningsförbund (ABF), som grundades av socialdemokraterna 1919, utförde i arbetarföreningarna och deras studiecirklar på olika orter. ABF:s personal åkte omkring i arbetarföreningarna och föreläste och höll kurser, bl.a. om kommunallära, ekonomi, internationella frågor, socialism, fackföreningsrörelsen, psykologi och morallära. Materialpaketet omfattar även fotografier av annan intresseverksamhet inom arbetarföreningarna och på Folkets hus.
+</p>
+<p>Arbetararkivets samtliga fotografier har CC BY-NC-ND 4.0. -licens (bilden får delas, distribueras och visas. Källa och upphovsman till materialet ska alltid nämnas. Materialet får inte redigeras.)
+</p>
+<h3>Målgrupp:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#ylakoulu">
+          Högstadier: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Historia: I1 Industrisamhällets uppkomst och utveckling, I2 Människor förändrar världen, I3 Finland skapas, byggs och försvaras, I4 De stora krigen
+          </li>
+        </ul>
+      </div>
+    </div>
+    </div>
+      <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Gymnasier: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Läroämnens kurser:</p>
+        <ul class="content-list">
+          <li>Historia: I1 Industrisamhällets uppkomst och utveckling, I2 Människor förändrar världen, I3 Finland skapas, byggs och försvaras, I4 De stora krigen
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketti">Material</a></li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketti" class="tab-pane fade in active">
+    <?=$this->userlistEmbed(['id' => 716285, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'allowCopy' => true])?>
+  </div>
+</div>
+<!-- END of: custom - content/tyolaisvaesto_sv.phtml -->

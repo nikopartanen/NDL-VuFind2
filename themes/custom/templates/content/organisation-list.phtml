@@ -1,0 +1,18 @@
+<!-- START of: custom - content/organisation-list.phtml -->
+<ul class="organisations list-group">
+  <? foreach($list as $item): ?>
+    <? $name = $this->escapeHtml($item['name'])?>
+    <li data-organisation-name="<?=$name; ?>" data-organisation="<?=$item['organisation']; ?>" data-link="0">
+    <div id="<?=$item['organisation']?>" class="name page-link" data-organisation="<?=$item['organisation']; ?>" data-sector="<?=$item['sector']; ?>">
+        <?=$name?>
+    </div>
+    <div class="link">
+        <a title="<?=$this->transEsc('Find')?>: <?=$name; ?>" href="<?=$this->url('home'); ?>Search/Results<?=$this->escapeHtmlAttr($item['link']) ?>"><span class="sr-only"><?=$this->transEsc('Find')?>: <?=$name; ?></span><i class="fa fa-search"></i></a>
+    </div>
+    </li>
+  <? endforeach; ?>
+</ul>
+<script>
+     finna.organisationList.init;
+  </script>
+<!-- END of: custom - content/organisation-list.phtml -->

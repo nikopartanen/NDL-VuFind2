@@ -1,0 +1,67 @@
+<!-- START of: custom - content/luokkahuone-aoe_fi.phtml -->
+<?php $this->headTitle($this->translate('Avoimet oppimateriaalit'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+<?php if ($this->resolver('content/luokkahuone-tabs.phtml')): ?>
+  <?=$this->render('content/luokkahuone-tabs.phtml', ['activeTab' => 'luokkahuone-aoe'])?>
+<?php endif; ?>
+<div class="sidebar left">
+  <div class="content-navigation-menu">
+  </div>
+</div>
+<div class="mainbody right">
+  <div class="aoe-introduction">
+    <h2>Avointen Oppimateriaalien kirjaston aineistot Finna.fi:ssä</h2>
+    <p>Avointen oppimateriaalien kirjasto on opettajille, oppijoille ja kansalaisille tarkoitettu avointen oppimateriaalien löytämisen ja tallentamisen palvelu. Kirjastoon tallennetut oppimateriaalit löytyvät myös Finna.fi:stä. <a href="http://finna-dev-fe.csc.fi/aoe-test/L1/Results?type=AllFields">Avointen oppimateriaalien -välilehdellä</a> voit hakea oppimateriaaleja esimerkiksi koulutusasteen, kohderyhmän tai oppimateriaalin tyypin mukaan. Alta löydät esimerkkejä eri koulutusasteille sopivista oppimateriaaleista ja linkkejä valmiiksi rajattuihin hakutuloksiin.</p>
+  </div>
+  <div id="lista1" class="content-section">
+    <h2>Omaehtoinen osaamisen kehittäminen</h2>
+  </div>
+  <div>
+    <?= $this->userlistEmbed(['id' => 72, 'view' => 'grid', 'description' => true, 'title' => false, 'date' => false, 'allowCopy' => false, 'headingLevel' => 2])?>
+  </div>
+
+  <div id="lista2" class="content-section">
+    <h2>Korkeakoulutus</h2>
+  </div>   
+  <div>
+    <?= $this->userlistEmbed(['id' => 73, 'view' => 'grid', 'description' => true, 'title' => false, 'date' => false, 'allowCopy' => false, 'headingLevel' => 2])?>
+  </div>
+ 
+  <div id="lista3" class="content-section">
+    <h2>Ammatillinen koulutus</h2>
+  </div>      
+  <div>
+    <?= $this->userlistEmbed(['id' => 74, 'view' => 'grid', 'description' => true, 'title' => false, 'date' => false, 'allowCopy' => false, 'headingLevel' => 2])?>
+  </div>
+
+  <div id="lista4" class="content-section">
+    <h2>Lukiokoulutus</h2>
+  </div>
+  <div>
+    <?= $this->userlistEmbed(['id' => 75, 'view' => 'grid', 'description' => true, 'title' => false, 'date' => false, 'allowCopy' => false, 'headingLevel' => 2])?>
+  </div>
+
+  <div id="lista5" class="content-section">
+    <h2>Yläkoulu</h2>
+  </div>
+  <div>
+    <?= $this->userlistEmbed(['id' => 76, 'view' => 'grid', 'description' => true, 'title' => false, 'date' => false, 'allowCopy' => false, 'headingLevel' => 2])?>
+  </div>
+
+  <div id="lista6" class="content-section">
+    <h2>Alakoulu</h2>
+  </div>
+  <div>
+    <?= $this->userlistEmbed(['id' => 77, 'view' => 'grid', 'description' => true, 'title' => false, 'date' => false, 'allowCopy' => false, 'headingLevel' => 2])?>
+  </div>
+
+  <div id="lista7" class="content-section">
+    <h2>Varhaiskasvatus</h2>
+  </div>
+  <div>
+    <?= $this->userlistEmbed(['id' => 78, 'view' => 'grid', 'description' => true, 'title' => false, 'date' => false, 'allowCopy' => false])?>
+  </div>
+</div>
+<!-- END of: custom - content/luokkahuone-aoe_fi.phtml -->

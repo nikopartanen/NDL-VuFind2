@@ -1,0 +1,444 @@
+<!-- START of: custom - content/luokkahuone-opeta-tiedonhakua_fi.phtml -->
+<?php $this->headTitle($this->translate('Opeta tiedonhakua'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+<?php if ($this->resolver('content/luokkahuone-tabs.phtml')): ?>
+  <?=$this->render('content/luokkahuone-tabs.phtml', ['activeTab' => 'luokkahuone-opeta-tiedonhakua'])?>
+<?php endif; ?>
+<div class="sidebar left">
+  <div class="content-navigation-menu">
+  </div>
+</div>
+<div class="mainbody right">
+  <?php if ($this->resolver('content/Additions/helpBegin.phtml')): ?>
+    <?=$this->render('content/Additions/helpBegin.phtml')?>
+  <?php endif; ?>
+  <div id="beginIntro" class="content-section">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2>Opeta tiedonhakua turvallisesti</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-7">
+        <p>Vastuullinen tiedonhaku sekä tutkiva ja luova työskentely ovat opetuksen ytimessä yhdessä monilukutaidon kanssa. <a href="https://finna.fi">Finna.fi</a>-hakupalvelussa voit opettaa turvallista ja eettistä tiedonhakua ja -hallintaa innostavasti, sillä:
+        </p>
+        <ul class="content-list">
+          <li>Kaikki aineistot ovat ammattilaisten valikoimia ja kuvailemia
+          </li>
+          <li>Aineistojen lähdekriittinen tarkastelu ja arviointi on helpompaa, kun aineistojen yhteydessä on selkeät lähdetiedot
+          </li>
+          <li>Aineiston käyttöoikeudet ovat selkeästi näkyvillä aineiston yhteydessä CC-lisenssillä
+          </li>
+          <li>Aineistoista on aina mahdollista pyytää lisätietoa aineiston tarjoajalta
+          </li>
+          <li>Tiedonhaku on helppoa monipuolisten hakutoimintojen avulla
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-5">
+        <div class="speech-bubble">
+          <p>"On ihanaa voida hakea asiallista aineistoa näin helposti!"<br><span class="quoter">opettaja, käyttäjäkysely 2019</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/Po7vFpKJdOY" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="begin1" class="content-section">
+    <h2>Käyttöoikeudet tutuiksi</h2>
+    <p>Suuressa osassa aineistoa käyttöoikeudet on merkitty selkeästi CC- eli Creative Commons -lisensseillä. CC-lisenssi muodostuu erilaisista ehdoista, jotka kertovat, miten aineistoa voi käyttää. Ehto voi esimerkiksi kieltää aineiston kaupallisen käytön (NC) tai aineiston muokkaamisen (ND). Katso ohjevideolta tai alla olevasta ohjeistuksesta mitä eri ehdot tarkoittavat.
+    </p>
+    <p>Huomioithan, että kaikki CC-lisenssit koskevat vain tekijänoikeutta. Aineistojen käyttäjällä on aina vastuu yksityisyydensuojan ja muun lainsäädännön kunnioittamisesta. Esimerkiksi jos kuvissa esiintyy elossa olevia henkilöitä, on kuvien käyttö markkinoinnissa tai mainonnassa kielletty ilman kuvassa olevan henkilön suostumusta.
+    </p>
+    <div class="panel panel-default panel-creative-commons">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-2 center-vertically-creative-commons">
+            <p><i class="iconlabel cc-0" aria-hidden="true"></i>
+            </p>
+          </div>
+          <div class="col-xs-10 center-vertically-creative-commons">
+            <p><strong>CC 0</strong>: Vapaa käyttö.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default panel-creative-commons">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-2 center-vertically-creative-commons">
+            <p><i class="iconlabel cc-by" aria-hidden="true"></i>
+            </p>
+          </div>
+          <div class="col-xs-10 center-vertically-creative-commons">
+            <p><strong>BY</strong>: Nimeä tekijä ja muut nimettäväksi mainitut tahot.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default panel-creative-commons">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-2 center-vertically-creative-commons">
+            <p><i class="iconlabel cc-nc-eu" aria-hidden="true"></i>
+            </p>
+          </div>
+          <div class="col-xs-10 center-vertically-creative-commons">
+            <p><strong>NC</strong>: Kaupallinen käyttö on kielletty.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default panel-creative-commons">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-2 center-vertically-creative-commons">
+            <p><i class="iconlabel cc-nd" aria-hidden="true"></i>
+            </p>
+          </div>
+          <div class="col-xs-10 center-vertically-creative-commons">
+            <p><strong>ND</strong>: Muokkaaminen on kielletty.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default panel-creative-commons">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-2 center-vertically-creative-commons">
+            <p><i class="iconlabel cc-sa" aria-hidden="true"></i>
+            </p>
+          </div>
+          <div class="col-xs-10 center-vertically-creative-commons">
+            <p><strong>SA</strong>: Julkaise muokattu jatkoteos samalla lisenssillä kuin alkuperäinen aineisto.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default panel-creative-commons public-domain">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-2 center-vertically-creative-commons">
+            <p><strong>Public<br>domain</strong>
+            </p>
+          </div>
+          <div class="col-xs-10 center-vertically-creative-commons">
+            <p>Aineiston kohdalla voi myös lukea Public domain. Tämä tarkoittaa, että aineiston tekijänoikeudet ovat rauenneet ja voit käyttää aineistoa vapaasti.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="embed-responsive embed-responsive-16by9">
+      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/TQbkU-s-9lA" allowfullscreen></iframe>
+    </div>
+  </div>
+  <div id="beginCC" class="content-section">
+    <h2>Käytä aineistoa näin – esimerkkejä</h2>
+    <div class="panel-group" id="accordionCC" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingCCBY">
+          <h3 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordionCC" href="#collapseCCBY" aria-expanded="true" aria-controls="collapseCCBY">
+              CC BY 4.0
+            </a>
+          </h3>
+        </div>
+        <div id="collapseCCBY" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCCBY">
+          <div class="panel-body">
+            <ul class="content-list">
+              <li>Nimeä aina tekijä ja muut nimettäväksi mainitut tahot (esim. aineistoa säilyttävä organisaatio tai kokoelma).
+              </li>
+              <li>Merkitse alkuperäisen aineiston lisenssi. Tarjoa linkki aineistoon ja CC-lisenssin viralliseen kuvaukseen, jos esitystapasi tämän mahdollistaa.
+              </li>
+              <li>Saat muokata aineistoa. Merkitse mitä muutoksia teit (esim. kuvaa rajattu).
+              </li>
+              <li>Kaupallinen käyttö on sallittua. Huomioi kuitenkin, että aineistojen käyttäjällä on vastuu tekijänoikeuksien ja yksityisyydensuojan kunnioittamisesta. Esimerkiksi jos kuvissa esiintyy elossa olevia henkilöitä, on kuvien käyttö markkinoinnissa tai mainonnassa kielletty ilman kuvassa olevan henkilön suostumusta.
+              </li>
+            </ul>
+            <div class="image-rights">
+              <span class="cc-rights">
+                <i class="iconlabel cc-cc" aria-hidden="true"></i>
+                <i class="iconlabel cc-by" aria-hidden="true"></i>
+                <a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by/4.0/deed.fi">CC BY 4.0</a>
+              </span>
+              <span class="copyright-meaning"><a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by/4.0/deed.fi">Lisätietoja Creative Commonsin verkkosivulta</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingCCBYNC">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionCC" href="#collapseCCBYNC" aria-expanded="false" aria-controls="collapseCCBYNC">
+              CC BY-NC 4.0
+            </a>
+          </h3>
+        </div>
+        <div id="collapseCCBYNC" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCCBYNC">
+          <div class="panel-body">
+            <ul class="content-list">
+              <li>Nimeä aina tekijä ja muut nimettäväksi mainitut tahot (esim. aineistoa säilyttävä organisaatio tai kokoelma).
+              </li>
+              <li><strong>Aineistoa ei saa käyttää kaupallisesti</strong>. Käyttö ei-kaupallisessa opetuksessa on sallittua.
+              </li>
+              <li>Saat muokata aineistoa. Merkitse mitä muutoksia teit (esim. kuvaa rajattu).
+              </li>
+              <li>Merkitse alkuperäisen aineiston lisenssi. Tarjoa linkki aineistoon ja CC-lisenssin viralliseen kuvaukseen, jos esitystapasi tämän mahdollistaa.
+              </li>
+            </ul>
+            <div class="image-rights">
+              <span class="cc-rights">
+                <i class="iconlabel cc-cc" aria-hidden="true"></i>
+                <i class="iconlabel cc-by" aria-hidden="true"></i>
+                <i class="iconlabel cc-nc-eu" aria-hidden="true"></i>
+                <a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by-nc/4.0/deed.fi">CC BY-NC 4.0</a>
+              </span>
+              <span class="copyright-meaning"><a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by-nc/4.0/deed.fi">Lisätietoja Creative Commonsin verkkosivulta</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingCCBYNCND">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionCC" href="#collapseCCBYNCND" aria-expanded="false" aria-controls="collapseCCBYNCND">
+              CC BY-NC-ND 4.0
+            </a>
+          </h3>
+        </div>
+        <div id="collapseCCBYNCND" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCCBYNCND">
+          <div class="panel-body">
+            <ul class="content-list">
+              <li>Nimeä aina tekijä ja muut nimettäväksi mainitut tahot (esim. aineistoa säilyttävä organisaatio tai kokoelma).
+              </li>
+              <li><strong>Aineistoa ei saa käyttää kaupallisesti</strong>. Käyttö ei-kaupallisessa opetuksessa on sallittua.
+              </li>
+              <li><strong>Et saa muokata aineistoa</strong>. Älä esimerkiksi rajaa kuvaa.
+              </li>
+              <li>Merkitse alkuperäisen aineiston lisenssi. Tarjoa linkki aineistoon ja CC-lisenssin viralliseen kuvaukseen, jos esitystapasi tämän mahdollistaa.
+              </li>
+            </ul>
+            <div class="image-rights">
+              <span class="cc-rights">
+                <i class="iconlabel cc-cc" aria-hidden="true"></i>
+                <i class="iconlabel cc-by" aria-hidden="true"></i>
+                <i class="iconlabel cc-nc-eu" aria-hidden="true"></i>
+                <i class="iconlabel cc-nd" aria-hidden="true"></i>
+                <a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by-nc-nd/4.0/deed.fi">CC BY-NC-ND 4.0</a>
+              </span>
+              <span class="copyright-meaning"><a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by-nc-nd/4.0/deed.fi">Lisätietoja Creative Commonsin verkkosivulta</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingCCBYNCSA">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionCC" href="#collapseCCBYNCSA" aria-expanded="false" aria-controls="collapseCCBYNCSA">
+              CC BY-NC-SA 4.0
+            </a>
+          </h3>
+        </div>
+        <div id="collapseCCBYNCSA" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCCBYNCSA">
+          <div class="panel-body">
+            <ul class="content-list">
+              <li>Nimeä aina tekijä ja muut nimettäväksi mainitut tahot (esim. aineistoa säilyttävä organisaatio tai kokoelma).
+              </li>
+              <li><strong>Aineistoa ei saa käyttää kaupallisesti</strong>. Käyttö ei-kaupallisessa opetuksessa on sallittua.
+              </li>
+              <li><strong>Jos muokkaat aineistoa tai luot sen pohjalta uusia aineistoja, käytä jatkoteoksessa samaa lisenssiä kuin alkuperäisessä aineistossa</strong>. Merkitse mitä muutoksia teit (esim. kuvaa rajattu).
+              </li>
+              <li>Merkitse alkuperäisen aineiston lisenssi. Tarjoa linkki aineistoon ja CC-lisenssin viralliseen kuvaukseen, jos esitystapasi tämän mahdollistaa.
+              </li>
+            </ul>
+            <div class="image-rights">
+              <span class="cc-rights">
+                <i class="iconlabel cc-cc" aria-hidden="true"></i>
+                <i class="iconlabel cc-by" aria-hidden="true"></i>
+                <i class="iconlabel cc-nc-eu" aria-hidden="true"></i>
+                <i class="iconlabel cc-sa" aria-hidden="true"></i>
+                <a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fi">CC BY-NC-SA 4.0</a>
+              </span>
+              <span class="copyright-meaning"><a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fi">Lisätietoja Creative Commonsin verkkosivulta</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p>Huom! Jos aineiston lisenssi ei ole tiedossa, voit silti lisätä sen suosikkilistaasi tai tallentaa tekemäsi haun ja tuoda oppilaasi katselemaan aineistoja omalta laitteeltaan Finnaan. Voit myös aina kysyä lisätietoja käyttöoikeuksista aineiston tarjoajalta käyttämällä Ota yhteyttä -painikkeesta avautuvaa lomaketta.
+    </p>
+  </div>
+  <div id="begin2" class="content-section">
+    <h2>Tiedonhakuun ja -hallintaan liittyviä tehtäväideoita</h2>
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+          <h3 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              1. Tiedonhakutaitojen ja tekijänoikeuksien harjoituspaketit
+            </a>
+          </h3>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            <h4>Tiedonhakutaitojen ja tekijänoikeuksien harjoituspaketit</h4>
+            <p>Tutustu äidinkielen ja kirjallisuuden opettajan tuottamaan opetuspakettiin tehokkaasta tiedonhausta ja tekijänoikeuksista. Materiaalikokonaisuus on suunniteltu kahden oppitunnin mittaiseksi matkaksi tiedonhaun ja tekijänoikeuksien maailmaan.
+            </p>
+            <p>Opetuspaketti tutustuttaa oppilaat heidän kannaltaan tärkeimpiin tekijänoikeuksiin ja antaa vinkkejä etenkin tiedonhaun tehokkaaseen rajaamiseen. Selkeän tuntirakenteen ja oppilaita osallistavan lähestymistavan lisäksi kokonaisuudesta löytyy ohjeet hauskaan tiedonhakukilpailuun ”Salapoliisit Kansalliskirjastossa”.
+            </p>
+            <p>Opetuspakettiin kuuluu:
+            </p>
+            <ul class="content-list">
+              <li>Ohjeet opettajalle (<a target="_blank" href="/themes/custom/files/ohjeet-opettajalle.pdf">PDF</a>)
+              </li>
+              <li>Powerpoint oppitunnille: Tiedonhaku ja tiedonhakukilpailu Finna.fi:ssä (<a target="_blank" href="/themes/custom/files/tiedonhaku-finna-fi.pptx">ppt</a>, <a target="_blank" href="/themes/custom/files/tiedonhaku-finna-fi.pdf">PDF</a>)
+              </li>
+              <li>Opettajalle tiedonhakukilpailun kysymykset ja vastaukset (<a target="_blank" href="/themes/custom/files/opettajalle-tiedonhakukilpailun-kysymykset-vastaukset.pdf">PDF</a>)
+              </li>
+              <li>Powerpoint oppitunnille: Tekijänoikeudet ja tekijänoikeustehtävät (<a target="_blank" href="/themes/custom/files/oppitunnille-tekijanoikeudet-tekijanoikeustehtavat.pptx">ppt</a>, <a target="_blank" href="/themes/custom/files/oppitunnille-tekijanoikeudet-tekijanoikeustehtavat.pdf">PDF</a>)
+              </li>
+            </ul>
+            <p>Huom. Voit hyvin käyttää opetusmateriaalia myös muiden oppiaineiden opetuksessa. Opetusmateriaalin muokkaaminen omien tarpeidesi mukaan on sallittua ja helppoa.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              2. Tehtäväidea historian oppitunnille tiedonhausta ja -hallinnasta – aiheena sisällissota
+            </a>
+          </h3>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            <p>Alla oleva tehtäväidea on suunniteltu historian oppiaineeseen soveltuvaksi tuntitehtäväksi. Tehtäväidean avulla harjoitellaan tiedonhakua ja -hallintaa Finna.fi-hakupalvelussa opettajan ennalta määräämien kuva-aineistojen avulla.
+            </p>
+            <p>Tehtävän voi teettää millä tahansa oppitunnilla, mutta tässä käytetään esimerkkinä Suomen sisällissotaa käsittelevää oppituntia. Tehtäväidean muokkaaminen ja täydentäminen on sallittua.
+            </p>
+            <h4>Tehtäväidea:</h4>
+            <p>Opettaja on valikoinut etukäteen sisällissota-aiheisen oppituntinsa materiaaliksi valokuvia Finna.fi:stä. Oppilaiden tehtävänä on etsiä nämä tunnin elävöittäjänä toimineet valokuvat hakupalvelusta ja tutustua niihin tarkemmin.
+            </p>
+            <p>Opettajalla on hyvä olla tiedossa valokuvien nimet/otsikot, jotta oppilaiden on helpompaa löytää aineistot. Tähän on valikoitu kaksi sisällissotaa käsittelevää aineistoa: <a href="https://finna.fi/Record/muistaja_hyvinkaa.M011-75131">valokuva</a> ja <a href="https://finna.fi/Record/hkm.HKMS000005:00000tcw">esine</a>.
+            </p>
+            <h4>Tehtävän ohjeistus oppilaille:</h4>
+            <p>a) Mene Finna.fi-sivustolle ja kirjoita hakukenttään ”Hyvinkään punakaartilaisia, 1918.”. Klikkaa aineistoa ja valitse sen jälkeen oikealta ”Näytä tarkat tiedot”. Vastaa alla oleviin kysymyksiin.
+            </p>
+            <ul class="content-list">
+              <li>Mikä on aineiston aineistotyyppi?
+              </li>
+              <li>Minkä organisaation kokoelmissa aineisto on?
+              </li>
+              <li>Mihin kokoelmaan aineisto kuuluu?
+              </li>
+              <li>Millä aihesanoilla aineistoa on kuvailtu?
+              </li>
+              <li>Tarkastellaan seuraavaksi itse aineistoa:
+                <ul class="content-list">
+                  <li>Mitä kuvassa tapahtuu?
+                  </li>
+                  <li>Keitä on kuvassa? Mitä voit päätellä tuntemattomasta henkilöstä?
+                  </li>
+                  <li>Missä ja milloin kuva on otettu?
+                  </li>
+                  <li>Pohdi, miksi kuva on otettu.
+                  </li>
+                  <li>Mitä ajatuksia kuva sinussa herättää?
+                  </li>
+                </ul>
+              </li>
+              <li>Tutustu vielä aineiston käyttöoikeuksiin. Saisitko muokata kuvaa? Entä voisitko linkata kuvan omalle Instagram-tilillesi? Mitä sinun tulisi tällöin ottaa mahdollisesti huomioon?
+              </li>
+            </ul>
+            <p>b) Kirjoita hakukenttään toinen haku: ”Omistuskirja, Vapaussodan muistomitali”. Klikkaa aineistoa ja valitse sen jälkeen oikealta ”Näytä tarkat tiedot”. Vastaa alla oleviin kysymyksiin.
+            </p>
+            <ul class="content-list">
+              <li>Mikä on aineiston koko otsikko?
+              </li>
+              <li>Mikä on aineiston aineistotyyppi?
+              </li>
+              <li>Tarkastellaan seuraavaksi itse aineistoa.
+                <ul class="content-list">
+                  <li>Mikä aineisto on?
+                  </li>
+                  <li>Onko aineisto mielestäsi otsikoitu selkeästi? Voisiko sen otsikoida selkeämmin?
+                  </li>
+                  <li>Kenelle muistomitali on myönnetty?
+                  </li>
+                  <li>Kuka kunniakirjan on allekirjoittanut?
+                  </li>
+                  <li>Mistä eri syistä voit päätellä, että kunniakirja on myönnetty sisällissodassa valkoisten puolella taistelleelle henkilölle?
+                  </li>
+                  <li>Milloin aineisto on valmistettu? Voiko valmistusvuotta päätellä tutkimalla aineistoa?
+                  </li>
+                </ul>
+              </li>
+              <li>Minkä organisaation kokoelmissa aineisto on?
+              </li>
+              <li>Millä aihesanoilla aineistoa on kuvailtu? Onko sitä kuvailtu samoilla aihesanoilla kuin ”Hyvinkään punakaartilaisia, 1918.”? Jos on, millä aihesanoilla?
+              </li>
+              <li>Tutustu vielä aineiston käyttöoikeuksiin. Saisitko muokata kuvaa? Entä voisitko linkata kuvan omalle Instagram-tilillesi? Mitä sinun tulisi tällöin ottaa mahdollisesti huomioon?
+              </li>
+              <li>*Ekstratehtävä: Löydätkö <a href="https://finna.fi">Finna.fi</a>-hakupalvelusta muita vapaussodan muistomitaleita? Montako?
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              3. Isovanhempien tai vanhempien haastattelu omasta lapsuudesta/nuoruudesta
+            </a>
+          </h3>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            <p>Tehtäväidea soveltuu niin peruskoulun kuin lukionkin historian opetukseen. Idea on mahdollista toteuttaa myös oppiainerajat ylittävänä kokonaisuutena. Oppilaan oman lähiympäristön tuntemisen ja identiteetin kasvun tukemisen lisäksi tehtäväidea syventää tieto- ja viestintäteknologista osaamista.
+            </p>
+            <p>Tehtäväidean muokkaaminen ja täydentäminen on sallittua.
+            </p>
+            <h4>Tehtäväidea:</h4>
+            <p>Oppilaat haastattelevat omia isovanhempiaan tai vanhempiaan heidän elämästään valitsemana ajankohtana. Tarkempi haastattelun runko on hyvä sopia etukäteen yhdessä opettajan kanssa.
+            </p>
+            <p>Haastatteluista koostetaan kirjallinen tuotos, jota elävöitetään Finna.fi-hakupalvelusta haetulla kuva-aineistoilla esimerkiksi ajalle tyypillisestä muodista, kodin sisustuksesta, ruuasta, musiikista, elokuvista ja niin edelleen. Opettajan on hyvä kannustaa oppilaita etsimään useita eri mediasisältöjä.
+            </p>
+            <p>Perinteisen tiedonhaun lisäksi oppilaat pääsevät harjoittelemaan lähdekriittisyyttä ja arvioimaan Finna.fi-hakupalvelun tapaa tuottaa tietoa. He pääsevät pohtimaan
+            </p>
+            <ul class="content-list">
+              <li>ja arvioimaan millaista aineistoa hakupalvelusta löytyy,
+              </li>
+              <li>millä hakusanoilla tehokkain tiedonhaku onnistuu,
+              </li>
+              <li>miksi kaikesta ei ole aineistoa saatavilla ja
+              </li>
+              <li>kuinka haettua aineistoa käytetään eettisesti ja vastuullisesti (lähdeviitteet, tekijänoikeudet).
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END of: custom - content/luokkahuone-opeta-tiedonhakua_fi.phtml -->

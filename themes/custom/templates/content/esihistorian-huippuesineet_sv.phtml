@@ -1,0 +1,86 @@
+<!-- START of: custom - content/esihistorian-huippuesineet_sv.phtml -->
+<?php $this->headTitle($this->translate('Förhistoriens toppföremål på Nationalmuseet'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Förhistoriens toppföremål på Nationalmuseet</h2>
+<p><strong>Materialet har sammanställts av:</strong> Nationalmuseet
+</p>
+<p>Nationalmuseets föremål berättar om det nuvarande Finlands förflutna under en tidsperiod på över 10 000 år. De första föremålen har katalogiserats till museets samlingar redan i början av 1800-talet och nuförtiden består samlingarna av hundratusentals föremål. Museets samlingar omfattar även otaliga högintressanta föremål från den förhistoriska tiden. Dessa berättar både om det vardagliga livet på det område som i dag är Finland och om de kontakter som man för årtusenden sedan hade med fjärran områden, flera tusen kilometer härifrån. Denna samling består av ett antal betydande förhistoriska föremål som skildrar det förhistoriska livet på ett mångsidigt sätt.
+</p>
+<h3>Målgrupp:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-alakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#alakoulu">
+          Lågstadier: <small><strong>bildkonst, historia, slöjd</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="alakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-alakoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Bildkonst: I2 Bildkulturer i omgivningen, I3 Konstens världar
+          </li>
+          <li>Historia: I1 Förhistorisk tid och civilisationens uppkomst
+          </li>
+          <li>Slöjd: I1 Att hitta en idé
+          </li>
+        </ul>
+        <p>Mål: Materialet ger en introduktion till den förhistoriska föremålskulturen samt det finländska kulturarvet. De föremål som ingår i materialet ställs ut på Nationalmuseet från och med 31.3.2017 och materialet kan därför utnyttjas till stöd för ett museibesök. Du hittar ytterligare information till stöd för ett museibesök på: <a target="_blank" href="https://www.kansallismuseo.fi/sv/kansallismuseo/oppiminen">https://www.kansallismuseo.fi/sv/kansallismuseo/oppiminen</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Gymnasier: <small><strong>bildkonst, historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Läroämnens kurser:</p>
+        <ul class="content-list">
+          <li>Bildkonst: KU1 Bilder och kulturer, KU2 Formgivna och byggda miljöer
+          </li>
+          <li>Historia: HI1 Människan i en föränderlig omvärld, H4 En europeisk världsbild växer fram, H5 Sveriges östra rikshalva blir Finland
+          </li>
+        </ul>
+        <p>Mål: Materialet ger en introduktion till den förhistoriska föremålskulturen samt det finländska kulturarvet. De föremål som ingår i materialet ställs ut på Nationalmuseet från och med 31.3.2017 och materialet kan därför utnyttjas till stöd för ett museibesök. Du hittar ytterligare information till stöd för ett museibesök på: <a target="_blank" href="https://www.kansallismuseo.fi/fi/kansallismuseo/oppiminen">https://www.kansallismuseo.fi/fi/kansallismuseo/oppiminen</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <h4>Diskussionsförslag på lektioner:</h4>
+      <ul class="content-list">
+        <li>Vilka material användes för att tillverka föremål på den förhistoriska tiden? Vilka material har bevarats så att vi har kunnat hitta dem?
+        </li>
+        <li>Vilken slags livsstil kan förknippas med de föremål som ingår i materialet?
+        </li>
+        <li>Vad berättar de föremål som ingår i materialet INTE om?
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketti">Material</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketti" class="tab-pane fade in active">
+    <?=$this->userlistEmbed(['id' => 718208, 'view' => 'grid', 'description' => false, 'title' => false, 'date' => false, 'allowCopy' => true])?>
+  </div>
+</div>
+<!-- END of: custom - content/esihistorian-huippuesineet_sv.phtml -->

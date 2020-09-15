@@ -1,0 +1,47 @@
+<!-- START of: custom - Content/luokkahuone-tabs.phtml -->
+<div class="finna-main-tabs">
+    <ul class="nav nav-tabs help-tabs hidden-xs" role="tablist">
+        <li class="help-tab <?= $activeTab == "luokkahuone" ? ' active" aria-selected="true"' : '" aria-selected="false"' ?> role="tab" tabindex="0" data-url="<?=$this->url('content-page', ['page' => 'luokkahuone'])?>">
+            <?=$this->transEsc("tabs_luokkahuone");?>
+        </li>
+        <li class="help-tab <?= $activeTab == "luokkahuone-opeta-tiedonhakua" ? ' active" aria-selected="true"' : '" aria-selected="false"' ?> role="tab" tabindex="0" data-url="<?=$this->url('content-page', ['page' => 'luokkahuone-opeta-tiedonhakua'])?>">
+            <?=$this->transEsc("tabs_luokkahuone-opeta-tiedonhakua");?>
+        </li>
+        <li class="help-tab <?= $activeTab == "luokkahuone-vinkkeja" ? ' active" aria-selected="true"' : '" aria-selected="false"' ?> role="tab" tabindex="0" data-url="<?=$this->url('content-page', ['page' => 'luokkahuone-vinkkeja'])?>">
+            <?=$this->transEsc("tabs_luokkahuone-vinkkeja");?>
+        </li>
+        <li class="help-tab <?= $activeTab == "luokkahuone-finna-street" ? ' active" aria-selected="true"' : '" aria-selected="false"' ?> role="tab" tabindex="0" data-url="<?=$this->url('content-page', ['page' => 'luokkahuone-finna-street'])?>">
+           <?=$this->transEsc("tabs_luokkahuone-finna-street");?>
+        </li>
+        <li class="help-tab <?= $activeTab == "luokkahuone-aoe" ? ' active" aria-selected="true"' : '" aria-selected="false"' ?> role="tab" tabindex="0" data-url="<?=$this->url('content-page', ['page' => 'luokkahuone-aoe'])?>">
+           <?=$this->transEsc("tabs_aoe");?>
+        </li>
+    </ul>
+    <div class="mobile-main-tabs visible-xs">
+        <div class="dropdown visible-xs">
+            <div class="dropdown-toggle clearfix" data-toggle="dropdown">
+                <div class="tab-title"><?=$this->translate('tabs_' . $activeTab);?></div>
+                <div class="more"><?=$this->transEsc("More");?><b class="caret"></b></div>
+            </div>
+            <ul class="dropdown-menu" role="menu">
+                <li role="menuitem" <?php if($activeTab == "luokkahuone"): ?> class="active" <?php endif; ?>>
+                    <a href="<?=$this->url('content-page', ['page' => 'luokkahuone'])?>"><?=$this->transEsc("tabs_luokkahuone");?></a>
+                </li>
+                <li role="menuitem" <?php if($activeTab == "luokkahuone-opeta-tiedonhakua"): ?> class="active" <?php endif; ?>>
+                    <a href="<?=$this->url('content-page', ['page' => 'luokkahuone-opeta-tiedonhakua'])?>"><?=$this->transEsc("tabs_luokkahuone-opeta-tiedonhakua");?></a>
+                </li>
+                <li role="menuitem" <?php if($activeTab == "luokkahuone-vinkkeja"): ?> class="active" <?php endif; ?>>
+                    <a href="<?=$this->url('content-page', ['page' => 'luokkahuone-vinkkeja'])?>"><?=$this->transEsc("tabs_luokkahuone-vinkkeja");?></a>
+                </li>
+                <li role="menuitem" <?php if($activeTab == "luokkahuone-finna-street"): ?> class="active" <?php endif; ?>>
+                    <a href="<?=$this->url('content-page', ['page' => 'luokkahuone-finna-street'])?>"><?=$this->transEsc("tabs_luokkahuone-finna-street");?></a>
+                </li>
+     
+                <li role="menuitem" <?php if($activeTab == "luokkahuone-aoe"): ?> class="active" <?php endif; ?>>
+                    <a href="<?=$this->url('content-page', ['page' => 'etaklinikka'])?>"><?=$this->transEsc("tabs_aoe");?></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- END of: custom - Content/luokkahuone-tabs.phtml -->
