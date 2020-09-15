@@ -1,0 +1,88 @@
+<!-- START of: national - content/esihistorian-mysteeriesineet_fi.phtml -->
+<?php $this->headTitle($this->translate('Esihistorian mysteeriesineitä Kansallismuseossa'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+    <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Esihistorian mysteeriesineitä Kansallismuseossa</h2>
+<p><strong>Aineistopaketin koonnut:</strong> Kansallismuseo</p>
+<p>Kansallismuseon esineet kertovat Suomen alueen menneisyydestä yli 10 000 vuoden ajalta. Museon kokoelmissa on myös lukuisia esineitä esihistorialliselta ajalta, jotka ovat nykyihmisen silmin aika erikoisia. Tämä kokoelma esittelee yhdeksän kummallisinta esihistoriallista esinettä, jotka kertovat monipuolista tarinaa ajasta ennen kirjoitustaidon käyttöönottoa. Nämä kaikki esineet löytyvät myös Kansallismuseon Esihistorian näyttelystä. Tunnistatko esineitä ja osaatko arvata mihin niitä on käytetty?</p>
+<h3>Kohderyhmä:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-alakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#alakoulu">
+          Alakoulu: <small><strong>historia, kuvataide, käsityö</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="alakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-alakoulu">
+      <div class="panel-body">
+          <p>Oppiaineiden sisältöalueet:</p>
+           <ul class="content-list">
+            <li>Historia: S1 Esihistoriallinen aika ja sivilisaation synty</li>
+            <li>Kuvataide: S2 Ympäristön kuvakulttuurit, S3 Taiteen maailmat</li>
+            <li>Käsityö: S1 Ideointi</li>
+          </ul>
+          <p>Tavoite: Aineiston avulla voidaan tutustua esihistorialliseen esinekulttuuriin sekä suomalaiseen kulttuuriperintöön. Aineiston esineet ovat nähtävissä Kansallismuseon Esihistorian näyttelyssä 31.3.2017 alkaen, joten aineistoa voidaan käyttää museokäynnin tukena. Lisää tietoa näyttelykäynnin tueksi: <a target="_blank" href="https://www.kansallismuseo.fi/fi/kansallismuseo/oppiminen">https://www.kansallismuseo.fi/fi/kansallismuseo/oppiminen</a></p>
+      </div>
+    </div>
+    </div>
+      <div class="panel panel-default">
+
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Lukio: <small><strong>historia, kuvataide</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+          <p>Oppiaineet ja kurssit:</p>
+          <ul class="content-list">
+            <li>Historia: HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa, HI4 Eurooppalaisen maailmankuvan synty, HI5 Ruotsin itämaasta Suomeksi</li>
+            <li>Kuvataide: KU1 Kuvat ja kulttuurit, KU2 Muotoillut ja rakennetut ympäristöt</li>
+          </ul>
+          <p>Tavoite: Aineiston avulla voidaan tutustua esihistorialliseen esinekulttuuriin sekä suomalaiseen kulttuuriperintöön. Aineiston esineet ovat nähtävissä Kansallismuseon Esihistorian näyttelyssä 31.3.2017 alkaen, joten aineistoa voidaan käyttää museokäynnin tukena. Lisää tietoa näyttelykäynnin tueksi: <a target="_blank" href="https://www.kansallismuseo.fi/fi/kansallismuseo/oppiminen">https://www.kansallismuseo.fi/fi/kansallismuseo/oppiminen</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+    <li class="active"><a data-toggle="tab" href="#aineistopaketti">Aineisto</a></li>
+    <li><a data-toggle="tab" href="#tehtavaideat">Tehtäväideat</a></li>
+</ul>
+<div class="tab-content">
+     <div id="aineistopaketti" class="tab-pane fade in active">
+     <?= $this->userlistEmbed(['id' => 19, 'view' => 'grid', 'description' => false, 'title' => false, 'date' => false, 'allowCopy' => true])?>
+    </div>
+ <div id="tehtavaideat" class="tab-pane fade">
+        <div class="panel-group" id="accordion-tehtavaideat" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-mysteeriesineet">
+      <h3 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#mysteeriesineet">
+            Yhdeksän mysteeriesinettä Kansallismuseon kokoelmista - Arvaisitko, mihin näitä kummallisia esineitä on käytetty?
+        </a>
+      </h3>
+    </div>
+    <div id="mysteeriesineet" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-mysteeriesineet">
+      <div class="panel-body">
+      <h4>Tehtävä</h4>
+      <p>”Yhdeksän mysteeriesinettä Kansallismuseon kokoelmista”-tehtävä tutustuttaa oppilaat leikkimielisen arvuuttelun avulla Suomesta löytyneisiin esihistoriallisiin esineisiin ja niiden käyttötarkoituksiin. Tehtäväidea on hyvä tehdä ennen kuin oppilaat tutustuvat aineistopakettiin <a target="_blank" href="https://finna.fi">Finna.fi</a>:ssä.</p>
+      <p>Tehtävän voi toteuttaa yksilö-, pari- tai ryhmätehtävänä. Muokkaa tehtäväideaa eri oppiasteisiin ja oppiaineisiin haluamallasi tavalla.</p>
+      <p>Lataa tehtävä (<a target="_blank" href="/themes/custom/files/Mysteeriesineita-Kansallismuseon-kokoelmissa.pptx">ppt</a>, <a target="_blank" href="/themes/custom/files/Mysteeriesineita-Kansallismuseon-kokoelmissa.pdf">PDF</a>).</p>
+      </div>
+    </div>
+  </div>
+  
+  
+    </div>
+  </div>
+</div>
+
+<!-- END of: national -  content/esihistorian-mysteeriesineet_fi.phtml -->

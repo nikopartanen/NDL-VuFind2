@@ -1,0 +1,30 @@
+<!-- START of: finna - search/home/home-3.phtml -->
+<div class="info-col">
+    <div class="finna-introduction text-center">
+        <img src="themes/custom/images/finna-slogan-sv.png" alt="Finna – för information och upplevelser" width="300px" height="134px"/>
+        <p>Finna.fi är en söktjänst där du hittar material från finländska arkiv, bibliotek och museer. Utöver den nationella söktjänsten har innehållsleverantörerna egna <a href="Content/about">Finna-sidor</a>.</p>
+    </div>
+</div>
+<div class="info-col">
+    <div class="finna-about">
+        <div class="text-center">
+            <h3>Allt detta får du genom att logga in på tjänsten finna.fi</h3>
+        </div>
+        <div class="about-container">
+            <img src="themes/custom/images/share.png" width="64px" height="64px" aria-hidden="true">
+            <span>Du kan spara och dela ditt favoritmaterial</span>
+        </div>
+        <div class="about-container">
+            <img src="themes/custom/images/library.png" width="64px" height="64px" aria-hidden="true">
+            <span>Du kan förnya lån och reservera material från olika bibliotek på en och samma plats</span>
+        </div>
+        <div class="about-container">
+            <img src="themes/custom/images/history.png" width="64px" height="64px" aria-hidden="true">
+            <span>Du kan spara din sökhistoria</span>
+        </div>
+        <div class="text-center">
+            <a href="<?=$this->url('myresearch-userlogin')?>" class="btn btn-primary btn-uppercase" data-lightbox data-lightbox-onclose="window.location.href='<?=$this->escapeHtmlAttr($this->url('myresearch-home')) ?>'" title="<?=$this->transEsc("Login")?>"><i class="fa fa-sign-in fa-lg" aria-hidden="true"></i> <span class="login-text"><?=$this->transEsc("Login")?></span></a>
+        </div>
+    </div>
+</div>
+<!-- END of: finna - search/home/home-3.phtml -->

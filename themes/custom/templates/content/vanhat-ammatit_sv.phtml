@@ -1,0 +1,211 @@
+<!-- START of: custom - content/vanhat-ammatit_sv.phtml -->
+<?php $this->headTitle('Gamla yrken');?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Gamla yrken</h2>
+<p><strong>Materialet har sammanställts av</strong> Finna.fi</p>
+<p>Det här materialpaketet presenterar gamla yrken från mitten av 1800-talet till 1970-talet. En del av dessa yrken och yrkestitlar har försvunnit, men de grundläggande behoven bakom dem finns fortfarande kvar.
+</p>
+<h3>Målgrupp:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-alakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#alakoulu">
+          Lågstadier: <small><strong>omgivningslära, samhällslära, slöjd</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="alakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-alakoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Omgivningslära: I2 Vardagliga situationer och sammanhang, I6 Att bygga en hållbar framtid
+          </li>
+          <li>Samhällslära: I1 Vardagskompetens och kontroll över det egna livet, I4 Ekonomisk verksamhet
+          </li>
+          <li>Slöjd: I1 Innovation, I5 Tiiämpning
+          </li>
+        </ul>
+        <p>Mål: Göra eleven bekant med yrken från förr. Hjälpa eleven att få en bild av kontinuitet och förändring i arbetets historia i Finland.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#ylakoulu">
+          Högstadier: <small><strong>historia, samhällslära, slöjd</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Historia: I1 Industrisamhällets uppkomst och utveckling, I3 Finland skapas, byggs och försvaras, I5 Välfärdssamhällets uppbyggnad
+          </li>
+          <li>Samhällslära: I1 Vardagskompetens och kontroll över det egna livet, I4 Ekonomisk verksamhet
+          </li>
+          <li>Slöjd: I2 Formgivning, I6 Arbetssäkerhet, I7 Företagsamt lärande, I8 Medvetenhet och delaktighet
+          </li>
+        </ul>
+        <p>Mål: Göra eleven bekant med yrken från förr. Få eleven att fundera över och analysera strukturella förändringar i ekonomin i Finland.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketit">Material</a>
+  </li>
+  <li><a data-toggle="tab" href="#tehtavaideat">Uppgiftsidéer</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketit" class="tab-pane fade in active">
+    <h3>Handlare och försäljare förr i tiden</h3>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Diskussionsförslag på lektioner</h4>
+        <ul class="content-list">
+          <li>Hur såg affärerna ut förr i tiden?
+          </li>
+          <li>Vilka olika slags handelsbranscher förekommer i materialet?
+          </li>
+          <li>Vilka slags personer har arbetat inom handeln förr i tiden (till exempel analys av klädsel och kön)?
+          </li>
+          <li>Hur skiljer sig affärerna förr i tiden från dagens?
+          </li>
+          <li>Undersök listans föremål; vad kan de ha använts till?
+          </li>
+          <li>Tycker du att något fattas i listan?
+          </li>
+        </ul>
+      </div>
+    </div>
+    <?=$this->userlistEmbed(['id' => 9, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'allowCopy' => true])?>
+    <hr>
+    <h3>Städernas försvunna yrken</h3>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Diskussionsförslag på lektioner</h4>
+        <ul class="content-list">
+          <li>Har kön eller ålder haft någon betydelse i olika yrken?
+          </li>
+          <li>Finns det något yrke i listan som inte finns längre?
+          </li>
+          <li>Hur har andra yrken förändrats om man jämför med i dag?
+          </li>
+          <li>Undersök listans föremål; vad kan de ha använts till?
+          </li>
+          <li>Tycker du att något fattas i listan?
+          </li>
+        </ul>
+      </div>
+    </div>
+    <?=$this->userlistEmbed(['id' => 8, 'view' => 'grid', 'description' => false, 'title' => false, 'date' => false, 'allowCopy' => true])?>
+    <hr>
+    <h3>Gamla hantverksyrken och fabriksarbete förr i tiden</h3>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <p>I det här materialpaketet presenteras först hantverksarbeten och därefter fabriksarbeten.
+        </p>
+        <h4>Diskussionsförslag på lektioner</h4>
+        <ul class="content-list">
+          <li>Hur har hantverks- och fabriksarbetet sett ut i Finland förr i tiden?
+          </li>
+          <li>Vilka olika typer av hantverksyrken och industrier förekommer i materialet?
+          </li>
+          <li>Vilka slags personer har arbetat inom industrin och hantverksyrken (till exempel analys av klädsel och kön)?
+          </li>
+          <li>Undersök listans föremål; vad kan de ha använts till?
+          </li>
+          <li>Finns det något hantverksyrke eller fabriksarbete som fattas i listan?
+          </li>
+        </ul>
+      </div>
+    </div>
+    <?=$this->userlistEmbed(['id' => 16, 'view' => 'grid', 'description' => false, 'title' => false, 'date' => false, 'allowCopy' => true])?>
+    <hr>
+    <h3>Livsmedelsindustrin i Finland förr i tiden</h3>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Diskussionsförslag på lektioner</h4>
+        <ul class="content-list">
+          <li>Hur såg livsmedelsindustrin ut i Finland förr i tiden?
+          </li>
+          <li>Vilka olika typer av livsmedelsindustrier förekommer i materialet?
+          </li>
+          <li>Vilka slags personer har arbetat inom livsmedelsindustrin (till exempel analys av klädsel och kön)?
+          </li>
+          <li>Finns det någon livsmedelsindustri som fattas i listan?
+          </li>
+        </ul>
+      </div>
+    </div>
+    <?=$this->userlistEmbed(['id' => 15, 'view' => 'grid', 'description' => false, 'title' => false, 'date' => false, 'allowCopy' => true])?>
+  </div>
+  <div id="tehtavaideat" class="tab-pane fade">
+    <div class="panel-group" id="accordion-tehtavaideat" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-tehtavaidea">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#tehtavaidea">
+              Uppgiftsidé för lågstadier
+            </a>
+          </h3>
+        </div>
+        <div id="tehtavaidea" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-tehtavaidea">
+          <div class="panel-body">
+            <p>Den här uppgiften är planerad som stöd för undervisningen i årskurserna 1−6. Syftet med uppgiften är att belysa förändringen och kontinuiteten i arbetet i Finland från 1800-talet fram till i dag.
+            </p>
+            <p>Uppgiften består av flera deluppgifter som kan göras i sin helhet eller i delar. Den första delen lämpar sig för elever i årskurserna 1−3. Den andra och tredje delen lämpar sig för elever i årskurserna 4−6.
+            </p>
+            <h4>Uppgiftens framskridande:</h4>
+            <ol class="content-list" type="1">
+              <li style="list-style-type: decimal;">Uppgiften kan inledas med en kort lärarledd diskussion:
+                <ul>
+                  <li style="list-style-type: disc">Vad arbetar dina föräldrar eller närstående med? Vilka andra yrken känner du till? Vilka yrken känner du till som kanske inte finns längre?
+                  </li>
+                </ul>
+              </li>
+              <li style="list-style-type: decimal;">Läraren bekantar sig först med materialpaketen om gamla yrken. Hen väljer några bilder på olika yrken och delar ut en bild i varje grupp. Grupperna studerar bilden och antecknar allt som de undrar över eller funderar på i bilden och/eller om yrket från förr. Till slut tar läraren upp frågorna för allmän diskussion.
+              </li>
+              <li style="list-style-type: decimal;">Eleverna väljer ett yrke ur materialpaketet och en eller flera bilder som de studerar mer ingående. Det finns fyra färdiga materialpaket som läraren kan dela upp grupperna efter. Gruppens mål är att göra en presentation av det yrke som man har valt. Eleverna kan själva välja på vilket sätt de vill presentera yrket och utgående från det söka efter mer information på nätet. Läraren kan dock vid behov ge vägledande frågor som stöd för presentationen. Läraren kan även uppmuntra eleverna att söka efter mer bildmaterial på <a target="_blank" href="https://finna.fi">Finna.fi</a>.
+                <h5 style="margin-top: 1em;">Exempel på vägledande frågor:</h5>
+                <ul class="content-list">
+                  <li>Presentera ett yrke och undersök hur det har förändrats genom historien jämfört med i dag.
+                  </li>
+                  <li>Varför valde ni just detta yrke? Kände ni till yrket sedan tidigare?
+                  </li>
+                  <li>Vilka färdigheter har arbetet krävt? Har arbetet krävt en särskild utbildning?
+                  </li>
+                  <li>Vem brukade arbetet typiskt utföras av? Hade kön någon betydelse i yrket? Varför?
+                  </li>
+                  <li>Vilka verktyg användes? Skiljer sig verktygen från de som man använder i dag?
+                  </li>
+                  <li>Utövas yrket än i dag i Finland eller på andra håll i världen? Om ja, på vilket sätt har arbetet förändrats under åren eller jämfört med i dag? Om yrket har försvunnit, vad har det ersatts med? På vilket sätt utförs arbetet nuförtiden?
+                  </li>
+                  <li>I presentationen kan det vara bra att tänka på hur yrkena syns i dagens samhälle. Eventuellt kan eleverna bifoga bilder av yrket i dagens miljö som de själva tagit. Med hjälp av bilderna kan eleverna öva bildbehandling genom att sammanfoga dem till presentationen. Ett annat alternativ är att söka efter en bild på nätet.
+                  </li>
+                  <li>Eleverna kan presentera sitt arbete i ett format som väljs av läraren (t.ex. PowerPoint, pjäs).
+                  </li>
+                </ul>
+              </li>
+              <li style="list-style-type: decimal;">Uppgiften kan även integreras i undervisningen av övnings- och konstämnen eller till och med i en skolutflykt. Klassen kan tillsammans diskutera om det finns möjlighet att studera ett av de presenterade yrkena mer ingående och göra ett besök på en arbetsplats där man arbetar med yrket. Inför besöket kan klassen samla in intervjufrågor som de kan ställa till yrkesutövaren. Alternativt kan klassen besöka ett museum eller en utställning.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END of: custom - content/vanhat-ammattit_sv.phtml -->

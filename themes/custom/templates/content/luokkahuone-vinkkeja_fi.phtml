@@ -1,0 +1,64 @@
+<!-- START of: custom - content/luokkahuone-vinkkeja_fi.phtml -->
+<?php $this->headTitle($this->translate('Vinkkejä opettajalle'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+<?php if ($this->resolver('content/luokkahuone-tabs.phtml')): ?>
+  <?=$this->render('content/luokkahuone-tabs.phtml', ['activeTab' => 'luokkahuone-vinkkeja'])?>
+<?php endif; ?>
+<div class="sidebar left">
+  <div class="content-navigation-menu">
+  </div>
+</div>
+<div class="mainbody right">
+  <?php if ($this->resolver('content/Additions/helpBegin.phtml')): ?>
+    <?=$this->render('content/Additions/helpBegin.phtml')?>
+  <?php endif; ?>
+  <div id="begin1" class="content-section">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2>Suosikkilista opettamisen työkaluna</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-7">
+        <p>Suosikkilista on näppärä opettamisen ja oppimisen työkalu. Alla kolme erilaista tapaa hyödyntää suosikkilistoja:
+        </p>
+        <ul class="content-list">
+          <li><strong>Keräile ja kokoa:</strong> Tallenna kiinnostavat aineistot talteen. Lisää suosikkilistoillesi omia kuvauksia ja aineistoihin muistiinpanoja.
+          </li>
+          <li><strong>Esitä ja jaa:</strong> Poimi opettamaasi aiheeseen sopivat aineistot suosikkilistalle. Esittele suosikkilistaa oppilaille tai kollegoille katselunäkymän avulla tai jaa heille suosikkilistasi linkki.
+          </li>
+          <li><strong>Luo oppimateriaali:</strong> Tee suosikkilistasta oppimateriaali lisäämällä kysymyksiä ja pohdintatehtäviä suosikkilistan kuvaukseen ja aineistojen muistiinpanoihin. Jaa tämän jälkeen lista oppilaillesi tutkittavaksi.
+          </li>
+        </ul>
+        <p>Katso alla oleva video suosikkilistan käyttämisestä. Voit myös tutustua tarkempiin ohjeisiin <a href="<?=$this->url('content-page', ['page' => 'help'])?>">täällä</a>.
+        </p>
+      </div>
+      <div class="col-md-5">
+        <div class="speech-bubble">
+          <p>"Palvelu on kätevä, kattava ja kiinnostava sisällöltään."<br><span class="quoter">opettaja, käyttäjäkysely 2019</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="embed-responsive embed-responsive-16by9">
+  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/NfXhUoimyzQ" allowfullscreen></iframe>
+</div>
+  <div id="begin2" class="content-section">
+    <h2>Tallenna kiinnostavat hakutulokset</h2>
+    <div class="row">
+      <div class="col-xs-12">
+      </div>
+    </div>
+    <p>Hyvällä hakusanalla ja riittävän monipuolisilla rajauksilla voit luoda kiinnostavia kokonaisuuksia myös ilman suosikkitoimintoa. Kirjautuneena käyttäjänä voit tallentaa hakutuloksesi näppärästi muistiin hakutulossivun alalaidasta löytyvällä <strong>Tallenna haku</strong> -toiminnolla. Voit myös jakaa hakutuloksen muille kopioimalla ja jakamalla osoiterivillä näkyvän linkin.
+    </p>
+    <p>Tutustu alla oleviin valmiisiin rajattuihin hakuihin ja tallenna sopivat hakutulokset itsellesi:
+    </p>
+    <?= $this->feed('group1-luokkahuone'); ?>
+    <?= $this->feed('group2-luokkahuone'); ?>
+    <?= $this->feed('group3-luokkahuone'); ?>
+  </div>
+</div>
+<!-- END of: custom - content/luokkahuone-vinkkeja_fi.phtml -->

@@ -1,0 +1,81 @@
+<!-- START of: custom - content/mainoskuvastoa_fi.phtml -->
+<?php $this->headTitle($this->translate('Mainoskuvastoa'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+    <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Mainoskuvastoa sotien jälkeen</h2>
+<p>Tämä aineistopaketti esittelee suomalaisia mainoksia alkaen sotien jälkeisestä ajasta aina 1970-luvulle. Mainoksissa näkyy, miten toisen maailmansodan päättyminen, elintason nousu, vapaa-ajan lisääntyminen ja kansainvälistyminen 1960-luvulla vaikuttivat suomalaisten arkeen. Mainoksista voi tutkia esimerkiksi mainosten välittämää ajankuvaa. Mainoksia tarkastellessa voi pohtia, mitä mainokset kertovat tai halusivat kertoa oman aikansa yhteiskunnasta ja sukupuolirooleista. Mikä markkinoinnissa ja mainonnassa on muuttunut ja mikä on pysynyt ennallaan?
+</p>
+<p>Aineistopaketti on jaettu viiteen kokonaisuuteen, joista jokainen on kohdennettu tietyn oppiaineen opetukseen:</p> 
+  <ul class="content-list">
+    <li>Myydään mielikuvia! - kuvataide</li>
+    <li>Matkailumainosten Suomi-kuva - historia</li>
+    <li>Kodin keittiö ja ruokakulttuuri - historia</li>
+    <li>Verbin modukset entisajan mainoksissa - suomen kieli ja kirjallisuus</li>
+    <li>Vaatteet pintaa syvemmältä – ominaisuudet, huolto ja uudet kuidut - käsityö</li>
+  </ul>
+<p>Kokonaisuuksia ja niiden aineistoja voi hyvin hyödyntää myös muissa oppiaineissa. Kurkkaa valmiit tehtäväideat muistiinpanokuvakkeista aineistojen oikeasta yläkulmasta ja poimi parhaat ideat omaan opetukseen!</p>
+
+<h3>Kohderyhmä:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-yläkoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#yläkoulu">
+          Yläkoulu: <small><strong>historia, kuvataide, käsityö, suomen kieli ja kirjallisuus</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="yläkoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-yläkoulu">
+      <div class="panel-body">
+        <p>Oppiaineiden sisältöalueet:</p>
+        <ul class="content-list">
+          <li>Kuvataide: S1 Omat kuvakulttuurit, S2 Ympäristön kuvakulttuurit</li>
+          <li>Historia: S1 Teollisuusyhteiskunnan synty ja kehitys, S5 Hyvinvointiyhteiskunnan rakentaminen</li>
+          <li>Suomen kieli ja kirjallisuus: S2 Tekstien tulkitseminen, S4 Kielen, kirjallisuuden ja kulttuurin ymmärtäminen</li>
+          <li>Käsityö: S2 Muotoilu S4 Dokumentointi ja arviointi S7 Yrittäjämäinen oppiminen S8 Tiedostaminen ja osallistuminen</li>
+        </ul>
+        <p>Tavoite: Aineistopaketti johdattaa tutkailemaan entisajan mainoksia ja niistä välittyvää ajankuvaa eri näkökulmista ja oppiaineista käsin. Aineistot auttavat hahmottamaan suomalaisen yhteiskunnan muutosta sotien pula-ajasta hyvinvointiyhteiskunnaksi, jossa kulutuskulttuuri voimistui ja tarjolle tulivat uudet tuotteet ja palvelut. Kokonaisuus kannustaa tarkastelemaan historiallista muutosta ja jatkuvuutta sekä mainonnan kieltä ja visuaalisia keinoja.</p>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Lukio: <small><strong>historia, kuvataide</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Oppiaineet ja kurssit:</p> 
+        <ul class="content-list">
+          <li>Historia: HI3 Itsenäisen Suomen historia, HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa</li>
+          <li>Kuvataide: KU3 Osallisena mediassa</li>
+        </ul>
+        <p>Aineistopaketti johdattaa tutkailemaan entisajan mainoksia ja niistä välittyvää ajankuvaa eri näkökulmista ja oppiaineista käsin. Aineistot auttavat hahmottamaan suomalaisen yhteiskunnan muutosta sotien pula-ajasta hyvinvointiyhteiskunnaksi, jossa kulutuskulttuuri voimistui ja tarjolle tulivat uudet tuotteet ja palvelut. Kokonaisuus kannustaa tarkastelemaan historiallista muutosta ja jatkuvuutta sekä mainonnan kieltä ja visuaalisia keinoja.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketit">Aineisto</a></li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketit" class="tab-pane fade in active">
+    <?= $this->userlistEmbed(['id' => 26, 'view' => 'grid', 'description' => true, 'title' => true, 'date' => false, 'allowCopy' => true])?>
+    <hr>
+    <?= $this->userlistEmbed(['id' => 25, 'view' => 'grid', 'description' => true, 'title' => true, 'date' => false, 'allowCopy' => true])?>
+    <hr>
+    <?= $this->userlistEmbed(['id' => 24, 'view' => 'grid', 'description' => true, 'title' => true, 'date' => false, 'allowCopy' => true])?>
+    <hr>
+    <?= $this->userlistEmbed(['id' => 27, 'view' => 'grid', 'description' => true, 'title' => true, 'date' => false, 'allowCopy' => true])?>
+    <hr>
+    <?= $this->userlistEmbed(['id' => 23, 'view' => 'grid', 'description' => true, 'title' => true, 'date' => false, 'allowCopy' => true])?>    
+  </div>
+</div>
+<!-- END of: custom -  content/mainoskuvastoa_fi.phtml -->

@@ -1,0 +1,295 @@
+<!-- START of: custom - content/meri-ihminen_sv.phtml -->
+<?php $this->headTitle('Havet och människan');?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Havet och människan</h2>
+<p><strong>Materialet har sammanställts av</strong> Esbo stadsmuseum
+</p>
+<p>Materialpaketet Havet och människan är framtaget av Esbo stadsmuseum. Med hjälp av materialet kan elever bekanta sig med livet kring Östersjön och kustområdena i början av 1900-talet fram till i dag.
+</p>
+<p>Materialpaketet har indelats i fem helheter: Närings- och yrkesverksamhet i skärgården, Färdmedel i skärgården, Människans inverkan på havet, Skärgårdsliv – vardag och fritid i skärgården och Skärgårdsbor.
+</p>
+<h3>Målgrupp:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-alakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#alakoulu">
+          Lågstadier: <small><strong>omgivningslära, samhällslära</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="alakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-alakoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Omgivningslära: I3 På upptäcktsfärd i en pluralistisk värld
+          </li>
+          <li>Samhällslära: I1 Vardagskompetens och kontroll över det egna livet, I3 Aktivt medborgarskap och påverkan, I4 Ekonomisk verksamhet
+          </li>
+        </ul>
+        <p>Mål: Hjälpa eleven att förstå Östersjöns betydelse ur ett historiskt perspektiv och i dag.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#ylakoulu">
+          Högstadier: <small><strong>geografi, historia, samhällslära</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Geografi: I4 Föränderliga landskap och livsmiljöer, I4 Föränderliga landskap och livsmiljöer
+          </li>
+          <li>Historia: I1 Industrisamhällets uppkomst och utveckling, I5 Välfärdssamhällets uppbyggnad
+          </li>
+          <li>Samhällslärä: I1 Vardagskompetens och kontroll över det egna livet, I3 Aktivt medborgarskap och påverkan, I4 Ekonomisk verksamhet
+          </li>
+        </ul>
+        <p>Mål: Utveckla elevens förmåga att förstå Östersjöns betydelse ur ett historiskt perspektiv och i dag.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Gymnasier: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Läroämnens kurser:</p>
+        <ul class="content-list">
+          <li>HI1 Människan i en föränderlig omvärld, HI3 Det självständiga Finlands historia
+          </li>
+        </ul>
+        <p>Mål: Utveckla elevens förmåga att förstå Östersjöns betydelse ur ett historiskt perspektiv och i dag.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketit">Material</a>
+  </li>
+  <li><a data-toggle="tab" href="#tehtavaideat">Uppgiftsidéer</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketit" class="tab-pane fade in active">
+    <h3>Närings- och yrkesverksamhet i skärgården</h3>
+    <p>I den här helheten kan du utforska skärgårdsbornas närings- och yrkesverksamhet kring kusttrakterna i Södra Finland från slutet av 1800-talet till 1990-talet. Undersök vilka olika slags verksamheter man har utövat i skärgården och på vilket sätt.
+    </p>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Diskussionsförslag på lektioner:</h4>
+        <ul class="content-list">
+          <li>Vilka slags näringsverksamheter har man bedrivit, vad var den huvudsakliga näringsverksamheten?
+          </li>
+          <li>Vilka arbetsredskap har man behövt?
+          </li>
+          <li>Har man klarat sig på en näringsverksamhet?
+          </li>
+          <li>Varför har man bedrivit småjordbruk även i skärgården?
+          </li>
+        </ul>
+      </div>
+    </div>
+    <?=$this->userlistEmbed(['id' => 703177, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+    <hr>
+    <h3>Färdmedel i skärgården</h3>
+    <p>I den här helheten kan du undersöka använda färdmedel och nöjestrafiken kring Östersjöns kustområden och skärgård från början av 1900-talet fram till 1980-talet.
+    </p>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Diskussionsförslag på lektioner:</h4>
+        <ul class="content-list">
+          <li>Vilka slags färdmedel har man använt för att ta sig fram i kustområdena?
+          </li>
+          <li>Hur flyttade man till skärgården på somrarna?
+          </li>
+          <li>På vilket sätt skilde sig färdmedlen och sätten att ta sig fram åt på sommaren och vintern? Har det skett några förändringar i detta avseende under årens lopp?
+          </li>
+          <li>Fanns det någon skillnad mellan ”nödvändig trafik” och nöjestrafik?
+          </li>
+          <li>Varför var skärgårdsborna så beroende av ångfartyg och båtar? (OBS. Tips: Sommarbebyggelsen och ångbåtsleder är byggda kulturmiljöer av riksintresse <a href="http://www.kulturmiljo.fi/read/asp/rsv_kohde_det.aspx?KOHDE_ID=1573">http://www.kulturmiljo.fi/read/asp/rsv_kohde_det.aspx?KOHDE_ID=1573</a>)
+          </li>
+        </ul>
+      </div>
+    </div>
+    <?=$this->userlistEmbed(['id' => 703466, 'view' => 'grid', 'title' => false, 'date' => false, 'allowCopy' => true, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+    <hr>
+    <h3>Människans inverkan på havet</h3>
+    <p>Hur har människan och Östersjön samverkat sedan början av 1900-talet till i dag? I det här materialpaketet lär du dig vilken inverkan skärgårdsborna har haft på sin livsmiljö.
+    </p>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Diskussionsförslag på lektioner:</h4>
+        <ul class="content-list">
+          <li>Hur syns människans inflytande i kustområdena och skärgården; på vilket sätt har havslandskapet förändrats (byggnader/bebyggd miljö, avfall, föroreningar...)?
+          </li>
+          <li>Vilken inverkan har mänskliga aktiviteter på Östersjön? Har det skett några förändringar i detta avseende under åren? (Obs. Människan har haft en inverkan på Östersjöns tillstånd allt sedan förhistorisk tid!)
+          </li>
+          <li>Är de förändringar som mänskliga aktiviteter orsakat bra eller dåliga?
+          </li>
+          <li>Vilken inverkan har husdjur på havets tillstånd?
+          </li>
+          <li>Vilken inverkan har tvättning eller diskning?
+          </li>
+          <li>På vilket sätt har man varit tvungen att ta hänsyn till havets oberäknelighet när man har bott vid havet?
+          </li>
+          <li>Väderförhållandenas inverkan på boendet i kustområden förr och nu (klimatförändringen, översvämningsgränser).
+          </li>
+          <li>På vilket sätt har havsnaturen och människan varit sammanlänkade förr och nu/hur ser ditt eget förhållande till havsnaturen ut jämfört med skärgårdsbor förr i tiden (från näringskälla till njutningskälla)?
+          </li>
+        </ul>
+      </div>
+    </div>
+    <?=$this->userlistEmbed(['id' => 703472, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+    <hr>
+    <h3>Skärgårdsliv – vardag och fritid i skärgården</h3>
+    <p>Vet du hur skärgårdslivet såg ut förr i tiden? I det här materialpaketet ligger fokus på skärgårdsbornas vardag och fritidsaktiviteter.
+    </p>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Diskussionsförslag på lektioner:</h4>
+        <ul class="content-list">
+          <li>Vilken skillnad har det varit mellan vardag och fritid i skärgården?
+          </li>
+          <li>Vilka förändringar har skett i detta avseende?
+          </li>
+          <li>Vilka slags hushållsarbeten har ingått i skärgårdslivet?
+          </li>
+        </ul>
+      </div>
+    </div>
+    <?=$this->userlistEmbed(['id' => 703475, 'view' => 'grid', 'title' => false,  'description' => false,  'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+    <hr>
+    <h3>Skärgårdsbor</h3>
+    <p>Vilka slags människor har bott och tillbringat sin tid i skärgården? Huvudrollen i detta materialpaket har skärgårdsborna i Södra Finland i slutet av 1800-talet till 1980-talet.
+    </p>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Diskussionsförslag på lektioner:</h4>
+        <ul class="content-list">
+          <li>Vilka slags människor tillbringade sin tid/bodde i skärgården?
+          </li>
+          <li>Hur klädde sig människorna (under olika tidsperioder)?
+          </li>
+          <li>Vilka samhällsklasser kan du identifiera?
+          </li>
+        </ul>
+      </div>
+    </div>
+    <?=$this->userlistEmbed(['id' =>  703478, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+  </div>
+  <div id="tehtavaideat" class="tab-pane fade">
+    <p>Uppgiftsidéerna ger tips för hur du kan studera materialpaketet. Du kan granska ett tema genom att välja en eller flera uppgifter. Uppgifterna kan utföras individuellt, i par eller grupp. Omarbeta uppgiftsidéerna för olika utbildningsstadier och läroämnen på önskat sätt.
+    </p>
+    <div class="panel-group" id="accordion-tehtavaideat" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-elinymparisto">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#elinymparisto">
+              Människans inverkan på havet
+            </a>
+          </h3>
+        </div>
+        <div id="elinymparisto" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-elinymparisto">
+          <div class="panel-body">
+            <h4>Uppgift 1</h4>
+            <p>Undersök bilden <a target="_blank" href="https://finna.fi/Record/ekm.urn:nbn:fi-ekmhttp%253A%252F%252Fwww.profium.com%252Fespoo%252Fkohde%252FKohde-B4D74D48-3CF0-8389-21B1-08289382CCD3#image">”Lehmät rantavedessä, Sommarnäs, Suvisaaristo”</a>.
+            </p> 
+            <ol class="content-list" type="a">
+              <li>Vilken negativ inverkan kan kor och andra husdjur ha på Östersjön?
+              </li>
+              <li>Skulle de vara en del av havslandskapet utan människan?
+              </li>
+            </ol> 
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-elinkeinot">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#elinkeinot">
+              Närings- och yrkesverksamhet i skärgården
+            </a>
+          </h3>
+        </div>
+        <div id="elinkeinot" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-elinkeinot">
+          <div class="panel-body">
+            <h4>Uppgift 1</h4>
+            <p>Undersök materialet <a target="_blank" href="https://finna.fi/Content/meri-ihminen">Näringsverksamhet</a>. På vilket sätt skiljer sig människans förhållande till sina näringskällor om man jämför med skärgårdsbor på till exempel 1930–1940-talet?
+            </p>
+            <p>Tips: se bilderna:
+            </p>
+            <ul class="content-list">
+              <li><a target="_blank" href="https://finna.fi/Record/ekm.urn:nbn:fi-ekmhttp%253A%252F%252Fwww.profium.com%252Farchive%252FArchivedObject-877B96C3-D458-910A-1CF4-8347974AEB95#image">"fisken plockas från näten / kalansaalista irrotetaan verkoista"</a>
+              </li>
+              <li><a target="_blank" href="https://finna.fi/Record/ekm.urn:nbn:fi-ekmhttp%253A%252F%252Fwww.profium.com%252Farchive%252FArchivedObject-80074020-F0F8-3E1E-4E4B-4D63C9B48BE7#image">"Eugen Enoksson med utter som han skjutit / Eugen Enoksson ampumansa saukko kädessään"</a>
+              </li>
+              <li><a target="_blank" href="https://finna.fi/Record/ekm.urn:nbn:fi-ekmhttp%253A%252F%252Fwww.profium.com%252Farchive%252FArchivedObject-43C8B1D4-96EA-B8F1-35F8-DABFAFC5D8F4#image">"Eugen Enoksson med fångst från fågeljakt / Eugen Enoksson ja lintusaalis"</a>.
+              </li>
+            </ul>
+            <h4>Uppgift 2</h4>
+            <p>Undersök bilden <a target="_blank" href="https://finna.fi/Record/ekm.urn:nbn:fi-ekmhttp%253A%252F%252Fwww.profium.com%252Fespoo%252FKohde-AD73A9D6-18CB-BD83-D1FA-5888EF857656#image">”Alf och Hemming Juselius fiskar / Alf ja Hemming Juselius kalastamassa”</a>. Tänk dig att du är pojken i bakgrunden på bilden och skriv en kort dagboksanteckning ur hans synvinkel om en sommardag i skärgården.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-ihmiset">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#ihmiset">
+              Särgårdsliv och människans inverkan på havet
+            </a>
+          </h3>
+        </div>
+        <div id="ihmiset" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ihmiset">
+          <div class="panel-body">
+            <h4>Uppgift 1</h4>
+            <p>Fördjupa dig i historian om Helsingfors ångbåtsleder och sommarvillor i byggda kulturmiljöer av riksomfattande intresse på <a href="http://www.rky.fi/read/asp/r_kohde_det.aspx?KOHDE_ID=1573">museiverkets webbsida</a>. Fundera på varför huvudstadens herrskapsfolk började införskaffa allt fler villor och tillbringa somrarna i Nylands skärgård i början av 1900-talet? Jämför stugkulturen i dag med villalivet förr i tiden.
+            </p>
+            <p>Tips: mer information får du i mobilguiden om Esbo stadsmuseums <a href="https://tarinasoitin.fi/rulludd">Villamuseum Villa Rulludd</a>
+            </p>
+<?php /*
+            <p>Muita hyödyllisiä lähteitä pääkaupunkiseudun huvilaelämästä:
+            </p>
+            <ul class="content-list">
+              <li>Blom Christian & Jalavisto Sven, <i>Autuaiden Saaristo – Aikaisia huviloita Suvisaaristossa</i>. Sommarö-Seura ry Sommarö-Sällskapet rf, 2018. Vuosikirja. 46. Vuosikerta.
+              </li>
+              <li>Jalavisto Sven, <i>Huviloita saaristossa</i>. 1973.
+              </li>
+              <li>Nygård Stefan, <i>Villinki - saariston huvilayhteisö</i>. 2003, Helsingin kaupunginmuseo.
+              </li>
+              <li>Pekkanen Johanna & Heininen Virve, <i>Kuninkaankartanosta kaupungiksi</i>: viisi vuosisataa espoolaiselämää. 2013, AtlasArt.
+              </li>
+              <li>Hovi-Wasastjerna Päivi, <i>Vitträskin villat: huvilakulttuuria ja taiteilijaelämää 1900-luvun alussa</i>. 2005.
+              </li>
+            </ul>
+*/?>
+            <h4>Uppgift 2</h4>
+            <p>Titta på bilden <a href="https://finna.fi/Record/ekm.urn:nbn:fi-ekmhttp%253A%252F%252Fwww.profium.com%252Fespoo%252Fkohde%252FKohde-4B39A4B5-2244-1161-7DA4-74AF87C5EE57#image ">”picknik på Malmkopplan / piknik Malmkopplanilla”</a>. Skriv ett brev om sommaren i skärgården ur hustruns synvinkel på bilden som skriver till sin man som arbetar i Helsingfors.
+            </p>
+          </div>
+        </div>
+      </div>  
+    </div>
+  </div>
+</div>
+<!-- END of: custom - content/meri-ihminen_sv.phtml -->

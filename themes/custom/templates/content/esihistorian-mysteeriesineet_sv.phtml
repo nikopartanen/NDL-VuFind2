@@ -1,0 +1,98 @@
+<!-- START of: custom - content/esihistorian-mysteeriesineet_sv.phtml -->
+<?php $this->headTitle($this->translate('Förhistoriens mystiska föremål på Nationalmuseet'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Förhistoriens mystiska föremål på Nationalmuseet</h2>
+<p><strong>Materialet har sammanställts av:</strong> Nationalmuseet
+</p>
+<p>Föremålen på Nationalmuseum berättar om det finska områdets förflutna under en period på över 10 000 år. I museets samlingar ingår även flera förhistoriska föremål som i den moderna människans ögon ser ganska egendomliga ut. Denna samling presenterar de nio underligaste förhistoriska föremålen som berättar en mångskiftande historia. Alla dessa föremål finns även i Nationalmuseums utställning Förhistorien. Känner du igen föremålen och kan du gissa vilka ändamål föremålen har använts för?
+</p>
+<h3>Målgrupp:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-alakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#alakoulu">
+          Lågstadier: <small><strong>bildkonst, historia, slöjd</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="alakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-alakoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Bildkonst: I2 Bildkulturer i omgivningen, I3 Konstens världar
+          </li>
+          <li>Historia: I1 Förhistorisk tid och civilisationens uppkomst
+          </li>
+          <li>Slöjd: I1 Att hitta en idé
+          </li>
+        </ul>
+        <p>Mål: Materialet ger en introduktion till den förhistoriska föremålskulturen samt det finländska kulturarvet. De föremål som ingår i materialet ställs ut på Nationalmuseet från och med 31.3.2017 och materialet kan därför utnyttjas till stöd för ett museibesök. Du hittar ytterligare information till stöd för ett museibesök på: <a target="_blank" href="https://www.kansallismuseo.fi/sv/kansallismuseo/oppiminen">https://www.kansallismuseo.fi/sv/kansallismuseo/oppiminen</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Gymnasier: <small><strong>bildkonst, historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Läroämnens kurser:</p>
+        <ul class="content-list">
+          <li>Bildkonst: KU1 Bilder och kulturer, KU2 Formgivna och byggda miljöer
+          </li>
+          <li>Historia: HI1 Människan i en föränderlig omvärld, H4 En europeisk världsbild växer fram, H5 Sveriges östra rikshalva blir Finland
+          </li>
+        </ul>
+        <p>Mål: Materialet ger en introduktion till den förhistoriska föremålskulturen samt det finländska kulturarvet. De föremål som ingår i materialet ställs ut på Nationalmuseet från och med 31.3.2017 och materialet kan därför utnyttjas till stöd för ett museibesök. Du hittar ytterligare information till stöd för ett museibesök på <a href="https://www.kansallismuseo.fi/fi/kansallismuseo/oppiminen">https://www.kansallismuseo.fi/fi/kansallismuseo/oppiminen</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketti">Material</a>
+  </li>
+  <li><a data-toggle="tab" href="#tehtavaideat">Uppgiftsidéer</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketti" class="tab-pane fade in active">
+    <?=$this->userlistEmbed(['id' => 19, 'view' => 'grid', 'description' => false, 'title' => false, 'date' => false, 'allowCopy' => true])?>
+  </div>
+  <div id="tehtavaideat" class="tab-pane fade">
+    <div class="panel-group" id="accordion-tehtavaideat" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-mysteeriesineet">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#mysteeriesineet">
+              Nio mysteriösa föremål i Nationalmuseums samlingar – Gissar du vilka ändamål dessa underliga föremål har använts för?
+            </a>
+          </h3>
+        </div>
+        <div id="mysteeriesineet" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-mysteeriesineet">
+          <div class="panel-body">
+            <p>"Nio mysteriösa föremål i Nationalmuseums samlingar" ger eleverna genom en lustig gissningslek en introduktion i materialpaketets foton på förhistoriska föremål som har hittats i Finland, och i deras användningsändamål. Det är bra att planera uppgiftsidén innan eleverna tar del av materialpaketet på <a target="_blank" href="https://finna.fi">Finna.fi</a>.
+            </p>
+            <p>Uppgiften kan utföras individuellt, i par eller grupp. Du kan omarbeta uppgiften efter behov.
+            </p>
+            <p>(<a target="_blank" href="/themes/custom/files/Nio-mysterieföremal-ur-Nationalmuseums-samlingar.pptx">ppt</a>, <a target="_blank" href="/themes/custom/files/Nio-mysterieföremal-ur-Nationalmuseums-samlingar.pdf">PDF</a>).
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END of: custom - content/esihistorian-mysteeriesineet_sv.phtml -->

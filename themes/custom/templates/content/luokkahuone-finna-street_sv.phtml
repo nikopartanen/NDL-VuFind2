@@ -1,0 +1,148 @@
+<!-- START of: custom - content/luokkahuone-finna-street_sv.phtml -->
+<?php $this->headTitle($this->translate('tabs_luokkahuone-finna-street'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+<?php if ($this->resolver('content/luokkahuone-tabs.phtml')): ?>
+  <?=$this->render('content/luokkahuone-tabs.phtml', ['activeTab' => 'luokkahuone-finna-street'])?>
+<?php endif; ?>
+<div class="sidebar left">
+  <div class="content-navigation-menu">
+  </div>
+</div>
+<div class="mainbody right">
+<?php if ($this->resolver('content/Additions/helpBegin.phtml')): ?>
+  <?=$this->render('content/Additions/helpBegin.phtml')?>
+<?php endif; ?>
+  <div id="begin1" class="content-section">
+    <div class="row">  
+      <div class="col-sm-6 col-md-8">
+        <h2>Finna Street – lokalhistoria på telefonskärmen</h2>
+        <p>I läroplanen för den grundläggande utbildningen betonas att lärostoffet ska anknyta till elevernas närmiljö. Med hjälp av bildsökningen <a href="/Search/StreetSearch?go=1">Finna Street</a> kan du sätta färg på undervisningen på ett helt nytt sätt, eftersom den söker historiska bilder utifrån position.
+        </p>
+        <p>Vill ni till exempel se hur er ort eller skola såg ut för flera årtionden sedan? Ta eleverna ut med mobilerna och gör en historisk upptäcktsresa.
+        </p>
+        <p>OBS! Sökningen fungerar bäst i städer och utomhus. Finna Street hittar endast bildmaterial vars exakta position är känd. Om inga bilder av din ort hittas med Finna Street-bildsökning kan du testa vanlig sökning på ortnamnet.
+        </p>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <a target="_blank" class="finna-nosto" style="margin: auto; max-width:300px" href="<?=$this->url('search-streetsearch')?>?go=1">
+          <img src="<?=$this->imageLink('finna-street-banner-box-sv.png')?>" alt="Finna Street – Upptäck historiska bilder av var du är!">
+        </a>
+      </div>
+    </div>
+  </div>
+  <div id="begin2" class="content-section">
+    <h2>Idéer för Finna Street</h2>
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+          <h3 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              1. Promenad i förorten – undersök hur den bekanta omgivningen såg ut långt före dig
+            </a>
+          </h3>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            <p>1. Ta eleverna på en promenad i förorten som visar det förflutna och nuet simultant. Du kan planera en längre promenad eller ta eleverna till ett ställe som de känner till.
+            </p>
+            <p>2. När ni kommer till platsen ska du be att eleverna går till finna.fi och klickar på Finna Street-sökningen på förstasidan.
+            </p>
+            <p>3. Enheternas webbläsare ber om tillstånd för att använda position för bildsökning. Instruera eleverna i hur man ger webbläsaren tillstånd för positionsbestämning. Välj <strong>Använd min position</strong>.
+            </p>
+            <p>4. Finna Street söker efter alla foton relaterade till er plats, och sedan kan ni jämföra det förflutna och nuet simultant.
+            </p>
+            <h4>Tillsammans med eleverna kan du diskutera t.ex. följande:</h4>
+            <ul class="content-list">
+              <li>Hur har den egna närmiljön förändrats?
+              </li>
+              <li>Vilka objekt har fotats, och i hurdana situationer har foton tagits i olika tider? Hur påverkar detta innehållet på fotona?
+              </li>
+              <li>Vad har eventuellt inte fotats?
+              </li>
+              <li>Är ett foto ett tillförlitligt dokument om det förflutna?
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              2. Alltid hinner man inte ut och promenera – ingen fara! Finna Street fungerar också i klassrummet
+            </a>
+          </h3>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            <p>Söktjänsten<a href="/Search/StreetSearch?go=1">Finna Street</a> kan också användas i klassrumsundervisning. Ni kan söka lokala resultat genom att definiera området.
+            </p>
+            <p>Definiera området så här:
+            </p>
+            <p>1. Gå till <a href="/">Finna.fi</a> och klicka på Finna Street-sökningen på förstasidan.
+            </p>
+            <p>2. Definiera området inom vilket <a href="/Search/StreetSearch?go=1">Finna Street</a> ska söka efter foton. Välj alternativet <strong>Begränsa på kartan</strong> som finns i verktygsfältet <strong>Begränsa sökningen</strong> till vänster och klicka på kartan.
+            </p>
+            <p>3. Nu kan du till exempel zooma in din hemtrakt. Placera den runda väljaren på det område som du vill undersöka. Du kan zooma in och ut på kartan beroende på det önskade sökområdets storlek.
+            </p>
+            <p>Tips! I synnerhet vid gränsen mellan två städer är det bra att avgränsa kartan exakt för att undvika att foton från grannstaden kommer med i sökresultaten.
+            </p>
+            <h4>Uppgiftsidé:</h4>
+            <p>I klassrummet kan söktjänsten <a href="/Search/StreetSearch?go=1">Finna Street</a> användas på flera sätt. Sök till exempel foton från er närmiljö vid en viss tidpunkt eller från flera tidsperioder. Sök därefter till exempel nyare foton med till exempel Google Maps. Eleverna väljer ett bildpar och gör en PowerPoint-presentation som de delar eller presenterar för varandra.
+            </p>
+            <h4>Eleverna kan också till exempel diskutera följande frågor:</h4>
+            <ul class="content-list">
+              <li>Hurdana foton finns det i Finna Street? Från vilken tid är fotona och vem har tagit dem?
+              </li>
+              <li>Vad händer på fotona?
+              </li>
+              <li>Vad har förändrats jämfört med i dag?
+              </li>
+              <li>Vad är sig likt?
+              </li>
+              <li>Varför har saker bevarats eller förändrats?
+              </li>
+            </ul>
+            <p>Uppgiften kan delvis också utföras utanför klassrummet som hemuppgift. Då bekantar sig eleverna först med Finna Streets foton från närmiljön i klassrummet. Elevernas hemuppgift blir att ta ett foto på samma plats. Bildparet "före och efter" kan användas som en separat uppgift eller fogas in i ett mångvetenskapligt lärområde om den egna närmiljön.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              3. Lev dig in i livet i en gammal miljö och lär samtidigt ut informationssökning (mångvetenskapligt lärområde, historia samt modersmål och litteratur, årskurs 7)
+            </a>
+          </h3>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            <p>Det finländska ståndssamhället ger en bra möjlighet att kombinera två läroämnen, nämligen historia samt modersmål och litteratur. Lärområdet har tagits fram av två ämneslärare i Kilterin koulu i Vanda.
+            </p>
+            <p>Det mångvetenskapliga lärområdet gör eleverna bekanta med det finländska ståndssamhället samt lär dem informationssökning och brevskrivning. Idén är att eleverna lever sig in i en fiktiv persons vardag på 1800-talet och skriver ett brev såsom denna person skulle ha gjort det. Helheten innehåller såväl individuella uppgifter som uppgifter i par eller små grupper. Det undersökande arbetssättet och den kreativa tillämpningen av det man lärt sig gör uppgiften intressant för elever med olika inlärningssätt.
+            </p>
+            <p>Det mångvetenskapliga lärområdet omfattar följande:
+            </p>
+            <ul class="content-list">
+              <li>Instruktioner för lärare (<a target="_blank" href="/themes/custom/files/mangvetenskapligt-laromrade-for-larare.pdf">PDF</a>)
+              </li>
+              <li>Det mångvetenskapligs lärområdets uppbyggnad för elever (<a target="_blank" href="/themes/custom/files/presentation-av-det-mangvetenskapliga-laromradets-struktur.pptx">ppt</a>, <a target="_blank" href="/themes/custom/files/presentation-av-det-mangvetenskapliga-laromradets-struktur.pdf">PDF</a>)
+              </li>
+              <li>Lektioner i historia: Det finländska ståndssamhället, rollplan (<a target="_blank" href="/themes/custom/files/historia-standssamhallet-i-finland.pptx">ppt</a>, <a target="_blank" href="/themes/custom/files/historia-standssamhallet-i-finland.pdf">PDF</a>)
+              </li>
+              <li>Lektioner i modersmål och litteratur: Det finländska ståndssamhället, intervju, inbördes utvärdering, bildsökningsuppgift och brev (<a href="/themes/custom/files/modersmal-och-litteratur-standssamhallet-i-finland.pptx">ppt</a>, <a href="/themes/custom/files/modersmal-och-litteratur-standssamhallet-i-finland.pdf">PDF</a>)
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php if ($this->resolver('content/Additions/helpEnd.phtml')): ?>
+  <?=$this->render('content/Additions/helpEnd.phtml')?>
+<?php endif; ?>
+</div>
+<!-- END of: custom - content/luokkahuone-finna-street_sv.phtml -->

@@ -1,0 +1,286 @@
+<!-- START of: custom - content/jatkosota_sv.phtml -->
+<?php $this->headTitle('Försvarsmaktens bildmaterial från fortsättningskriget');?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Försvarsmaktens bildmaterial från fortsättningskriget</h2>
+<p><strong>Materialet har sammanställts av:</strong> Krigsmuseet
+</p>
+<p>Materialet som är avsett för undervisningen i krigshistoria har insamlats från Krigsmuseets SA-bildarkiv. Materialet innehåller ca 160 000 foton tagna av Försvarsmaktens frontfotografer (TK-fotografer) under 1939–1945. Materialet är indelat i tre materialpaket: vinterkriget, fortsättningskriget och Lapplandskriget. Materialpaketet om fortsättningskriget är indelat i fyra helheter: hemmafronten, krigsledningen, krigsfronten och frontlivet.
+</p>
+<p>I början av fortsättningskriget sommaren 1941 bildades informationskompanier (TK) under Huvudstaben. Så kallade TK-fotografer verkade i dem. Man tog modell av Tysklands propagandakompanier. Fotografernas uppgift var att fotografera strider samt krigshistoriskt och folkloristiskt material. Bildmaterialet stödde och påverkade opinionen på både hemma- och krigsfronten, och många foton publicerades i dåtida tidskrifter och dagstidningar.
+</p>
+<p>När foton används gäller det att komma ihåg deras ursprungliga syfte. Bildtexterna har skrivits av fotograferna, och de bör läsas med beaktande av den rådande tidsandan. Språket i texterna är mycket tillspetsat, och det kan också förekomma kränkande ord i dem. Det är också bra att komma ihåg att en del av fotona är iscensättningar eller komponerade på annat sätt.
+</p>
+<h3>Målgrupp:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#ylakoulu">
+          Högstadier: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Historia: I3 Finland skapas, byggs och försvaras, I4 De stora krigen
+          </li>
+        </ul>
+        <p>Mål: Bildmaterialet kan användas för att visualisera historiska händelser och för att bekanta sig med livet under denna tidsperiod. Fotona är också utmärkt material för undervisning i medie- och informationskunnighet. Som propagandamaterial är de ett bra exempel på hur opinionen kan påverkas med hjälp av fotografisk kommunikation.
+        </p>
+      </div>
+    </div>
+    </div>
+      <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Gymnasier: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Läroämnens kurser:</p>
+        <ul class="content-list">
+          <li>Historia: HI3 Det självständiga Finlands historia
+          </li>
+        </ul>
+        <p>Mål: Bildmaterialet kan användas för att visualisera historiska händelser och för att bekanta sig med livet under denna tidsperiod. Fotona är också utmärkt material för undervisning i medie- och informationskunnighet. Som propagandamaterial är de ett bra exempel på hur opinionen kan påverkas med hjälp av fotografisk kommunikation.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketit">Material</a>
+  </li>
+<?php /*
+  <li><a data-toggle="tab" href="#tehtavaideat">Tehtäväideat</a>
+  </li>
+*/ ?>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketit" class="tab-pane fade in active">
+    <h4>Hemmafronten</h4>
+    <p>I helheten har samlats foton med motiv som anknyter till hemmafronten. Teman utgörs av bland annat evakuering, livet i staden, kvinnornas krigsansträngningar samt ungdomar och barn under kriget.
+    </p>
+    <?=$this->userlistEmbed(['id' => 715110, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+    <hr>
+    <h4>Frontlivet</h4>
+    <p>I helheten har samlats foton som beskriver soldaternas liv vid fronten och deras fritid när de inte deltog i strider. Teman utgörs av bland annat livet i korsuna, underhållning (turnéer), musik, hobbyarbete, brevskrivning och -läsning, motion och idrott, soldathem, studier samt talko- och jordbruksarbete.
+    </p>
+    <?=$this->userlistEmbed(['id' => 703653, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+    <hr>
+    <h4>Krigsledningen</h4>
+    <p>I helheten har samlats foton på ledande personer under fortsättningskriget.
+    </p>
+    <?=$this->userlistEmbed(['id' => 703650, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+    <hr>
+    <h4>Krigsfronten</h4>
+    <p>I helheten har samlats foton från krigsfronten. Krigshandlingarna vid fronten bestod inte enbart av strider och anfall i första linjen. En stor del av verksamheten bestod av övervakning, patrullering, framryckning till fots eller på cykel ibland i svår terräng samt väntande. Krigshandlingar utfördes såväl på land som till sjöss och i luften.
+    </p>
+    <?=$this->userlistEmbed(['id' => 714957, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+<?php /*
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Vinkkejä vastaavan aineiston hakemiseen</h4>
+        <p>Kaipaatko lisää aineistoa talvisodan käsittelyyn Sotamuseon aineistoista? Etsi vastaavaa aineistoa <a href="/">Finna.fi</a>-hakupalvelusta seuraavin keinoin:
+        </p>
+        <p><strong>Hakusana:</strong>  Hae aineistopaketin kuvien otsikoista löytyvillä hakusanoilla, esimerkiksi ”pommisuoja”, ”kotirintama” tai ”kenttäsairaala”. Jos haluat hakea lisää aineistoa sodanjohtoon liittyen, hae henkilön nimellä (esimerkiksi ”Mannerheim” tai ”Ryti”).
+        </p>
+        <p><strong>Organisaatio:</strong> Valitse organisaatioksi Sotamuseo.
+        </p>
+        <p><strong>Parhaat rajaimet:</strong> Rajaa tuloksia valitsemalla <strong>Verkossa saatavilla</strong> olevaa aineistoa. Rajaa aineisto koskemaan talvisotaa valitsemalla <strong>Valmistusvuosi</strong>-valikosta itseäsi kiinnostavat vuodet.
+        </p>
+        <p><strong>Lisätietoja aineistoista:</strong> Mikäli kaipaat lisätietoja tietystä aineistosta, löydät sen <a href="http://sa-kuva.fi">www.sa-kuva.fi</a> -palvelusta.
+        </p>
+      </div>
+    </div>
+*/ ?>
+  </div>
+<?php /*
+  <div id="tehtavaideat" class="tab-pane fade">
+    <p>Tehtäväideat on suunniteltu antamaan ideoita siihen, kuinka voit tarkastella aineistopakettia. Voit lähestyä aihetta valitsemalla tehtävistä yhden tai useamman. Tehtävät voi tehdä yksilö-, pari- tai ryhmätehtävinä. Muokkaa tehtäväideoita eri oppiasteisiin ja oppiaineisiin haluamallasi tavalla.
+    </p>
+    <div class="panel-group" id="accordion-tehtavaideat" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-sotarintama">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#sotarintama">
+              Sotarintama
+            </a>
+          </h3>
+        </div>
+        <div id="sotarintama" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-sotarintama">
+          <div class="panel-body">
+            <h4>Tehtävä 1</h4>
+            <p>Tutustu <a target="_blank" href="/List/714957">Sotarintama-aineistopaketin</a> valokuviin ja valitse paketista yksi tai kaksi itseäsi kiinnostavaa valokuvaa lähempään tarkasteluun. Muista huomioida myös kuvatekstit! Analysoi valokuvia alla olevien kysymysten avulla:
+            </p>
+            <ol class="content-list" type="1">
+              <li>Miksi valitsit kyseiset valokuvat?
+              </li>
+              <li>Kuka kuvat on ottanut?
+              </li>
+              <li>Missä ja milloin kuvat on otettu?
+              </li>
+              <li>Mitä kuvissa tapahtuu?
+              </li>
+              <li>Pohdi, mihin tarkoitukseen kuvat on otettu. Mitä kuvilla halutaan kertoa?
+              </li>
+              <li>Mihin katsojan huomio halutaan kiinnittää?
+              </li>
+              <li>Miten kuva on rajattu ja miten se mahdollisesti vaikuttaa kuvan sisältöön? Mitä on ehkä jätetty ulkopuolelle?
+              </li>
+              <li>Vaikuttavatko kuvat lavastetuilta vai luonnollisilta. Perustele.
+              </li>
+              <li>Arvioi kuvien luotettavuutta historiallisena lähteenä.
+              </li>
+            </ol>
+            <h4>Tehtävä 2</h4>
+            <p>Tarkastele aineistoja <a target="_blank" href="/Record/sa-kuva.sa-kuva-49205">”Läpi sankkojen metsien, yli soitten ja rämeitten käy kaukopartion tie Vienan korpisaloilla”</a> ja <a target="_blank" href="/Record/sa-kuva.sa-kuva-40482">”Myöskin jouluyönä seisoo vartiomies valppaana vartiopaikallaan”</a>.
+            </p>
+            <ol class="content-list" type="1">
+              <li>Mitä kuvissa tapahtuu?
+              </li>
+              <li>Missä ja milloin kuvat on otettu?
+              </li>
+              <li>Pohdi, mihin tarkoitukseen valokuvat on otettu? Vinkki: muista lukea myös valokuvien otsikot!
+              </li>
+              <li>Vaikuttavatko kuvat lavastetuilta vai luonnollisilta. Perustele.
+              </li>
+              <li>Arvioi kuvien luotettavuutta historiallisena lähteenä.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-sodanjohto">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#sodanjohto">
+              Sodanjohto
+            </a>
+          </h3>
+        </div>
+        <div id="sodanjohto" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-sodanjohto">
+          <div class="panel-body">
+            <h4>Tehtävä 1</h4>
+            <p>Tutustu <a target="_blank" href="/List/703650?filter%5B%5D=lists%3A%22703650%22&view=grid">Sodanjohto-paketista</a> löytyviin valokuviin Adolf Hitlerin vierailusta Suomessa.
+            </p>
+            <ol class="content-list" type="1">
+              <li>Mitä kuvissa tapahtuu?
+              </li>
+              <li>Milloin kuvat on otettu?
+              </li>
+              <li>Miksi Hitler vieraili Suomessa?
+              </li>
+              <li>Millainen tunnelma valokuvista välittyy?
+              </li>
+              <li>Vaikuttavatko kuvat lavastetulta vai luonnollisilta? Perustele.
+              </li>
+              <li>Millaisen kuvan Mannerheimin suhteesta Saksaan saa valokuvien perusteella?
+              </li>
+              <li>Arvioi kuvien luotettavuutta historiallisena lähteenä.
+              </li>
+            </ol>
+            <h4>Tehtävä 2 - Helsinkiläisiä pommisuojassa</h4>
+            <p>Tarkastele valokuvaa <a target="_blank" href="/Record/sa-kuva.sa-kuva-111015">”Helsinkiläisiä pommisuojassa.”</a>. Kuvittele itsesi pommisuojaan valokuvassa olevien henkilöiden kanssa, ja kirjoita twiitti olostasi siellä. Kerro, mitä ajattelet ja tunnet.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-rintamaelamaa">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#rintamaelamaa">
+              Rintamaelämää
+            </a>
+          </h3>
+        </div>
+        <div id="rintamaelamaa" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-rintamaelamaa">
+          <div class="panel-body">
+            <h4>Tehtävä 1</h4>
+            <p>Tutustu <a target="_blank" href="/List/703653?filter%5B%5D=lists%3A%22703653%22&view=grid">Rintamaelämää-aineistopaketin</a> valokuviin.
+            </p>
+            <ol class="content-list" type="1">
+              <li>Millainen kuva rintamaelämästä välittyy valokuvien perusteella?
+              </li>
+              <li>Pohdi, miksi kuvat on otettu.
+              </li>
+              <li>Vaikuttavatko kuvat lavastetuilta vai luonnollisilta. Perustele.
+              </li>
+              <li>Arvioi kuvien luotettavuutta historiallisena lähteenä.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-talvisodan-kuva">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#talvisodan-kuva">
+              Kotirintama
+            </a>
+          </h3>
+        </div>
+        <div id="talvisodan-kuva" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-talvisodan-kuva">
+          <div class="panel-body">
+            <h4>Tehtävä 1</h4>
+            <p>Kuuntele <a target="_blank" href="/Record/kavi.elonet_elokuva_1187754">Risto Rytin radiopuhe 26.6.1941</a>. Vastaa alla oleviin kysymyksiin. (Vinkki: voit tarvittaessa lukea puheen referaatin <a target="_blank" href="https://yle.fi/aihe/artikkeli/2006/09/08/presidentti-rytin-puhe-jatkosodan-alussa">Ylen artikkelista</a>).
+            </p>
+            <ol class="content-list" type="1">
+              <li>Mistä puhe kertoo?
+              </li>
+              <li>Kuka puheen on laatinut? Miten tämä saattaa vaikuttaa sen luotettavuuteen historiallisena lähteenä?
+              </li>
+              <li>Kenelle puhe on osoitettu? Miten tämä saattaa vaikuttaa puheen luotettavuuteen historiallisena lähteenä?
+              </li>
+              <li>Milloin radiopuhe on pidetty? Miten aika saattaa vaikuttaa puheen luotettavuuteen historiallisena lähteenä?
+              </li>
+              <li>Millaisen kuvan Rytin suhtautumisesta Saksaan saa lähteen perusteella?
+              </li>
+            </ol>
+            <h4>Tehtävä 2</h4>
+            <p>Tarkastele kuvaa <a target="_blank" href="/Record/sa-kuva.sa-kuva-88874">”Venäläisten pommien tuhoja Kallion kaupunginosassa”</a>.
+            </p>
+            <ol class="content-list" type="1">
+              <li>Mitä kuvassa tapahtuu?
+              </li>
+              <li>Missä ja milloin kuva on otettu?
+              </li>
+              <li>Pohdi, miksi valokuva on otettu. Perustele.
+              </li>
+              <li>Pohdi, millainen äänimaisema ympäristössä on mahdollisesti ollut.
+              </li>
+            </ol>
+            <h4>Tehtävä 3</h4>
+            <p>Tutki kuvaa <a target="_blank" href="/Record/sa-kuva.sa-kuva-74195">”Yleiskuva pommituksesta Helsingissä”</a>.
+            </p>
+            <ol class="content-list" type="1">
+              <li>Mitä kuvassa tapahtuu?
+              </li>
+              <li>Milloin ja missä kuva on otettu?
+              </li>
+              <li>Kuka kuvan on ottanut ja miksi?
+              </li>
+              <li>Keitä luulet asuneen pommituksessa tuhoutuneissa taloissa? Entäpä kuvan taka-alalla olevissa kivitaloissa?
+              </li>
+              <li>Etsi Google Maps -karttapalvelusta, miltä paikka näyttää nykyään. Mikä on muuttunut? Mikä on pysynyt samana?
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+*/ ?>
+</div>
+<!-- END of: custom - content/jatkosota_sv.phtml -->

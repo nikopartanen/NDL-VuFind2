@@ -1,0 +1,147 @@
+<!-- START of: national - content/esihistorian-huippuesineet_fi.phtml -->
+<?php $this->headTitle($this->translate('Esihistorian huippuesineitä Kansallismuseossa'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+    <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Esihistorian huippuesineitä Kansallismuseossa</h2>
+<p><strong>Aineistopaketin koonnut:</strong> Kansallismuseo</p>
+<p>Kansallismuseon esineet kertovat Suomen alueen menneisyydestä yli 10 000 vuoden ajalta. Ensimmäiset esineet on luetteloitu museon kokoelmiin jo 1800-luvun alkupuolella ja nykyään kokoelmissa on satoja tuhansia esineitä. Museon kokoelmissa on myös lukuisia huippuesineitä esihistorialliselta ajalta, jotka kertovat niin arkisesta elämästä nykyisen Suomen alueella kuin tuhansien vuosien takaisista yhteyksistä kaukaisille alueille, satojen ja jopa tuhansien kilometrien päähän. Tämä kokoelma esittelee joukon merkittäviä esihistoriallisia esineitä, jotka kertovat esihistoriallisesta elämästä monipuolista tarinaa.</p>
+<h3>Kohderyhmä:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-alakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#alakoulu">
+          Alakoulu: <small><strong>historia, kuvataide, käsityö</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="alakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-alakoulu">
+      <div class="panel-body">
+          <p>Oppiaineiden sisältöalueet:</p>
+           <ul class="content-list">
+            <li>Historia: S1 Esihistoriallinen aika ja sivilisaation synty</li>
+            <li>Kuvataide: S2 Ympäristön kuvakulttuurit, S3 Taiteen maailmat</li>
+            <li>Käsityö: S1 Ideointi</li>
+          </ul>
+          <p>Tavoite: Aineiston avulla voidaan tutustua esihistorialliseen esinekulttuuriin sekä suomalaiseen kulttuuriperintöön. Aineiston esineet ovat nähtävissä Kansallismuseon Esihistorian näyttelyssä 31.3.2017 alkaen, joten aineistoa voidaan käyttää museokäynnin tukena. Lisää tietoa näyttelykäynnin tueksi: <a href="https://www.kansallismuseo.fi/fi/kansallismuseo/oppiminen">https://www.kansallismuseo.fi/fi/kansallismuseo/oppiminen</a></p>
+      </div>
+    </div>
+    </div>
+      <div class="panel panel-default">
+
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Lukio: <small><strong>historia, kuvataide</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+          <p>Oppiaineet ja kurssit:</p>
+           <ul class="content-list">
+            <li>Historia: HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa, HI4 Eurooppalaisen maailmankuvan synty, HI5 Ruotsin itämaasta Suomeksi</li>
+            <li>Kuvataide: KU1 Kuvat ja kulttuurit, KU2 Muotoillut ja rakennetut ympäristöt</li>
+          </ul>
+          <p>Tavoite: Aineiston avulla voidaan tutustua esihistorialliseen esinekulttuuriin sekä suomalaiseen kulttuuriperintöön. Aineiston esineet ovat nähtävissä Kansallismuseon Esihistorian näyttelyssä 31.3.2017 alkaen, joten aineistoa voidaan käyttää museokäynnin tukena. Lisää tietoa näyttelykäynnin tueksi: <a href="https://www.kansallismuseo.fi/fi/kansallismuseo/oppiminen">https://www.kansallismuseo.fi/fi/kansallismuseo/oppiminen</a></p>
+      </div>
+    </div>
+  </div>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+<h4>Pohdittavaa oppitunneille:</h4>
+<ul class="content-list">
+    <li>Millaisista materiaaleista esineitä on tehty esihistoriallisella ajalla? Mitkä materiaalit ovat säilyneet löydettäväksemme?</li>
+    <li>Millaiseen elämäntapaan aineiston esineet liittyvät?</li>
+    <li>Millaisista asioista aineiston esineet EIVÄT kerro?</li>
+</ul>
+</div>
+</div></div>
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+    <li class="active"><a data-toggle="tab" href="#aineistopaketti">Aineisto</a></li>
+        <li><a data-toggle="tab" href="#tehtavaideat">Tehtäväideat</a></li>
+</ul>
+<div class="tab-content">
+     <div id="aineistopaketti" class="tab-pane fade in active">
+     <?= $this->userlistEmbed(['id' => 718208, 'view' => 'grid', 'description' => false, 'title' => false, 'date' => false, 'allowCopy' => true])?>
+    </div>
+ <div id="tehtavaideat" class="tab-pane fade">
+        <div class="panel-group" id="accordion-tehtavaideat" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-esineet">
+      <h3 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#esineet">
+      Aineistopaketin esineisiin tutustuminen
+        </a>
+      </h3>
+    </div>
+    <div id="esineet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-esineet">
+      <div class="panel-body">
+         <h4>Tehtävä</h4>
+      <p>Tutustu ”Esihistorian huippuesineitä Kansallismuseossa” -aineistopakettiin. Valitse lähempään tarkasteluun yksi itseäsi eniten kiinnostava esine, johon tutustut tarkemmin. Selvitä muun muassa seuraavia asioita:</p>
+      <ol class="content-list" type="a">
+      <li>Mikä esine on: Millaisista materiaaleista se on tehty? Milloin? Minkä kokoinen esine on?</li>
+      <li>Mihin tarkoitukseen esinettä on käytetty? Kuka sitä on mahdollisesti käyttänyt?</li>
+      <li>Millaiseen elämäntapaan valitsemasi esine liittyy?</li>
+      <li>Mistä esine on löytynyt?</li>
+      <li>Pohdi, miksi esine on säilynyt.</li>
+            </ol>
+      <p>Esittele esine parillesi/muulle ryhmälle. Kerro myös, miksi valitsit kyseisen esineen.</p>
+      </div>
+    </div>
+  </div>
+  
+   <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-oma-nayttely">
+      <h3 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#oma-nayttely">
+     Oma näyttely
+        </a>
+      </h3>
+    </div>
+    <div id="oma-nayttely" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-oma-nayttely">
+      <div class="panel-body">
+      <h4>Tehtävä</h4>
+      <p>Tutustuitte aiemmassa tehtävässä (aineistopaketin esineisiin tutustuminen) tarkemmin yhteen tai useampaan esihistorialliseen esineeseen ja siihen, miten niitä on kuvailtu. Valitkaa seuraavaksi yhdessä luokastanne esineitä, joita kuvailette samalla tapaa kuin arkeologit ovat kuvanneet esihistoriallisia esineitä.</p>
+      <p>Kirjatkaa ylös esimerkiksi seuraavia asioita:</p>
+      <ol class="content-list" type="a">
+          <li>Antakaa esineelle inventaarionumero</li>
+          <li>Esineen nimi ja esinetyyppi (esim. koru)</li>
+          <li>Esineen kuvailu: materiaali, mitat jne.</li>
+          <li>Aihesanat, joilla kuvailisitte esinettä.</li>
+          <li>Ajoittakaa esine: milloin esine on tehty.</li>
+          <li>Mistä esine on ”löydetty”.</li>
+          <li>Kootkaa esineistä näyttely. Miettikää, mitä muuta esineistä pitäisi vielä kertoa, jotta mahdolliset luokan ulkopuoliset ”museovieraat” ymmärtäisivät, mitä esineet ovat ja mihin niitä on käytetty.</li>
+      </ol>
+</div>
+    </div>
+  </div>
+ 
+    <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-muinaisjaannokset">
+      <h3 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#muinaisjaannokset">
+      Muinaisjäännökseen tutustuminen
+        </a>
+      </h3>
+    </div>
+    <div id="muinaisjaannokset" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-muinaisjaannokset">
+      <div class="panel-body">
+      <h4>Tehtävä</h4>
+      <p>Etsikää kouluanne lähinnä oleva muinaisjäännös <a href="https://www.kyppi.fi/palveluikkuna/mjreki/read/asp/r_default.aspx">Museoviraston karttapalvelusta</a>.</p>
+      <p>Tutustukaa muinaisjäännöksen tietoihin ja tutkimuksiin. Tehkää myös retki löytöpaikalle ja tutustukaa kohteeseen luonnossa.</p>      
+  </div>
+    </div>
+  </div>
+  
+    </div>
+  </div>
+</div>
+
+
+<!-- END of: national -  content/esihistorian-huippuesineet_fi.phtml -->

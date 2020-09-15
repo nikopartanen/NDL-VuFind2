@@ -1,0 +1,62 @@
+<!-- START of: national - content/bernhard-astrom_fi.phtml -->
+<?php $this->headTitle($this->translate('Bernhard Åströmin elämää 1900-luvun alun Suomessa'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+    <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Bernhard Åströmin elämää 1900-luvun alun Suomessa</h2>
+<p><strong>Aineistopaketin koonnut:</strong> Svenska litteratursällskapet i Finland (SLS)</p>
+<p>Svenska litteratursällskapet on koonnut tämän aineistopaketin, jonka avulla pääset tutustumaan historiaan yhden ihmisen ja perheen elämän kautta. Eläinlääkäri ja innokas amatöörivalokuvaaja Bernhard Åström tallensi arkisia tapahtumia filmille läpi elämänsä, ja kuvien kautta aukenee ikkuna myös Suomen historiaan laajemmassa mittakaavassa. Muun muassa maaseudun muuttuminen, Suomen sisällissota, suojeluskunnat ja kieltolaki näkyvät näissä kuvissa yhden ihmisen dokumentoimana.</p>
+<p>Käytä siis aineistopaketin valokuvia elävöittämään historian oppitunteja ja seuraa Bernhard Åströmin elämää aina vuosisadan alusta 1930-luvulle saakka!</p>
+<p>Bernhard Åströmin kokoelma käsittää yli 2000 digitoitua kuvaa, josta tähän aineistopakettiin on valikoitu 42 mielenkiintoista otosta. Löydät lisää kokoelman valokuvia <a target="_blank" href="https://sls.finna.fi/Collection/sls.SLS+1555">SLS:n sivuilta</a>.</p>
+<h3>Kohderyhmä:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#ylakoulu">
+          Yläkoulu: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+          <p>Oppiaineiden sisältöalueet:</p>
+           <ul class="content-list">
+          <li>Historia: S1 teollisuusyhteiskunnan synty ja kehitys, S2 Ihmiset muuttavat maailmaa, S3 Suomea luodaan, rakennetaan ja puolustetaan</li>
+          </ul>
+          <p>Tavoite: Aineiston avulla oppilas voi seurata yhden perheen elämää 30 vuoden ajanjaksolta ja oppia, miten erilaiset historialliset tapahtumat vaikuttivat heidän elämäänsä. Lisäksi historiallinen empatia kehittyy, kun oppilas pääsee tutustumaan itsenäisyydestä haaveilevan ja myöhemmin itsenäisen Suomen tapahtumiin yhden perheen kautta.</p>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Lukio: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+          <p>Oppiaineet ja kurssit:</p>
+           <ul class="content-list">
+          <li>Historia: HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa, HI3 Itsenäisen Suomen historia</li>
+          </ul>
+          <p>Tavoite: Aineiston avulla opiskelija voi seurata yhden perheen elämää 30 vuoden ajanjaksolta ja oppia, miten erilaiset historialliset tapahtumat vaikuttivat heidän elämäänsä. Lisäksi historiallinen empatia kehittyy, kun opiskelija pääsee tutustumaan itsenäisyydestä haaveilevan ja myöhemmin itsenäisen Suomen tapahtumiin yhden perheen kautta.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+    <li class="active"><a data-toggle="tab" href="#aineistopaketti">Aineisto</a></li>
+</ul>
+<div class="tab-content">
+     <div id="aineistopaketti" class="tab-pane fade in active">
+     <?= $this->userlistEmbed(['id' => 715938, 'view' => 'grid', 'title' => false, 'description' => true, 'date' => false, 'allowCopy' => true])?>
+    </div>
+</div>
+
+<!-- END of: national -  content//bernhard-astrom_fi.phtml -->

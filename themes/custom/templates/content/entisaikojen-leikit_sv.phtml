@@ -1,0 +1,48 @@
+<!-- START of: custom - content/entisaikojen-leikit_sv.phtml -->
+<?php $this->headTitle($this->translate('Lekar från förr'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Lekar från förr</h2>
+<p><strong>Materialet har sammanställts av:</strong> Svenska litteratursällskapet i Finland (SLS)
+</p>
+<p>Det här materialpaketet är framtaget av Svenska Litteratursällskapet i Finland. Med hjälp av det kan du bekanta dig med traditionella lekar från förr.</p>
+<h3>Målgrupp:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-peruskoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#peruskoulu">
+          Grundskolor: <small><strong>gymnastik, historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="peruskoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-peruskoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Gymnastik: I1 Fysisk funktionsförmåga, I2 Social funktionsförmåga
+          </li>
+          <li>Historia: I2 Människor förändrar världen (Högstadier)
+          </li>
+        </ul>
+        <p>Mål: lekarna är ett enkelt sätt att ge eleverna en inblick i det immateriella kulturarvet som fortfarande är närvarande i människors vardag.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketit">Material</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketti" class="tab-pane fade in active">
+    <?=$this->userlistEmbed(['id' => 62, 'view' => 'grid', 'description' => true, 'title' => false, 'date' => false, 'allowCopy' => true])?>
+  </div>
+</div>
+<!-- END of: custom - content/entisaikojen-leikit_sv.phtml -->
