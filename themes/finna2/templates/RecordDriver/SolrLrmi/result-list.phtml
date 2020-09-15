@@ -130,6 +130,11 @@
                       <?=$this->partial('Helpers/copyright-icons.phtml', ['copyright' => $rights['copyrights']]);?>
                       <span class="material-copyright"><?= $this->escapeHtml($rights['copyrights']); ?></span>
                     </span>
+                    <?php if ($rights['link']): ?>
+                      <span class="rights-link">
+                        <a href="<?= $this->escapeHtmlAttr($rights['link']); ?>" target="_blank"><?= $this->transEsc('usage_meaning')?></a>
+                      </span>
+                    <?php endif; ?>
                   </div>
                 </div>
               <?php endif; ?>
