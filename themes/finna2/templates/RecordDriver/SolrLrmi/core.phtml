@@ -42,7 +42,7 @@
       <?php endif; ?>
       <?php if ($descriptions): ?>
         <div class="truncate-field material-description">
-          <?= $this->escapeHtml($descriptions[$this->layout()->userLang]); ?>
+          <?= $this->escapeHtml($descriptions[$this->layout()->userLang] ?? $descriptions['fi'] ?? ''); ?>
         </div>
       <?php endif; ?>
       <?/* Display Main Details */?>

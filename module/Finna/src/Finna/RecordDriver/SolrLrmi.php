@@ -103,6 +103,9 @@ class SolrLrmi extends SolrQdc
         $descriptions = [];
         $desc = '';
         foreach ($xml->description as $d) {
+            if (!empty($d['format'])) {
+                continue;
+            }
             $desc = (string)$d;
             $lang = (string)$d['lang'];
             if ($lang === 'en') {
