@@ -78,10 +78,9 @@
                 <li class="fulltextField">
                   <?php if (in_array($material['format'], $linkedFormats)): ?>
                     <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($material['url'])) ?>"
-                      aria-label="<?=$externalLink?>"><i class="fa <?= $html ? 'fa-external-link' : 'fa-download' ?>"></i>
+                      aria-label="<?=$externalLink?>" target="_blank"><i class="fa <?= $html ? 'fa-external-link' : 'fa-download' ?>"></i>
                       <?= $this->escapeHtml($material['title']) ?></a>
                       (<?= $html ? $link : $this->escapeHtml($material['format']) ?>)
-                  <?php elseif ($html): ?>
                   <?php else: ?>
                     <button class="btn-reset" type="button" data-toggle="tooltip"
                       data-placement="bottom" data-original-title="<?= $toolTipNoMaterialLink ?>"
