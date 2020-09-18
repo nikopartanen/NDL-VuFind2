@@ -32,8 +32,9 @@ next_prev_navigation = false
 default_handler = AllFields
 default_sort = relevance
 default_view = list
+view_options_icons = true
 default_limit = 20
-;limit_options        = 10,20,40,60,80,100
+limit_options = 20,50,100
 case_sensitive_bools = true
 case_sensitive_ranges = true
 
@@ -97,14 +98,14 @@ CallNumber = callnumber-sort
 ;Subject[]          = OpenLibrarySubjectsDeferred:lookfor:5:true:topic,place,person,time
 
 [TopRecommendations]
-Author[]            = AuthorFacets
-Author[]            = SpellingSuggestions
+;Author[]            = AuthorFacets
+;Author[]            = SpellingSuggestions
 ;Author[]           = WorldCatIdentities
-CallNumber[]        = "TopFacets:ResultsTop"
+;CallNumber[]        = "TopFacets:ResultsTop"
 
 [NoResultsRecommendations]
-CallNumber[] = SwitchQuery::wildcard:truncatechar
-CallNumber[] = RemoveFilters
+;CallNumber[] = SwitchQuery::wildcard:truncatechar
+;CallNumber[] = RemoveFilters
 ;CallNumber[] = AlphaBrowseLink:lcc
 
 [RSS]
@@ -141,9 +142,9 @@ container_title = "Journal Title"
 
 [StripFields]
 
-;[Views]
-;list = List
-;grid = Grid
+[Views]
+list = List
+grid = Grid
 ;visual = Visual
 
 [List]
@@ -180,7 +181,7 @@ usage_rights_str_mv = "Usage Rights"
 educational_audience_str_mv = "Kohderyhmä"
 educational_level_str_mv = "Koulutusaste"
 educational_material_type_str_mv = "Oppimateriaalin tyyppi"
-educational_subject_str_mv = "Oppiaine/tutkinto/tieteenala"
+educational_subject_str_mv = "Oppiaine/ tutkinto/ tieteenala"
 educational_aim_str_mv = "Tavoite ja sisältöalue"
 topic_facet = Topic
 author_facet = Author
@@ -211,6 +212,8 @@ hierarchical[] = educational_level_str_mv
 ;hierarchicalFacetDisplayStyles[format] = full
 ;hierarchicalFacetSeparators[format] = " > "
 
+;hierarchicalFacetSortOptions[educational_level_str_mv] = all
+
 [CheckboxFacets]
 ;edition:1st* = "First Edition"
 
@@ -222,7 +225,7 @@ showMoreInLightbox[*] = more
 top_rows = 2
 top_cols = 3
 ;exclude = *
-;orFacets = *
+orFacets = *
 collapsedFacets = usage_rights_str_mv,educational_audience_str_mv,educational_material_type_str_mv,educational_subject_str_mv,educational_aim_str_mv,topic_facet,author_facet,language
 ;sorted_by_index[] = building;
 ;sorted_by_index[] = institution;
@@ -249,6 +252,8 @@ translated_facets[] = usage_rights_str_mv
 translated_facets[] = language
 ;delimited_facets[] = author_id_str
 ;delimited_facets[] = "author_id_str|:::"
+
+hierarchicalFacetSortOptions[educational_level_str_mv] = "all"
 
 [HomePage_Facets]
 callnumber-first = "Call Number"
