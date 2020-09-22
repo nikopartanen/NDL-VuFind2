@@ -1,3 +1,19 @@
 <!-- START of: finna - search/home/home-2.phtml -->
-<?= $this->feed("carousel-finna"); ?>
+<div class="finna-nostot">
+  <a class="finna-nosto" href="<?=$this->url('content-page', ['page' => 'luokkahuone'])?>">
+    <picture>
+      <img src="<?=$this->imageLink('finna-luokkahuone-banner-box-fi.png')?>" alt="Finna Luokkahuone – jokaopen aarreaitta">
+    </picture>
+  </a>
+  <a class="finna-nosto" href="<?=$this->url('search-streetsearch')?>?go=1">
+    <picture>
+      <img src="<?=$this->imageLink('finna-street-banner-box-fi.png')?>" alt="Finna Street – Löydä historiallisia kuvia sieltä missä olet!">
+    </picture>
+  </a>
+  <a class="finna-nosto" href="<?=$this->url('l1-results')?>">
+    <picture>
+      <img src="<?=$this->imageLink('finna-aoe-banner-box-fi.png')?>" alt="Avoimet Oppimateriaalit">
+    </picture>
+  </a>
+</div>
 <!-- END of: finna - search/home/home-2.phtml -->
