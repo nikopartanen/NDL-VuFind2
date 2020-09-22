@@ -1,22 +1,30 @@
 <!-- START of: finna - search/home/home-1_fi.phtml -->
-<div class="news-finna">
-    <?= $this->feed("news-finna"); ?>
+<div class="info-col">
+  <div class="finna-introduction text-center">
+    <img src="themes/custom/images/finna-slogan-fi.svg" alt="Finna – Tietoa tarvitseville ja elämyksiä etsiville" width="300" height="134"/>
+    <p>Finna.fi on arjen löytöretkiä, mahdollisuuksia oppimiseen, tutkittua tietoa ja inspiraatiota jokaiselle.</p>
+  </div>
 </div>
-<div class="finna-nostot">
-<a class="finna-nosto" href="<?=$this->url('content-page', ['page' => 'luokkahuone'])?>">
-    <picture>
-        <img src="<?=$this->imageLink('finna-luokkahuone-banner-box-fi.png')?>" alt="Finna Luokkahuone – jokaopen aarreaitta">
-    </picture>
-</a>
-<a class="finna-nosto" href="<?=$this->url('search-streetsearch')?>?go=1">
-    <picture>
-        <img src="<?=$this->imageLink('finna-street-banner-box-fi.png')?>" alt="Finna Street – Löydä historiallisia kuvia sieltä missä olet!">
-    </picture>
-</a>
-<a class="finna-nosto" href="<?=$this->url('l1-results')?>">
-    <picture>
-        <img src="<?=$this->imageLink('finna-aoe-banner-box-fi.png')?>" alt="Avoimet Oppimateriaalit">
-    </picture>
-</a>
+<div class="info-col">
+  <div class="finna-about">
+    <div class="text-center">
+      <h3><?=$this->translate('Tätä kaikkea saat kirjautumalla sisään finna.fi-palveluun')?></h3>
+    </div>
+    <div class="about-container">
+      <img src="themes/custom/images/share.png" alt="<?=$this->translate('Voit tallentaa ja jakaa suosikkiaineistosi')?>" width="64" height="64" aria-hidden="true">
+      <span><?=$this->translate('Voit tallentaa ja jakaa suosikkiaineistosi')?></span>
+    </div>
+    <div class="about-container">
+      <img src="themes/custom/images/library.png" alt="<?=$this->translate('Voit uusia lainoja ja tehdä varauksia eri kirjastojen aineistoihin yhdestä ja samasta paikasta')?>" width="64" height="64" aria-hidden="true">
+      <span><?=$this->translate('Voit uusia lainoja ja tehdä varauksia eri kirjastojen aineistoihin yhdestä ja samasta paikasta')?></span>
+    </div>
+    <div class="about-container">
+      <img src="themes/custom/images/history.png" alt="<?=$this->translate('Voit tallentaa hakuhistoriasi')?>" width="64" height="64" aria-hidden="true">
+      <span><?=$this->translate('Voit tallentaa hakuhistoriasi')?><br></span>
+    </div>
+    <div class="text-center">
+      <a href="<?=$this->url('myresearch-userlogin')?>" class="btn btn-primary btn-uppercase" data-lightbox data-lightbox-onclose="window.location.href='<?=$this->escapeHtmlAttr($this->url('myresearch-home')) ?>'" title="<?=$this->transEsc("Login")?>"><i class="fa fa-sign-in fa-lg" aria-hidden="true"></i> <span class="login-text"><?=$this->transEsc("Login")?></span></a>
+    </div>
+  </div>
 </div>
 <!-- END of: finna - search/home/home-1_fi.phtml -->
