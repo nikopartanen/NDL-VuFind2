@@ -60,7 +60,6 @@
          || ($module === 'eds' && $action === 'search' && $this->searchType != 'advanced')
          || ($module === 'summon' && $action === 'search' && $this->searchType != 'advanced')
          || ($module == 'combined' && $action == 'results')
-         || ($module == 'authority' && $action == 'search')
       ) {
          $this->layout()->finnaMainTabs = $this->context($this)->renderInContext('search/searchTabs', ['searchTabs' => $searchTabs['tabs'], 'hiddenFilters' => $hiddenFilters]);
          $this->layout()->searchTabs = $searchTabs;
@@ -214,11 +213,6 @@
       ?>
         <button aria-label="<?= $this->transEsc('Search Tips') ?>" class="tooltip-button <?=$tooltipClass?> pull-right hidden-xs" data-toggle="tooltip" data-placement="auto" data-html="true" data-original-title="<?=$this->escapeHtmlAttr($tooltipText)?>">
           <i class="fa fa-question-circle-big"></i>
-        </button>
-      <?php endif; ?>
-      <?php if ($module === 'search' && $action === 'home' && !$this->translationEmpty('tooltip_image_html')): ?>
-        <button aria-hidden="true" aria-label="" class="tooltip-image" data-toggle="tooltip" data-placement="auto" data-html="true" data-original-title="<?=$this->transEsc('tooltip_image_html')?>">
-          <i class="fa fa-info-circle"></i>
         </button>
       <?php endif; ?>
     </div>

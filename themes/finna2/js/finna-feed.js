@@ -186,6 +186,11 @@ finna.feed = (function finnaFeed() {
               });
             });
 
+            holder.find('.slick-slider').on('afterChange', function onAfterChange() {
+              $(this).find('ul.slick-dots li').removeAttr('aria-current');
+              $(this).find('ul.slick-dots li.slick-active').attr('aria-current', true);
+            });
+
             // Text hover for touch devices
             if (finna.layout.isTouchDevice() && typeof settings.linkText === 'undefined') {
               $('.carousel-text').css('padding-bottom', '30px');
@@ -234,7 +239,7 @@ finna.feed = (function finnaFeed() {
           holder.find('.show-more-feeds').removeClass('hidden');
           $(this).addClass('hidden');
         });
-        var feedGrid = holder.find('.feed-grid');
+        var feedGrid = holder.find('.feed-grid:not(.news-feed .feed-grid, .events-feed .feed-grid)');
         if (feedGrid.width() <= 500) {
           feedGrid.find('.grid-item').css('flex-basis', '100%');
         } else if (feedGrid.width() <= 800) {
