@@ -1,7 +1,7 @@
 <?php if ($tabUrl = $this->recommend->getTabUrl()): ?>
 <!-- START of: finna - Recommend/LearningMaterial.phtml -->
 <div class="learning-material-recommendation alert alert-info">
-  <p>Etsitkö avoimia oppimateriaaleja? Siirry <a href="<?= $tabUrl ?>"><u>Avointen oppimateriaalien välilehdelle</u></a> ja saat käyttöösi koulutukseen kohdennetut hakurajaimet.</p>
+  <?= $this->transEsc('learning_material_recommendation_html', ['%%tabUrl%%' => $tabUrl]) ?>
 </div>
 <!-- END of: finna - Recommend/LearningMaterial.phtml -->
 <?php endif; ?>
