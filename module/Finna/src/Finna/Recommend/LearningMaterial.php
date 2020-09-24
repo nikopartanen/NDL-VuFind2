@@ -95,7 +95,7 @@ class LearningMaterial implements RecommendInterface
      */
     public function process($results)
     {
-        if ($results->getParams()->hasFilter(self::LM_FILTER)) {
+        if ($this->hasLearningMaterialFilter($results)) {
             $view = $this->searchTabs->getView();
             $view->results = $results;
             $tabConfig
@@ -107,6 +107,18 @@ class LearningMaterial implements RecommendInterface
                 }
             }
         }
+    }
+
+    /**
+     * Does the object contain a Learning Material filter?
+     *
+     * @param \VuFind\Search\Base\Results $results Search results object
+     *
+     * @return bool
+     */
+    protected function hasLearningMaterialFilter($results)
+    {
+        return $results->getParams()->hasFilter(self::LM_FILTER);
     }
 
     /**
