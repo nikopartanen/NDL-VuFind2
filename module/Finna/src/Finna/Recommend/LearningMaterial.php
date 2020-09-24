@@ -41,7 +41,12 @@ use VuFind\Recommend\RecommendInterface;
  */
 class LearningMaterial implements RecommendInterface
 {
-    const LM_FILTER = '~format_ext_str_mv:0/LearningMaterial/';
+    const LEARNING_MATERIAL_FILTER_FIELDS = [
+        'format',
+        'format_ext_str_mv'
+    ];
+
+    const LEARNING_MATERIAL_FILTER_VALUE = '0/LearningMaterial/';
 
     protected $searchTabs;
 
@@ -95,7 +100,7 @@ class LearningMaterial implements RecommendInterface
      */
     public function process($results)
     {
-        if ($this->hasLearningMaterialFilter($results)) {
+        if ($this->hasLearningMaterialFilter($results->getParams())) {
             $view = $this->searchTabs->getView();
             $view->results = $results;
             $tabConfig
@@ -112,13 +117,22 @@ class LearningMaterial implements RecommendInterface
     /**
      * Does the object contain a Learning Material filter?
      *
-     * @param \VuFind\Search\Base\Results $results Search results object
+     * @param \VuFind\Search\Base\Params $params Search parameters object.
      *
      * @return bool
      */
-    protected function hasLearningMaterialFilter($results)
+    protected function hasLearningMaterialFilter($params)
     {
-        return $results->getParams()->hasFilter(self::LM_FILTER);
+        foreach ($params->getFilterList() as $field => $facets) {
+            foreach ($facets as $facet) {
+                if (in_array($facet['field'], self::LEARNING_MATERIAL_FILTER_FIELDS)
+                    && $facet['value'] == self::LEARNING_MATERIAL_FILTER_VALUE
+                ) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
