@@ -41,6 +41,8 @@ use VuFind\Recommend\RecommendInterface;
  */
 class LearningMaterial implements RecommendInterface
 {
+    const LM_FILTER = '~format_ext_str_mv:0/LearningMaterial/';
+
     protected $searchTabs;
 
     protected $tabUrl = false;
@@ -93,7 +95,7 @@ class LearningMaterial implements RecommendInterface
      */
     public function process($results)
     {
-        if ($results->getParams()->hasFilter('~format_ext_str_mv:0/LearningMaterial/')) {
+        if ($results->getParams()->hasFilter(self::LM_FILTER)) {
             $view = $this->searchTabs->getView();
             $view->results = $results;
             $tabConfig
