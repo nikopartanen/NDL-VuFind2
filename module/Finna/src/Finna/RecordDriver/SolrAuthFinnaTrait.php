@@ -43,11 +43,33 @@ trait SolrAuthFinnaTrait
     /**
      * Return record format.
      *
+     * @deprecated Use getRecordFormat()
+     *
      * @return string
      */
     public function getRecordType()
     {
+        return $this->getRecordFormat();
+    }
+
+    /**
+     * Return record format.
+     *
+     * @return string
+     */
+    public function getRecordFormat()
+    {
         return $this->fields['record_format'] ?? '';
+    }
+
+    /**
+     * Return corporate record type.
+     *
+     * @return string
+     */
+    public function getCorporateType()
+    {
+        return '';
     }
 
     /**
@@ -216,6 +238,16 @@ trait SolrAuthFinnaTrait
     }
 
     /**
+     * Return historical information.
+     *
+     * @return array|null
+     */
+    public function getHistory()
+    {
+        return null;
+    }
+
+    /**
      * Return description (for backward compatibility)
      *
      * @return string|null
@@ -253,16 +285,6 @@ trait SolrAuthFinnaTrait
     public function getOccupations()
     {
         return $this->fields['occupation'] ?? [];
-    }
-
-    /**
-     * Return place of residence.
-     *
-     * @return string
-     */
-    public function getPlaceOfResidence()
-    {
-        return '';
     }
 
     /**
@@ -338,5 +360,15 @@ trait SolrAuthFinnaTrait
     public function isPerson()
     {
         return $this->fields['record_type'] === 'Personal Name';
+    }
+
+    /**
+     * Checks the current record if it's supported for generating OpenURLs.
+     *
+     * @return bool
+     */
+    public function supportsOpenUrl()
+    {
+        return false;
     }
 }
