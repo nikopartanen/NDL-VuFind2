@@ -200,7 +200,20 @@ $config = [
                     ]
                 ]
             ],
-
+            'l1record-feedback' => [
+                'type'    => 'Laminas\Router\Http\Segment',
+                'options' => [
+                    'route'    => '/Record/[:id]/Feedback',
+                    'constraints' => [
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ],
+                    'defaults' => [
+                        'controller' => 'Record',
+                        'action'     => 'Feedback',
+                    ]
+                ]
+            ],
         ],
     ],
     'route_manager' => [
