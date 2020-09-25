@@ -1,0 +1,70 @@
+<!-- START of: custom - content/bernhard-astrom_sv.phtml -->
+<?php $this->headTitle($this->translate('Bernhard Åströms liv på det tidiga 1900-talet i Finland'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Bernhard Åströms liv på det tidiga 1900-talet i Finland</h2>
+<p><strong>Materialet har sammanställts av:</strong> Svenska litteratursällskapet i Finland (SLS)
+</p>
+<p>Svenska litteratursällskapet har sammanställt detta materialpaket som ger dig en inblick i en historisk period via en persons och hans familjs liv. Bernhard Åström var veterinär och en entusiastisk amatörfotograf. Under hela sitt liv förevigade han vardagliga händelser på film och hans fotografier erbjuder en inblick i Finlands historia även ur ett större perspektiv. Fotografierna skildrar bland annat landsbygdens förändring, det finska inbördeskriget, skyddskårerna och förbudslagen, allt dokumenterat av en människa.
+</p>
+<p>Använd alltså fotografierna i materialpaketet för att ge liv åt historielektionerna och följ med Bernhard Åströms liv från början av seklet ända fram till 1930-talet!
+</p>
+<p>Bernhard Åströms samling omfattar över 2000 digitaliserade fotografier. Ett intressant urval på 42 st. har valts ut till detta materialpaket. Du hittar fler fotografier i samlingen på <a target="_blank" href="https://sls.finna.fi/Collection/sls.SLS+1555">SLS:s webbplats</a>.
+</p>
+<h3>Målgrupp:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#ylakoulu">
+          Högstadier: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Historia: I1 Industrisamhällets uppkomst och utveckling, I2 Människor förändrar världen, I3 Finland skapas, byggs och försvaras
+          </li>
+        </ul>
+        <p>Mål: Med hjälp av materialet kan eleven följa med en familjs liv under en period på 30 år och lära sig om hur familjens liv påverkades av olika historiska händelser. Då eleven via en familj får ta del av drömmarna om självständighet och senare händelser i det självständiga Finland utvecklas även hens historiska empati.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Gymnasier: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Läroämnens kurser:</p>
+        <ul class="content-list">
+          <li>Historia: HI1 Människan i en föränderlig omvärld, HI3 Det självständiga Finlands historia
+          </li>
+        </ul>
+        <p>Mål: Med hjälp av materialet kan eleven följa med en familjs liv under en period på 30 år och lära sig om hur familjens liv påverkades av olika historiska händelser. Då eleven via en familj får ta del av drömmarna om självständighet och senare händelser i det självständiga Finland utvecklas även hens historiska empati.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketti">Material</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketti" class="tab-pane fade in active">
+    <?=$this->userlistEmbed(['id' => 798667, 'view' => 'grid', 'title' => false, 'description' => true, 'date' => false, 'allowCopy' => true])?>
+  </div>
+</div>
+<!-- END of: custom - content/bernhard-astrom_sv.phtml -->

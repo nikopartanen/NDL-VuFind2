@@ -1,0 +1,377 @@
+<!-- START of: custom - content/luokkahuone-opeta-tiedonhakua_sv.phtml -->
+<?php $this->headTitle($this->translate('tabs_luokkahuone-opeta-tiedonhakua'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+<?php if ($this->resolver('content/luokkahuone-tabs.phtml')): ?>
+  <?=$this->render('content/luokkahuone-tabs.phtml', ['activeTab' => 'luokkahuone-opeta-tiedonhakua'])?>
+<?php endif; ?>
+<div class="sidebar left">
+  <div class="content-navigation-menu">
+  </div>
+</div>
+<div class="mainbody right">
+  <?php if ($this->resolver('content/Additions/helpBegin.phtml')): ?>
+    <?=$this->render('content/Additions/helpBegin.phtml')?>
+  <?php endif; ?>
+  <div id="beginIntro" class="content-section">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2>Lär ut informationssökning på ett säkert sätt</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-7">
+        <p>Ansvarsfull informationssökning samt ett undersökande och kreativt arbetssätt i kombination med multilitteracitet är kärnan i undervisningen. I söktjänsten <a href="https://finna.fi/?lng=sv">Finna.fi</a> kan du lära ut säker och etisk informationssökning och -hantering på ett inspirerande sätt, eftersom
+        </p>
+        <ul class="content-list">
+          <li>allt material har valts och beskrivits av proffs
+          </li>
+          <li>det är lättare att granska och bedöma materialet på ett källkritiskt sätt tack vare tydliga referenser
+          </li>
+          <li>materialets användarrättigheter anges tydligt i anslutning till materialet på CC-licens
+          </li>
+          <li>det alltid är möjligt att be om ytterligare information av den som tillhandahåller materialet
+          </li>
+          <li>det är lätt att söka information med de mångsidiga <a href="<?=$this->url('content-page', ['page' => 'help'])?>" title="<?=$this->transEsc('Search Tips')?>">sökfunktionerna</a>.
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-5">
+        <div class="speech-bubble">
+          <p>"Det är härligt att söka saklig information så här lätt!"
+            <br><span class="quoter">lärare, användarenkät 2019</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/6DhUJpB-Tf8" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="begin1" class="content-section">
+    <h2>Bli du med användarrättigheter</h2>
+    <p>I en stor del av materialet är användarrättigheterna tydligt märkta med CC-licens (Creative Commons). CC-licensen består av olika villkor som berättar hur materialet får användas. Villkoren kan till exempel förbjuda kommersiell användning av materialet (NC) eller modifiering av materialet (ND). Titta på instruktionsvideon eller på anvisningarna nedan för att se vad de olika villkoren betyder.
+    </p>
+    <p>Märk väl att samtliga CC-licenser endast gäller upphovsrätten. Användaren av materialet har alltid ansvar för att respektera integritetsskyddet och övrig lagstiftning. Om till exempel levande personer visas på bilderna, är användningen av bilderna för marknadsföring eller reklam förbjuden utan samtycke från den person som visas på bilden.
+    </p>
+    <div class="panel panel-default panel-creative-commons">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-2 center-vertically-creative-commons">
+            <p><i class="iconlabel cc-0" aria-hidden="true"></i>
+            </p>
+          </div>
+          <div class="col-xs-10 center-vertically-creative-commons">
+            <p><strong>CC 0</strong>: Fri användning.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default panel-creative-commons">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-2 center-vertically-creative-commons">
+            <p><i class="iconlabel cc-by" aria-hidden="true"></i>
+            </p>
+          </div>
+          <div class="col-xs-10 center-vertically-creative-commons">
+            <p><strong>BY</strong>: Nämn upphovsmannen och andra parter som ska nämnas.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default panel-creative-commons">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-2 center-vertically-creative-commons">
+            <p><i class="iconlabel cc-nc-eu" aria-hidden="true"></i>
+            </p>
+          </div>
+          <div class="col-xs-10 center-vertically-creative-commons">
+            <p><strong>NC</strong>: Kommersiell användning är förbjuden.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default panel-creative-commons">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-2 center-vertically-creative-commons">
+            <p><i class="iconlabel cc-nd" aria-hidden="true"></i>
+            </p>
+          </div>
+          <div class="col-xs-10 center-vertically-creative-commons">
+            <p><strong>ND</strong>: Modifiering är förbjuden.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default panel-creative-commons">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-2 center-vertically-creative-commons">
+            <p><i class="iconlabel cc-sa" aria-hidden="true"></i>
+            </p>
+          </div>
+          <div class="col-xs-10 center-vertically-creative-commons">
+            <p><strong>SA</strong>: Publicera modifierade versioner med samma licens som det ursprungliga materialet.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default panel-creative-commons public-domain">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-2 center-vertically-creative-commons">
+            <p><strong>Public<br>domain</strong>
+            </p>
+          </div>
+          <div class="col-xs-10 center-vertically-creative-commons">
+            <p>Det kan även stå Public domain vid materialet. Detta innebär att materialets upphovsrätt har löpt ut och att materialet kan användas fritt.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="embed-responsive embed-responsive-16by9">
+      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zxTtJDPSslA" allowfullscreen></iframe>
+    </div>
+  </div>
+  <div id="beginCC" class="content-section">
+    <h2>Använd materialet så här:</h2>
+    <div class="panel-group" id="accordionCC" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingCCBY">
+          <h3 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordionCC" href="#collapseCCBY" aria-expanded="true" aria-controls="collapseCCBY">
+              CC BY 4.0
+            </a>
+          </h3>
+        </div>
+        <div id="collapseCCBY" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCCBY">
+          <div class="panel-body">
+            <ul class="content-list">
+              <li>Nämn alltid upphovsmannen och andra parter som ska nämnas (t.ex. den organisation eller samling där materialet uppbevaras).
+              </li>
+              <li>Kommersiell användning är tillåten. Märk väl att användaren av materialet har ansvar för att respektera upphovsrätten och integritetsskyddet. Om till exempel levande personer visas på bilderna, är användningen av bilderna för marknadsföring eller reklam förbjuden utan samtycke från den person som visas på bilden.
+              </li>
+              <li>Du får redigera materialet. Märk ut vilka modifieringar du har gjort (t.ex. avgränsat bilden).
+              </li>
+              <li>Märk ut licensen för det ursprungliga materialet. Erbjud en länk till materialet och lägg CC-licensen till den officiella beskrivningen, ifall ditt presentationssätt möjliggör detta.
+              </li>
+            </ul>
+            <div class="image-rights">
+              <span class="cc-rights">
+                <i class="iconlabel cc-cc" aria-hidden="true"></i>
+                <i class="iconlabel cc-by" aria-hidden="true"></i>
+                <a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by/4.0/deed.sv">CC BY 4.0</a>
+              </span>
+              <span class="copyright-meaning"><a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by/4.0/deed.sv">Mer information på Creative Commons webbplats</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingCCBYNC">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionCC" href="#collapseCCBYNC" aria-expanded="false" aria-controls="collapseCCBYNC">
+              CC BY-NC 4.0
+            </a>
+          </h3>
+        </div>
+        <div id="collapseCCBYNC" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCCBYNC">
+          <div class="panel-body">
+            <ul class="content-list">
+              <li>Nämn alltid upphovsmannen och andra parter som ska nämnas (t.ex. den organisation eller samling där materialet uppbevaras).
+              </li>
+              <li><strong>Kommersiell användning av materialet är förbjuden</strong>. Användning inom icke-kommersiell utbildning är tillåten.
+              </li>
+              <li>Du får redigera materialet. Märk ut vilka modifieringar du har gjort (t.ex. avgränsat bilden).
+              </li>
+              <li>Märk ut licensen för det ursprungliga materialet. Erbjud en länk till materialet och lägg CC-licensen till den officiella beskrivningen, ifall ditt presentationssätt möjliggör detta.
+              </li>
+            </ul>
+            <div class="image-rights">
+              <span class="cc-rights">
+                <i class="iconlabel cc-cc" aria-hidden="true"></i>
+                <i class="iconlabel cc-by" aria-hidden="true"></i>
+                <i class="iconlabel cc-nc-eu" aria-hidden="true"></i>
+                <a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by-nc/4.0/deed.sv">CC BY-NC 4.0</a>
+              </span>
+              <span class="copyright-meaning"><a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by-nc/4.0/deed.sv">Mer information på Creative Commons webbplats</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingCCBYNCND">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionCC" href="#collapseCCBYNCND" aria-expanded="false" aria-controls="collapseCCBYNCND">
+              CC BY-NC-ND 4.0
+            </a>
+          </h3>
+        </div>
+        <div id="collapseCCBYNCND" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCCBYNCND">
+          <div class="panel-body">
+            <ul class="content-list">
+              <li>Nämn alltid upphovsmannen och andra parter som ska nämnas (t.ex. den organisation eller samling där materialet uppbevaras).
+              </li>
+              <li><strong>Kommersiell användning av materialet är förbjuden</strong>. Användning inom icke-kommersiell utbildning är tillåten.
+              </li>
+              <li><strong>Du får inte modifiera materialet</strong>. Du får t.ex. inte avgränsa bilden.
+              </li>
+              <li>Märk ut licensen för det ursprungliga materialet. Erbjud en länk till materialet och lägg CC-licensen till den officiella beskrivningen, ifall ditt presentationssätt möjliggör detta.
+              </li>
+            </ul>
+            <div class="image-rights">
+              <span class="cc-rights">
+                <i class="iconlabel cc-cc" aria-hidden="true"></i>
+                <i class="iconlabel cc-by" aria-hidden="true"></i>
+                <i class="iconlabel cc-nc-eu" aria-hidden="true"></i>
+                <i class="iconlabel cc-nd" aria-hidden="true"></i>
+                <a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by-nc-nd/4.0/deed.sv">CC BY-NC-ND 4.0</a>
+              </span>
+              <span class="copyright-meaning"><a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by-nc-nd/4.0/deed.sv">Mer information på Creative Commons webbplats</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingCCBYNCSA">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionCC" href="#collapseCCBYNCSA" aria-expanded="false" aria-controls="collapseCCBYNCSA">
+              CC BY-NC-SA 4.0
+            </a>
+          </h3>
+        </div>
+        <div id="collapseCCBYNCSA" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCCBYNCSA">
+          <div class="panel-body">
+            <ul class="content-list">
+              <li>Nämn alltid upphovsmannen och andra parter som ska nämnas (t.ex. den organisation eller samling där materialet uppbevaras).
+              </li>
+              <li><strong>Kommersiell användning av materialet är förbjuden</strong>. Användning inom icke-kommersiell utbildning är tillåten.
+              </li>
+              <li><strong>Om du modifierar materialet eller skapar nytt material utifrån det, använd samma licens för de modifierade versionerna som för det ursprungliga materialet</strong>. Märk ut vilka modifieringar du har gjort (t.ex. avgränsat bilden).
+              </li>
+              <li>Märk ut licensen för det ursprungliga materialet. Erbjud en länk till materialet och lägg CC-licensen till den officiella beskrivningen, ifall ditt presentationssätt möjliggör detta.
+              </li>
+            </ul>
+            <div class="image-rights">
+              <span class="cc-rights">
+                <i class="iconlabel cc-cc" aria-hidden="true"></i>
+                <i class="iconlabel cc-by" aria-hidden="true"></i>
+                <i class="iconlabel cc-nc-eu" aria-hidden="true"></i>
+                <i class="iconlabel cc-sa" aria-hidden="true"></i>
+                <a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.sv">CC BY-NC-SA 4.0</a>
+              </span>
+              <span class="copyright-meaning"><a target="_blank" aria-label="<?=$this->escapeHtmlAttr($this->translate('external_online_link'))?>" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.sv">Mer information på Creative Commons webbplats</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p>Obs! Om du inte känner till licensen för materialet, kan du ändå lägga det till din favoritlista eller spara den sökning du har gjort och låta eleverna titta på materialet på Finna via sina egna enheter. Du kan även be leverantören av materialet om ytterligare information om användarrättigheterna med hjälp av den blankett som öppnas när du väljer Kontaktformulär.
+    </p>
+  </div>
+  <div id="begin2" class="content-section">
+    <h2>Uppgiftsidéer för informationssökning och informationshantering</h2>
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+          <h3 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              1. Uppgiftsidéer för historielektion om informationssökning och -hantering
+            </a>
+          </h3>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            <p>Uppgiften nedan kan utföras på en lektion i historia. Eleverna övar sig i informationssökning och -hantering i söktjänsten <a href="https://finna.fi/?lng=sv">Finna.fi</a> med hjälp av bildmaterial som läraren valt ut på förhand.
+            </p>
+            <p>Uppgiften kan göras på vilken lektion som helst. Här används som exempel en lektion där temat är finska inbördeskriget. Det är tillåtet att redigera och komplettera uppgiftsidén.
+            </p>
+            <h4>Uppgiftsidé:</h4>
+            <p>Läraren har på förhand valt ut foton som material för en lektion om inbördeskriget på Finna.fi. Elevernas uppgift är att söka fram fotona som illustrerat lektionen i söktjänsten och bekanta sig närmare med dem.
+            </p>
+            <p>Det är bra om läraren känner till namnen/titlarna på fotona så att det blir lättare för eleverna att hitta materialet. Här har vi valt en materialtitel som anknyter till inbördeskriget, nämligen <a href="https://finna.fi/Record/muistaja_hyvinkaa.M011-75131" target="_blank">ett foto</a>.
+            </p>
+            <h4>Instruktioner för eleverna:</h4>
+            <p>Gå till webbplatsen <a href="https://finna.fi/?lng=sv">Finna.fi</a> och skriv i sökfältet "Rödgardister i Hyvinge, 1918.". Klicka på beståndet och välj därefter till höger "<strong>Visa detaljrik vy</strong>". Svara på frågorna nedan.
+            </p>
+            <ul class="content-list">
+              <li>Vilken typ av material är det frågan om?
+              </li>
+              <li>I vilken organisations samlingar finns materialet?
+              </li>
+              <li>Till vilken samling hör materialet?
+              </li>
+              <li>Titta sedan på själva materialet:
+                <ul class="content-list">
+                  <li>Vad händer på fotot?
+                  </li>
+                  <li>Vem finns med på fotot? Vilka slutsatser kan du dra om den okända personen?
+                  </li>
+                  <li>Var och när har fotot tagits?
+                  </li>
+                  <li>Varför har fotot tagits?
+                  </li>
+                  <li>Vilka tankar väcker fotot hos dig?
+                  </li>
+                </ul>
+              </li>
+              <li>Ta ännu del av materialets användarrättigheter. Får du redigera fotot? Får du länka fotot till ditt Instagram-konto? Vad ska du då eventuellt tänka på?
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              2. Intervju med far- eller morföräldrar eller föräldrar om deras barndom/ungdom
+            </a>
+          </h3>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            <p>Uppgiftsidén lämpar sig för undervisning i historia i både grundskolor och gymnasier. Uppgiften kan också utföras som ämnesövergripande undervisning. Uppgiften ger eleverna bättre kännedom om sin närmiljö och identitet samt fördjupar deras informations- och kommunikationstekniska kunskaper.
+            </p>
+            <h4>Uppgiftsidé:</h4>
+            <p>Eleverna intervjuar sina far- eller morföräldrar eller föräldrar om deras liv vid en vald tidpunkt. Det är bra att på förhand lägga upp en disposition för intervjun tillsammans med läraren.
+            </p>
+            <p>Intervjuerna sammanställs i skriftlig form och illustreras med foton från söktjänsten <a href="https://finna.fi/?lng=sv">Finna.fi</a>, till exempel med foton på tidstypiskt mode, heminredning, mat, musik, film osv. Läraren kan gärna uppmuntra eleverna att söka fram olika slags medieinnehåll.
+            </p>
+            <p>Utöver vanlig informationssökning får eleverna öva sig på källkritik och se hur Finna.fi presenterar information. De får begrunda
+            </p>
+            <ul class="content-list">
+              <li>hurdant material som finns i söktjänsten
+              </li>
+              <li>vilka sökord som är bäst
+              </li>
+              <li>varför det inte finns material om allt
+              </li>
+              <li>hur det material som de sökt ska användas på ett etiskt och ansvarsfullt sätt (referenser, upphovsrätt).
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END of: custom - content/luokkahuone-opeta-tiedonhakua_sv.phtml -->

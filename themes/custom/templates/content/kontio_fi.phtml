@@ -1,0 +1,16 @@
+<!-- START of: national - content/kontio_fi.phtml -->
+<?php $this->headTitle($this->translate('Kontio kuvakulttuurissamme'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+    <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketti">Aineisto</a></li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketti" class="tab-pane fade in active">
+<?= $this->userlistEmbed(['id' => 52, 'view' => 'grid', 'title' => true, 'description' => true, 'date' => false, 'allowCopy' => true])?>
+  </div>
+</div>
+<!-- END of: national -  content/kontio_fi.phtml -->

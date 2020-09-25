@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <atom:link href="" rel="self" type="application/rss+xml" />
+    <title>Vi rekommenderar</title>
+               <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/satama.jpg"/>
+       <title>Hamnens ljus och skuggor från Kotka hamn</title>
+      <description>Kotka hamn skapades för sågindustrins behov på 1870-talet. Under årens lopp har hamnen växt, muskelkraft har ersatts av maskiner och enkel last har förvandlats till massiva transportcontainrar. Kotka har alltid varit en av Finlands viktigaste exporthamnar och skogsindustrins port ut i världen.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/satama.jpg"/>
+      <link>       <![CDATA[Search/Results?view=grid&filter%5B%5D=%7Eformat%3A%220%2FImage%2F%22&filter%5B%5D=%7Eformat%3A%220%2FPhysicalObject%2F%22&join=AND&bool0%5B%5D=AND&lookfor0%5B%5D=Kymenlaakson+museo&lookfor0%5B%5D=satamat&lookfor0%5B%5D=Kotka&type0%5B%5D=AllFields&type0%5B%5D=AllFields&type0%5B%5D=AllFields]]>
+      </link>
+    </item>
+              <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/goran.jpg"/>
+       <title>Fotografier ur Göran Schildts arkiv</title>
+      <description>Fotografier ur författaren, äventyraren och konsthistorikern Göran Schildts (1917–2009) arkiv, de flesta tagna under resor med segelbåten Daphne. I samlingen ingår också fotografier på Göran och Christine Schildts hem, som ritades av parets goda vän Alvar Aalto.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/goran.jpg"/>
+      <link>       <![CDATA[Search/Results?limit=0&view=grid&filter%5B%5D=free_online_boolean%3A%221%22&filter%5B%5D=%7Eformat_ext_str_mv%3A%221%2FImage%2FPhoto%2F%22&lookfor=sls+1150&type=AllFields]]>
+      </link>
+    </item>
+         <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/helsinkimaalaus.jpg"/>
+       <title>Samlingen av Helsingfors-konst</title>
+      <description>Konstverken i Helsingfors stadsmuseums konstsamling berättar om Helsingfors och dess invånare. Staden har alltid inspirerat kända konstnärer och amatörkonstnärer. Deras målningar, teckningar och grafikblad är dokument över det Helsingfors där konstnärerna skapade sina verk.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/helsinkimaalaus.jpg"/>
+      <link>       <![CDATA[Search/Results?filter%5B%5D=%7Ebuilding%3A%220%2FHKM%2F%22&filter%5B%5D=%7Eformat_ext_str_mv%3A%220%2FWorkOfArt%2F%22&lookfor=kuvasto&type=AllFields&view=grid]]>
+      </link>
+    </item>
+         <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/sls_kirjaluettelo.jpg"/>
+       <title>Svenska litteratursällskapets bibliotek nu på Finna</title>
+      <description>SLS omfattande bibliotek som samlar material om den svenskspråkiga kulturen i Finland finns nu på Finna. Här hittar du vetenskapliga verk, bokhistoria, finlandssvensk skönlitteratur och flera specialsamlingar, bl.a. olika småtryck.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/sls_kirjaluettelo.jpg"/>
+      <link>       <![CDATA[Search/Results?limit=0&filter%5B%5D=%7Ebuilding%3A%220%2FSLS%2F%22&filter%5B%5D=%7Esector_str_mv%3A%220%2Flib%2F%22&dfApplied=1&type=AllFields]]>
+      </link>
+    </item>
+     <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/lentokone.jpg"/>
+       <title>Flyg med bröderna Karhumäkis flygplan till den soliga södern</title>
+      <description>Coronaviruset har lamslagit flygtrafiken, men med webbmaterialet från Finlands Flygmuseum kan du åka på en virtuell flygtur till exotiska semesterdestinationer. Fotografierna från bröderna Karhumäki och Kar-Air berättar om reguljär- och charterflygen i synnerhet under 1950- och 1960-talet.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/lentokone.jpg"/>
+      <link>       <![CDATA[Search/Results?view=grid&filter%5B%5D=%7Ebuilding%3A%220%2Filmailumuseo%2F%22&filter%5B%5D=%7Etopic_facet%3A%22lentomatkustus%22&filter%5B%5D=%7Etopic_facet%3A%22liikennelentokoneet%22&filter%5B%5D=%7Eformat_ext_str_mv%3A%220%2FImage%2F%22&filter%5B%5D=free_online_boolean%3A%221%22&dfApplied=1&lookfor=%2Akarhum%2A+OR+%2Akar-air%2A+OR+%2Akar+air%2A&type=AllFields]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/lomasuomi2.jpg"/>
+       <title>Reklam från tiden efter krigen</title>
+      <description>I Finna Klassrum hittar du bland annat detta materialpaket som presenterar förträfflig reklam från 1950-talet fram till 1970-talet. Materialpaketet lämpar sig för undervisningen i olika läroämnen och utmärkt även som underhållning på fritiden! Ta också en titt på hurdana idéer till uppgifter du kan hitta genom att klicka på anteckningssymbolerna i materialet.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/lomasuomi2.jpg"/>
+      <link>       <![CDATA[https://finna.fi/Content/mainoskuvastoa]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/heinola2.jpg"/>
+       <title>Det förgångna trä-Heinola</title>
+      <description>Anja Hallas gatuvyer bildar ett 20-årigt reportage om trä-Heinola. Halla jobbade som pressfotograf för dagstidningen Itä-Häme och dokumenterade Heinolas svunna träkvarter och dess livsstil. Halla byggde upp en utställning av sina fotografier över en småstads förändring 1965-1985. Museiverkets Journalistiska bildarkiv har digitaliserat utställningens fotografier.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/heinola2.jpg"/>
+      <link>       <![CDATA[Search/Results?view=grid&filter%5B0%5D=%7Eauthor_facet%3A%22Halla%2C+Anja%22&filter%5B1%5D=%7Ebuilding%3A%220%2FMuseovirasto%2F%22&dfApplied=1&lookfor=halla+anja&type=AllFields]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/talvisota_lahti.jpg"/>
+       <title>Vinterkriget i Lahtis</title>
+      <description>Under vinterkriget bombades Lahtis sammanlagt 36 gånger och spår av bomberna var synliga i stadsbilden. Lahtis stadsmuseum har digitaliserat över 200 bilder från vinterkriget, som funnits i museets bildarkiv, och överfört bilderna till Finna. Bland bilderna finns även bilder som tagits på andra orter i Finland. Vinterkrigets vardag och bombskadorna i Lahtis har förevigats i synnerhet av fotografen Maija Simola (1911–2012), vars bilder nu även finns i elektroniskt format.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/talvisota_lahti.jpg"/>
+      <link>       <![CDATA[Search/Results?view=grid&filter%5B%5D=free_online_boolean%3A%221%22&filter%5B%5D=%7Eformat_ext_str_mv%3A%220%2FImage%2F%22&filter%5B%5D=%7Ebuilding%3A%220%2FLAHTIMUSEO%2F%22&lookfor=talvisota&type=AllFields]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/turku-palaa.jpg"/>
+       <title>Den bombarderade staden</title>
+      <description>Åbo hör till de finska städer som bombarderades hårdast under vinterkriget. Fotograf Yrjö Paldán dokumen-terade stadens skadade byggnader. Bilderna berättar inte bara om kriget, utan även det förändrade stadslandskapet i Åbo. En helhet på 131 av Paldáns fotografier har digiterats i Finna.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/elonet.jpg"/>
+      <link>       <![CDATA[Search/Results?limit=50&filter%5B%5D=%7Ebuilding%3A%221%2FTurun+museokeskus%2FValokuva-arkisto%2F%22&dfApplied=1&lookfor=Pald%C3%A1n+Yrj%C3%B6&type=AllFields&view=grid]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/elonet.jpg"/>
+       <title>Titta på långfilmer</title>
+      <description>Nu finns Nationella audiovisuella institutets inhemska långfilmer i Finna. Utöver långfilmer finns ett par tusen reklam-, dokumentär- och kortfilmer, censurklipp och andra filmklipp från över hundra års tid fritt tillgängliga.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/elonet.jpg"/>
+      <link>       <![CDATA[Search/Results?limit=0&filter%5B%5D=%7Ebuilding%3A%220%2FKAVI%2F%22&filter%5B%5D=free_online_boolean%3A%221%22&filter%5B%5D=%7Eformat_ext_str_mv%3A%221%2FVideo%2FShort%2F%22&filter%5B%5D=%7Eformat_ext_str_mv%3A%221%2FVideo%2FFeature%2F%22&type=AllFields]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/autopeli.jpg"/>
+       <title>Brädspel</title>
+      <description>Nationalbiblioteket har digitaliserat gamla brädspel från Finland och Sverige ur sina samlingar från 1810-talet fram till 1940-talet. Samtliga spel i samlingen är upphovsrättsfria och får alltså användas fritt.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/autopeli.jpg"/>
+      <link>       <![CDATA[Search/Results?filter%5B%5D=%7Ebuilding%3A%221%2FNLF%2FDoria%2F%22&filter%5B%5D=%7Eformat%3A%221%2FOther%2FBoardGame%2F%22&type=AllFields&view=grid]]>
+      </link>
+    </item>
+        <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/kirjallisuus.jpg"/>
+      <title>Finländska litteraturklassiker</title>
+      <description>Via Finna hittar du klassiker av bland annat Eino Leino, J. L. Runeberg, Minna Canth samt Juhani Aho… Har du redan läst alla?</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/kirjallisuus.jpg"/>
+      <link>       <![CDATA[Search/Results?limit=0&lookfor=+%28project_id_str_mv%3AKirjallisuuspankki%29&type=AllFields&filter%5B%5D=free_online_boolean%3A1]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/sks-nosto.jpg"/>
+      <title>SKS:s digitala material finns nu i Finna </title>
+      <description>SKS biblioteks digitaliserade material finns fritt tillgängliga på webben. Material innehåller finska litterära klassiker av Aleksis Kivi, Minna Canth och Juhani Aho, tillsammans med 1800-talets traditionsvetenskapliga publikationer och verk av självlärda skribenter. Dessutom publicerar SKS ett öppet tillgängligt urval av sina forskningspublikationer. Nu kan du hitta alla dessa på Finna! </description>
+      <media:thumbnail url="themes/custom/images/carousel-images/sks-nosto.jpg"/>
+      <link>       <![CDATA[Search/Results?filter%5B%5D=building%3A"0%2FFINLIT%2F"]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/baari.jpg"/>
+       <title>Från lobbybarer till krogar</title>
+      <description>’Bar’ kan syfta på otaliga olika restauranger med rättigheter från lobbybarer på lyxhotell till enkla kvarterskrogar. Hotell- och restaurangmuseet dokumenterade 2006 barer i Helsingfors, av vilka vissa har stängt sedan dess. Bilderna avspeglar barernas stora variation från kristallkronor till WC-klotter.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/baari.jpg"/>
+      <link>       <![CDATA[Search/Results?view=list&filter%5B%5D=%7Ebuilding%3A%220%2FHOTELLI-+JA+RAVINTOLAMUSEO%2F%22&filter%5B%5D=%7Eformat%3A%220%2FImage%2F%22&filter%5B%5D=search_daterange_mv%3A%22overlap%7C%5B2006+TO+2006%5D%22&lookfor=baarit&type=AllFields]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/albumit-auki.jpg"/>
+       <title>Öppna albumen – skatter från hemarkiv</title>
+      <description>För att rädda värdefull kulturhistoria har aktörer på olika orter sedan 2014 sparat digitaliserade bilder från hemarkiv i Öppna albumen-arkivet. Jyväskylä-samlingen var den första som öppnades i Finna och nya samlingar sparas kontinuerligt i det gemensamma arkivet.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/albumit-auki.jpg"/>
+      <link>       <![CDATA[Search/Results?limit=0&filter%5B%5D=%7Ebuilding%3A%220%2Flasipalatsi%2F%22&filter%5B%5D=free_online_boolean%3A%221%22&filter%5B%5D=%7Etopic_facet%3A%22lapset+%28ik%C3%A4%C3%A4n+liittyv%C3%A4+rooli%29%22&filter%5B%5D=%7Etopic_facet%3A%22lapset+%28perheenj%C3%A4senet%29%22&dfApplied=1&type=AllFields]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/lusto.jpg"/>
+       <title>Tillbaka till skolbänken – skolplanscher  i Finna</title>
+      <description>Idag har vi internet, förr hade vi skolplanscher. På 1900-talet användes skolplanscher i Finland för undervisning om djur, växer, människans anatomi, världshistorien och främmande kulturer. Många finländska konstnärer inspirerades att illustrera detaljerade skolplanscher. Titta in i skolplanschsamlingar i hela Finland via Finna.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/lusto.jpg"/>
+      <link>       <![CDATA[Search/Results?filter%5B%5D=free_online_boolean%3A%221%22&filter%5B%5D=%7Eformat%3A%220%2FMap%2F%22&filter%5B%5D=%7Eformat%3A%220%2FDocument%2F%22&filter%5B%5D=%7Eformat%3A%220%2FImage%2F%22&filter%5B%5D=%7Eformat%3A%220%2FPhysicalObject%2F%22&lookfor=opetustaulu&type=AllFields&view=grid]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/levyt.jpg"/>
+      <title>Gamla finska inspelningar</title>
+      <description>Hurdan musik producerades och spelades i Finland i början av 1900-talet? Bekanta dig med finska inspelningar i Nationalbibliotekets samlingar.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/levyt.jpg"/>
+      <link>       <![CDATA[Search/Results?filter%5B%5D=%7Ebuilding%3A%220%2FNLF%2F%22&filter%5B%5D=%7Elanguage%3A%22fin%22&lookfor=copvapaa&type=AllFields&limit=100]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/taide.jpg"/>
+      <title>Bröderna von Wright</title>
+      <description>Konstnärstrion Ferdinand, Magnus och Wilhelm von Wright är kända för sina realistiskt exakta målningar av djur och fåglar. Just nu kan deras verk beundras på konstmuseet Ateneum. Du kan få försmak av utställningen genom att titta på brödernas konstverk via Finna.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/taide.jpg"/>
+      <link>       <![CDATA[Search/Results?lookfor=&type=AllFields&filter%5B%5D=%7Eformat%3A%220%2FWorkOfArt%2F%22&filter%5B%5D=%7Eauthor_facet%3A%22Wright%2C+Magnus+von%22&filter%5B%5D=%7Eauthor_facet%3A%22Wright%2C+Wilhelm+von%22&filter%5B%5D=%7Eauthor_facet%3A%22Wright%2C+Ferdinand+von%22&dfApplied=1&limit=20&sort=relevance%2Cid+asc]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/raha.jpg"/>
+      <title>Gamla sedlar</title>
+      <description>När Finland blev självständigt 1917 var det ett av de få länder som redan hade en egen myntenhet – sedeltryckeriet kunde leverera 1- och 20-markssedlar till banken samma dag som självständighetsdeklarationen godkändes. Bege dig på en nostalgisk resa bland gamla sedlar från Finland och andra länder.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/raha.jpg"/>
+      <link>       <![CDATA[Search/Results?view=grid&filter%5B%5D=%7Eformat%3A%220%2FPhysicalObject%2F%22&filter%5B%5D=free_online_boolean%3A%221%22&filter%5B%5D=%7Etopic_facet%3A%22setelirahat%22&lookfor=seteli%2A&type=AllFields]]>
+      </link>
+    </item>
+    <item>
+      <enclosure type="image/jpeg" url="themes/custom/images/carousel-images/kartta.jpg"/>
+      <title>Håll dig på kartan</title>
+      <description>Finland har avbildats på kartor över norra Europa från och med 1500-talet. I Finna kan du orientera inom Finlands gränser med hjälp av mångsidiga stadskartor och stadsplaner. Därtill innehåller samlingarna otaliga kartor över den övriga världen.</description>
+      <media:thumbnail url="themes/custom/images/carousel-images/kartta.jpg"/>
+      <link>       <![CDATA[Search/Results?limit=0&filter%5B%5D=%7Eformat%3A%220%2FMap%2F%22&filter%5B%5D=free_online_boolean%3A1&lookfor=kartta&type=AllFields]]>
+      </link>
+    </item>
+  </channel>
+</rss>

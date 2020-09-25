@@ -1,0 +1,299 @@
+<!-- START of: custom - content/meri-ihminen_fi.phtml -->
+<?php $this->headTitle('Meri ja ihminen'); ?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Meri ja ihminen</h2>
+<p><strong>Aineistopaketin koonnut:</strong> Espoon kaupunginmuseo
+</p>
+<p>Espoon kaupunginmuseo on koostanut Meri ja ihminen -aineistopaketin, jonka kanssa pääset tutustumaan Itämereen ja rannikkoalueiden elämään 1900-luvun alkupuolelta nykypäivään.
+</p>
+<p>Aineistopaketti jakautuu viiteen kokonaisuuteen: Saariston monet elinkeinot, Liikkuminen saaristossa, Ihmisen toiminnan vaikutus elinympäristöönsä, Saaristolaiselämää ja Saariston ihmiset. Voit tutustua vain yhteen kokonaisuuteen tai kaikkiin! Jokaisen alateeman tueksi on laadittu tehtäväideoita oppitunneille.
+</p>
+<h3>Kohderyhmä:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-alakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#alakoulu">
+          Alakoulu: <small><strong>yhteiskuntaoppi, ympäristöoppi</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="alakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-alakoulu">
+      <div class="panel-body">
+        <p>Oppiaineiden sisältöalueet:
+        </p>
+        <ul class="content-list">
+            <li>Yhteiskuntaoppi: S1 Arkielämä ja oman elämän hallinta, S3 Aktiivinen kansalaisuus ja vaikuttaminen, S4 Taloudellinen toiminta</li>
+            <li>Ympäristöoppi: S3 Löytöretkelle monimuotoiseen maailmaan</li>
+        </ul>
+        <p>Tavoite: Auttaa oppilasta ymmärtämään Itämeren merkitystä historiassa ja nykypäivänä. Aineistopaketti yhdessä tehtäväideoiden kanssa toteuttaa perusopetuksen opetussuunnitelman laaja-alaisista osaamisen tavoitteista erityisesti L7 (osallistuminen, vaikuttaminen ja kestävän tulevaisuuden rakentaminen) sekä L3 (itsestä huolehtiminen ja arjen taidot).
+        </p>
+      </div>
+    </div>
+  </div>
+   <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhmat" href="#ylakoulu">
+          Yläkoulu: <small><strong>historia, maantieto, yhteiskuntaoppi</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+        <p>Oppiaineiden sisältöalueet:
+        </p>
+         <ul class="content-list">
+            <li>Historia: S1 Teollisuusyhteiskunnan synty ja kehitys, S5 Hyvinvointiyhteiskunnan rakentaminen</li>
+            <li>Maantieto: S4 Muuttuvat maisemat ja elinympäristöt, S6 Kestävä elämäntapa ja luonnonvarojen kestävä käyttö</li>
+            <li>Yhteiskuntaoppi: S1 Arkielämä ja oman elämän hallinta, S3 Aktiivinen kansalaisuus ja vaikuttaminen, S4 Taloudellinen toiminta</li>
+        </ul>
+        <p>Tavoite:  Ohjata oppilasta ymmärtämään Itämeren merkitystä historiassa ja nykypäivänä. Aineistopaketti yhdessä tehtäväideoiden kanssa toteuttaa perusopetuksen opetussuunnitelman laaja-alaisista osaamisen tavoitteista erityisesti L7 (osallistuminen, vaikuttaminen ja kestävän tulevaisuuden rakentaminen) sekä L3 (itsestä huolehtiminen ja arjen taidot).
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Lukio: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Oppiaineet ja kurssit:
+        </p>
+        <ul class="content-list">
+            <li>Historia HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa, HI3 Itsenäisen Suomen historia</li>
+        </ul>
+        <p>Tavoite: Ohjata opiskelijaa ymmärtämään Itämeren merkitystä historiassa ja nykypäivänä.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketit">Aineisto</a>
+  </li>
+  <li><a data-toggle="tab" href="#tehtavaideat">Tehtäväideat</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketit" class="tab-pane fade in active">
+    <h3>Saariston monet elinkeinot</h3>
+    <p>Tämän aineistokokoelman myötä pääset sukeltamaan saaristolaisten elinkeinoihin Etelä-Suomen rannikkoseudulla 1800-luvun lopulta 1990-luvulle! Voit havainnoida, mitä kaikkia elinkeinoja saaristossa on harjoitettu ja millä tavoin.
+    </p>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Pohdittavaa oppitunneille</h4>
+        <ul class="content-list">
+          <li>Millaisia elinkeinoja on harjoitettu, mikä on ollut pääelinkeino?
+          </li>
+          <li>Mitä työvälineitä on tarvittu?
+          </li>
+          <li>Onko yksi elinkeino riittänyt?
+          </li>
+          <li>Miksi myös saaristossa harjoitettiin pienimuotoista maataloutta?
+          </li>
+        </ul>
+      </div>
+    </div>
+    <?=$this->userlistEmbed(['id' => 56, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+    <hr>
+    <h3>Liikkuminen saaristossa</h3>
+    <p>Tämä aineistokokoelma johdattaa sinut tarkastelemaan liikkumista ja huviliikennettä Itämeren rannikkoalueilla ja saaristossa 1900-luvun alkupuolelta aina 1980-luvulle saakka.
+    </p>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Pohdittavaa oppitunneille</h4>
+        <ul class="content-list">
+          <li>Millaisilla kulkuvälineillä meren äärellä on liikuttu?
+          </li>
+          <li>Miten saaristoon muutettiin kesäisin?
+          </li>
+          <li>Miten liikkuminen erosi kesäisin ja talvisin? Onko tässä suhteessa tapahtunut muutoksia aikojen saatossa?
+          </li>
+          <li>Oliko ”välttämättömällä” ja huviliikenteellä eroja?
+          </li>
+          <li>Miksi saariston ihmiset olivat niin riippuvaisia höyrylaivoista ja veneistä? (HUOM. Vinkki: Kesähuvila-asutus ja höyrylaivareitit valtakunnallisesti merkittävänä rakennettuna kulttuuriympäristönä <a href="http://www.rky.fi/read/asp/r_kohde_det.aspx?KOHDE_ID=1573">http://www.rky.fi/read/asp/r_kohde_det.aspx?KOHDE_ID=1573</a>)
+          </li>
+        </ul>
+      </div>
+    </div>
+    <?=$this->userlistEmbed(['id' => 67, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+    <hr>
+    <h3>Ihmisen toiminnan vaikutus elinympäristöönsä</h3>
+    <p>Millaisessa vuorovaikutuksessa ihminen ja Itämeri ovat olleet 1900-luvun alkupuolelta nykypäivään? Tässä aineistokokoelmassa näet, miten saaristolaiset ovat vaikuttaneet elinympäristöönsä.
+    </p>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Pohdittavaa oppitunneille</h4>
+        <ul class="content-list">
+          <li>Miten ihmisen kädenjälki näkyy rannikolla ja saaristossa; miten merimaisema on muuttunut (rakennukset/rakennettu ympäristö, roskat, saastuminen…)?
+          </li>
+          <li>Miten ihmisen toiminta vaikuttaa Itämereen? Onko tässä tapahtunut muutoksia aikojen saatossa (huom. Ihminen on vaikuttanut Itämeren tilaan esihistoriallisista ajoista lähtien!)?
+          </li>
+          <li>Ovatko ihmisen toiminnasta johtuvat muutokset hyviä vai huonoja?
+          </li>
+          <li>Miten erilaiset kotieläimet vaikuttavat meren tilaan?
+          </li>
+          <li>Entä pyykin tai tiskien peseminen?
+          </li>
+          <li>Miten ihminen on joutunut ottamaan meren arvaamattomuuden huomioon asuessaan sen äärellä?
+          </li>
+          <li>Sääolosuhteiden vaikutukset meren äärellä asumiseen ennen ja nyt (ilmastonmuutos, tulvarajat).
+          </li>
+          <li>Miten meriluonto ja ihminen ovat olleet yhteydessä ennen ja nyt / millainen on sinun meriluontosuhteesi verrattuna entisajan saaristolaisiin (elannon lähteestä nautinnon lähteeksi)?
+          </li>
+        </ul>
+      </div>
+    </div>
+    <?=$this->userlistEmbed(['id' => 68, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+    <hr>
+    <h3>Arki ja vapaa-aika saaristossa / saaristolaiselämää</h3>
+    <p>Tiedätkö, millaista saaristolaiselämä on ennen vanhaan ollut? Tässä aineistokokoelmassa keskitytään saaristolaisten arkeen ja vapaa-ajan viettoon.
+    </p>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Pohdittavaa oppitunneille</h4>
+        <ul class="content-list">
+          <li>Miten arki ja vapaa-ajanvietto ovat saaristossa eronneet toisistaan?
+          </li>
+          <li>Millaisia muutoksia tässä on tapahtunut?
+          </li>
+          <li>Millaisia kotitöitä saaristolaiselämään on kuulunut?
+          </li>
+        </ul>
+      </div>
+    </div>
+    <?=$this->userlistEmbed(['id' => 69, 'view' => 'grid', 'title' => false,  'description' => false,  'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+    <hr>
+    <h3>Saariston ihmiset</h3>
+    <p>Millaiset ihmiset ovat asuneet ja viettäneet aikaansa saaristossa? Tässä aineistokokoelmassa pääroolissa ovat Etelä-Suomen saaristolaiset 1800-luvun lopulta 1980-luvulle.
+    </p>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Pohdittavaa oppitunneille:</h4>
+        <ul class="content-list">
+          <li>Ketkä saaristossa viettivät aikaa / asuivat?
+          </li>
+          <li>Miten ihmiset pukeutuivat (eri aikoina)?
+          </li>
+          <li>Mitä yhteiskuntaluokkia voit tunnistaa?
+          </li>
+        </ul>
+      </div>
+    </div>
+    <?=$this->userlistEmbed(['id' =>  70, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'limit' => '6', 'allowCopy' => true, 'showAllLink' => true])?>
+  </div>
+  <div id="tehtavaideat" class="tab-pane fade">
+    <p>Tehtäväideat on suunniteltu antamaan ideoita siihen, kuinka voit tarkastella aineistopakettia. Voit lähestyä aihetta valitsemalla tehtävistä yhden tai useamman. Tehtävät voi tehdä yksilö-, pari- tai ryhmätehtävinä. Muokkaa tehtäväideoita eri oppiasteisiin ja oppiaineisiin haluamallasi tavalla.
+    </p>
+    <div class="panel-group" id="accordion-tehtavaideat" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-elinymparisto">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#elinymparisto">
+              Ihmisen toiminnan vaikutus elinympäristöönsä
+            </a>
+          </h3>
+        </div>
+        <div id="elinymparisto" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-elinymparisto">
+          <div class="panel-body">
+            <h4>Tehtävä 1</h4>
+            <p>Tutustu Ihmisen toiminnan vaikutus <a target="_blank" href="https://finna.fi/Content/meri-ihminen">elinympäristöönsä-kokoelmaan</a>.
+            </p>
+            <ol class="content-list" type="a">
+              <li>Pohdi, millä kaikilla tavoilla ihminen on vaikuttanut negatiivisesti Itämeren tilaan ja onko Itämeren saastuminen uusi ilmiö.
+              </li> 
+              <li>Testaa, kuinka paljon saastutat Itämerta, osoitteessa: <a target="_blank" href="https://dynamic.hs.fi/2017/itameri/">https://dynamic.hs.fi/2017/itameri/</a>.
+              </li>
+            </ol>
+            <h4>Tehtävä 2</h4>
+            <p>Tarkastele kuvaa <a target="_blank" href="https://finna.fi/Record/ekm.urn:nbn:fi-ekmhttp%253A%252F%252Fwww.profium.com%252Fespoo%252Fkohde%252FKohde-B4D74D48-3CF0-8389-21B1-08289382CCD3#image">”Lehmät rantavedessä, Sommarnäs, Suvisaaristo”</a>.
+            </p> 
+            <ol class="content-list" type="a">
+              <li>Mitä haittaa lehmistä ja muista kotieläimistä voi olla Itämerelle?
+              </li>
+              <li>Kuuluisivatko ne merelliseen maisemaan ilman ihmistä?
+              </li>
+            </ol> 
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-elinkeinot">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#elinkeinot">
+              Saariston monet elinkeinot
+            </a>
+          </h3>
+        </div>
+        <div id="elinkeinot" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-elinkeinot">
+          <div class="panel-body">
+            <h4>Tehtävä 1</h4>
+            <p>Tarkastele  <a target="_blank" href="https://finna.fi/Content/meri-ihminen">Saariston monet elinkeinot-kokoelmaa</a>. Miten nykyihmisen suhde ravinnonlähteisiinsä eroaa esimerkiksi 1930-40-lukujen saaristolaisista?
+            </p>
+            <p>Vinkki: katso esim. kuvat:
+            </p>
+            <ul class="content-list">
+              <li><a target="_blank" href="https://finna.fi/Record/ekm.urn:nbn:fi-ekmhttp%253A%252F%252Fwww.profium.com%252Farchive%252FArchivedObject-877B96C3-D458-910A-1CF4-8347974AEB95#image">"fisken plockas från näten / kalansaalista irrotetaan verkoista"</a>
+              </li>
+              <li><a target="_blank" href="https://finna.fi/Record/ekm.urn:nbn:fi-ekmhttp%253A%252F%252Fwww.profium.com%252Farchive%252FArchivedObject-80074020-F0F8-3E1E-4E4B-4D63C9B48BE7#image">"Eugen Enoksson med utter som han skjutit / Eugen Enoksson ampumansa saukko kädessään"</a>
+              </li>
+              <li><a target="_blank" href="https://finna.fi/Record/ekm.urn:nbn:fi-ekmhttp%253A%252F%252Fwww.profium.com%252Farchive%252FArchivedObject-43C8B1D4-96EA-B8F1-35F8-DABFAFC5D8F4#image">"Eugen Enoksson med fångst från fågeljakt / Eugen Enoksson ja lintusaalis"</a>.
+              </li>
+            </ul>
+            <h4>Tehtävä 2</h4>
+            <p>Tutki kuvaa <a target="_blank" href="https://finna.fi/Record/ekm.urn:nbn:fi-ekmhttp%253A%252F%252Fwww.profium.com%252Fespoo%252FKohde-AD73A9D6-18CB-BD83-D1FA-5888EF857656#image">”Alf och Hemming Juselius fiskar / Alf ja Hemming Juselius kalastamassa”</a>. Kuvittele itsesi kuvassa taka-alalla olevan pojan asemaan ja kirjoita hänen näkökulmastaan lyhyt päiväkirjamerkintä kesäpäivän vietosta saaristossa.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-ihmiset">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#ihmiset">
+              Saaristolaiselämää ja saariston ihmiset
+            </a>
+          </h3>
+        </div>
+        <div id="ihmiset" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ihmiset">
+          <div class="panel-body">
+            <h4>Tehtävä 1</h4>
+            <p>Perehdy valtakunnallisesti merkittävän rakennetun kulttuuriympäristön arvon saaneiden Helsingin höyrylaivareittien ja kesähuviloiden historiaan <a href="http://www.rky.fi/read/asp/r_kohde_det.aspx?KOHDE_ID=1573">museoviraston verkkosivuilla</a>. Pohdi, miksi pääkaupungin herrasväki alkoi 1900-luvun alkupuolella ostaa yhä enemmän huviloita ja viettää kesiään Uudenmaan saaristossa? Vertaile nykyajan mökkikulttuuria entisajan huvilaelämään.
+            </p>
+            <p>Vinkki: lisätietoa saat myös <a href="https://tarinasoitin.fi/rulludd">Espoon kaupunginmuseon Huvilamuseo Villa Rulluddin mobiilioppaasta</a>
+            </p>
+            <p>Muita hyödyllisiä lähteitä pääkaupunkiseudun huvilaelämästä:
+            </p>
+            <ul class="content-list">
+              <li>Blom Christian & Jalavisto Sven, <i>Autuaiden Saaristo – Aikaisia huviloita Suvisaaristossa</i>. Sommarö-Seura ry Sommarö-Sällskapet rf, 2018. Vuosikirja. 46. Vuosikerta.
+              </li>
+              <li>Jalavisto Sven, <i>Huviloita saaristossa</i>. 1973.
+              </li>
+              <li>Nygård Stefan, <i>Villinki - saariston huvilayhteisö</i>. 2003, Helsingin kaupunginmuseo.
+              </li>
+              <li>Pekkanen Johanna & Heininen Virve, <i>Kuninkaankartanosta kaupungiksi</i>: viisi vuosisataa espoolaiselämää. 2013, AtlasArt.
+              </li>
+              <li>Hovi-Wasastjerna Päivi, <i>Vitträskin villat: huvilakulttuuria ja taiteilijaelämää 1900-luvun alussa</i>. 2005.
+              </li>
+            </ul>
+            <h4>Tehtävä 2</h4>
+            <p>Katso kuvaa <a href="https://finna.fi/Record/ekm.urn:nbn:fi-ekmhttp%253A%252F%252Fwww.profium.com%252Fespoo%252Fkohde%252FKohde-4B39A4B5-2244-1161-7DA4-74AF87C5EE57#image ">”picknik på Malmkopplan / piknik Malmkopplanilla”</a>. Kirjoita kuvan äidin näkökulmasta kirje Helsingissä työskentelevälle aviomiehelle kesän vietosta saaristossa.
+            </p>
+          </div>
+        </div>
+      </div>  
+    </div>
+  </div>
+</div>
+<!-- END of: custom - content/meri-ihminen_fi.phtml -->

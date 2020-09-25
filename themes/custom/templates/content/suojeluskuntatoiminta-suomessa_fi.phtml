@@ -1,0 +1,154 @@
+<!-- START of: national - content/suojelukuntatoiminta-suomessa_fi.phtml -->
+<?php $this->headTitle($this->translate('Suojeluskuntatoiminta Suomessa'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+    <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Suojeluskuntatoiminta Suomessa</h2>
+<p><strong>Aineistopaketin koonnut:</strong> Svenska Litteratursällskapet i Finland (SLS)</p>
+<p>Svenska Litteratursällskapet i Finland on koonnut tämän aineistopaketin, joka valottaa suojeluskuntatoimintaa monipuolisesti maailmansotien välisenä aikana eri puolilla Suomea.</p>
+<h3>Kohderyhmä:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#ylakoulu">
+          Yläkoulu: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+          <p>Oppiaineiden sisältöalueet:</p>
+            <ul class="content-list">
+                <li>Historia: S2 Ihmiset muuttavat maailmaa, S3 Suomea luodaan, rakennetaan ja puolustetaan</li>
+            </ul>
+          <p>Tavoite: tutustuttaa valokuva-aineiston avulla suojeluskuntatoimintaan Suomessa.</p>
+      </div>
+    </div>
+    </div>
+      <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Lukio: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+          <p>Oppiaineet ja kurssit:</p>
+            <ul class="content-list">
+                <li>Historia: HI2 Kansainväliset suhteet, HI3 Itsenäisen Suomen historia</li>
+            </ul>
+          <p>Tavoite: tutustuttaa valokuva-aineiston avulla suojeluskuntatoimintaan Suomessa.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+    <li class="active"><a data-toggle="tab" href="#aineistopaketti">Aineisto</a></li>
+    <li><a data-toggle="tab" href="#tehtavaideat">Tehtäväideat</a></li>
+</ul>
+<div class="tab-content">
+     <div id="aineistopaketti" class="tab-pane fade in active">
+     <?= $this->userlistEmbed(['id' => 64, 'view' => 'grid', 'title' => false, 'description' => true, 'date' => false, 'allowCopy' => true])?>
+    </div>
+ <div id="tehtavaideat" class="tab-pane fade">
+     <p>Tehtäväideat on suunniteltu antamaan ideoita siihen, kuinka voit tarkastella aineistopakettia. Voit lähestyä aihetta valitsemalla tehtävistä yhden tai useamman. Tehtävät voi tehdä yksilö-, pari- tai ryhmätehtävinä. Muokkaa tehtäväideoita eri oppiasteisiin ja oppiaineisiin haluamallasi tavalla.</p>
+        <div class="panel-group" id="accordion-tehtavaideat" role="tablist" aria-multiselectable="true">
+            
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-valokuvat">
+      <h3 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#valokuvat">
+            Valokuvat lähteinä - Suojeluskuntakuvien analysointia ja tulkintaa
+        </a>
+      </h3>
+    </div>
+    <div id="valokuvat" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-valokuvat">
+      <div class="panel-body">
+          <h4>Tehtävä 1</h4>
+          <p>Tutki aineistopaketin valokuvia.</p>
+          <ol class="content-list" type="1">
+              <li>Ketkä osallistuivat suojeluskuntatoimintaan?</li>
+              <li>Tutustu kuvaan <a target="_blank" href="/Record/sls.SLS+1555_SLS+1555_1628">”Mat serveras åt militärgossarna. (1920)”</a>. Mikä oli valokuvan perusteella naisten rooli suojeluskuntatoiminnassa?</li>
+              <li>Valokuvassa <a target="_blank" href="/Record/sls.SLS+1555_SLS+1555_1628">”Mat serveras åt militärgossarna. (1920)”</a> olevat naiset ovat todennäköisesti kuuluneet Lotta Svärd -järjestöön. Selvitä verkkoa hyödyntäen mikä oli Lotta Svärd -järjestö ja mitä muita tehtäviä lotilla oli.</li>
+          </ol>
+          <h4>Tehtävä 2</h4>
+          <p>Tutustu valokuvaan <a target="_blank" href="/Record/sls.%25C3%2596TA+311_%25C3%25B6ta+311+foto+61">”Ateljéfotografi av militärklädd ung man som ...”</a> ja vastaa alla oleviin kysymyksiin.</p>
+          <ol class="content-list" type="1">
+              <li>Pohdi, miksi nuorukainen on kuvauttanut itsensä ateljeessa sotavarusteissa.</li>
+              <li>Katso tarkempia tietoja aineistosta. Selvitä, missä päin Suomea valokuva on todennäköisesti otettu. Miten päättelit vastauksesi?</li>
+              <li>Aineiston ajaksi on merkattu vuosien 1910-1942 välinen aika. Mistä voit päätellä, että valokuvaa ei kuitenkaan todennäköisesti ole otettu ennen vuotta 1917?</li>
+          </ol>
+          <h4>Tehtävä 3</h4>
+          <ol class="content-list" type="1">
+              <li>Millaisia vapaa-ajanviettotapoja löydät valokuvista?</li>
+              <li>Pohdi, miksi urheilulla oli niin suuri merkitys suomalaisille maailmansotien välisenä aikana.</li>
+          </ol>
+          <h4>Tehtävä 4</h4>
+          <p>Tutustu valokuvaan <a target="_blank" href="/Record/sls.SLS+1555_SLS+1555_1638">”Paraden den 13. (1919)”</a>.</p>
+          <ol class="content-list" type="1">
+              <li>Mitä kuvassa tapahtuu?</li>
+              <li>Mihin kiinnitit ensimmäisenä huomiota, kun katsoit valokuvaa? Millainen vaikutelma sinulle syntyy kuvasta? Miksi?</li>
+              <li>Millainen tunnelma valokuvassa mielestäsi on?</li>
+              <li>Pohdi, miksi valokuva on otettu. Mitä valokuvalla halutaan kertoa katsojalle?</li>
+          </ol>
+          <h4>Tehtävä 5</h4>
+          <p>Tutki aineistopaketin valokuvia sotaharjoituksista. Tarkastele ainakin kuvia <a target="_blank" href="/Record/sls.SLS+1555_SLS+1555_804">”Unga skyddskårister i ställning. (1920)”</a> ja <a target="_blank" href="/Record/sls.SLS+1555_SLS+1555_1630">”Målskjutning. (1920)”</a>. Lue kuvien kuvatekstit ja vastaa kysymyksiin.</p>
+          <ol class="content-list" type="1">
+              <li>Mitä valokuvissa tapahtuu?</li>
+              <li>Milloin ja missä kuvat on otettu?</li>
+              <li>Millainen tunnelma valokuvissa mielestäsi on?</li>
+              <li>Pohdi, miksi valokuva on otettu. Mitä valokuvalla halutaan kertoa katsojalle?</li>
+              <li>Kenelle valokuvat on tarkoitettu?</li>
+          </ol>
+       </div>
+    </div>
+  </div>
+  
+    <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-vastaukset">
+      <h3 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#vastaukset">
+            Vastaukset
+        </a>
+      </h3>
+    </div>
+    <div id="vastaukset" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-vastaukset">
+      <div class="panel-body">
+          <h4>Tehtävä 2</h4>
+          <ol class="content-list" type="1" start="2">
+              <li>Aineisto kuuluu Sorvarin perheen arkistoon ja kokoelmaa säilytetään SLS:ssä. Sorvarin perhe on asunut Pohjanmaalla Maalahdessa (Malax), Vaasassa ja Ilmolassa. Tästä voidaan päätellä, että valokuva on todennäköisesti otettu Pohjanmaalla.</li>
+              <li>Suojeluskuntatoiminta alkoi Suomessa aktiivisemmin vasta Venäjän vallankumouksen jälkeen.</li>
+          </ol>
+       </div>
+    </div>
+  </div>
+  
+      <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-vinkkeja">
+      <h3 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#vinkkeja">
+            Vinkkejä vastaavan aineiston hakemiseen
+        </a>
+      </h3>
+    </div>
+    <div id="vinkkeja" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-vinkkeja">
+      <div class="panel-body">
+          <p>Kaipaatko lisää aineistoa suojeluskuntien käsittelyyn? Etsi vastaavaa aineistoa <a target="_blank" href="https://finna.fi">Finna.fi</a>-hakupalvelusta seuraavin keinoin:</p>
+          <p><strong>Hakusana:</strong> Hae esimerkiksi hakusanalla ”jääkäri”. Voit myös hakea hakusanoilla ”jääkäri OR suojeluskunnat OR jääkäriliike”.</p>
+          <p><strong>Parhaat rajaimet:</strong> Rajaa tuloksia valitsemalla <strong>Verkossa saatavilla</strong> olevaa aineistoa.</p>
+          <p><strong>Osuvimmat aiheet:</strong> Rajaa aineistoa valitsemalla <strong>Aiheista</strong> itseäsi eniten kiinnostavat aihesanat.</p>
+       </div>
+    </div>
+  </div>
+  
+    </div>
+  </div>
+</div>
+<!-- END of: national -  content/suojelukuntatoiminta-suomessa_fi.phtml -->

@@ -1,0 +1,37 @@
+<!-- START of: national - content/etaklinikka_fi.phtml -->
+<?php $this->headTitle($this->translate('Finna Luokkahuoneen etäklinikka'));?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+    <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+<?php if ($this->resolver('content/luokkahuone-tabs.phtml')): ?>
+  <?=$this->render('content/luokkahuone-tabs.phtml', ['activeTab' => 'etaklinikka'])?>
+<?php endif; ?>
+<div class="row">
+    <div class="col-sm-6 col-md-8">
+        <h2>Finna Luokkahuoneen etäklinikat jatkuvat jälleen syksyllä 2020</h2>
+        <p>Opettaja! Haluatko oppia hyödyntämään Finnaa opetuksessa? Finna Luokkahuoneen etäklinikalla saat vinkkejä Finnan käyttöön ja vastauksia mieltä askaruttaviin kysymyksiin. Etäklinikka on suunnattu erityisesti peruskoulun ja lukion opettajille, jotka ovat kiinnostuneita Finnan mahdollisuuksista etäopetuksessa.</p>
+        <ul class="list-bullets">
+            <li>Klinikalla perehdytään:
+            <ul class="list-bullets">
+                <li>Finna Luokkahuoneen aineistopakettien ja valmiiden sisältöjen hyödyntämiseen</li>
+                <li>Finnaan tiedonhaun opetuksessa</li>
+                <li>Finnan haun perusperiaatteisiin</li>
+                <li>Finnan suosikkilistojen hyödyntämiseen opetuksessa</li>
+                <li>CC-lisenssimerkintöihin</li>
+            </ul>
+            </li>
+            <li>Lisäksi:
+            <ul class="list-bullets">
+                <li>Keskustellaan Finnan käytöstä opetuksessa</li>
+                <li>Jaetaan vinkkejä ja ideoita</li>
+            </ul>
+            </li>
+        </ul>
+        
+        <p><small>Kuva: Museovirasto, Historian kuvakokoelma. Kuvan käyttöoikeus CC BY 4.0 (kuva muokattu). <a href="https://finna.fi/Record/musketti.M012:HK19840620:27">https://finna.fi/Record/musketti.M012:HK19840620:27</a></small></p>
+    </div>
+    <div class="col-sm-6 col-md-4">
+        <img src="<?=$this->imageLink('luokkahuone/finna-etaklinikka.png')?>" alt="Finna Luokkahuoneen etäklinikka - Opi, kysy, keskustele">
+    </div>
+</div> 
+<!-- END of: national - content/etaklinikka_fi.phtml -->

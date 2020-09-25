@@ -6,6 +6,23 @@
 <?php if (!$isManyTabs): ?>
   <div class="tabs-table">
 <?php endif; ?>
+<?php
+  if ($this->layout()->templateName === 'advanced') {
+    $pop = '';
+    foreach ($searchTabs as $key => $value) {
+      if ($value['id'] === 'L1') {
+        $pop = $key;
+        break;
+      }
+    }
+    if (!empty($pop)) {
+      unset($searchTabs[$pop]);
+    }
+    if (count($searchTabs) === 1) {
+      $searchTabs = [];
+    }
+  }
+?>
 <?php if (!empty($searchTabs)): ?>
   <?php
     $tooltipElement = $this->htmlElement()->addAttributeTemplate('tooltip-element', [

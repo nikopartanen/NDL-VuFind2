@@ -1,0 +1,34 @@
+<!-- START of: custom - content/suomalainen-muotoilu_sv.phtml -->
+<?php $this->headTitle('Finsk design');?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketti">Material</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketti" class="tab-pane fade in active">
+    <?=$this->userlistEmbed(['id' => 54, 'view' => 'grid', 'title' => true, 'description' => true, 'date' => false, 'allowCopy' => true])?>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Mer finsk design – tips för sökning av liknande material</h4>
+        <p>I <a href="/">Finna.fi</a> hittar du förstklassigt material om designens historia i Finland. Börja med att skumma igenom samlingar som tillhör organisationer med fokus på design, exempelvis bildspel från Institutionen för arkitektur eller Designmuseets samlingar. Försök lägga formgivare, tillverkare och produkter på minnet.
+        </p>
+        <p><strong>Avgränsa sökresultatet:</strong> det bästa sättet att filtrera sökresultatet är att välja <strong>Tillgänglig på nätet</strong> och i <strong>Materialtyp</strong> bilder, föremål eller konstverk (till vänster om sökresultaten).
+        </p>
+        <p><strong>Sökord:</strong>
+        </p>
+        <p>Sök på formgivarens eller konstruktörens namn (till exempel Aalto, Alvar). Välj sökvillkoret <strong>Upphovsman</strong> och avgränsa resultatet utifrån de föremål som du söker (välj <strong>Tema:</strong> huonekalut).
+        </p>
+        <p>Sök på tillverkarens eller företagets namn (till exempel Artek). Gå igenom sökmotorns förslag: företagen kan ha flera olika namn som liknar varandra. Flest sökresultat visas om du väljer <strong>Alla fält</strong>.
+        </p>
+        <p>Sök på produktens namn (till exempel Aalto- eller Savoy-vas). Du kan hitta material där formgivarens eller tillverkarens namn inte anges. Filtrera bort onödiga träffar från ditt sökresultat (till exempel Savoy-restauranger) genom att välja <strong>Tema</strong>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END of: custom - content/suomalainen-muotoilu_sv.phtml -->

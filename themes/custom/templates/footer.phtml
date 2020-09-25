@@ -1,0 +1,60 @@
+<!-- START of: national - footer.phtml -->
+<div class="row">
+  <div class="col-sm-3">
+    <h5><strong><?=$this->transEsc('About')?></strong></h5>
+    <ul>
+      <li><a href="<?=$this->url('content-page', ['page' => 'organisations'])?>"><?=$this->transEsc('Who participates in Finna')?></a></li>
+      <li><a href="<?=$this->url('content-page', ['page' => 'about'])?>"><?=$this->transEsc('What is Finna')?></a></li>
+      <li><a href="<?=$this->url('content-page', ['page' => 'terms'])?>"><?=$this->transEsc('Terms')?></a></li>
+      <li><a href="<?=$this->url('content-page', ['page' => 'privacy'])?>"><?=$this->transEsc('Privacy')?></a></li>
+      <li><a href="<?=$this->url('content-page', ['page' => 'accessibility-statement'])?>"><?=$this->transEsc('accessibility_statement')?></a></li>
+      <? if ($this->layout()->userLang === "fi"): ?>
+        <li><a href="https://api.finna.fi/" target="_blank">Finna API</a></li>
+      <? endif; ?>
+      <? if ($this->layout()->userLang === "sv"): ?>
+        <li><a href="https://api.finna.fi/swagger-ui/?url=%2Fapi%2Fv1%3Fswagger" target="_blank">Finna API</a></li>
+      <? endif; ?>
+      <? if ($this->layout()->userLang === "en-gb"): ?>
+        <li><a href="https://api.finna.fi/swagger-ui/?url=%2Fapi%2Fv1%3Fswagger" target="_blank">Finna API</a></li>
+      <? endif; ?>      
+    </ul>
+  </div>
+  <div class="col-sm-3">
+    <h5><strong><?=$this->transEsc('Find More')?></strong></h5>
+    <ul>
+      <li><a href="<?=$this->url('search-history')?>"><?=$this->transEsc('Search History')?></a></li>
+      <li><a href="<?=$this->url('search-advanced')?>"><?=$this->transEsc('Advanced Search')?></a></li>
+    </ul>
+  </div>
+  <div class="col-sm-3">
+    <h5><strong><?=$this->transEsc('Need Help?')?></strong></h5>
+    <ul>
+      <li><a href="<?=$this->url('content-page', ['page' => 'help'])?>" title="<?=$this->transEsc('Help')?>"><?=$this->transEsc('Help')?></a></li>
+      <li><a href="<?=$this->url('feedback-home') ?>"><?=$this->transEsc('Feedback')?></a></li>
+    </ul>
+  </div>
+  <div class="col-sm-3">
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-sm-3">
+    <? if ($this->layout()->userLang === "fi"): ?>
+        <a href="<?=$this->url('home')?>"><img src="<?=$this->imageLink('powered-by-finna_fi-black.png')?>" alt="Finna-logo" /></a><br><br>
+    <? endif; ?>
+    <? if ($this->layout()->userLang === "sv"): ?>
+        <a href="<?=$this->url('home')?>"><img src="<?=$this->imageLink('powered-by-finna_sv-black.png')?>" alt="Finna-logo" /></a><br><br>
+    <? endif; ?>
+    <? if ($this->layout()->userLang === "en-gb"): ?>
+        <a href="<?=$this->url('home')?>"><img src="<?=$this->imageLink('powered-by-finna_en-gb-black.png')?>" alt="Finna-logo" /></a><br><br>
+    <? endif; ?>
+  </div>
+  <div class="col-sm-3">
+      <a href="https://vufind.org/" title=""><img src="<?=$this->imageLink('vufind-logo-black.png')?>" alt="Vufind-logo" /></a>
+  </div>
+  <div class="col-sm-3">
+  </div>
+  <div class="col-sm-3">
+  </div>
+</div>
+<!-- END of: national - footer.phtml -->

@@ -1,0 +1,252 @@
+<!-- START of: custom - content/talvisota_sv.phtml -->
+<?php $this->headTitle('Försvarsmaktens bildmaterial från vinterkriget');?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<h2>Försvarsmaktens bildmaterial från vinterkriget</h2>
+<p><strong>Materialet har sammanställts av</strong> Krigsmuseet
+</p>
+<p>Materialet som är avsett för undervisningen i krigshistoria har insamlats från Krigsmuseets SA-bildarkiv. Materialet innehåller ca 160 000 foton tagna av Försvarsmaktens frontfotografer (TK-fotografer) under 1939–1945. Detta materialpaket innehåller foton från det politiska läget hösten 1939 till freden 1940.
+</p>
+<p>Under vinterkriget hann man inte organisera fotograferingsverksamheten i informationskompanierna (TK) lika systematiskt som under fortsättningskriget. Därför saknar foton bildtexter, och uppgifterna om fotograf och ort är ibland bristfälliga. Det fanns dock ett klart syfte med fotografering: med hjälp av foton förmedlades stämningar till både hemma- och krigsfronten via tidskrifter och dagstidningar.
+</p>
+<p>När foton används gäller det att komma ihåg deras ursprungliga syfte. Bildtexterna har skrivits av fotograferna, och de bör läsas med beaktande av den rådande tidsandan. Språket i texterna är mycket tillspetsat, och det kan också förekomma kränkande ord i dem. Det är också bra att komma ihåg att en del av fotona är iscensättningar eller komponerade på annat sätt.
+</p>
+<h3>Målgrupp:</h3>
+<div class="panel-group" id="accordion-kohderyhma" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-ylakoulu">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#ylakoulu">
+          Högstadier: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="ylakoulu" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-ylakoulu">
+      <div class="panel-body">
+        <p>Läroämnens innehållsområden:</p>
+        <ul class="content-list">
+          <li>Historia: I3 Finland skapas, byggs och försvaras, I4 De stora krigen
+          </li>
+        </ul>
+        <p>Mål: Bildmaterialet kan användas för att visualisera historiska händelser och för att bekanta sig med livet under denna tidsperiod. Fotona är också utmärkt material för undervisning i medie- och informationskunnighet. Som propagandamaterial är de ett bra exempel på hur opinionen kan påverkas med hjälp av fotografisk kommunikation.
+        </p>
+      </div>
+    </div>
+    </div>
+      <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading-lukio">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion-kohderyhma" href="#lukio">
+          Gymnasier: <small><strong>historia</strong></small>
+        </a>
+      </h4>
+    </div>
+    <div id="lukio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-lukio">
+      <div class="panel-body">
+        <p>Läroämnens kurser:</p>
+        <ul class="content-list">
+          <li>Historia: HI3 Det självständiga Finlands historia
+          </li>
+        </ul>
+        <p>Mål: Bildmaterialet kan användas för att visualisera historiska händelser och för att bekanta sig med livet under denna tidsperiod. Fotona är också utmärkt material för undervisning i medie- och informationskunnighet. Som propagandamaterial är de ett bra exempel på hur opinionen kan påverkas med hjälp av fotografisk kommunikation.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketti">Material</a>
+  </li>
+  <li><a data-toggle="tab" href="#tehtavaideat">Uppgiftsidéer</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketti" class="tab-pane fade in active">
+    <?=$this->userlistEmbed(['id' => 66, 'view' => 'grid', 'title' => false, 'description' => false, 'date' => false, 'allowCopy' => true])?>
+<?php /*
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Vinkkejä vastaavan aineiston hakemiseen</h4>
+        <p>Kaipaatko lisää aineistoa talvisodan käsittelyyn Sotamuseon aineistoista? Etsi vastaavaa aineistoa <a href="/">Finna.fi</a>-hakupalvelusta seuraavin keinoin:
+        </p>
+        <p><strong>Hakusana:</strong> Hae aineistopaketin aineistojen otsikoista löytyvillä hakusanoilla, esimerkiksi "ilmatorjunta" tai "lotta OR lotat".
+        </p>
+        <p><strong>Organisaatio:</strong> Valitse organisaatioksi Sotamuseo.
+        </p>
+        <p><strong>Parhaat rajaimet:</strong> Rajaa tuloksia valitsemalla <strong>Verkossa saatavilla</strong> olevaa aineistoa. Rajaa aineisto koskemaan talvisotaa valitsemalla <strong>Valmistusvuosi</strong>-valikosta itseäsi kiinnostavat vuodet.
+        </p>
+        <p><strong>Lisätietoja aineistoista:</strong> Mikäli kaipaat lisätietoja tietystä aineistosta, löydät sen <a href="http://sa-kuva.fi">www.sa-kuva.fi</a> -palvelusta.
+        </p>
+      </div>
+    </div>
+*/ ?>
+  </div>
+  <div id="tehtavaideat" class="tab-pane fade">
+
+    <p>Uppgiftsidéerna ger tips för hur du kan studera materialpaketet. Du kan granska ett tema genom att välja en eller flera uppgifter. Uppgifterna kan utföras individuellt, i par eller grupp. Omarbeta uppgiftsidéerna för olika utbildningsstadier och läroämnen på önskat sätt.
+    </p>
+
+    <div class="panel-group" id="accordion-tehtavaideat" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-aika-ennen">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#aika-ennen">
+              Tiden innan vinterkriget officiellt bröt ut
+            </a>
+          </h3>
+        </div>
+        <div id="aika-ennen" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-aika-ennen">
+          <div class="panel-body">
+            <h4>Uppgift 1</h4>
+            <p>Ta del av <a target="_blank" href="/List/703629?limit=50&view=grid&filter%5B%5D=lists%3A%22703629%22">fotona i materialpaketet</a> från tiden före vinterkrigets utbrott och svara på frågorna nedan.
+            </p>
+            <ol class="content-list" type="1">
+              <li>Hur förberedde sig Finland på ett eventuellt krig? Vem deltog?
+              </li>
+              <li>Vilken stämning förmedlar fotona?
+              </li>
+              <li>Bedöm fotonas tillförlitlighet som historisk källa.
+              </li>
+            </ol>
+            <h4>Uppgift 2</h4>
+            <p>Granska närmare fotona <a target="_blank" href="/Record/sa-kuva.sa-kuva-113071">"Sormuskeräys"</a> och <a target="_blank" href="/Record/sa-kuva.sa-kuva-111824">"Ravintola Prestossa kudotaan sukkia ennen talvisotaa."</a>.
+            </p>
+            <ol class="content-list" type="1">
+              <li>Vad sker på fotona?
+              </li>
+              <li>Hur anknyter fotona till tiden strax före vinterkriget?
+              </li>
+              <li>Vilken stämning förmedlar fotona? Vad berättar minerna hos personerna på fotot?
+              </li>
+              <li>Bedöm fotonas tillförlitlighet som historisk källa.
+            <ul class="content-list">
+              <li>Mikä taho valokuvat on ottanut?</li>
+              <li>Pohdi, miksi valokuvat on otettu. Perustele.</li>
+              <li>Mitä kuvissa näytetään ja mitä niissä EI näytetä?</li>
+              </ul>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-talvisodan-tapahtumia">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#talvisodan-tapahtumia">
+              Händelser under vinterkriget
+            </a>
+          </h3>
+        </div>
+        <div id="talvisodan-tapahtumia" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-talvisodan-tapahtumia">
+          <div class="panel-body">
+            <h4>Uppgift 1</h4>
+            <p>Granska följande fotografier i materialpaketet <a target="_blank" href="/Record/sa-kuva.sa-kuva-105711">"Sotasaalista ja kaatuneita Raatteen tiellä."</a>, <a target="_blank" href="/Record/sa-kuva.sa-kuva-105275">"Vallattu panssariauto Tolvajärven rintamalta."</a> och <a target="_blank" href="/Record/sa-kuva.sa-kuva-112876">"Sotasaaliiksi saatuja vihollisen suksia Raatteen tiellä"</a>.
+            </p>
+            <ol class="content-list" type="1">
+              <li>Vad sker på fotot?
+              </li>
+              <li>Hur skiljer sig fotona från varandra? Motivera.
+              </li>
+              <li>Verkar fotot vara iscensatt eller äkta? Motivera.
+              </li>
+              <li>Vad berättar fotona om finländarnas aktioner i vinterkriget?
+              </li>
+              <li>Bedöm fotonas tillförlitlighet som historisk källa.
+              <ul class="content-list">
+                  <li>Vilken part har tagit fotona?</li>
+                  <li>Fundera på varför fotot har tagits. Motivera.</li>
+                  <li>Vad visas på bilderna och vad visas INTE på dem?</li>
+              </ul>              
+              </li>
+            </ol>
+            <h4>Uppgift 2</h4>
+            <p>Ta del av materialpaketets <a target="_blank" href="/List/703629?limit=50&view=grid&filter%5B%5D=lists%3A%22703629%22">foton på lottor</a>.
+            </p>
+            <ol class="content-list" type="1">
+              <li>Vad var lottorna? Använd din lärobok eller webben som hjälp.
+              </li>
+              <li>Vilka uppgifter hade lottorna enligt fotona?
+              </li>
+              <li>Varför ansvarade lottorna till exempel för paketeringen av frontsoldaternas julklappar?
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-empatian-harjoittelua">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#empatian-harjoittelua">
+              Uppgift om historisk empati
+            </a>
+          </h3>
+        </div>
+        <div id="empatian-harjoittelua" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-empatian-harjoittelua">
+          <div class="panel-body">
+            <h4>Uppgift 1 - Evakuering</h4>
+            <p>Analysera fotot <a target="_blank" href="/Record/sa-kuva.sa-kuva-111155">"Evakuointia Karjalan kannaksella sodan alkupäivinä."</a>. Föreställ dig att du är barnet i förgrunden, och skriv en kort dagboksanteckning om evakueringen.
+            </p>
+            <h4>Uppgift 2 - Helsingforsare i skyddsrum</h4>
+            <p>Analysera fotot <a target="_blank" href="/Record/sa-kuva.sa-kuva-111015">"Helsinkiläisiä pommisuojassa."</a>. Föreställ dig att du är i skyddsrummet och tweeta om det. Berätta vad du tänker och känner.
+            </p>
+            <h4>Uppgift 3 - Uppgift för gymnasieelever</h4>
+            <p>Ta del av händelserna vid Raatevägen under vinterkriget. Undersök sedan fotot <a target="_blank" href="/Record/sa-kuva.sa-kuva-105711">"Sotasaalista ja kaatuneita Raatteen tiellä."</a>
+            </p>
+            <ol class="content-list" type="1">
+              <li>Är de stupade soldaterna på fotot finländare eller sovjetiska?
+              </li>
+              <li>Vad har fotografen fokuserat på? Varför?
+              </li>
+              <li>Lev dig in i de finländska och sovjetiska soldaternas upplevelser under dygnet som föregår situationen på fotot. Skriv ett brev hem utifrån bägge personers synvinkel.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading-talvisodan-kuva">
+          <h3 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion-tehtavaideat" href="#talvisodan-kuva">
+              Bilden av vinterkriget enligt materialpaketet
+            </a>
+          </h3>
+        </div>
+        <div id="talvisodan-kuva" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-talvisodan-kuva">
+          <div class="panel-body">
+            <h4>Uppgift 1</h4>
+            <p>Analysera fotona i materialet som en helhet och beskriv din bild av vinterkriget utifrån fotona. Motivera svaret.
+            </p>
+            <p>Tips: begrunda materialet på ett källkritiskt sätt, till exempel med hjälp av frågorna nedan.
+            </p>
+            <ol class="content-list" type="1">
+              <li>Vem har tagit fotona?
+              </li>
+              <li>Vilka teman visas på bilderna?
+              <ul class="content-list">
+                <li>Vad och vilka har man beslutat fotografera (vems historia beskriver bilderna)?</li>
+                <li>Vilken bild av dessa människor och av kriget visar man?</li>
+                <li>Vad har man låtit bli att fotografera?</li>
+                <li>Varför?</li>
+              </ul>
+              </li>
+              <li>För vem är fotona avsedda?
+              </li>
+            </ol>
+            <p>Fundera till slut på hur materialpaketets sätt att visa fortsättningskriget skiljer sig från
+            </p>
+            <ol class="content-list" type="1">
+                <li>din tidigare uppfattning</li>
+                <li>beskrivningen i läroboken</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END of: custom - content/talvisota_sv.phtml -->

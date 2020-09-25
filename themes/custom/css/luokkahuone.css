@@ -1,0 +1,226 @@
+.notes .note-rows p {
+  font-size: 1em;
+}
+.notes .note-rows p a {
+  color: #fff;
+  text-decoration: underline;
+}
+.template-dir-list .notes,
+.public-list-embed .notes {
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+}
+.embed-responsive-16by9 {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.quoter {
+  font-size: 0.8em;
+  font-style: italic;
+}
+.speech-bubble {
+  position: relative;
+  background: #723981;
+  border-radius: 50%;
+  width: 280px;
+  height: 240px;
+  line-height: 240px;
+  text-align: center;
+  color: white;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.speech-bubble:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-top-color: #723981;
+  border-bottom: 0;
+  border-left: 0;
+  margin-left: -8px;
+  margin-bottom: -16px;
+}
+.speech-bubble p {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 30px;
+}
+ul.nav-aineistopaketit.help-tabs li {
+  padding: 0;
+}
+.main.template-dir-content.template-name-content hr {
+  border-top: 1px solid #ccc;
+}
+.main.template-dir-content.template-name-content .carousel {
+  margin-bottom: 50px;
+}
+.main.template-dir-content.template-name-content .carousel .carousel-text p,
+.main.template-dir-content.template-name-content .carousel .carousel-slide-header p {
+  font-size: 0.9em;
+}
+.main.template-dir-content.template-name-content .luokkahuone-begin {
+  box-shadow: inset 0px 15px 10px -5px rgba(0, 0, 0, 0.35);
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  height: 150px;
+  background-color: #c2deea;
+  display: flex;
+  align-items: center;
+  background-image: url("../images/luokkahuone-bg.png");
+  background-repeat: repeat;
+  background-size: contain;
+}
+.main.template-dir-content.template-name-content .luokkahuone-begin h1 {
+  font-size: 2em ;
+  background: #fff;
+  display: inline-block;
+  display: inline;
+  background: white;
+  box-shadow: 5px 0 0 white, -5px 0 0 white;
+  color: #723981;
+}
+@media screen and (min-width: 768px) {
+  .main.template-dir-content.template-name-content .luokkahuone-begin h1 {
+    font-size: 3em;
+  }
+}
+.main.template-dir-content.template-name-content .panel .panel-heading .panel-title {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-left: 0.5em;
+}
+.main.template-dir-content.template-name-content .panel .panel-heading .panel-title a {
+  width: 100%;
+  display: block;
+}
+.main.template-dir-content.template-name-content .goBack {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 0.8em;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding-top: 1em;
+}
+.main.template-dir-content.template-name-content .content-list {
+  margin-left: 1.5em;
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+}
+.main.template-dir-content.template-name-content ol.content-list li {
+  list-style-type: lower-latin;
+}
+.main.template-dir-content.template-name-content ul.content-list li {
+  list-style-type: disc;
+}
+.main.template-dir-content.template-name-content ul.content-list ul,
+.main.template-dir-content.template-name-content ol.content-list ul {
+  list-style-type: circle;
+  list-style-position: outside;
+  padding-left: 1em;
+}
+.main.template-dir-content.template-name-contentol ol.content-list,
+.main.template-dir-content.template-name-content ul.content-list ol {
+  list-style-type: lower-latin;
+  list-style-position: outside;
+  padding-left: 1em;
+}
+.main.template-dir-content.template-name-content .content-section {
+  padding: 0;
+  border: none;
+}
+.aineistopaketti-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.aineistopaketti-list img {
+  height: 200px;
+  width: 250px;
+  transform: scale(1);
+  transition: transform 0.4s ease;
+}
+.aineistopaketti-list a {
+  color: #fff;
+}
+.aineistopaketti-list .img-box {
+  box-sizing: content-box;
+  margin: 5px;
+  height: 200px;
+  width: 250px;
+  overflow: hidden;
+  display: inline-block;
+  color: white;
+  position: relative;
+  background-color: white;
+}
+.aineistopaketti-list .caption {
+  position: absolute;
+  bottom: 5px;
+  left: 20px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.aineistopaketti-list .caption p {
+  font-size: 0.9em !important;
+}
+.aineistopaketti-list .transparent-box {
+  height: 200px;
+  width: 250px;
+  background: rgba(0, 0, 0, 0);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 35%, #000000 100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: background-color 0.3s ease;
+  box-shadow: inset 0px 15px 10px -5px rgba(0, 0, 0, 0.35);
+}
+.aineistopaketti-list .img-box:hover img {
+  transform: scale(1.1);
+}
+.aineistopaketti-list .img-box:hover .transparent-box {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.aineistopaketti-list .img-box:hover .caption {
+  transform: translateY(-20px);
+  opacity: 1;
+}
+.aineistopaketti-list .img-box:hover {
+  cursor: pointer;
+}
+.aineistopaketti-list .caption > p:nth-child(2) {
+  font-size: 0.8em;
+}
+@media screen and (max-width: 767px) {
+  .aineistopaketti-list img {
+    height: 240px;
+    width: 300px;
+  }
+  .aineistopaketti-list .img-box {
+    height: 240px;
+    width: 300px;
+  }
+  .aineistopaketti-list .transparent-box {
+    height: 240px;
+    width: 300px;
+  }
+  .aineistopaketti-list {
+    justify-content: center;
+  }
+}

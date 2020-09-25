@@ -1,0 +1,35 @@
+<!-- START of: custom - content/suomalainen-muotoilu_fi.phtml -->
+<?php $this->headTitle('Suomalainen muotoilu');?>
+<?php if ($this->resolver('luokkahuoneBegin_fi.phtml')): ?>
+  <?=$this->render('luokkahuoneBegin_fi.phtml')?>
+<?php endif; ?>
+
+<button class="goBack" onclick="goBack()"><i class="fa fa-arrow-left" aria-hidden="true"></i> <?=$this->transEsc('navigate_back') ?></button>
+
+<ul class="nav nav-tabs help-tabs nav-aineistopaketit">
+  <li class="active"><a data-toggle="tab" href="#aineistopaketti">Aineisto</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="aineistopaketti" class="tab-pane fade in active">
+    <?=$this->userlistEmbed(['id' => 54, 'view' => 'grid', 'title' => true, 'description' => true, 'date' => false, 'allowCopy' => true])?>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Lisää Suomi-designiä – vinkkejä vastaavan aineiston hakemiseen</h4>
+        <p><a href="/">Finna.fi</a>:stä löydät ensiluokkaista materiaalia kotimaisen muotoilun historiasta. Aloita silmäilemällä muotoiluun keskittyvien organisaatioiden kokoelmia, esimerkiksi Arkkitehtuurin laitoksen opetusdioja tai Designmuseon kokoelmaa. Paina mieleesi muotoilijoiden, valmistajien ja tuotteiden nimiä.
+        </p>
+        <p><strong>Parhaat rajaimet:</strong> rajaa tuloksia valitsemalla <strong>Verkossa saatavilla</strong> olevaa aineistoa, aineistotyypiltään kuvia, esineitä tai taideteoksia.
+        </p>
+        <p><strong>Hakusana:</strong>
+        </p>
+        <p>Etsi muotoilijan tai suunnittelijan nimellä, esimerkiksi Aalto, Alvar. Valitse hakuehdoista <strong>Tekijä</strong> ja rajaa tulosta etsimiesi esineiden mukaiseksi <strong>Aihe</strong>-rajaimella (esim. huonekalut).
+        </p>
+        <p>Hae valmistajan tai yrityksen nimellä, esimerkiksi Artek. Tarkastele hakukoneen ehdotuksia: yrityksillä saattaa olla useita, samankaltaisia nimiä. Suurin osa löytyy <strong>Kaikki osumat</strong> -hakutuloksesta.
+        </p>
+        <p>Hae tuotteen nimellä esimerkiksi Aalto- tai Savoy-maljakko. Saatat löytää aineistoa, johon ei ole merkitty suunnittelijan tai valmistajan nimeä. Karsi hukkatuloksia (esim. Savoy -ravintolaan liittyviä) <strong>Aihe</strong>-rajaimella.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END of: custom - content/suomalainen-muotoilu_fi.phtml -->
