@@ -99,13 +99,6 @@ class Record extends \VuFind\View\Helper\Root\Record
     protected $cachedImages = [];
 
     /**
-     * Cached id of old record
-     *
-     * @var string
-     */
-    protected $cachedId = null;
-
-    /**
      * Tab Manager
      *
      * @var \VuFind\RecordTab\TabManager
@@ -603,11 +596,11 @@ class Record extends \VuFind\View\Helper\Root\Record
     {
         $recordId = $this->driver->getUniqueID();
 
-        if ($this->cachedId === $recordId) {
-            return $this->cachedImages;
+        $cacheKey = "$recordId\t" . ($thumbnails ? '1' : '0')
+            . ($includePdf ? '1' : '0');
+        if (isset($this->cachedImages[$cacheKey])) {
+            return $this->cachedImages[$cacheKey];
         }
-
-        $this->cachedId = $recordId;
 
         $sizes = ['small', 'medium', 'large', 'master'];
         $images = $this->driver->tryMethod('getAllImages', [$language, $includePdf]);
@@ -662,7 +655,7 @@ class Record extends \VuFind\View\Helper\Root\Record
                 }
             }
         }
-        return $this->cachedImages = $images;
+        return $this->cachedImages[$cacheKey] = $images;
     }
 
     /**
