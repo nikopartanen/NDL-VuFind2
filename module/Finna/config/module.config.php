@@ -58,7 +58,7 @@ $config = [
                 ],
             ],
             'linked-events-content' => [
-                'type'    => 'Zend\Router\Http\Segment',
+                'type'    => 'Laminas\Router\Http\Segment',
                 'options' => [
                     'route'    => '/FeedContent/LinkedEvents[/:id]',
                     'constraints' => [
@@ -225,6 +225,7 @@ $config = [
             'Finna\Controller\ErrorController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\ExternalAuthController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\FeedbackController' => 'VuFind\Controller\AbstractBaseFactory',
+            'Finna\Controller\R2FeedbackController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\FeedContentController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\LibraryCardsController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\LocationServiceController' => 'VuFind\Controller\AbstractBaseFactory',
@@ -258,6 +259,8 @@ $config = [
             'organisationinfo' => 'Finna\Controller\OrganisationInfoController',
             'ListPage' => 'Finna\Controller\ListController',
             'listpage' => 'Finna\Controller\ListController',
+            'r2feedback' => 'Finna\Controller\R2FeedbackController',
+            'R2Feedback' => 'Finna\Controller\R2FeedbackController',
 
             // Overrides:
             'VuFind\Controller\AuthorityController' => 'Finna\Controller\AuthorityController',
@@ -319,8 +322,9 @@ $config = [
             'Finna\Search\Memory' => 'VuFind\Search\MemoryFactory',
             'Finna\Search\Solr\AuthorityHelper' => 'Finna\Search\Solr\AuthorityHelperFactory',
             'Finna\Search\Solr\HierarchicalFacetHelper' => 'Laminas\ServiceManager\Factory\InvokableFactory',
+            'Finna\Service\R2SupportService' => 'Finna\Service\R2SupportServiceFactory',
             'Finna\Favorites\FavoritesService' => 'Finna\Favorites\FavoritesServiceFactory',
-
+            'Finna\Service\RemsService' => 'Finna\Service\RemsServiceFactory',
             'FinnaSearch\Service' => 'VuFind\Service\SearchServiceFactory',
 
             'VuFind\Search\SearchTabsHelper' => 'Finna\Search\SearchTabsHelperFactory',
@@ -476,7 +480,7 @@ $config = [
                     'Finna\Auth\ILS' => 'VuFind\Auth\ILSFactory',
                     'Finna\Auth\MultiILS' => 'VuFind\Auth\ILSFactory',
                     'Finna\Auth\Shibboleth' => 'VuFind\Auth\ShibbolethFactory',
-                    'Finna\Auth\Suomifi' => 'VuFind\Auth\ShibbolethFactory',
+                    'Finna\Auth\Suomifi' => 'Finna\Auth\SuomifiFactory',
                 ],
                 'aliases' => [
                     'VuFind\Auth\ILS' => 'Finna\Auth\ILS',
@@ -831,7 +835,8 @@ $recordRoutes = [
 $dynamicRoutes = [
     'Comments' => ['inappropriate' => 'inappropriate/[:id]'],
     'LibraryCards' => ['newLibraryCardPassword' => 'newPassword/[:id]'],
-    'MyResearch' => ['sortList' => 'SortList/[:id]']
+    'MyResearch' => ['sortList' => 'SortList/[:id]'],
+    'R2Feedback' => ['r2feedback-form' => 'Form/[:id]']
 ];
 
 $staticRoutes = [

@@ -361,6 +361,12 @@ finna.layout = (function finnaLayout() {
     });
   }
 
+  function initModalToolTips() {
+    $('#modal').on('show.bs.modal', function onShowModal() {
+      initToolTips($(this));
+    });
+  }
+
   function initCondensedList(_holder) {
     var holder = typeof _holder === 'undefined' ? $(document) : _holder;
 
@@ -564,6 +570,10 @@ finna.layout = (function finnaLayout() {
     });
   }
 
+  function showPostLoginLightbox(url) {
+    VuFind.lightbox.ajax({url: url});
+  }
+
   function getOrganisationPageLink(organisation, organisationName, link, callback) {
     var params = {
       url: VuFind.path + '/AJAX/JSON?method=getOrganisationInfo',
@@ -748,10 +758,10 @@ finna.layout = (function finnaLayout() {
   }
 
   function initCookieConsent() {
-    var state = $.cookie('cookieConsent');
+    var state = finna.common.getCookie('cookieConsent');
     if ('undefined' === typeof state || !state) {
       $('.cookie-consent-dismiss').click(function dismiss() {
-        $.cookie('cookieConsent', 1, {path: VuFind.path, expires: 365});
+        finna.common.setCookie('cookieConsent', 1, { expires: 365 });
         $('.cookie-consent').addClass('hidden');
       });
       $('.cookie-consent').removeClass('hidden');
@@ -833,6 +843,7 @@ finna.layout = (function finnaLayout() {
       initMobileNarrowSearch();
       initCheckboxClicks();
       initToolTips();
+      initModalToolTips();
       initResizeListener();
       initScrollLinks();
       initSearchboxFunctions();
@@ -853,7 +864,8 @@ finna.layout = (function finnaLayout() {
       initFiltersToggle();
       initFiltersCheckbox();
       initCookieConsent();
-    }
+    },
+    showPostLoginLightbox: showPostLoginLightbox
   };
 
   return my;
