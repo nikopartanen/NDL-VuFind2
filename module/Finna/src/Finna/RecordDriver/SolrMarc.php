@@ -927,7 +927,6 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
      */
     public function getPresenters()
     {
-        global $configArray;
         $result = ['presenters' => [], 'details' => []];
 
         foreach (['100', '110', '700', '710'] as $fieldCode) {
@@ -1335,7 +1334,7 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
                         $data = [
                             'url' => $address, 'desc' => $desc, 'part' => $part
                         ];
-                        if (!$this->urlBlacklisted($address, $desc)
+                        if (!$this->urlBlocked($address, $desc)
                             && !in_array($data, $retVal)
                         ) {
                             $retVal[] = $data;
