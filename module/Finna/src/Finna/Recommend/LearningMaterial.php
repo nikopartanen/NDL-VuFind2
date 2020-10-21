@@ -29,6 +29,7 @@ namespace Finna\Recommend;
 
 use Finna\View\Helper\Root\SearchTabs;
 use VuFind\Recommend\RecommendInterface;
+use VuFind\Search\Base\Params;
 
 /**
  * Learning Material Recommendations Module.
@@ -41,23 +42,43 @@ use VuFind\Recommend\RecommendInterface;
  */
 class LearningMaterial implements RecommendInterface
 {
+    /**
+     * The first level of a filter field value for learning material.
+     *
+     * @var string
+     */
+    const LEARNING_MATERIAL_FILTER_VALUE = 'LearningMaterial';
+
+    /**
+     * Array of filter fields checked for the the learning material value.
+     *
+     * @var array
+     */
     const LEARNING_MATERIAL_FILTER_FIELDS = [
         'format',
         'format_ext_str_mv'
     ];
 
-    const LEARNING_MATERIAL_FILTER_VALUE = '0/LearningMaterial/';
-
+    /**
+     * "Search tabs" view helper.
+     *
+     * @var SearchTabs
+     */
     protected $searchTabs;
 
-    protected $tabUrl = false;
+    /**
+     * Url of the learning material search tab.
+     *
+     * @var string|null
+     */
+    protected $tabUrl = null;
 
     /**
      * LearningMaterial constructor.
      *
      * @param SearchTabs $searchTabs "Search tabs" view helper
      */
-    public function __construct($searchTabs)
+    public function __construct(SearchTabs $searchTabs)
     {
         $this->searchTabs = $searchTabs;
     }
@@ -100,14 +121,17 @@ class LearningMaterial implements RecommendInterface
      */
     public function process($results)
     {
-        if ($this->hasLearningMaterialFilter($results->getParams())) {
+        $params = $results->getParams();
+        if (!$this->hasLearningMaterialFilter($params)) {
+            return;
+        }
+        if ($params->getSearchType() === 'basic') {
             $view = $this->searchTabs->getView();
             $view->results = $results;
-            $tabConfig
-                = $this->searchTabs->getTabConfigForParams($results->getParams());
+            $tabConfig = $this->searchTabs->getTabConfigForParams($params);
             foreach ($tabConfig as $tab) {
-                if (isset($tab['id']) && $tab['id'] == 'L1' && isset($tab['url'])) {
-                    $this->tabUrl = $tab['url'];
+                if ('L1' === $tab['id']) {
+                    $this->tabUrl = $tab['url'] ?? null;
                     break;
                 }
             }
@@ -121,12 +145,13 @@ class LearningMaterial implements RecommendInterface
      *
      * @return bool
      */
-    protected function hasLearningMaterialFilter($params)
+    protected function hasLearningMaterialFilter(Params $params): bool
     {
         foreach ($params->getFilterList() as $field => $facets) {
             foreach ($facets as $facet) {
+                $parts = explode('/', $facet['value']);
                 if (in_array($facet['field'], self::LEARNING_MATERIAL_FILTER_FIELDS)
-                    && $facet['value'] == self::LEARNING_MATERIAL_FILTER_VALUE
+                    && self::LEARNING_MATERIAL_FILTER_VALUE === $parts[1]
                 ) {
                     return true;
                 }
@@ -136,11 +161,12 @@ class LearningMaterial implements RecommendInterface
     }
 
     /**
-     * Returns the tab url to use in the recommendation.
+     * Returns the tab url to use in the recommendation, or null if a
+     * recommendation should not be shown.
      *
-     * @return string|false
+     * @return string|null
      */
-    public function getTabUrl()
+    public function getTabUrl(): ?string
     {
         return $this->tabUrl;
     }
