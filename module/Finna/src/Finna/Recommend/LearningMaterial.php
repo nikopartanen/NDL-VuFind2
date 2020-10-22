@@ -122,18 +122,18 @@ class LearningMaterial implements RecommendInterface
     public function process($results)
     {
         $params = $results->getParams();
-        if (!$this->hasLearningMaterialFilter($params)) {
+        if (!$this->hasLearningMaterialFilter($params)
+            || $params->getSearchType() !== 'basic'
+        ) {
             return;
         }
-        if ($params->getSearchType() === 'basic') {
-            $view = $this->searchTabs->getView();
-            $view->results = $results;
-            $tabConfig = $this->searchTabs->getTabConfigForParams($params);
-            foreach ($tabConfig as $tab) {
-                if ('L1' === $tab['id']) {
-                    $this->tabUrl = $tab['url'] ?? null;
-                    break;
-                }
+        $view = $this->searchTabs->getView();
+        $view->results = $results;
+        $tabConfig = $this->searchTabs->getTabConfigForParams($params);
+        foreach ($tabConfig as $tab) {
+            if ('L1' === $tab['id']) {
+                $this->tabUrl = $tab['url'] ?? null;
+                break;
             }
         }
     }
