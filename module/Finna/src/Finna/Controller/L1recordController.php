@@ -28,6 +28,7 @@
  */
 namespace Finna\Controller;
 
+use Laminas\Config\Config;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use VuFind\Controller\AbstractRecord;
 
@@ -40,18 +41,19 @@ use VuFind\Controller\AbstractRecord;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org Main Site
  */
-class L1RecordController extends AbstractRecord
+class L1RecordController extends RecordController
 {
     /**
      * Constructor
      *
-     * @param ServiceLocatorInterface $sm Service locator
+     * @param ServiceLocatorInterface $sm     Service manager
+     * @param Config                  $config VuFind configuration
      */
-    public function __construct(ServiceLocatorInterface $sm)
+    public function __construct(ServiceLocatorInterface $sm, Config $config)
     {
         $this->searchClassId = 'L1';
         $this->fallbackDefaultTab = 'Description';
-        parent::__construct($sm);
+        parent::__construct($sm, $config);
     }
 
     /**
