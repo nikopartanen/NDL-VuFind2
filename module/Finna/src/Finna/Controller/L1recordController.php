@@ -30,7 +30,6 @@ namespace Finna\Controller;
 
 use Laminas\Config\Config;
 use Laminas\ServiceManager\ServiceLocatorInterface;
-use VuFind\Controller\AbstractRecord;
 
 /**
  * L1 Record Controller
