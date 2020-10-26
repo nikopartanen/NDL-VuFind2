@@ -6,7 +6,7 @@
   $thumbnail = false;
   $thumbnailAlignment = $this->record($this->driver)->getThumbnailAlignment('result');
   $levels = $this->driver->getRootEducationalLevels();
-  $topics = $this->driver->getYsoTopics();
+  $topics = $this->driver->getTopics('yso');
   $showExtraDetails = $this->layout()->templateDir === 'l1';
   $coverDetails = $this->record($this->driver)->getCoverDetails('result-list', 'medium', $this->recordLink()->getUrl($this->driver));
   if ($img) {
