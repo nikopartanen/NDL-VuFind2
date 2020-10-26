@@ -307,7 +307,7 @@ class SolrLrmi extends SolrQdc
 
                 $url = $this->checkAllowedFileFormat($format)
                     ? (string)$material->url : '';
-                $titles = $this->getMaterialTitles($material->name, $lang);
+                $titles = $this->getMaterialTitles($material->name, $locale);
                 $title = $titles[$locale] ?? $titles['default'];
                 $position = $material->position ?? 0;
                 $materials[] = compact('url', 'title', 'format', 'position');
