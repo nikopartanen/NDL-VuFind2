@@ -256,11 +256,12 @@ class SolrLrmi extends SolrQdc
     /**
      * Get all image urls
      *
+     * @param string $language   to get rights
      * @param string $includePdf from parent call
      *
      * @return array
      */
-    public function getAllImages($includePdf = true)
+    public function getAllImages($language = 'fi', $includePdf = true)
     {
         $xml = $this->getXmlRecord();
         $result = [];
