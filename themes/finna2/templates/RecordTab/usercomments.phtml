@@ -6,10 +6,10 @@
   $allowCommenting = $user && $this->record($this->driver)->commentingAllowed($user);
   $recordType = $this->driver->tryMethod('getRecordType');
 ?>
-<?php if ($recordType === 'lrmi'): ?>
+<?php if ($recordType === 'lrmi' && $externalLink = $this->driver->getExternalLink()): ?>
   <div class="alert-info aoe-alert">
     <span><?= $this->transEsc('add_aoe_rating') ?></span>
-    <a class="btn btn-primary link-to-aoe" href="<?= $this->driver->getAoeLink();?>"><?= $this->transEsc('go_to_aoe.fi') ?></a>
+    <a class="btn btn-primary link-to-aoe" href="<?=$externalLink?>"><?= $this->transEsc('go_to_aoe.fi') ?></a>
   </div>
 <?php else: ?>
   <div class="comment-list">

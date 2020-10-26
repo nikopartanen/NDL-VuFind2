@@ -22,6 +22,8 @@
  * @category VuFind
  * @package  RecordDrivers
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @author   Jaro Ravila <jaro.ravila@helsinki.fi>
+ * @author   Juha Luoma  <juha.luoma@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
  */
@@ -34,6 +36,7 @@ namespace Finna\RecordDriver;
  * @package  RecordDrivers
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @author   Jaro Ravila <jaro.ravila@helsinki.fi>
+ * @author   Juha Luoma  <juha.luoma@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
  */
@@ -64,29 +67,23 @@ class SolrLrmi extends SolrQdc
     ];
 
     /**
-     * Base url for AOE record page
-     */
-    protected $aoeUrl = 'https://aoe.fi/#/materiaali/';
-
-    /**
      * Return type of access restriction for the record.
-     *
-     * @param string $language Language
      *
      * @return mixed array with keys:
      *   'copyright'   Copyright (e.g. 'CC BY 4.0')
      *   'link'        Link to copyright info, see IndexRecord::getRightsLink
      *   or false if no access restriction type is defined.
      */
-    public function getAccessRestrictionsType($language = 'fi')
+    public function getAccessRestrictionsType()
     {
-        $xml = $this->getSimpleXML();
+        $xml = $this->getXmlRecord();
         $rights = [];
+        list($locale) = explode('-', $this->getTranslatorLocale());
         if (!empty($xml->rights)) {
             $copyrights = (string)$xml->rights;
             $rights['copyrights']
                 = $this->usageRightsMap[$copyrights] ?? $copyrights;
-            $rights['link'] = $this->getRightsLink($rights['copyrights'], $language);
+            $rights['link'] = $this->getRightsLink($rights['copyrights'], $locale);
             return $rights;
         }
         return false;
@@ -97,23 +94,18 @@ class SolrLrmi extends SolrQdc
      *
      * @return array descriptions with languages as keys
      */
-    public function getDescription()
+    public function getSummary()
     {
-        $xml = $this->getSimpleXML();
-        $descriptions = [];
-        $desc = '';
+        $xml = $this->getXmlRecord();
+        list($locale) = explode('-', $this->getTranslatorLocale());
         foreach ($xml->description as $d) {
             if (!empty($d['format'])) {
                 continue;
             }
-            $desc = (string)$d;
-            $lang = (string)$d['lang'];
-            if ($lang === 'en') {
-                $lang = 'en-gb';
+            if ($locale === (string)$d['lang']) {
+                return (string)$d;
             }
-            $descriptions[$lang] = $desc;
         }
-        return $descriptions;
     }
 
     /**
@@ -123,7 +115,7 @@ class SolrLrmi extends SolrQdc
      */
     public function getEducationalAudiences()
     {
-        return $this->fields['educational_audience_str_mv'] ?? '';
+        return $this->fields['educational_audience_str_mv'] ?? [];
     }
 
     /**
@@ -133,7 +125,7 @@ class SolrLrmi extends SolrQdc
      */
     public function getNonPresenterAuthors()
     {
-        $xml = $this->getSimpleXML();
+        $xml = $this->getXmlRecord();
         $result = [];
         if (!empty($xml->author)) {
             foreach ($xml->author->person as $author) {
@@ -169,7 +161,7 @@ class SolrLrmi extends SolrQdc
     public function getRootEducationalLevels()
     {
         $rootLevels = [];
-        foreach ($this->fields['educational_level_str_mv'] ?? [] as $key => $level) {
+        foreach ($this->fields['educational_level_str_mv'] ?? [] as $level) {
             if (substr($level, 0, 1) === '0') {
                 $rootLevels[] = $level;
             }
@@ -178,17 +170,17 @@ class SolrLrmi extends SolrQdc
     }
 
     /**
-     * Return url to AOE record page based on the
+     * Return url to LRMI record page based on the
      * record ID or false if id is not provided
      *
      * @return string|boolean
      */
-    public function getAoeLink()
+    public function getExternalLink()
     {
-        $xml = $this->getSimpleXML();
-        if ($id = $xml->recordID) {
-            $url = $this->aoeUrl . $id;
-            return $url;
+        $xml = $this->getXmlRecord();
+        $config = $this->recordConfig->Record;
+        if (isset($config->lrmi_external_link) && $id = $xml->recordID) {
+            return $config->lrmi_external_link . $id;
         }
         return false;
     }
@@ -216,18 +208,21 @@ class SolrLrmi extends SolrQdc
     /**
      * Get topics
      *
+     * @param string $type defaults to yso
+     *
      * @return array
      */
-    public function getYsoTopics()
+    public function getTopics($type = 'yso')
     {
-        $xml = $this->getSimpleXML();
+        $xml = $this->getXmlRecord();
         $topics = [];
         foreach ($xml->about as $about) {
             $thing = $about->thing;
-            if ($thing->name
-                && strpos((string)$thing->identifier, 'yso') !== false
+            $name = (string)trim($thing->name);
+            if ($name
+                && strpos((string)$thing->identifier, $type) !== false
             ) {
-                $topics[] = (string)trim($thing->name);
+                $topics[] = $name;
             }
         }
         return $topics;
@@ -240,7 +235,7 @@ class SolrLrmi extends SolrQdc
      *
      * @return boolean
      */
-    public function checkAllowedFileFormat($format)
+    protected function checkAllowedFileFormat($format)
     {
         return in_array($format, $this->downloadableFileFormats);
     }
@@ -252,7 +247,7 @@ class SolrLrmi extends SolrQdc
      *
      * @return string
      */
-    public function getFileFormat($filename)
+    protected function getFileFormat($filename)
     {
         $parts = explode('.', $filename);
         return end($parts);
@@ -261,14 +256,13 @@ class SolrLrmi extends SolrQdc
     /**
      * Get all image urls
      *
-     * @param string $language   language from parent call
      * @param string $includePdf from parent call
      *
      * @return array
      */
-    public function getAllImages($language = 'fi', $includePdf = true)
+    public function getAllImages($includePdf = true)
     {
-        $xml = $this->getSimpleXML();
+        $xml = $this->getXmlRecord();
         $result = [];
         foreach ($xml->description as $desc) {
             $attr = $desc->attributes();
@@ -296,15 +290,13 @@ class SolrLrmi extends SolrQdc
      * -format: material format
      * -position: order of listing
      *
-     * @param string $lang language fi,sv,en
-     *
      * @return array
      */
-    public function getMaterials($lang = 'fi')
+    public function getMaterials()
     {
-        $xml = $this->getSimpleXML();
+        $xml = $this->getXmlRecord();
         $materials = [];
-        $lang = $lang === 'en-gb' ? 'en' : $lang;
+        list($locale) = explode('-', $this->getTranslatorLocale());
         foreach ($xml->material as $material) {
             if (isset($material->format)) {
                 $mime = (string)$material->format;
@@ -315,7 +307,7 @@ class SolrLrmi extends SolrQdc
                 $url = $this->checkAllowedFileFormat($format)
                     ? (string)$material->url : '';
                 $titles = $this->getMaterialTitles($material->name, $lang);
-                $title = $titles[$lang] ?? $titles['default'];
+                $title = $titles[$locale] ?? $titles['default'];
                 $position = $material->position ?? 0;
                 $materials[] = compact('url', 'title', 'format', 'position');
             }
@@ -334,11 +326,10 @@ class SolrLrmi extends SolrQdc
      * Get material titles in an assoc array
      *
      * @param object $names to look for
-     * @param string $lang  language to search
      *
      * @return array
      */
-    public function getMaterialTitles($names, $lang)
+    public function getMaterialTitles($names)
     {
         $titles = ['default' => (string)$names];
 
@@ -346,8 +337,6 @@ class SolrLrmi extends SolrQdc
             $attr = $name->attributes();
             $titles[(string)$attr->lang] = (string)$name;
         }
-
-        // If nothing has been found, then try t
         return $titles;
     }
 
@@ -358,7 +347,7 @@ class SolrLrmi extends SolrQdc
      */
     public function getDateCreated()
     {
-        $xml = $this->getSimpleXML();
+        $xml = $this->getXmlRecord();
         if ($created = $xml->dateCreated) {
             return $this->dateConverter->convertToDisplayDate('Y-m-d H:i', $created);
         }
@@ -372,7 +361,7 @@ class SolrLrmi extends SolrQdc
      */
     public function getDateModified()
     {
-        $xml = $this->getSimpleXML();
+        $xml = $this->getXmlRecord();
         if ($mod = $xml->dateModified) {
             return $this->dateConverter->convertToDisplayDate('Y-m-d H:i', $mod);
         }
@@ -386,12 +375,10 @@ class SolrLrmi extends SolrQdc
      */
     public function getEducationalUse()
     {
-        $xml = $this->getSimpleXML();
+        $xml = $this->getXmlRecord();
         $uses = [];
-        if ($eduUses = $xml->educationalUse) {
-            foreach ($eduUses as $use) {
-                $uses[] = $use;
-            }
+        foreach ($xml->educationalUse as $use) {
+            $uses[] = $use;
         }
         return $uses;
     }
@@ -420,7 +407,7 @@ class SolrLrmi extends SolrQdc
      */
     public function getAccessibilityFeatures()
     {
-        $xml = $this->getSimpleXML();
+        $xml = $this->getXmlRecord();
         $features = [];
         foreach ($xml->accessibilityFeature as $feature) {
             $features[] = $feature;
@@ -435,7 +422,7 @@ class SolrLrmi extends SolrQdc
      */
     public function getAccessibilityHazards()
     {
-        $xml = $this->getSimpleXML();
+        $xml = $this->getXmlRecord();
         $hazards = [];
         foreach ($xml->accessibilityHazard as $hazard) {
             $hazards[] = $hazard;

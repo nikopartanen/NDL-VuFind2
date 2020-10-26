@@ -1,8 +1,8 @@
 <!-- START of: finna - RecordDriver/SolrLrmi/core.phtml -->
 <?php
   $rights = $this->driver->getAccessRestrictionsType($this->layout()->userLang);
-  $descriptions = $this->driver->getDescription();
-  $aoeLink = $this->driver->getAoeLink();
+  $summary = $this->driver->getSummary();
+  $aoeLink = $this->driver->getExternalLink();
   $materials = $this->driver->getMaterials($this->layout()->userLang);
   $dateCreated = $this->driver->getDateCreated();
   $dateModified = $this->driver->getDateModified();
@@ -40,9 +40,9 @@
           <span><?= $dateCreated ? $this->transEsc('Created') . ': ' . $dateCreated : '';?><?= $dateCreated && $dateModified ? ', ' : ''?><?= $dateModified ? $this->transEsc('modified') . ': ' . $dateModified : '';?></span>
         </div>
       <?php endif; ?>
-      <?php if ($descriptions): ?>
+      <?php if ($summary): ?>
         <div class="truncate-field material-description">
-          <?= $this->escapeHtml($descriptions[$this->layout()->userLang] ?? $descriptions['fi'] ?? ''); ?>
+          <?= $this->escapeHtml($summary); ?>
         </div>
       <?php endif; ?>
       <?/* Display Main Details */?>
