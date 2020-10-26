@@ -28,6 +28,7 @@
 namespace Finna\Recommend;
 
 use Finna\View\Helper\Root\SearchTabs;
+use VuFind\Log\LoggerAwareTrait;
 use VuFind\Recommend\RecommendInterface;
 use VuFind\Search\Base\Params;
 
@@ -42,6 +43,8 @@ use VuFind\Search\Base\Params;
  */
 class LearningMaterial implements RecommendInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * The first level of a filter field value for learning material.
      *
@@ -150,6 +153,13 @@ class LearningMaterial implements RecommendInterface
         foreach ($params->getFilterList() as $field => $facets) {
             foreach ($facets as $facet) {
                 $parts = explode('/', $facet['value']);
+                if (null === ($parts[1] ?? null)) {
+                    $this->logWarning(
+                        'Could not parse facet value "' . $facet['value']
+                        . '" for field "' . $field . '"'
+                    );
+                    continue;
+                }
                 if (in_array($facet['field'], self::LEARNING_MATERIAL_FILTER_FIELDS)
                     && self::LEARNING_MATERIAL_FILTER_VALUE === $parts[1]
                 ) {
