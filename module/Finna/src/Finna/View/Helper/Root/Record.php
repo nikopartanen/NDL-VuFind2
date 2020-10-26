@@ -364,7 +364,8 @@ class Record extends \VuFind\View\Helper\Root\Record
                'name' => $data['name'] ?? null,
                'date' => !empty($data['date']) ? $data['date'] : null,
                'role' => !empty($data['role']) ? $data['role'] : null,
-               'affiliation' => !empty($data['affiliation']) ? $data['affiliation'] : null,
+               'affiliation' => !empty($data['affiliation'])
+                   ? $data['affiliation'] : null,
             ];
             // NOTE: currently this fallbacks always to a author-link
             // (extend to handle subject/topic fallbacks when needed).
