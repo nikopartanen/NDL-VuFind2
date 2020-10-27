@@ -113,12 +113,12 @@
                 <?php $urlHelper = $this->results->getUrlQuery()->removeAllFilters(); ?>
                 <?php if ($levels): ?>
                   <?php foreach($levels as $level): ?>
-                    <a href="<?=$urlHelper->addFilter("educational_level_str_mv:{$level}")?>" class="targeted-element"><?=$this->transEsc($level)?></a>
+                    <span class="lrmi-topic"><?=$this->transEsc($level)?></span>
                   <?php endforeach; ?>
                 <?php endif; ?>
                 <?php if ($topics): ?>
                   <?php foreach($topics as $topic): ?>
-                    <a href="<?=$urlHelper->addFilter("topic_facet:{$topic}")?>" class="targeted-element"><?=$this->transEsc($topic)?></a>
+                    <span class="lrmi-topic"><?=$this->transEsc($topic)?></span>
                   <?php endforeach; ?>
                 <?php endif; ?>
               </div>
