@@ -198,12 +198,14 @@
 
     <div class="clearfix hidden-lg hidden-md"></div>
   </div>
+
   <?php if ($sidebar && $this->driver->tryMethod('getRecordType') === 'lrmi'):?>
     <div class="sidebar right smaller-image-sidebar hidden-xs hidden-sm">
       <?=$sidebar ?>
     </div>
   <?php endif; ?>
-  <div class="sidebar left large-image-sidebar <?= $largeImageLayout ? '' : 'visible-xs visible-sm'?>">
+
+  <div class="sidebar left large-image-sidebar hidden <?= $largeImageLayout ? '' : 'visible-xs visible-sm'?>">
     <?php if ($sidebar):?>
         <?=$sidebar ?>
     <?php endif; ?>
