@@ -7,10 +7,10 @@
   $recordType = $this->driver->tryMethod('getRecordType');
 ?>
 <?php if ($recordType === 'lrmi' && $externalLink = $this->driver->getExternalLink()): ?>
-  <div class="alert-info aoe-alert">
+  <p class="alert alert-aoe">
     <span><?= $this->transEsc('add_aoe_rating') ?></span>
     <a class="btn btn-primary link-to-aoe" href="<?=$externalLink?>"><?= $this->transEsc('go_to_aoe.fi') ?></a>
-  </div>
+  </p>
 <?php else: ?>
   <div class="comment-list">
     <?=$this->render('record/comments-list.phtml', ['driver' => $this->driver])?>
