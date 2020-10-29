@@ -78,7 +78,7 @@ class SolrLrmi extends SolrQdc
     {
         $xml = $this->getXmlRecord();
         $rights = [];
-        list($locale) = explode('-', $this->getTranslatorLocale());
+        $locale = $this->getLocale();
         if (!empty($xml->rights)) {
             $copyrights = (string)$xml->rights;
             $rights['copyrights']
@@ -97,7 +97,7 @@ class SolrLrmi extends SolrQdc
     public function getSummary()
     {
         $xml = $this->getXmlRecord();
-        list($locale) = explode('-', $this->getTranslatorLocale());
+        $locale = $this->getLocale();
         foreach ($xml->description as $d) {
             if (!empty($d['format'])) {
                 continue;
@@ -127,18 +127,16 @@ class SolrLrmi extends SolrQdc
     {
         $xml = $this->getXmlRecord();
         $result = [];
-        if (!empty($xml->author)) {
-            foreach ($xml->author->person as $author) {
-                $result[] = [
-                  'name' => $author->name,
-                  'affiliation' => $author->affiliation
-                ];
-            }
-            foreach ($xml->author->organization as $org) {
-                $result[] = [
-                  'name' => $org->legalName
-                ];
-            }
+        foreach ($xml->author->person ?? [] as $author) {
+            $result[] = [
+                'name' => trim((string)$author->name),
+                'affiliation' => trim((string)$author->affiliation)
+            ];
+        }
+        foreach ($xml->author->organization ?? [] as $org) {
+            $result[] = [
+                'name' => trim((string)$org->legalName)
+            ];
         }
         return $result;
     }
@@ -179,8 +177,15 @@ class SolrLrmi extends SolrQdc
     {
         $xml = $this->getXmlRecord();
         $config = $this->recordConfig->Record;
-        if (isset($config->lrmi_external_link) && $id = $xml->recordID) {
-            return $config->lrmi_external_link . $id;
+        $src = $this->getDataSource();
+        $locale = $this->getLocale();
+        if (isset($config->lrmi_external_link_template[$src])) {
+            $link = $config->lrmi_external_link_template[$src];
+            return str_replace(
+                ['{materialId}', '{lang}'],
+                [(string)$xml->recordID, $locale],
+                $link
+            );
         }
         return false;
     }
@@ -208,19 +213,18 @@ class SolrLrmi extends SolrQdc
     /**
      * Get topics
      *
-     * @param string $type defaults to yso
+     * @param string $type defaults to /onto/yso/
      *
      * @return array
      */
-    public function getTopics($type = 'yso')
+    public function getTopics($type = '/onto/yso/')
     {
         $xml = $this->getXmlRecord();
         $topics = [];
         foreach ($xml->about as $about) {
             $thing = $about->thing;
             $name = (string)trim($thing->name);
-            if ($name
-                && strpos((string)$thing->identifier, $type) !== false
+            if ($name && strpos((string)$thing->identifier, $type) !== false
             ) {
                 $topics[] = $name;
             }
@@ -249,8 +253,7 @@ class SolrLrmi extends SolrQdc
      */
     protected function getFileFormat($filename)
     {
-        $parts = explode('.', $filename);
-        return end($parts);
+        return pathinfo($filename)['extension'] ?? '';
     }
 
     /**
@@ -265,9 +268,11 @@ class SolrLrmi extends SolrQdc
     {
         $xml = $this->getXmlRecord();
         $result = [];
+        $images = ['image/png', 'image/jpeg'];
         foreach ($xml->description as $desc) {
             $attr = $desc->attributes();
-            if (isset($attr['format']) && (string)$attr['format'] === 'image/png') {
+            $format = trim((string)($attr['format'] ?? ''));
+            if ($format && in_array($format, $images)) {
                 $url = (string)$desc;
                 $result[] = [
                     'urls' => [
@@ -297,7 +302,7 @@ class SolrLrmi extends SolrQdc
     {
         $xml = $this->getXmlRecord();
         $materials = [];
-        list($locale) = explode('-', $this->getTranslatorLocale());
+        $locale = $this->getLocale();
         foreach ($xml->material as $material) {
             if (isset($material->format)) {
                 $mime = (string)$material->format;

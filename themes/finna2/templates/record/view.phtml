@@ -110,7 +110,7 @@
   <?php ob_end_clean(); ?>
 
   <div class="sidebar right smaller-image-sidebar hidden-xs hidden-sm">
-    <?php if ($sidebar && $this->driver->tryMethod('getRecordType') !== 'lrmi'):?>
+    <?php if ($sidebar):?>
         <?=$sidebar ?>
     <?php endif; ?>
   </div>
@@ -198,12 +198,6 @@
 
     <div class="clearfix hidden-lg hidden-md"></div>
   </div>
-
-  <?php if ($sidebar && $this->driver->tryMethod('getRecordType') === 'lrmi'):?>
-    <div class="sidebar right smaller-image-sidebar hidden-xs hidden-sm">
-      <?=$sidebar ?>
-    </div>
-  <?php endif; ?>
 
   <div class="sidebar left large-image-sidebar hidden <?= $largeImageLayout ? '' : 'visible-xs visible-sm'?>">
     <?php if ($sidebar):?>
