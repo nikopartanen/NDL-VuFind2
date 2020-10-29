@@ -49,7 +49,7 @@ class SolrLrmi extends SolrQdc
      */
     protected $downloadableFileFormats = [
         'pdf', 'pptx', 'ppt', 'docx', 'mp4', 'mp3', 'html',
-        'avi', 'odt', 'rtf', 'txt', 'odp', 'png', 'jpeg', 'm4a'
+        'avi', 'odt', 'rtf', 'txt', 'odp', 'png', 'jpeg', 'm4a', 'mbz'
     ];
 
     /**
