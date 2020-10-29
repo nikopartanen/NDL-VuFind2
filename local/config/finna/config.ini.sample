@@ -688,8 +688,8 @@ lastname = SHIB_sn
 ;coverimages     = Syndetics:MySyndeticsId,Amazon:MyAccessKeyId,Booksite,LibraryThing:MyLibraryThingId,Google,OpenLibrary,Summon:MySerialsSolutionsClientKey,Contentcafe:MyContentCafeID,NatLibFi,BookyFi,BTJ:customerId
 coverimages     = NatLibFi,OpenLibrary
 
-; List of blacklisted formats to prevent from showing in LIDO records image section
-; lidoFileFormatBlackList = 'tif,tiff,3d-pdf,3d model,glb,obj,gltf'
+; List of blocked formats prevented from showing in LIDO records image section
+; lidoFileFormatBlockList = 'tif,tiff,3d-pdf,3d model,glb,obj,gltf'
 
 ; This setting controls the image to display when no book cover is available.
 ; The path is relative to the base of your theme directory.
@@ -1309,10 +1309,18 @@ ead_usage_permission_request_link_template[narc] = "https://testavapaingest.narc
 ; External link used in lrmi records, materialId is the id of web resource, &lang={lang} for language specific sites
 ; lrmi_external_link_template[source] = "https://webpage.fi/{materialId}"
 
-; Blacklisting regexp's for record URLs
-url_blacklist[] = '/btj\.com\/btjcgi\/arvo\/get_add_info\.cgi\?type=(PRES|IMAGE)/'
-url_blacklist[] = '/data\.kirjavalitys\.fi\/data\/servlets\/ProductRequestServlet/'
-url_blacklist[] = '/booky\.fi\/(image\.php\?|description\.php\?)/'
+; Filtering regexp's for record URLs
+url_blocklist[] = '/btj\.com\/btjcgi\/arvo\/get_add_info\.cgi\?type=(PRES|IMAGE)/'
+url_blocklist[] = '/data\.kirjavalitys\.fi\/data\/servlets\/ProductRequestServlet/'
+url_blocklist[] = '/booky\.fi\/(image\.php\?|description\.php\?)/'
+
+; Allowed schemes in Solr record URLs.
+; Note that record drivers may have more stringent rules.
+allowed_url_schemes[] = 'http'
+allowed_url_schemes[] = 'https'
+allowed_url_schemes[] = 'tel'
+allowed_url_schemes[] = 'mailto'
+allowed_url_schemes[] = 'maps'
 
 ; Allow image links from BTJ (default is false)
 ;btj_links = true

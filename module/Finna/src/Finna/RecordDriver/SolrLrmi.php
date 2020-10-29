@@ -161,7 +161,7 @@ class SolrLrmi extends SolrQdc
         $rootLevels = [];
         foreach ($this->fields['educational_level_str_mv'] ?? [] as $level) {
             if (substr($level, 0, 1) === '0') {
-                $rootLevels[] = $level;
+                $rootLevels[] = trim((string)$level);
             }
         }
         return $rootLevels;
@@ -384,7 +384,7 @@ class SolrLrmi extends SolrQdc
         $xml = $this->getXmlRecord();
         $uses = [];
         foreach ($xml->educationalUse as $use) {
-            $uses[] = $use;
+            $uses[] = trim((string)$use);
         }
         return $uses;
     }
@@ -397,13 +397,10 @@ class SolrLrmi extends SolrQdc
     public function getEducationalAim()
     {
         $aims = [];
-        if (isset($this->fields['educational_aim_str_mv'])) {
-            foreach ($this->fields['educational_aim_str_mv'] as $aim) {
-                $aims[] = $aim;
-            }
-            return $aims;
+        foreach ($this->fields['educational_aim_str_mv'] ?? [] as $aim) {
+            $aims[] = trim((string)$aim);
         }
-        return false;
+        return $aims;
     }
 
     /**
@@ -416,7 +413,7 @@ class SolrLrmi extends SolrQdc
         $xml = $this->getXmlRecord();
         $features = [];
         foreach ($xml->accessibilityFeature as $feature) {
-            $features[] = $feature;
+            $features[] = trim((string)$feature);
         }
         return $features;
     }
@@ -431,7 +428,7 @@ class SolrLrmi extends SolrQdc
         $xml = $this->getXmlRecord();
         $hazards = [];
         foreach ($xml->accessibilityHazard as $hazard) {
-            $hazards[] = $hazard;
+            $hazards[] = trim((string)$hazard);
         }
         return $hazards;
     }

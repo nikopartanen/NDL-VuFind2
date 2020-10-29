@@ -277,7 +277,9 @@ class RecordImage extends \Laminas\View\Helper\AbstractHelper
     public function render(
         $type = 'list', $params = null, $source = 'Solr', $extraParams = []
     ) {
-        $imageClick = $extraParams['imageClick'] ?? 'modal';
+        $disableModal = isset($extraParams['disableModal'])
+            && $extraParams['disableModal'] ? 'none' : 'modal';
+        $imageClick = $extraParams['imageClick'] ?? $disableModal;
         $imageRightsLabel = $extraParams['imageRightsLabel'] ?? 'Image Rights';
         $numOfImages = $extraParams['numOfImages'] ?? null;
         $displayIcon = $extraParams['displayIcon'] ?? false;
