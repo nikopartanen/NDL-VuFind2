@@ -23,7 +23,9 @@
  * @package  RecordDrivers
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @author   Jaro Ravila <jaro.ravila@helsinki.fi>
- * @author   Juha Luoma  <juha.luoma@helsinki.fi>
+ * @author   Juha Luoma <juha.luoma@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
+ * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
  */
@@ -36,7 +38,9 @@ namespace Finna\RecordDriver;
  * @package  RecordDrivers
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @author   Jaro Ravila <jaro.ravila@helsinki.fi>
- * @author   Juha Luoma  <juha.luoma@helsinki.fi>
+ * @author   Juha Luoma <juha.luoma@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
+ * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
  */
@@ -268,12 +272,19 @@ class SolrLrmi extends SolrQdc
     }
 
     /**
-     * Get all image urls
+     * Return an array of image URLs associated with this record with keys:
+     * - url         Image URL
+     * - description Description text
+     * - rights      Rights
+     *   - copyright   Copyright (e.g. 'CC BY 4.0') (optional)
+     *   - description Human readable description (array)
+     *   - link        Link to copyright info
      *
-     * @param string $language   to get rights
-     * @param string $includePdf from parent call
+     * @param string $language   Language for copyright information
+     * @param bool   $includePdf Whether to include first PDF file when no image
+     * links are found
      *
-     * @return array
+     * @return mixed
      */
     public function getAllImages($language = 'fi', $includePdf = true)
     {
@@ -297,6 +308,25 @@ class SolrLrmi extends SolrQdc
             }
         }
 
+        // Attempt to find a PDF file to be converted to a coverimage
+        if ($includePdf && empty($result) && $materials = $this->getMaterials()) {
+            foreach ($materials as $material) {
+                if ($material['format'] === 'pdf') {
+                    $url = $material['url'];
+                    $result[] = [
+                         'urls' => [
+                             'small' => $url,
+                             'medium' => $url,
+                             'large' => $url
+                         ],
+                         'description' => '',
+                         'rights' => []
+                    ];
+                    break;
+                }
+            }
+        }
+
         return $result;
     }
 
@@ -305,6 +335,7 @@ class SolrLrmi extends SolrQdc
      * -url: download link for allowed file types, otherwise empty
      * -title: material title
      * -format: material format
+     * -filesize: material file size in bytes
      * -position: order of listing
      *
      * @return array
@@ -325,8 +356,11 @@ class SolrLrmi extends SolrQdc
                     ? (string)$material->url : '';
                 $titles = $this->getMaterialTitles($material->name, $locale);
                 $title = $titles[$locale] ?? $titles['default'];
-                $position = $material->position ?? 0;
-                $materials[] = compact('url', 'title', 'format', 'position');
+                $position = (int)$material->position ?? 0;
+                $filesize = (string)$material->filesize ?? null;
+                $materials[] = compact(
+                    'url', 'title', 'format', 'filesize', 'position'
+                );
             }
         }
 

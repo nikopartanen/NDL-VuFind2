@@ -54,13 +54,18 @@
                 );
               ?>
               <?php foreach ($materials as $material): ?>
-                <?php $html = $material['format'] === 'html'; ?>
+                <?php $html = ('html' === $material['format']); ?>
+                <?php $filesize = $this->fileSize($material['filesize']); ?>
                 <li class="fulltextField">
                   <?php if (in_array($material['format'], $linkedFormats)): ?>
                     <a href="<?= $this->escapeHtmlAttr($this->proxyUrl($material['url'])) ?>"
                       aria-label="<?= $externalLink ?>" target="_blank"><i class="fa <?= $html ? 'fa-external-link' : 'fa-download' ?>"></i>
                       <?= $this->escapeHtml($material['title']) ?></a>
-                    (<?= $html ? $externalLink : $this->escapeHtml($material['format']) ?>)
+                    (<?= $html
+                      ? $externalLink
+                      : ($this->escapeHtml($material['format'])
+                        . ($filesize ? (', ' . $filesize) : ''))
+                    ?>)
                   <?php else: ?>
                     <a href="<?= $aoeLink ?>" aria-label="<?= $externalLink ?>"
                       target="_blank"><i class="fa fa-external-link"></i>
