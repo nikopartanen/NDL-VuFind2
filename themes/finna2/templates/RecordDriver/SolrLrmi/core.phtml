@@ -47,10 +47,7 @@
             <ul class="truncate-field outer" data-rows="4">
               <?php
                 $externalLink = $this->escapeHtmlAttr($this->translate('external_link'));
-                $linkedFormats = [
-                  'html', 'avi', 'mp4', 'mp3', 'pdf', 'docx', 'doc', 'odt', 'rtf',
-                  'txt', 'ppt', 'pptx', 'odp', 'm4a', 'png', 'jpeg', 'mbz'
-                ];
+                $linkedFormats = $this->driver->getDownloadableFileFormats();
                 $toolTipNoMaterialLink = $this->escapeHtmlAttr(
                   $this->translate('tooltip_aoe_no_material_link_html',
                   ['%%link%%' => '<a href="' . ($aoeLink ?? 'https://aoe.fi') . '" target="_blank">aoe.fi</a>' ])

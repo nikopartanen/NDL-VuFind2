@@ -49,7 +49,8 @@ class SolrLrmi extends SolrQdc
      */
     protected $downloadableFileFormats = [
         'pdf', 'pptx', 'ppt', 'docx', 'mp4', 'mp3', 'html',
-        'avi', 'odt', 'rtf', 'txt', 'odp', 'png', 'jpeg', 'm4a', 'mbz'
+        'avi', 'odt', 'rtf', 'txt', 'odp', 'png', 'jpeg', 'm4a',
+        'mbz', 'doc'
     ];
 
     /**
@@ -65,6 +66,16 @@ class SolrLrmi extends SolrQdc
         'CCBYNCSA4.0' => 'CC BY-NC-SA 4.0',
         'CCBYNC4.0' => 'CC BY-NC-SA 4.0'
     ];
+
+    /**
+     * Returns a list of downloadable file formats.
+     *
+     * @return array
+     */
+    public function getDownloadableFileFormats()
+    {
+        return $this->downloadableFileFormats;
+    }
 
     /**
      * Return type of access restriction for the record.
