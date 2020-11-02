@@ -8,8 +8,7 @@
 ?>
 <?php if ($recordType === 'lrmi' && $externalLink = $this->driver->getExternalLink()): ?>
   <p class="alert alert-aoe">
-    <span><?= $this->transEsc('add_aoe_rating') ?></span>
-    <a class="btn btn-primary link-to-aoe" href="<?=$externalLink?>"><?= $this->transEsc('go_to_aoe.fi') ?></a>
+    <?= $this->transEsc('add_aoe_rating') ?> (<a href="<?=$externalLink?>">aoe.fi</a>).
   </p>
 <?php else: ?>
   <div class="comment-list">
