@@ -39,11 +39,21 @@ namespace Finna\View\Helper\Root;
 class FileSize extends \Laminas\View\Helper\AbstractHelper
 {
     /**
-     * Array of translated digital information units.
+     * Array of digital information units.
      *
      * @var array
      */
-    protected $units = null;
+    protected $units = [
+        ['key' => 'digital_information_unit_B'],
+        ['key' => 'digital_information_unit_KB'],
+        ['key' => 'digital_information_unit_MB'],
+        ['key' => 'digital_information_unit_TB'],
+        ['key' => 'digital_information_unit_GB'],
+        ['key' => 'digital_information_unit_PB'],
+        ['key' => 'digital_information_unit_EB'],
+        ['key' => 'digital_information_unit_ZB'],
+        ['key' => 'digital_information_unit_YB']
+    ];
 
     /**
      * Returns a human readable file size converted to the most appropriate
@@ -59,24 +69,18 @@ class FileSize extends \Laminas\View\Helper\AbstractHelper
         if (!is_numeric($bytes)) {
             return $bytes;
         }
-        if (!$this->units) {
-            $transEsc = $this->getView()->plugin('transEsc');
-            $this->units = [
-                $transEsc('digital_information_unit_B'),
-                $transEsc('digital_information_unit_KB'),
-                $transEsc('digital_information_unit_MB'),
-                $transEsc('digital_information_unit_GB'),
-                $transEsc('digital_information_unit_TB'),
-                $transEsc('digital_information_unit_PB'),
-                $transEsc('digital_information_unit_EB'),
-                $transEsc('digital_information_unit_ZB'),
-                $transEsc('digital_information_unit_YB')
-            ];
-        }
         $exponent = min(floor(log($bytes) / log(1000)), count($this->units) - 1);
         $localizedNumber = $this->getView()->plugin('localizedNumber');
         $value = $localizedNumber(($bytes / pow(1000, $exponent)), $decimals);
-        $unit = $this->units[$exponent];
+
+        // Translate the unit if it has not already been translated.
+        if (!array_key_exists('translation', $this->units[$exponent])) {
+            $transEsc = $this->getView()->plugin('transEsc');
+            $this->units[$exponent]['translation']
+                = $transEsc($this->units[$exponent]['key']);
+        }
+
+        $unit = $this->units[$exponent]['translation'];
 
         return $value . ' ' . $unit;
     }
