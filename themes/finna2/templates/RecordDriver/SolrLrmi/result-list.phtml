@@ -7,7 +7,7 @@
   $thumbnailAlignment = $this->record($this->driver)->getThumbnailAlignment('result');
   $levels = $this->driver->getRootEducationalLevels();
   $topics = $this->driver->getTopics('yso');
-  $showExtraDetails = $this->layout()->templateDir === 'l1';
+  $inL1Results = $this->layout()->templateDir === 'l1';
   $coverDetails = $this->record($this->driver)->getCoverDetails('result-list', 'medium', $this->recordLink()->getUrl($this->driver));
   if ($img) {
     $thumbnail = $img->render('list', ['small' => ['w' => 158, 'h' => 228], 'medium' => ['w' => 158, 'h' => 228]], 'L1', ['imageClick' => 'open']);
@@ -108,7 +108,13 @@
                   ?>
               </div>
             <?php endif; ?>
-            <?php if ($showExtraDetails): ?>
+            <?php $recordSource = $this->driver->tryMethod('getDataSource'); ?>
+            <?php if ($recordSource): ?>
+            <div class="dedupInformation">
+              <strong><?=$this->transEsc("source_$recordSource", null, $recordSource) ?></strong>
+            </div>
+            <?php endif; ?>
+            <?php if ($inL1Results): ?>
               <div class="targeted-informations truncate-field outer" data-rows="2">
                 <?php $urlHelper = $this->results->getUrlQuery()->removeAllFilters(); ?>
                 <?php if ($levels): ?>
@@ -141,12 +147,6 @@
             <?php endif; ?>
           <?php endif; ?>
         </div>
-        <?php $recordSource = $this->driver->tryMethod('getDataSource'); ?>
-        <?php if ($recordSource && !$showExtraDetails): ?>
-          <div class="dedupInformation">
-            <strong><?=$this->transEsc("source_$recordSource", null, $recordSource) ?></strong>
-          </div>
-        <?php endif; ?>
         <?php if ($this->driver->tryMethod('getWorkKeys') && !empty($this->config()->get('config')->Record->display_versions)): ?>
           <div class="record-versions ajax"></div>
         <?php endif; ?>
