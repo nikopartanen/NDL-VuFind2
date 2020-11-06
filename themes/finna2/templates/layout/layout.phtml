@@ -41,10 +41,7 @@
       $this->headScript()->appendFile('vendor/classList.js', 'text/javascript', ['conditional' => 'lte IE 9']);
       $this->headScript()->appendFile('vendor/html5shiv.js', 'text/javascript', ['conditional' => 'lt IE 9']);
       $this->headScript()->appendFile('vendor/respond.js', 'text/javascript', ['conditional' => 'lt IE 9']);
-      $this->headScript()->appendFile("vendor/jquery.waitforimages.min.js");
-      $finnaSurvey
-        = in_array($this->layout()->templateDir, ['search', 'record'])
-        && $this->finnaSurvey()->isEnabled();
+      $finnaSurvey = in_array($this->layout()->templateDir, ['search', 'record']) && $this->finnaSurvey()->isEnabled();
 
       if ($finnaSurvey) {
         $this->headScript()->appendFile('finna-survey.js');
@@ -369,7 +366,7 @@ JS;
         </div>
       </div>
     </header>
-    <section role="search" class="searchContent<?=$currentTabClass?>">
+    <section aria-label="<?=$this->transEsc('Search functions')?>" class="searchContent<?=$currentTabClass?>">
       <h1 class="sr-only"><?=$this->transEsc('Search')?></h1>
         <?php if ($this->layout()->templateName === 'home' && $this->layout()->templateDir === 'search'): ?>
             <a class="btn btn-primary btn-uppercase floating-feedback-btn" href="<?=$this->url('feedback-home') ?>"><?=$this->transEsc('Feedback')?></a>
