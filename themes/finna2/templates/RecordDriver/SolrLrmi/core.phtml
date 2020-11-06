@@ -82,9 +82,9 @@
             (<a href="<?= $aoeLink ?>" aria-label="<?= $externalLink ?>" target="_blank">aoe.fi</a>)<?php endif; ?>.
         </p>
       </div>
-      <?php if ($summary): ?>
+      <?php if (count($summary) > 1): ?>
         <div class="material-description">
-          <?= $this->escapeHtml($summary); ?>
+          <?= $this->escapeHtml(implode('<br>', $summary)); ?>
         </div>
       <?php endif; ?>
       <?/* Display Main Details */?>

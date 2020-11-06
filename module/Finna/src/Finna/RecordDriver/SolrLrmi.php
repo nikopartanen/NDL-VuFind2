@@ -105,9 +105,9 @@ class SolrLrmi extends SolrQdc
     }
 
     /**
-     * Get descriptions
+     * Get an array of summary strings for the record
      *
-     * @return array descriptions with languages as keys
+     * @return array
      */
     public function getSummary()
     {
@@ -118,9 +118,10 @@ class SolrLrmi extends SolrQdc
                 continue;
             }
             if ($locale === (string)$d['lang']) {
-                return (string)$d;
+                return [(string)$d];
             }
         }
+        return [];
     }
 
     /**
@@ -238,7 +239,7 @@ class SolrLrmi extends SolrQdc
         $topics = [];
         foreach ($xml->about as $about) {
             $thing = $about->thing;
-            $name = (string)trim($thing->name);
+            $name = trim((string)$thing->name);
             if ($name && strpos((string)$thing->identifier, $type) !== false
             ) {
                 $topics[] = $name;
@@ -248,13 +249,13 @@ class SolrLrmi extends SolrQdc
     }
 
     /**
-     * Check if provided filetype is allowed for download
+     * Is the provided filetype allowed for download?
      *
      * @param string $format file format
      *
      * @return boolean
      */
-    protected function checkAllowedFileFormat($format)
+    protected function isDownloadableFileFormat($format)
     {
         return in_array($format, $this->downloadableFileFormats);
     }
@@ -352,7 +353,7 @@ class SolrLrmi extends SolrQdc
                     ? 'html'
                     : $this->getFileFormat((string)$material->url);
 
-                $url = $this->checkAllowedFileFormat($format)
+                $url = $this->isDownloadableFileFormat($format)
                     ? (string)$material->url : '';
                 $titles = $this->getMaterialTitles($material->name, $locale);
                 $title = $titles[$locale] ?? $titles['default'];
