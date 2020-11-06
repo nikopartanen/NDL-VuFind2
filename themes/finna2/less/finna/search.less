@@ -450,9 +450,19 @@ h2 {
   padding-right: 0.5em;
 }
 
+.record-type-lrmi.list-view {
+  .targeted-informations {
+    margin: 6px 0;
+  }
+}
+
 .lrmi-topic {
-  background-color: #F4F4F4;
+  padding: 3px 6px;
   color: @gray;
+  background-color: #F4F4F4;
+  & + & {
+    margin-left: 3px;
+  }
 }
 
 .learning-material > .list-rights {
