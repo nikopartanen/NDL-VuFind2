@@ -184,8 +184,8 @@ class SolrLrmi extends SolrQdc
     }
 
     /**
-     * Return url to LRMI record page based on the
-     * record ID or false if id is not provided
+     * Return url to external LRMI record page based on the record ID
+     * or false if ID is not provided.
      *
      * @return string|boolean
      */
@@ -204,6 +204,26 @@ class SolrLrmi extends SolrQdc
             );
         }
         return false;
+    }
+
+    /**
+     * Return link to external LRMI record rating page based on the record ID
+     * or false if ID is not provided or there is no external rating page.
+     *
+     * @return array|boolean
+     */
+    public function getExternalRatingLink()
+    {
+        // Only AOE records supported currently.
+        if ('aoe' !== $this->getDataSource()
+            || !$link = $this->getExternalLink()
+        ) {
+            return false;
+        }
+        return [
+            'key' => 'add_aoe_rating_html',
+            'link' => $link
+        ];
     }
 
     /**
