@@ -1,12 +1,9 @@
 <!-- START of: finna - RecordDriver/SolrLrmi/result-list.phtml -->
 <?php
   $combinedView = !$this->layout()->templateDir || $this->layout()->templateDir === 'combined';
-  $rights = $this->driver->getAccessRestrictionsType($this->layout()->userLang);
   $img = $this->recordImage($this->record($this->driver));
   $thumbnail = false;
   $thumbnailAlignment = $this->record($this->driver)->getThumbnailAlignment('result');
-  $levels = $this->driver->getRootEducationalLevels();
-  $topics = $this->driver->getTopics('yso');
   $inL1Results = $this->layout()->templateDir === 'l1';
   $coverDetails = $this->record($this->driver)->getCoverDetails('result-list', 'medium', $this->recordLink()->getUrl($this->driver));
   if ($img) {
@@ -90,22 +87,19 @@
               <?=!empty($summAuthor) ? '' : ' '?>
               <span class="publish-year"><?=$this->escapeHtml($summDate[0])?></span>
             <?php endif; ?>
-            <?php $classifications = $this->driver->tryMethod('getClassifications'); if (!empty($classifications)): ?>
+            <?php if ($classifications = $this->driver->tryMethod('getClassifications')): ?>
               <div class="resultClassification">
-                <?php
-                  $result = '';
-                  $i = 0;
-                  foreach ($classifications as $class => $field) {
-                    $field = array_unique($field);
-                    foreach ($field as $i => $subfield) {
-                      $result = $class . ' ' . $subfield;
+                <?php foreach ($classifications as $class => $field): ?>
+                  <?php if (isset($field[0]) && !empty($field[0])): ?>
+                    <?php
+                      $result = $class . ' ' . $field[0];
                       $classForTranslation = 'classification::' . str_replace('::', ' ', $result);
-                      ?>
-                      <?php if (!$this->translationEmpty($classForTranslation) && $i < 1): ?><a title="<?=$this->escapeHtmlAttr($result)?>" href="<?=$this->record($this->driver)->getLink('classification', $result)?>"><?=$this->transEsc($classForTranslation) . '<span class="classification-detail"> (' . $this->escapeHtml($result) . ')</span>';?></a><br/><?php endif; ?>
-                  <?php
-                    }
-                  }
-                  ?>
+                      if (!$this->translationEmpty($classForTranslation)):
+                    ?>
+                      <a title="<?=$this->escapeHtmlAttr($result)?>" href="<?=$this->record($this->driver)->getLink('classification', $result)?>"><?=$this->transEsc($classForTranslation) . '<span class="classification-detail"> (' . $this->escapeHtml($result) . ')</span>';?></a><br/>
+                    <?php endif; ?>
+                  <?php endif; ?>
+                <?php endforeach; ?>
               </div>
             <?php endif; ?>
             <?php $recordSource = $this->driver->tryMethod('getDataSource'); ?>
@@ -116,19 +110,18 @@
             <?php endif; ?>
             <?php if ($inL1Results): ?>
               <div class="targeted-informations truncate-field outer" data-rows="2">
-                <?php $urlHelper = $this->results->getUrlQuery()->removeAllFilters(); ?>
-                <?php if ($levels): ?>
+                <?php if ($levels = $this->driver->getRootEducationalLevels()): ?>
                   <?php foreach($levels as $level): ?>
                     <span class="lrmi-topic"><?=$this->transEsc($level)?></span>
                   <?php endforeach; ?>
                 <?php endif; ?>
-                <?php if ($topics): ?>
+                <?php if ($topics = $this->driver->getTopics()): ?>
                   <?php foreach($topics as $topic): ?>
                     <span class="lrmi-topic"><?=$this->transEsc($topic)?></span>
                   <?php endforeach; ?>
                 <?php endif; ?>
               </div>
-              <?php if ($rights): ?>
+              <?php if ($rights = $this->driver->getAccessRestrictionsType()): ?>
                 <div class="learning-material">
                   <div class="material-rights list-rights">
                     <span class="rights-header"><?=$this->transEsc('Usage Rights')?>:</span>
