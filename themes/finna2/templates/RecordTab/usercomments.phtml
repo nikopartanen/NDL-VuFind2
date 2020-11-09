@@ -6,7 +6,7 @@
   $allowCommenting = $user && $this->record($this->driver)->commentingAllowed($user);
   $recordType = $this->driver->tryMethod('getRecordType');
 ?>
-<?php if ($this->driver->tryMethod('getExternalLink')): ?>
+<?php if ($externalLink = $this->driver->tryMethod('getExternalLink')): ?>
   <p class="alert alert-aoe">
     <?= $this->transEsc('add_aoe_rating') ?> (<a href="<?=$externalLink?>">aoe.fi</a>).
   </p>
