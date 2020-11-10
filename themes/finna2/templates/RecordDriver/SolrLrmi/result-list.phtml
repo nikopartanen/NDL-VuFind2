@@ -90,7 +90,7 @@
             <?php if ($classifications = $this->driver->tryMethod('getClassifications')): ?>
               <div class="resultClassification">
                 <?php foreach ($classifications as $class => $field): ?>
-                  <?php if (isset($field[0]) && !empty($field[0])): ?>
+                  <?php if (!empty($field[0])): ?>
                     <?php
                       $result = $class . ' ' . $field[0];
                       $classForTranslation = 'classification::' . str_replace('::', ' ', $result);
