@@ -80,7 +80,7 @@
         </div>
       <?php endif; ?>
       <?= $this->record($this->driver)->getMaterialDisclaimer() ?>
-      <?php if (count($summary) > 1): ?>
+      <?php if (!empty($summary)): ?>
         <div class="material-description">
           <?= $this->escapeHtml(implode('<br>', $summary)); ?>
         </div>
