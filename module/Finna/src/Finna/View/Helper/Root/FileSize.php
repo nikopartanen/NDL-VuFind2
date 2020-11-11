@@ -74,7 +74,7 @@ class FileSize extends \Laminas\View\Helper\AbstractHelper
         $value = $localizedNumber(($bytes / pow(1000, $exponent)), $decimals);
 
         // Translate the unit if it has not already been translated.
-        if (!array_key_exists('translation', $this->units[$exponent])) {
+        if (!isset($this->units[$exponent]['translation'])) {
             $transEsc = $this->getView()->plugin('transEsc');
             $this->units[$exponent]['translation']
                 = $transEsc($this->units[$exponent]['key']);

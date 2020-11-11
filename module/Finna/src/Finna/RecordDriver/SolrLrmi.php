@@ -185,21 +185,21 @@ class SolrLrmi extends SolrQdc
 
     /**
      * Return url to external LRMI record page based on the record ID
-     * or false if ID is not provided.
+     * or false if an external link template is not provided.
      *
      * @return string|boolean
      */
     public function getExternalLink()
     {
-        $xml = $this->getXmlRecord();
         $config = $this->recordConfig->Record;
         $src = $this->getDataSource();
-        $locale = $this->getLocale();
         if (isset($config->lrmi_external_link_template[$src])) {
             $link = $config->lrmi_external_link_template[$src];
+            $recordId = $this->getUniqueID();
+            $recordId = substr($recordId, (strrpos($recordId, '.') + 1));
             return str_replace(
                 ['{materialId}', '{lang}'],
-                [(string)$xml->recordID, $locale],
+                [$recordId, $this->getLocale()],
                 $link
             );
         }
@@ -208,22 +208,18 @@ class SolrLrmi extends SolrQdc
 
     /**
      * Return link to external LRMI record rating page based on the record ID
-     * or false if ID is not provided or there is no external rating page.
+     * or false if an external link template is not provided or there is no
+     * external rating page.
      *
      * @return array|boolean
      */
     public function getExternalRatingLink()
     {
         // Only AOE records supported currently.
-        if ('aoe' !== $this->getDataSource()
-            || !$link = $this->getExternalLink()
-        ) {
-            return false;
+        if ('aoe' === $this->getDataSource()) {
+            return $this->getExternalLink();
         }
-        return [
-            'key' => 'add_aoe_rating_html',
-            'link' => $link
-        ];
+        return false;
     }
 
     /**
@@ -310,6 +306,7 @@ class SolrLrmi extends SolrQdc
     public function getAllImages($language = 'fi', $includePdf = true)
     {
         $xml = $this->getXmlRecord();
+        $uniqueId = $this->getUniqueID();
         $result = [];
         $images = ['image/png', 'image/jpeg'];
         foreach ($xml->description as $desc) {
@@ -317,15 +314,19 @@ class SolrLrmi extends SolrQdc
             $format = trim((string)($attr['format'] ?? ''));
             if ($format && in_array($format, $images)) {
                 $url = (string)$desc;
-                $result[] = [
-                    'urls' => [
-                        'small' => $url,
-                        'medium' => $url,
-                        'large' => $url
-                     ],
-                    'description' => '',
-                    'rights' => []
-                ];
+                if (!$this->urlBlocked($url)
+                    && $this->isUrlLoadable($url, $uniqueId)
+                ) {
+                    $result[] = [
+                        'urls' => [
+                            'small' => $url,
+                            'medium' => $url,
+                            'large' => $url
+                        ],
+                        'description' => '',
+                        'rights' => []
+                    ];
+                }
             }
         }
 
@@ -334,16 +335,18 @@ class SolrLrmi extends SolrQdc
             foreach ($materials as $material) {
                 if ($material['format'] === 'pdf') {
                     $url = $material['url'];
-                    $result[] = [
-                         'urls' => [
-                             'small' => $url,
-                             'medium' => $url,
-                             'large' => $url
-                         ],
-                         'description' => '',
-                         'rights' => []
-                    ];
-                    break;
+                    if (!$this->urlBlocked($url)) {
+                        $result[] = [
+                            'urls' => [
+                                'small' => $url,
+                                'medium' => $url,
+                                'large' => $url
+                            ],
+                            'description' => '',
+                            'rights' => []
+                        ];
+                        break;
+                    }
                 }
             }
         }

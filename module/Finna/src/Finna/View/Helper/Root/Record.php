@@ -919,4 +919,53 @@ class Record extends \VuFind\View\Helper\Root\Record
             ['summary' => $summary, 'driver' => $this->driver]
         );
     }
+
+    /**
+     * Returns additional information related to external material links.
+     *
+     * @return string
+     */
+    public function getExternalLinkAdditionalInfo()
+    {
+        $translator = $this->getView()->plugin('translate');
+        $externalLinkText = $translator('external_link');
+        switch ($this->driver->getDataSource()) {
+        case 'aoe':
+            $source = ' aoe.fi';
+            break;
+        default:
+            $source = '';
+        }
+        return '(' . $externalLinkText . $source . ')';
+    }
+
+    /**
+     * Returns a data source specific material disclaimer.
+     *
+     * @return string
+     */
+    public function getMaterialDisclaimer()
+    {
+        return $this->renderTemplate(
+            'material-disclaimer-' . $this->driver->getDataSource() . '.phtml',
+            ['externalLink' => $this->driver->tryMethod('getExternalLink')]
+        );
+    }
+
+    /**
+     * Returns a rendered external rating link or false if there is no link.
+     *
+     * @return string|false
+     */
+    public function getExternalRatingLink()
+    {
+        if ($url = $this->driver->tryMethod('getExternalRatingLink')) {
+            return $this->renderTemplate(
+                'external-rating-link-' . $this->driver->getDataSource() . '.phtml',
+                ['externalRatingLink'
+                    => $this->driver->tryMethod('getExternalRatingLink')]
+            );
+        }
+        return false;
+    }
 }

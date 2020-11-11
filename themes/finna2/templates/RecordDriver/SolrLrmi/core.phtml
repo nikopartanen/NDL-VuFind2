@@ -2,7 +2,7 @@
 <?php
   $rights = $this->driver->getAccessRestrictionsType($this->layout()->userLang);
   $summary = $this->driver->getSummary();
-  $aoeLink = $this->driver->getExternalLink();
+  $externalLink = $this->driver->getExternalLink();
   $materials = $this->driver->getMaterials($this->layout()->userLang);
   $dateCreated = $this->driver->getDateCreated();
   $dateModified = $this->driver->getDateModified();
@@ -40,48 +40,46 @@
           <span><?= $dateCreated ? $this->transEsc('Created') . ': ' . $dateCreated : '';?><?= $dateCreated && $dateModified ? ', ' : ''?><?= $dateModified ? $this->transEsc('modified') . ': ' . $dateModified : '';?></span>
         </div>
       <?php endif; ?>
-      <div class="learning-material">
-        <h3><?= $this->transEsc('Contents'); ?></h3>
-        <?php if (!empty($materials)): ?>
+      <?php if (!empty($materials)): ?>
+        <div class="learning-material">
+          <h3><?= $this->transEsc('Contents'); ?></h3>
           <div class="recordURLs local-available-online-record">
             <ul class="truncate-field outer" data-rows="4">
               <?php
-                $externalLink = $this->escapeHtmlAttr($this->translate('external_link'));
+                $externalLinkText = $this->translate('external_link');
+                $externalLinkAdditionalInfo
+                  = $this->record($this->driver)->getExternalLinkAdditionalInfo();
                 $linkedFormats = $this->driver->getDownloadableFileFormats();
-                $toolTipNoMaterialLink = $this->escapeHtmlAttr(
-                  $this->translate('tooltip_aoe_no_material_link_html',
-                  ['%%link%%' => '<a href="' . ($aoeLink ?? 'https://aoe.fi') . '" target="_blank">aoe.fi</a>' ])
-                );
               ?>
               <?php foreach ($materials as $material): ?>
-                <?php $html = ('html' === $material['format']); ?>
+                <?php $title = $this->escapeHtml($material['title']); ?>
+                <?php $isHtml = ('html' === $material['format']); ?>
                 <?php $filesize = $this->fileSize($material['filesize']); ?>
                 <li class="fulltextField">
                   <?php if (in_array($material['format'], $linkedFormats)): ?>
                     <a href="<?= $this->escapeHtmlAttr($this->proxyUrl($material['url'])) ?>"
-                      aria-label="<?= $externalLink ?>" target="_blank"><i class="fa <?= $html ? 'fa-external-link' : 'fa-download' ?>"></i>
-                      <?= $this->escapeHtml($material['title']) ?></a>
-                    (<?= $html
-                      ? $externalLink
-                      : ($this->escapeHtml($material['format'])
-                        . ($filesize ? (', ' . $filesize) : ''))
+                      aria-label="<?= $this->escapeHtmlAttr($externalLinkText) ?>" target="_blank">
+                      <i class="fa <?= $isHtml ? 'fa-external-link' : 'fa-download' ?>"></i>
+                      <?= $title ?>
+                    </a>
+                    (<?= $isHtml
+                      ? $this->escapeHtml($externalLinkText)
+                      : $this->escapeHtml($material['format'] . ($filesize ? (', ' . $filesize) : ''))
                     ?>)
+                  <?php elseif ($externalLink): ?>
+                    <a href="<?= $externalLink ?>" aria-label="<?= $this->escapeHtmlAttr($externalLinkText) ?>"
+                      target="_blank"><i class="fa fa-external-link"></i><?= $title ?></a>
+                    <?= $externalLinkAdditionalInfo ?>
                   <?php else: ?>
-                    <a href="<?= $aoeLink ?>" aria-label="<?= $externalLink ?>"
-                      target="_blank"><i class="fa fa-external-link"></i>
-                      <?= $this->escapeHtml($material['title']) ?></a>
-                    (<?= $externalLink ?> aoe.fi)
+                    <?= $title ?>
                   <?php endif; ?>
                 </li>
               <?php endforeach; ?>
             </ul>
           </div>
-        <?php endif; ?>
-        <p class="alert alert-lrmi">
-          <?= $this->transEsc('material_aoe_disclaimer') ?><?php if ($aoeLink): ?>
-            (<a href="<?= $aoeLink ?>" aria-label="<?= $externalLink ?>" target="_blank">aoe.fi</a>)<?php endif; ?>.
-        </p>
-      </div>
+        </div>
+      <?php endif; ?>
+      <?= $this->record($this->driver)->getMaterialDisclaimer() ?>
       <?php if (count($summary) > 1): ?>
         <div class="material-description">
           <?= $this->escapeHtml(implode('<br>', $summary)); ?>
