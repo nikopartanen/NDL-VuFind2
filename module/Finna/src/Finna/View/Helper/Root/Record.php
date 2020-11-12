@@ -946,10 +946,15 @@ class Record extends \VuFind\View\Helper\Root\Record
      */
     public function getMaterialDisclaimer()
     {
-        return $this->renderTemplate(
-            'material-disclaimer-' . $this->driver->getDataSource() . '.phtml',
-            ['externalLink' => $this->driver->tryMethod('getExternalLink')]
-        );
+        try {
+            return $this->renderTemplate(
+                'material-disclaimer-' . $this->driver->getDataSource() . '.phtml',
+                ['externalLink' => $this->driver->tryMethod('getExternalLink')]
+            );
+        } catch (\Laminas\View\Exception\RuntimeException $e) {
+            // Template does not exist.
+            return '';
+        }
     }
 
     /**

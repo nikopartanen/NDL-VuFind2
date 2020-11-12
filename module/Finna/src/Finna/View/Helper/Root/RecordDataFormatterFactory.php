@@ -622,53 +622,53 @@ class RecordDataFormatterFactory
             ]
         );
         $setTemplateLine(
-            'Educational Audience', 'getEducationalAudiences',
+            'Educational Role', 'getEducationalAudiences',
             'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-educational-audience']
             ]
         );
         $setTemplateLine(
-            'Educational Uses', 'getEducationalUse', 'data-transEsc.phtml',
+            'Educational Use', 'getEducationalUse', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-educational-uses']
             ]
         );
         $setTemplateLine(
-            'Educational Levels', 'getEducationalLevels', 'data-transEsc.phtml',
+            'Educational Level', 'getEducationalLevels', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-educational-levels']
             ]
         );
         $setTemplateLine(
-            'Educational Subjects', 'getEducationalSubjects',
+            'Educational Subject', 'getEducationalSubjects',
             'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-educational-subjects']
             ]
         );
         $setTemplateLine(
-            'Educational Material Type', 'getEducationalMaterialType',
+            'Learning Resource Type', 'getEducationalMaterialType',
             'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-educational-material-type']
             ]
         );
         $setTemplateLine(
-            'Educational Aim', 'getEducationalAim', 'data-transEsc.phtml',
+            'Objective and Content', 'getEducationalAim', 'data-transEsc.phtml',
             [
                 'context' => ['class' => 'record-educational-aim']
             ]
         );
         $setTemplateLine(
-            'Accessibility features', 'getAccessibilityFeatures',
+            'Accessibility Feature', 'getAccessibilityFeatures',
             'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'record-accessibility-features']
             ]
         );
         $setTemplateLine(
-            'Accessibility hazards', 'getAccessibilityHazards',
+            'Accessibility Hazard', 'getAccessibilityHazards',
             'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'record-accessibility-hazard']
