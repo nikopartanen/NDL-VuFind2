@@ -1,7 +1,6 @@
 <?php
-
 /**
- * L1 connector.
+ * Record driver plugin manager
  *
  * PHP version 7
  *
@@ -21,22 +20,36 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  Search
+ * @package  RecordDrivers
  * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org
+ * @link     https://vufind.org/wiki/development:plugins:record_drivers Wiki
  */
-namespace FinnaSearch\Backend\L1;
+namespace Finna\RecordDriver;
+
+use VuFind\RecordDriver\AbstractBase;
 
 /**
- * L1 connector.
+ * Record driver plugin manager
  *
  * @category VuFind
- * @package  Search
+ * @package  RecordDrivers
  * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://vufind.org
+ * @link     https://vufind.org/wiki/development:plugins:record_drivers Wiki
  */
-class Connector extends \VuFindSearch\Backend\Solr\Connector
+class PluginManager extends \VuFind\RecordDriver\PluginManager
 {
+    /**
+     * Convenience method to retrieve a populated L1 record driver.
+     *
+     * @param array  $data             Raw Solr data
+     * @param string $defaultKeySuffix Default key suffix
+     *
+     * @return AbstractBase
+     */
+    public function getL1Record($data, $defaultKeySuffix = '')
+    {
+        return $this->getSolrRecord($data, 'SolrLrmi', $defaultKeySuffix);
+    }
 }
