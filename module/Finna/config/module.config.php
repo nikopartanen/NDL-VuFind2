@@ -200,20 +200,6 @@ $config = [
                     ]
                 ]
             ],
-            'l1record-feedback' => [
-                'type'    => 'Laminas\Router\Http\Segment',
-                'options' => [
-                    'route'    => '/Record/[:id]/Feedback',
-                    'constraints' => [
-                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    ],
-                    'defaults' => [
-                        'controller' => 'Record',
-                        'action'     => 'Feedback',
-                    ]
-                ]
-            ],
         ],
     ],
     'route_manager' => [
@@ -336,6 +322,7 @@ $config = [
             'Finna\OnlinePayment\Session' => 'Finna\OnlinePayment\OnlinePaymentSessionFactory',
             'Finna\OrganisationInfo\OrganisationInfo' => 'Finna\OrganisationInfo\OrganisationInfoFactory',
             'Finna\Record\Loader' => 'Finna\Record\LoaderFactory',
+            'Finna\RecordDriver\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\RecordTab\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\RecordTab\TabManager' => 'VuFind\RecordTab\TabManagerFactory',
             'Finna\Role\PermissionManager' => 'VuFind\Role\PermissionManagerFactory',
@@ -895,5 +882,21 @@ $routeGenerator = new \VuFind\Route\RouteGenerator();
 $routeGenerator->addRecordRoutes($config, $recordRoutes);
 $routeGenerator->addDynamicRoutes($config, $dynamicRoutes);
 $routeGenerator->addStaticRoutes($config, $staticRoutes);
+
+// This needs to be defined after VuFind's record routes...
+$config['router']['routes']['l1record-feedback'] = [
+    'type'    => 'Laminas\Router\Http\Segment',
+    'options' => [
+        'route'    => '/L1Record/[:id]/Feedback',
+        'constraints' => [
+            'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+            'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+        ],
+        'defaults' => [
+            'controller' => 'L1Record',
+            'action'     => 'Feedback',
+        ]
+    ]
+];
 
 return $config;

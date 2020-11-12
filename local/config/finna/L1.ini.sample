@@ -68,23 +68,12 @@ ISN                 = "ISBN/ISSN"
 tag                 = Tag
 
 [Advanced_Searches]
-AllFields           = adv_search_all
-Title               = adv_search_title
-;JournalTitle        = adv_search_journaltitle
-Author              = adv_search_author
-Subject             = adv_search_subject
-CallNumber          = adv_search_callnumber
-ISN                 = adv_search_isn
-publisher           = adv_search_publisher
-Series              = adv_search_series
-year                = adv_search_year
-toc                 = adv_search_toc
-;Coordinate        = Coordinates
+; Advanced searches are not supported at the moment.
 
 [Sorting]
 relevance = sort_relevance
-year = sort_year
-year asc = "sort_year asc"
+main_date_str desc = sort_year
+main_date_str asc = "sort_year asc"
 callnumber-sort = sort_callnumber
 ;dewey-sort = sort_callnumber
 author = sort_author
@@ -144,14 +133,21 @@ container_title = "Journal Title"
 
 [Views]
 list = List
-grid = Grid
-;visual = Visual
+;grid = Grid
+;condensed = Condensed
+;compact = Compact
 
 [List]
 view=full
 
+; This section is for backend specific filters. Keys are ignored, but increasing
+; numeric values (1, 2, 3...) are recommended. Values are fully-formed filter
+; queries.
+[BackendFilters]
+;0 = ""
+
 [HiddenFilters]
-;institution = "MyInstitution"
+datasource_str_mv = aoe ; This filter is required.
 
 [RawHiddenFilters]
 ;0 = "format:\"Book\" OR format:\"Journal\""
@@ -203,16 +199,16 @@ long_lat = "Geographic Search"
 
 [SpecialFacets]
 dateRange[] = publishDate
-;fullDateRange[] = example_field_date
-;numericRange[] = example_field_str
-;genericRange[] = example_field_str
-;hierarchical[] = building
+fullDateRange[] = example_field_date
+numericRange[] = example_field_str
+genericRange[] = example_field_str
+hierarchical[] = building
 hierarchical[] = educational_level_str_mv
-;hierarchicalFacetSortOptions[building] = top
-;hierarchicalFacetDisplayStyles[format] = full
-;hierarchicalFacetSeparators[format] = " > "
+hierarchicalFacetSortOptions[building] = top
+hierarchicalFacetDisplayStyles[format] = full
+hierarchicalFacetSeparators[format] = " > "
 
-;hierarchicalFacetSortOptions[educational_level_str_mv] = all
+hierarchicalFacetSortOptions[educational_level_str_mv] = all
 
 [CheckboxFacets]
 ;edition:1st* = "First Edition"
@@ -241,8 +237,8 @@ facet_limit      = 100
 orFacets = *
 delimiter = "{{{_:::_}}}"
 special_facets   = "illustrated,daterange"
-;translated_facets[] = institution
-;translated_facets[] = building
+translated_facets[] = institution
+translated_facets[] = building
 translated_facets[] = format
 translated_facets[] = callnumber-first:CallNumberFirst
 translated_facets[] = educational_level_str_mv
@@ -250,8 +246,8 @@ translated_facets[] = educational_material_type_str_mv
 translated_facets[] = educational_audience_str_mv
 translated_facets[] = usage_rights_str_mv
 translated_facets[] = language
-;delimited_facets[] = author_id_str
-;delimited_facets[] = "author_id_str|:::"
+delimited_facets[] = author_id_str
+delimited_facets[] = "author_id_str|:::"
 
 hierarchicalFacetSortOptions[educational_level_str_mv] = "all"
 
