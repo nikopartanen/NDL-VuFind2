@@ -109,7 +109,7 @@
             </div>
             <?php endif; ?>
             <?php if ($inL1Results): ?>
-              <div class="targeted-informations truncate-field outer" data-rows="2">
+              <div class="targeted-information truncate-field outer" data-rows="2">
                 <?php if ($levels = $this->driver->getRootEducationalLevels()): ?>
                   <?php foreach($levels as $level): ?>
                     <span class="lrmi-topic"><?=$this->transEsc($level)?></span>
@@ -122,11 +122,9 @@
                 <?php endif; ?>
               </div>
               <?php if ($rights = $this->driver->getAccessRestrictionsType()): ?>
-                <div class="learning-material">
-                  <div class="material-rights list-rights">
-                    <span class="rights-header"><?=$this->transEsc('Usage Rights')?>:</span>
-                    <?= $this->partial('Helpers/copyright-field-value.phtml', ['data' => $rights]) ?>
-                  </div>
+                <div class="material-rights">
+                  <span class="rights-header"><?=$this->transEsc('Usage Rights')?>:</span>
+                  <?= $this->partial('Helpers/copyright-field-value.phtml', ['data' => $rights]) ?>
                 </div>
               <?php endif; ?>
             <?php endif; ?>
