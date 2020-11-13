@@ -964,13 +964,19 @@ class Record extends \VuFind\View\Helper\Root\Record
      */
     public function getExternalRatingLink()
     {
-        if ($url = $this->driver->tryMethod('getExternalRatingLink')) {
+        if (!$url = $this->driver->tryMethod('getExternalRatingLink')) {
+            return false;
+        }
+        try {
             return $this->renderTemplate(
                 'external-rating-link-' . $this->driver->getDataSource() . '.phtml',
-                ['externalRatingLink'
-                    => $this->driver->tryMethod('getExternalRatingLink')]
+                ['externalRatingLink' => $url]
+            );
+        } catch (\Laminas\View\Exception\RuntimeException $e) {
+            // Data source specific template does not exist.
+            return $this->renderTemplate(
+                'external-rating-link.phtml', ['externalRatingLink' => $url]
             );
         }
-        return false;
     }
 }
