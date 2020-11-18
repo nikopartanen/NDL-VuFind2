@@ -1,10 +1,10 @@
 <?php
 /**
- * Defines label constants for records.
+ * Model for missing R2 records
  *
  * PHP version 7
  *
- * Copyright (C) The National Library 2020.
+ * Copyright (C) The National Library of Finland 2020.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -21,7 +21,6 @@
  *
  * @category VuFind
  * @package  RecordDrivers
- * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
@@ -29,22 +28,44 @@
 namespace Finna\RecordDriver;
 
 /**
- * Defines label constants for records.
+ * Model for missing R2 records
  *
  * @category VuFind
  * @package  RecordDrivers
- * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
  */
-interface FinnaRecordLabelInterface
+class R2Ead3Missing extends R2Ead3
 {
-    const FULL_TEXT_AVAILABLE = 'full_text_available';
+    /**
+     * Does this record contain restricted metadata?
+     *
+     * @return bool
+     */
+    public function hasRestrictedMetadata()
+    {
+        return true;
+    }
 
-    const OPEN_ACCESS = 'open_access';
+    /**
+     * Is restricted metadata included with the record, i.e. does the user
+     * have permissions to access restricted metadata.
+     *
+     * @return bool
+     */
+    public function isRestrictedMetadataIncluded()
+    {
+        return false;
+    }
 
-    const PEER_REVIEWED = 'peer_reviewed';
-
-    const R2_RESTRICTED_METADATA_AVAILABLE = 'r2_restricted_metadata_available';
+    /**
+     * Show organisation menu on record page?
+     *
+     * @return boolean
+     */
+    public function showOrganisationMenu()
+    {
+        return false;
+    }
 }
