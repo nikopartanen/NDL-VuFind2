@@ -59,6 +59,29 @@ trait SolrFinnaTrait
     protected $cache = [];
 
     /**
+     * Return an array of image URLs associated with this record with keys:
+     * - urls        Image URLs
+     *   - small     Small image (mandatory)
+     *   - medium    Medium image (mandatory)
+     *   - large     Large image (optional)
+     * - description Description text
+     * - rights      Rights
+     *   - copyright   Copyright (e.g. 'CC BY 4.0') (optional)
+     *   - description Human readable description (array)
+     *   - link        Link to copyright info
+     *
+     * @param string $language   Language for copyright information
+     * @param bool   $includePdf Whether to include first PDF file when no image
+     * links are found
+     *
+     * @return array
+     */
+    public function getAllImages($language = 'fi', $includePdf = true)
+    {
+        return [];
+    }
+
+    /**
      * Return access restriction notes for the record.
      *
      * @return array
@@ -72,12 +95,14 @@ trait SolrFinnaTrait
     /**
      * Return type of access restriction for the record.
      *
+     * @param string $language Language
+     *
      * @return mixed array with keys:
      *   'copyright'   Copyright (e.g. 'CC BY 4.0')
      *   'link'        Link to copyright info, see IndexRecord::getRightsLink
      *   or false if no access restriction type is defined.
      */
-    public function getAccessRestrictionsType()
+    public function getAccessRestrictionsType($language)
     {
         return false;
     }
@@ -431,7 +456,7 @@ trait SolrFinnaTrait
         if (!isset($this->fields['online_urls_str_mv'])) {
             return [];
         }
-        return $raw ? $this->fields['online_urls_str_mv'] : $this->checkForAudioUrls(
+        return $raw ? $this->fields['online_urls_str_mv'] : $this->resolveUrlTypes(
             $this->mergeURLArray(
                 $this->fields['online_urls_str_mv'], true
             )
@@ -605,8 +630,17 @@ trait SolrFinnaTrait
      */
     public function getSource()
     {
-        return isset($this->fields['source_str_mv'])
-            ? $this->fields['source_str_mv'] : false;
+        return $this->fields['source_str_mv'][0] ?? '';
+    }
+
+    /**
+     * Return record sources.
+     *
+     * @return string
+     */
+    public function getSources()
+    {
+        return $this->fields['source_str_mv'] ?? [];
     }
 
     /**
@@ -803,16 +837,30 @@ trait SolrFinnaTrait
     /**
      * Get related records (used by RecordDriverRelated - Related module)
      *
-     * Returns an associative array of record ids.
+     * Returns an associative array of group => records, where each item in
+     * records is either a record id or an array that has a 'wildcard' key
+     * with a Solr compatible pattern as it's value.
+     *
+     * Notes on wildcard queries:
+     *  - Only the first record from the wildcard result set is returned.
+     *  - The wildcard query includes a filter that limits the results to
+     *    the same datasource as the issuing record.
+     *
      * The array may contain the following keys:
-     *   - parents
-     *   - children
      *   - continued-from
-     *   - other
+     *   - part-of
+     *   - contains
+     *   - see-also
+     *
+     * Examples:
+     * - continued-from
+     *     - source1.1234
+     *     - ['wildcard' => '*1234']
+     *     - ['wildcard' => 'source*1234*']
      *
      * @return array
      */
-    public function getRelatedItems()
+    public function getRelatedRecords()
     {
         return [];
     }
@@ -886,6 +934,15 @@ trait SolrFinnaTrait
      */
     protected function urlBlocked($url, $desc = '')
     {
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+
+        $allowedSchemes = isset($this->recordConfig->Record->allowed_url_schemes)
+            ? $this->recordConfig->Record->allowed_url_schemes->toArray()
+            : ['http', 'https', 'tel', 'mailto', 'maps'];
+        if (!in_array($scheme, $allowedSchemes)) {
+            return true;
+        }
+
         // Keep old setting name for back-compatibility:
         $blocklist = $this->recordConfig->Record->url_blocklist
             ?? $this->recordConfig->Record->url_blacklist
@@ -908,21 +965,38 @@ trait SolrFinnaTrait
     }
 
     /**
-     * Checks if any of the URLs contains an audio file and updates
-     * the url array acoordingly
+     * Resolve URL types.
+     * Each URL is annotated with 'codec' field (taken from the file extension).
+     * In addition, image and audio URLs are annotated with 'type' field.
      *
-     * @param array $urls URLs to be checked for audio files
+     * @param array $urls URLs
      *
-     * @return array URL array with added audio and codec tag where
-     * appropriate
+     * @return array URL array with annotated URLs
      */
-    protected function checkForAudioUrls($urls)
+    protected function resolveUrlTypes($urls)
     {
         $newUrls = [];
         foreach ($urls as $url) {
-            if (preg_match('/^http(s)?:\/\/.*\.(mp3|wav)$/', $url['url'], $match)) {
-                $url['embed'] = 'audio';
-                $url['codec'] = $match[2];
+            if (preg_match(
+                '/^http(s)?:\/\/.*\.([a-zA-Z0-9]{3,4}.*)$/',
+                $url['url'], $match
+            )
+            ) {
+                $codec = $match[2];
+                $type = $embed = null;
+                switch (strtolower($codec)) {
+                case 'wav':
+                case 'mp3':
+                    $type = $embed = 'audio';
+                    break;
+                case 'jpg':
+                case 'png':
+                    $type = 'image';
+                    break;
+                }
+                $url['type'] = $type;
+                $url['codec'] = $codec;
+                $url['embed'] = $embed;
             }
             $newUrls[] = $url;
         }
@@ -1043,6 +1117,17 @@ trait SolrFinnaTrait
     }
 
     /**
+     * Returns an array of 0 or more record label constants, or null if labels
+     * are not enabled in configuration.
+     *
+     * @return array|null
+     */
+    public function getRecordLabels()
+    {
+        return null;
+    }
+
+    /**
      * Add filters to params
      *
      * @param \VuFindSearch\ParamBag $paramBag Params
@@ -1060,5 +1145,16 @@ trait SolrFinnaTrait
                     . '"'
             );
         }
+    }
+
+    /**
+     * Returns the locale used by translator
+     *
+     * @return string
+     */
+    protected function getLocale()
+    {
+        list($locale) = explode('-', $this->getTranslatorLocale());
+        return $locale;
     }
 }
