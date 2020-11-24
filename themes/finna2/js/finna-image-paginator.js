@@ -15,6 +15,8 @@ finna.imagePaginator = (function imagePaginator() {
     imagesPerRow: 8,
     enableImageZoom: false,
     recordType: 'default-type',
+    triggerClick: 'modal', // [modal, open, none]
+    displayIcon: false,
     leaflet: {
       offsetPercentage: 4
     }
@@ -34,7 +36,6 @@ finna.imagePaginator = (function imagePaginator() {
    *
    * @param {object} images
    * @param {object} settings
-   * @param {boolean} isList
    */
   function FinnaPaginator(images, settings) {
     var _ = this;
@@ -72,6 +73,7 @@ finna.imagePaginator = (function imagePaginator() {
     _.canvasElements = {};
     _.openImageIndex = 0;
     _.imagePopup = $(imageElement).clone();
+    _.onDocumentLoadCallbacks = [];
   }
 
   /**
@@ -134,12 +136,16 @@ finna.imagePaginator = (function imagePaginator() {
       _.setEvents();
       _.loadPage(0);
       _.setTrigger(_.imageHolder.find('a:first'));
+      _.addDocumentLoadCallback(function showLeftsidebar() {
+        $('.large-image-sidebar').removeClass('hidden');
+      });
     } else {
       _.setEvents();
       _.setListTrigger(_.getImageFromArray(0));
       _.root.find('.recordcovers').addClass('mini-paginator');
       _.root.find('.recordcovers-more').hide();
     }
+    _.onDocumentLoad();
   };
 
   /**
@@ -544,11 +550,15 @@ finna.imagePaginator = (function imagePaginator() {
         if (!_.isList && _.images.length <= 1) {
           _.root.closest('.media-left').not('.audio').addClass('hidden-xs');
           _.root.closest('.media-left').find('.organisation-menu').hide();
-          _.root.css('display', 'none');
+          if (!_.settings.displayIcon) {
+            _.root.css('display', 'none');
+          }
           _.root.siblings('.image-details-container:not(:has(.image-rights))').hide();
           $('.record.large-image-layout').addClass('no-image-layout').removeClass('large-image-layout');
-          $('.large-image-sidebar').addClass('visible-xs visible-sm');
           $('.record-main').addClass('mainbody left');
+          _.addDocumentLoadCallback(function hideSidebar() {
+            $('.large-image-sidebar').addClass('visible-xs visible-sm');
+          });
         }
       } else if (_.trigger.hasClass('no-image')) {
         _.trigger.removeClass('no-image');
@@ -862,7 +872,17 @@ finna.imagePaginator = (function imagePaginator() {
     _.setCurrentVisuals();
     var modal = $('#imagepopup-modal').find('.imagepopup-holder').clone();
 
-    _.trigger.not('[data-disable-modal="1"]').finnaPopup({
+    if (_.settings.triggerClick === 'none') {
+      var noneTrigger = $('<span class="image-popup-trigger"></span>');
+      _.trigger.children().appendTo(noneTrigger);
+      _.trigger.replaceWith(noneTrigger);
+      _.trigger = noneTrigger;
+      return;
+    } else if (_.settings.triggerClick === 'open') {
+      return;
+    }
+
+    _.trigger.finnaPopup({
       modal: modal,
       id: 'paginator',
       translations: translations,
@@ -976,6 +996,29 @@ finna.imagePaginator = (function imagePaginator() {
   FinnaPaginator.prototype.findSmallImage = function findSmallImage(index) {
     var _ = this;
     return _.imageHolder.find('a[index="' + index + '"]');
+  };
+  
+  /**
+   * Function to add callbacks after document is fully loaded
+   * 
+   * @param callback function to add
+   */
+  FinnaPaginator.prototype.addDocumentLoadCallback = function addDocumentLoadCallback(callback) {
+    var _ = this;
+    _.onDocumentLoadCallbacks.push(callback);
+  };
+
+  /**
+   * Function to init on document loaded callbacks
+   */
+  FinnaPaginator.prototype.onDocumentLoad = function onDocumentLoad() {
+    var _ = this;
+    $(document).ready(function doDocumentLoadCallbacks() {
+      for (var i = 0; i < _.onDocumentLoadCallbacks.length; i++) {
+        _.onDocumentLoadCallbacks[i]();
+      }
+      _.onDocumentLoadCallbacks = [];
+    });
   };
 
   var my = {

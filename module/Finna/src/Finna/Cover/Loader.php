@@ -196,6 +196,7 @@ class Loader extends \VuFind\Cover\Loader
         $client = $this->httpService->createClient(
             $url, \Laminas\Http\Request::METHOD_GET, 300
         );
+        $client->setOptions(['useragent' => 'VuFind']);
         $client->setStream();
         $adapter = new \Laminas\Http\Client\Adapter\Curl();
         $client->setAdapter($adapter);
@@ -447,6 +448,7 @@ class Loader extends \VuFind\Cover\Loader
                 \Laminas\Http\Request::METHOD_GET,
                 20
             );
+            $client->setOptions(['useragent' => 'VuFind']);
             $client->setStream($tempFile);
             $result = $client->send();
 
@@ -462,7 +464,7 @@ class Loader extends \VuFind\Cover\Loader
             $this->addHostFailure($host);
             return false;
         }
-
+        $exif = @exif_read_data($tempFile);
         $image = file_get_contents($tempFile);
 
         // We no longer need the temp file:
@@ -496,6 +498,15 @@ class Loader extends \VuFind\Cover\Loader
                 $imageGDResized, $imageGD, 0, 0, 0, 0,
                 $newWidth, $newHeight, $width, $height
             );
+            if (isset($exif['Orientation'])) {
+                $orientation = $exif['Orientation'];
+                if ($orientation > 1 && $orientation < 9) {
+                    $imageGDResized = $this->rotateImage(
+                        $imageGDResized,
+                        $orientation
+                    );
+                }
+            }
             if (!@imagejpeg($imageGDResized, $finalFile, $quality)) {
                 return false;
             }
@@ -522,6 +533,44 @@ class Loader extends \VuFind\Cover\Loader
     }
 
     /**
+     * Method for rotating the given image with exif orientation data
+     *
+     * @param resource $image       Image to rotate
+     * @param int      $orientation Orientation data of the original image
+     *
+     * @return resource
+     */
+    protected function rotateImage($image, $orientation)
+    {
+        switch ($orientation) {
+        case 2: // horizontal flip
+            return imageflip($image, 1);
+            break;
+        case 3: // 180 rotate left
+            return imagerotate($image, 180, 0);
+            break;
+        case 4: // vertical flip
+            return imageflip($image, 2);
+            break;
+        case 5: // vertical flip + 90 rotate right
+            return imagerotate(imageflip($image, 2), -90, 0);
+            break;
+        case 6: // 90 rotate right
+            return imagerotate($image, -90, 0);
+            break;
+        case 7: // horizontal flip + 90 rotate right
+            return imagerotate(imageflip($image, 1), -90, 0);
+            break;
+        case 8: // 90 rotate left
+            return imagerotate($image, 90, 0);
+            break;
+        default: // no rotation found
+            return $image;
+            break;
+        }
+    }
+
+    /**
      * Support method for loadImage() -- sanitize and store some key values.
      *
      * @param array $settings Settings from loadImage (with missing defaults
@@ -544,7 +593,7 @@ class Loader extends \VuFind\Cover\Loader
      */
     protected function isHostBlocked($host)
     {
-        $statusFile = $this->getCachePath('failure', $host ? $host : 'invalid-host');
+        $statusFile = $this->getStatusFilePath($host);
         if (!file_exists($statusFile)) {
             return false;
         }
@@ -559,6 +608,12 @@ class Loader extends \VuFind\Cover\Loader
         $blockThreshold = $this->config->Content->coverServerFailureBlockThreshold
             ?? 10;
         if ($tries >= $blockThreshold) {
+            $reCheckTime = $this->config->Content->coverServerFailureReCheckTime
+                ?? 60;
+            if (filemtime($statusFile) + $reCheckTime < time()) {
+                $this->logWarning("Host $host has been tentatively unblocked");
+                return false;
+            }
             return true;
         }
         return false;
@@ -573,7 +628,7 @@ class Loader extends \VuFind\Cover\Loader
      */
     protected function addHostFailure($host)
     {
-        $statusFile = $this->getCachePath('failure', $host ? $host : 'invalid-host');
+        $statusFile = $this->getStatusFilePath($host);
         $failures = 0;
         $blockDuration = $this->config->Content->coverServerFailureBlockDuration
             ?? 3600;
@@ -596,10 +651,30 @@ class Loader extends \VuFind\Cover\Loader
      */
     protected function addHostSuccess($host)
     {
-        $statusFile = $this->getCachePath('failure', $host ? $host : 'invalid-host');
+        $statusFile = $this->getStatusFilePath($host);
         if (file_exists($statusFile)) {
             $this->logWarning("Host $host success, failure count cleared");
             unlink($statusFile);
         }
+    }
+
+    /**
+     * Get status tracking file path for a host
+     *
+     * @param string $host Host name
+     *
+     * @return string
+     */
+    protected function getStatusFilePath($host)
+    {
+        $base = $this->baseDir;
+        if (!is_dir($base)) {
+            mkdir($base);
+        }
+        $base .= '/';
+        if (!is_dir($base)) {
+            mkdir($base);
+        }
+        return $base . '/' . urlencode($host) . '.status';
     }
 }
