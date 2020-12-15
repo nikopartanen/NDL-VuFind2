@@ -1,10 +1,10 @@
 <?php
 /**
- * Defines label constants for records.
+ * Restricted Solr (R2) Collection Controller
  *
  * PHP version 7
  *
- * Copyright (C) The National Library 2020.
+ * Copyright (C) The National Library of Finland 2020.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -20,33 +20,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  RecordDrivers
- * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
+ * @package  Controller
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
+ * @link     http://vufind.org   Main Site
  */
-namespace Finna\RecordDriver;
+namespace Finna\Controller;
 
 /**
- * Defines label constants for records.
+ * Restricted Solr (R2) Collection Controller
  *
  * @category VuFind
- * @package  RecordDrivers
- * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
+ * @package  Controller
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
+ * @link     http://vufind.org   Main Site
  */
-interface FinnaRecordLabelInterface
+class R2collectionController extends CollectionController
 {
-    const FULL_TEXT_AVAILABLE = 'full_text_available';
+    use \Finna\Controller\R2ControllerTrait;
+    use \Finna\Controller\R2RecordControllerTrait;
 
-    const OPEN_ACCESS = 'open_access';
-
-    const PEER_REVIEWED = 'peer_reviewed';
-
-    const R2_RESTRICTED_METADATA_AVAILABLE = 'R2_restricted_metadata_available';
-
-    const R2_RESTRICTED_METADATA_INCLUDED = 'R2_restricted_metadata_included';
+    /**
+     * Type of record to display
+     *
+     * @var string
+     */
+    protected $searchClassId = 'R2';
 }
