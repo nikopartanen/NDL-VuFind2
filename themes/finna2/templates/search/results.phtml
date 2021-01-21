@@ -216,6 +216,10 @@
       <?=$this->search()->renderSpellingSuggestions('<strong>' . $this->transEsc('spell_suggest') . '</strong>:', $this->results, $this); ?>
     <?php endif; ?>
 
+    <?php foreach ($this->results->getRecommendations('results_top') as $index => $current): ?>
+      <?=$this->recommend($current, 'results_top', $index)?>
+    <?php endforeach; ?>
+
     <?php /* End Listing Options */ ?>
     <h1 class="sr-only"><?= $this->transEsc('Search Results'); ?></h1>
     <?php if ($recordTotal < 1): ?>
@@ -286,6 +290,9 @@
         <?php else: ?>
           <a href="<?=$this->url('myresearch-savesearch')?>?save=<?=urlencode($this->results->getSearchId())?>"><i class="fa fa-plus-square"></i> <?=$this->transEsc('save_search')?></a>
         <?php endif; ?>
+      <?php endif; ?>
+      <?php if ($template = $this->content()->findTemplateForLng("content/Additions/search-post-tools")): ?>
+        <?=$this->render($template, ['results' => $this->results])?>
       <?php endif; ?>
     </div>
   </div>

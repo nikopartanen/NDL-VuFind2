@@ -218,7 +218,7 @@ class KohaRest extends \VuFind\ILS\Driver\AbstractBase implements
      * Constructor
      *
      * @param \VuFind\Date\Converter $dateConverter   Date converter object
-     * @param Callable               $sessionFactory  Factory function returning
+     * @param callable               $sessionFactory  Factory function returning
      * SessionContainer object
      * @param SafeMoneyFormat        $safeMoneyFormat Money formatting view helper
      */
@@ -920,6 +920,11 @@ class KohaRest extends \VuFind\ILS\Driver\AbstractBase implements
                 'valid' => false,
                 'status' => $this->getHoldBlockReason($result['data'])
             ];
+        }
+
+        // Check if we have an item id:
+        if (empty($data['item_id'])) {
+            return false;
         }
 
         $result = $this->makeRequest(

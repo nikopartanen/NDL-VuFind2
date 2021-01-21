@@ -146,26 +146,24 @@
   }
 }
 
-//Finna breadcrumbs
-.breadcrumb {
-  display: none;
-  margin: 0px;
-  margin-top: 15px;
-  background-color: transparent;
+/* Finna breadcrumbs */
 
-  > li {
-    background-color: @breadcrumb-bg;
-    margin: 0px -2px;
-    padding: @breadcrumb-padding-vertical @breadcrumb-padding-horizontal;
-    + li:before {
-      content: @breadcrumb-separator;
-      font-size: 12px;
-    }
-  }
-  > li a {
-    color: @breadcrumb-color;
-  }
+.breadcrumbs {
+  background-color: @breadcrumb-bg;
+  display: none;
 }
+.breadcrumbs when (@breadcrumbs = true) {
+  display: block;
+}
+.record.record-row when (@breadcrumbs = true) {
+  margin-top: 0;
+}
+.breadcrumb {
+  border-radius: 0;
+  margin-bottom: 0;
+}
+
+/* End of Finna breadcrumbs */
 
 #my-info-dropdown-menu {
   width: 280px;

@@ -373,15 +373,26 @@ finna.layout = (function finnaLayout() {
 
     holder.find('.condensed-collapse-toggle').off('click').click(function onClickCollapseToggle(event) {
       if ((event.target.nodeName) !== 'A' && (event.target.nodeName) !== 'MARK') {
-        $(this).nextAll('.condensed-collapse-data').first().slideToggle(120, 'linear');
-        $('.fa-arrow-right', this).toggleClass('fa-arrow-down');
         holder = $(this).parent().parent();
         holder.toggleClass('open');
+
+        var onSlideComplete = null;
         if (holder.hasClass('open') && !holder.hasClass('opened')) {
           holder.addClass('opened');
           VuFind.itemStatuses.check(holder);
           finna.itemStatus.initDedupRecordSelection(holder);
+          onSlideComplete = function handleSlideComplete() {
+            holder.find('.recordcover').trigger('unveil');
+          };
         }
+
+        $(this).nextAll('.condensed-collapse-data').first().slideToggle(120, 'linear', onSlideComplete);
+
+        var icon = $(this).find('.condensed-body > i');
+        if (icon.length === 0) {
+          icon = $(this).find('.condensed-col-title > i');
+        }
+        icon.toggleClass('fa-arrow-right').toggleClass('fa-arrow-down');
       }
     });
   }
@@ -438,20 +449,8 @@ finna.layout = (function finnaLayout() {
     holder.find('select.jumpMenuUrl').unbind('change').change(function onChangeJumpMenuUrl(e) { window.location.href = $(e.target).val(); });
   }
 
-  function initSecondaryLoginField(labels, idPrefix) {
-    var searchPrefix = idPrefix ? '#' + idPrefix : '#';
-    $(searchPrefix + 'target').change(function onChangeLoginTarget() {
-      var target = $(searchPrefix + 'target').val();
-      var field = $(searchPrefix + 'secondary_username');
-      if ((typeof labels[target] === 'undefined') || labels[target] === '') {
-        field.val('');
-        field.closest('.form-group').hide();
-      } else {
-        var group = field.closest('.form-group');
-        group.find('label').text(labels[target] + ':');
-        group.show();
-      }
-    }).change();
+  function initSecondaryLoginField() {
+    // This function exists for back-compatibility only
   }
 
   function initILSPasswordRecoveryLink(links, idPrefix) {
