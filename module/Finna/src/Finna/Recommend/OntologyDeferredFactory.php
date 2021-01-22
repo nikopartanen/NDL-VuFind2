@@ -1,10 +1,10 @@
 <?php
 /**
- * Factory for GetRecordVersions AJAX handler.
+ * OntologyDeferred recommendation module factory.
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2019.
+ * Copyright (C) The National Library of Finland 2020.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -20,26 +20,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  AJAX
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @package  Recommendations
+ * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-namespace Finna\AjaxHandler;
+namespace Finna\Recommend;
 
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**
- * Factory for GetRecordVersions AJAX handler.
+ * OntologyDeferred recommendation module factory.
  *
  * @category VuFind
- * @package  AJAX
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @package  Recommendations
+ * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class GetRecordVersionsFactory
-    implements \Laminas\ServiceManager\Factory\FactoryInterface
+class OntologyDeferredFactory implements FactoryInterface
 {
     /**
      * Create an object
@@ -63,12 +63,6 @@ class GetRecordVersionsFactory
         if (!empty($options)) {
             throw new \Exception('Unexpected options passed to factory.');
         }
-        $result = new $requestedName(
-            $container->get(\VuFind\Session\Settings::class),
-            $container->get(\VuFind\Record\Loader::class),
-            $container->get('ViewRenderer')->plugin('record'),
-            $container->get(\VuFind\RecordTab\TabManager::class)
-        );
-        return $result;
+        return new $requestedName();
     }
 }

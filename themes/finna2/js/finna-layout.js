@@ -156,29 +156,13 @@ finna.layout = (function finnaLayout() {
     if ($('.content-navigation-menu')[0]) {
       $('.content-section').each(function initContentSection(index) {
         var link = '#' + $(this).attr('id');
-        $('.content-navigation-menu').append('<h2 class="nav-' + index + '"> <a href="' + link + '">' + $('h2', this).text() + '</a></h2>');
-        $('.content-navigation-menu h2.nav-' + index).click(function onMenuClick() {
-          $('body, html').animate({
-            scrollTop: $(link).offset().top - 5
-          }, 350);
-        });
-      });
-
-      var menuPosition = $('.content-navigation-menu').offset().top;
-      // fixed menu & prevent footer overlap
-      $(window).scroll(function onScroll() {
-        if ($(window).scrollTop() > menuPosition) {
-          $('.content-navigation-menu').addClass('attached');
-          if ($(window).scrollTop() + $('.content-navigation-menu').outerHeight(true) > $('footer').offset().top) {
-            $('.content-navigation-menu').css({'bottom': $('footer').height() + 20 + 'px', 'top': 'auto'});
-          }
-          else {
-            $('.content-navigation-menu').css({'bottom': 'auto'});
-          }
-        }
-        else {
-          $('.content-navigation-menu').removeClass('attached');
-        }
+        var $p = $('<p>')
+          .addClass('nav-' + index)
+          .appendTo($('.content-navigation-menu'));
+        $('<a>')
+          .attr('href', link)
+          .text($('h2', this).text())
+          .appendTo($p);
       });
     }
   }
@@ -373,15 +357,26 @@ finna.layout = (function finnaLayout() {
 
     holder.find('.condensed-collapse-toggle').off('click').click(function onClickCollapseToggle(event) {
       if ((event.target.nodeName) !== 'A' && (event.target.nodeName) !== 'MARK') {
-        $(this).nextAll('.condensed-collapse-data').first().slideToggle(120, 'linear');
-        $('.fa-arrow-right', this).toggleClass('fa-arrow-down');
         holder = $(this).parent().parent();
         holder.toggleClass('open');
+
+        var onSlideComplete = null;
         if (holder.hasClass('open') && !holder.hasClass('opened')) {
           holder.addClass('opened');
           VuFind.itemStatuses.check(holder);
           finna.itemStatus.initDedupRecordSelection(holder);
+          onSlideComplete = function handleSlideComplete() {
+            holder.find('.recordcover').trigger('unveil');
+          };
         }
+
+        $(this).nextAll('.condensed-collapse-data').first().slideToggle(120, 'linear', onSlideComplete);
+
+        var icon = $(this).find('.condensed-body > i');
+        if (icon.length === 0) {
+          icon = $(this).find('.condensed-col-title > i');
+        }
+        icon.toggleClass('fa-arrow-right').toggleClass('fa-arrow-down');
       }
     });
   }
@@ -438,20 +433,8 @@ finna.layout = (function finnaLayout() {
     holder.find('select.jumpMenuUrl').unbind('change').change(function onChangeJumpMenuUrl(e) { window.location.href = $(e.target).val(); });
   }
 
-  function initSecondaryLoginField(labels, idPrefix) {
-    var searchPrefix = idPrefix ? '#' + idPrefix : '#';
-    $(searchPrefix + 'target').change(function onChangeLoginTarget() {
-      var target = $(searchPrefix + 'target').val();
-      var field = $(searchPrefix + 'secondary_username');
-      if ((typeof labels[target] === 'undefined') || labels[target] === '') {
-        field.val('');
-        field.closest('.form-group').hide();
-      } else {
-        var group = field.closest('.form-group');
-        group.find('label').text(labels[target] + ':');
-        group.show();
-      }
-    }).change();
+  function initSecondaryLoginField() {
+    // This function exists for back-compatibility only
   }
 
   function initILSPasswordRecoveryLink(links, idPrefix) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Factory for Versions tab.
+ * Feedback recommendation module factory.
  *
  * PHP version 7
  *
@@ -20,26 +20,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category VuFind
- * @package  RecordTabs
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @package  Recommendations
+ * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-namespace Finna\RecordTab;
+namespace Finna\Recommend;
 
 use Interop\Container\ContainerInterface;
-use VuFind\Config\PluginManager as ConfigManager;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**
- * Factory for Versions tab.
+ * Feedback recommendation module factory.
  *
  * @category VuFind
- * @package  RecordTabs
- * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @package  Recommendations
+ * @author   Aleksi Peebles <aleksi.peebles@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class VersionsFactory implements \Laminas\ServiceManager\Factory\FactoryInterface
+class FeedbackFactory implements FactoryInterface
 {
     /**
      * Create an object
@@ -63,7 +63,8 @@ class VersionsFactory implements \Laminas\ServiceManager\Factory\FactoryInterfac
         if (!empty($options)) {
             throw new \Exception('Unexpected options passed to factory.');
         }
-        $config = $container->get(ConfigManager::class)->get('config');
-        return new $requestedName($config);
+        return new $requestedName(
+            $container->get(\Finna\Cookie\RecommendationMemory::class)
+        );
     }
 }
