@@ -27,6 +27,7 @@
  */
 namespace FinnaSearch\Backend\Blender;
 
+use FinnaSearch\Backend\Blender\Response\Json\RecordCollection;
 use VuFindSearch\Backend\AbstractBackend;
 use VuFindSearch\Feature\RetrieveBatchInterface;
 use VuFindSearch\ParamBag;
@@ -130,29 +131,63 @@ class Backend extends AbstractBackend implements RetrieveBatchInterface
         $secondaryQuery = $this->translateQuery($query);
         $secondaryParams = $params->get('secondary_backend')[0];
         $params->remove('secondary_backend');
+
+        $usePrimary = true;
+        $useSecondary = true;
+
+        // Handle the blender_backend pseudo-facet
+        $fq = $params->get('fq');
+        foreach ($fq ?? [] as $key => $current) {
+            if (strncmp($current, 'blender_backend:', 16) === 0) {
+                if (substr($current, 16) === '"primary"') {
+                    $useSecondary = false;
+                } elseif (substr($current, 16) === '"secondary"') {
+                    $usePrimary = false;
+                }
+                unset($fq[$key]);
+                $params->set('fq', $fq);
+            }
+        }
+        $facetFields = $params->get('facet.field');
+        foreach ($facetFields ?? [] as $key => $current) {
+            if ('{!ex=blender_backend_filter}blender_backend' === $current) {
+                unset($facetFields[$key]);
+                $params->set('facet.field', $facetFields);
+                break;
+            }
+        }
+
+        $primaryCollection = null;
+        $secondaryCollection = null;
+
         // If offset is less than the limit, fetch from both backends
         // up to the limit first.
+        $blendLimit = $this->blendLimit;
+        if ($limit === 0) {
+            $blendLimit = 0;
+        }
         $exception = null;
         if ($offset <= $this->blendLimit) {
             try {
-                $primaryCollection = $this->primaryBackend->search(
+                $primaryCollection = $usePrimary ? $this->primaryBackend->search(
                     $query,
                     0,
-                    $this->blendLimit,
+                    $blendLimit,
                     $params
-                );
+                ) : new RecordCollection();
             } catch (\Exception $e) {
                 $exception = $e;
                 $primaryCollection = null;
             }
 
             try {
-                $secondaryCollection = $this->secondaryBackend->search(
-                    $secondaryQuery,
-                    0,
-                    $this->blendLimit,
-                    $secondaryParams
-                );
+                $secondaryCollection = $useSecondary
+                    ? $this->secondaryBackend->search(
+                        $secondaryQuery,
+                        0,
+                        $blendLimit,
+                        $secondaryParams
+                    ) : new RecordCollection();
             } catch (\Exception $e) {
                 if (null !== $exception) {
                     // Both searches failed, throw the previous exception
@@ -171,24 +206,25 @@ class Backend extends AbstractBackend implements RetrieveBatchInterface
             );
         } else {
             try {
-                $primaryCollection = $this->primaryBackend->search(
+                $primaryCollection = $usePrimary ? $this->primaryBackend->search(
                     $query,
                     0,
                     0,
                     $params
-                );
+                ) : new RecordCollection();
             } catch (\Exception $e) {
                 $exception = $e;
                 $primaryCollection = null;
             }
 
             try {
-                $secondaryCollection = $this->secondaryBackend->search(
-                    $secondaryQuery,
-                    0,
-                    0,
-                    $secondaryParams
-                );
+                $secondaryCollection = $useSecondary
+                    ? $this->secondaryBackend->search(
+                        $secondaryQuery,
+                        0,
+                        0,
+                        $secondaryParams
+                    ) : new RecordCollection();
             } catch (\Exception $e) {
                 if (null !== $exception) {
                     // Both searches failed, throw the previous exception
@@ -209,8 +245,9 @@ class Backend extends AbstractBackend implements RetrieveBatchInterface
 
         // Fill up to the required records in a round-robin fashion
         if ($offset + $limit > $this->blendLimit) {
-            $primaryTotal = $primaryCollection->getTotal();
-            $secondaryTotal = $secondaryCollection->getTotal();
+            $primaryTotal = $primaryCollection ? $primaryCollection->getTotal() : 0;
+            $secondaryTotal = $secondaryCollection
+                ? $secondaryCollection->getTotal() : 0;
             $primaryCollectionOffset = 0;
             $secondaryCollectionOffset = 0;
             $primaryOffset = 0;
