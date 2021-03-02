@@ -583,6 +583,13 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
         $renewLimit = $this->config['Loans']['renewalLimit'];
         $transactions = [];
         foreach ($result as $entry) {
+            if (!is_array($entry)) {
+                $this->logError(
+                    'Unknown response to BorrowerLoans request ('
+                    . $this->config['Catalog']['host'] . ', patron ' . $patron['id']
+                    . '): ' . var_export($result, true)
+                );
+            }
             $renewalCount = $entry['RenewalCount'];
             $transaction = [
                 'id' => $entry['MarcRecordId'],
@@ -1945,7 +1952,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
     ) {
         // Set up the request
         $conf = $this->config['Catalog'];
-        $apiUrl = $this->config['Catalog']['host'];
+        $apiUrl = $conf['host'];
         $apiUrl .= '/' . urlencode($conf['base']);
         $apiUrl .= '/' . urlencode($conf['unit']);
 
