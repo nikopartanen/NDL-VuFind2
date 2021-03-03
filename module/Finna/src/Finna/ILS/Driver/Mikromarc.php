@@ -583,13 +583,6 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
         $renewLimit = $this->config['Loans']['renewalLimit'];
         $transactions = [];
         foreach ($result as $entry) {
-            if (!is_array($entry)) {
-                $this->logError(
-                    'Unknown response to BorrowerLoans request ('
-                    . $this->config['Catalog']['host'] . ', patron ' . $patron['id']
-                    . '): ' . var_export($result, true)
-                );
-            }
             $renewalCount = $entry['RenewalCount'];
             $transaction = [
                 'id' => $entry['MarcRecordId'],
@@ -2032,6 +2025,12 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
             if (!$nextLink) {
                 break;
             }
+            // Fix http => https
+            if (strncmp($apiUrl, 'https:', 6) === 0
+                && strncmp($nextLink, 'http:', 5) === 0
+            ) {
+                $nextLink = 'https:' . substr($nextLink, 5);
+            }
 
             // At least with LibraryUnits, Mikromarc may repeat the same link over
             // and over again. Try to fix.
@@ -2049,6 +2048,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
                 }
             }
 
+            $client->setParameterGet([]);
             $client->setParameterPost([]);
             $apiUrl = $nextLink;
             $page++;
