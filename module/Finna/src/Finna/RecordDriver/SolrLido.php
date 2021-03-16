@@ -709,7 +709,8 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 foreach ($node->eventActor as $actor) {
                     $appellationValue = trim(
                         $actor->actorInRole->actor->nameActorSet->appellationValue
-                    ) ?? '';
+                        ?? ''
+                    );
                     if ($appellationValue !== '') {
                         $role = (string)($actor->actorInRole->roleActor->term ?? '');
                         $earliestDate = (string)($actor->actorInRole->actor
