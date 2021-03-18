@@ -713,11 +713,26 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
         }
 
         if ($this->formWasSubmitted('saveUserProfile')) {
-            $validator = new \Laminas\Validator\EmailAddress();
+            // Do CSRF check
+            $csrf = $this->serviceLocator->get(\VuFind\Validator\Csrf::class);
+            if (!$csrf->isValid($this->getRequest()->getPost()->get('csrf'))) {
+                throw new \VuFind\Exception\BadRequest(
+                    'error_inconsistent_parameters'
+                );
+            }
             $showSuccess = $showError = false;
+
+            // Update email
+            $validator = new \Laminas\Validator\EmailAddress();
             if ('' === $values->email || $validator->isValid($values->email)) {
-                $user->email = $values->email;
-                $user->save();
+                $this->getAuthManager()->updateEmail($user, $values->email);
+                // If we have a pending change, we need to send a verification email:
+                if (!empty($user->pending_email)) {
+                    $this->sendVerificationEmail($user, true);
+                } else {
+                    $this->flashMessenger()
+                        ->addMessage('new_email_success', 'success');
+                }
                 $showSuccess = true;
             } else {
                 $showError = true;

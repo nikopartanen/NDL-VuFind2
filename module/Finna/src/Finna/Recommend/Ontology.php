@@ -86,6 +86,12 @@ class Ontology implements RecommendInterface, TranslatorAwareInterface
     protected $configLoader;
 
     /**
+     * Maximum number of search terms for recommendation processing. Setting to
+     * null indicates an unlimited number of search terms.
+     */
+    protected $maxSearchTerms = null;
+
+    /**
      * Maximum number of API calls to make per search. Setting to null indicates
      * an unlimited number of API calls.
      *
@@ -223,6 +229,7 @@ class Ontology implements RecommendInterface, TranslatorAwareInterface
 
         $config = $this->configLoader->get($iniName)->get($sectionName);
 
+        $this->maxSearchTerms = $config->get('maxSearchTerms');
         $this->maxApiCalls = $config->get('maxApiCalls');
         $this->maxRecommendations = $config->get('maxRecommendations');
         $this->maxSmallResultTotal = $config->get('maxSmallResultTotal');
@@ -318,6 +325,25 @@ class Ontology implements RecommendInterface, TranslatorAwareInterface
             return null;
         }
 
+        // Set up search terms array with quoted words as one search term.
+        $this->lookforTerms = str_getcsv($this->lookfor, ' ');
+
+        // Special case for two-word searches, which will be processed as one
+        // search term.
+        if (2 === count($this->lookforTerms)
+            && false === strpos(trim($this->lookforTerms[0]), ' ')
+            && false === strpos(trim($this->lookforTerms[1]), ' ')
+        ) {
+            $this->lookforTerms = [implode(' ', $this->lookforTerms)];
+        }
+
+        // Do nothing if the amount of search terms is more than the maximum.
+        if (null !== $this->maxSearchTerms
+            && count($this->lookforTerms) > $this->maxSearchTerms
+        ) {
+            return null;
+        }
+
         // Check cookie to find out how many times ontology recommendations have
         // already been shown in the current browser session. Do nothing if a
         // maximum value is set in configuration and it has been reached.
@@ -336,9 +362,6 @@ class Ontology implements RecommendInterface, TranslatorAwareInterface
         // Set up recommendations array.
         $this->recommendations = [];
 
-        // Set up search terms array with quoted words as one search term.
-        $this->lookforTerms = str_getcsv($this->lookfor, ' ');
-
         // Process each term and make API calls if applicable.
         foreach ($this->lookforTerms as $term) {
             // Determine if the term can or should be searched for.
@@ -356,8 +379,13 @@ class Ontology implements RecommendInterface, TranslatorAwareInterface
                 && $this->canMakeApiCalls(2);
 
             // Make the Finto API call(s).
-            $fintoResults
-                = $this->finto->extendedSearch($term, $language, [], $narrower);
+            $fintoTerm = $term . '*';
+            while (false !== strpos($fintoTerm, '**')) {
+                $fintoTerm = str_replace('**', '*', $fintoTerm);
+            }
+            $fintoResults = $this->finto->extendedSearch(
+                $fintoTerm, $language, [], $narrower
+            );
             $this->apiCallTotal += 1;
 
             // Continue to next term if no results or "other" results.

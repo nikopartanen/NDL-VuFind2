@@ -86,6 +86,7 @@ finna.feed = (function finnaFeed() {
       touchThreshold: 8,
       autoplay: autoplay !== 0,
       autoplaySpeed: autoplay,
+      useAutoplayToggleButton: false,
       slidesToShow: settings.slidesToShow.desktop,
       slidesToScroll: settings.scrolledItems.desktop,
       speed: calculateScrollSpeed(settings.scrolledItems.desktop, settings.scrollSpeed),
@@ -177,6 +178,9 @@ finna.feed = (function finnaFeed() {
               if (titleBottom) {
                 adjustTitles(holder);
                 holder.find('.carousel-hover-title').hide();
+                holder.find('.carousel-hover-date').hide();
+              } else {
+                holder.find('.carousel-header-date').hide();
               }
 
               holder.find('.slick-slide')
