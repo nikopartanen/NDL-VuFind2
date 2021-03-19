@@ -758,8 +758,7 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
         $request = [
             'credit_type' => 'PAYMENT',
             'amount' => $amount / 100,
-            'note' => "Online transaction $transactionId",
-            'interface' => 'opac',
+            'note' => "Online transaction $transactionId"
         ];
 
         $result = $this->makeRequest(
