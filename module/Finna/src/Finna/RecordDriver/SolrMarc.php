@@ -933,7 +933,9 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
                     $dates = $this->getSubfieldArray($field, ['d']);
 
                     $altSubfields = $this->getLinkedMarcFieldContents(
-                        $field, ['a', 'b', 'c']
+                        $fieldCode,
+                        $field,
+                        ['a', 'b', 'c']
                     );
                     $altSubfields = $this->stripTrailingPunctuation($altSubfields);
 
@@ -1569,8 +1571,8 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
     /**
      * Get linked MARC field contents
      *
-     * @param string|\File_MARC_Field $field     Field tag or actual field
-     * @param array                   $subfields Subfields
+     * @param string|array $field     Field tag or actual field
+     * @param array        $subfields Subfields
      *
      * @return string
      */
@@ -1592,13 +1594,22 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
             return '';
         }
         $linkedFieldCode = $parts[0];
-        $linkedFieldNum = (int)$parts[1] - 1;
-        $linkedFields = $marc->getFields($linkedFieldCode);
-        if (!isset($linkedFields[$linkedFieldNum])) {
-            return '';
+        $linkedFieldNum = $parts[1];
+        foreach ($marc->getFields($linkedFieldCode) as $linkedField) {
+            $sub6 = $marc->getSubfield($linkedField, '6');
+            list($target) = explode('/', $sub6, 2);
+            $targetParts = explode('-', $target);
+            if (count($targetParts) !== 2) {
+                continue;
+            }
+            if ($targetParts[0] == $field['tag']
+                && $targetParts[1] === $linkedFieldNum
+            ) {
+                $data = $this->getSubfieldArray($linkedField, $subfields);
+                return implode(' ', $data);
+            }
         }
-        $data = $this->getSubfieldArray($linkedFields[$linkedFieldNum], $subfields);
-        return implode(' ', $data);
+        return '';
     }
 
     /**
