@@ -933,7 +933,6 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
                     $dates = $this->getSubfieldArray($field, ['d']);
 
                     $altSubfields = $this->getLinkedMarcFieldContents(
-                        $fieldCode,
                         $field,
                         ['a', 'b', 'c']
                     );
