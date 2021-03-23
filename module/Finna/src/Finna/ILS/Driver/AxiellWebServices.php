@@ -1719,12 +1719,14 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
             return [];
         }
 
+        // Create a timestamp for calculating the due / overdue status
+        $now = time();
+
         $transList = [];
         if (!isset($result->$functionResult->loans->loan)) {
             return $transList;
         }
-        $loans =  $this->objectToArray($result->$functionResult->loans->loan);
-
+        $loans = $this->objectToArray($result->$functionResult->loans->loan);
         foreach ($loans as $loan) {
             $title = $loan->catalogueRecord->title;
             if (!empty($loan->note)) {
@@ -1750,11 +1752,21 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 );
             }
 
+            $dueDate = strtotime($loan->loanDueDate);
+            if ($now > $dueDate) {
+                $dueStatus = 'overdue';
+            } elseif (($dueDate - $now) < 86400) {
+                $dueStatus = 'due';
+            } else {
+                $dueStatus = false;
+            }
+
             $trans = [
                 'id' => $loan->catalogueRecord->id,
                 'item_id' => $loan->id,
                 'title' => $title,
                 'duedate' => $loan->loanDueDate,
+                'dueStatus' => $dueStatus,
                 'renewable' => (string)$loan->loanStatus->isRenewable == 'yes',
                 'message' => $message,
                 'renewalCount' => $renewals,

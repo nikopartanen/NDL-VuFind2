@@ -581,17 +581,30 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
             return [];
         }
         $renewLimit = $this->config['Loans']['renewalLimit'];
+
+        // Create a timestamp for calculating the due / overdue status
+        $now = time();
+
         $transactions = [];
         foreach ($result as $entry) {
             $renewalCount = $entry['RenewalCount'];
+            $dueDate = strtotime($entry['DueTime']);
+            if ($now > $dueDate) {
+                $dueStatus = 'overdue';
+            } elseif (($dueDate - $now) < 86400) {
+                $dueStatus = 'due';
+            } else {
+                $dueStatus = false;
+            }
+
             $transaction = [
                 'id' => $entry['MarcRecordId'],
                 'checkout_id' => $entry['Id'],
                 'item_id' => $entry['ItemId'],
                 'duedate' => $this->dateConverter->convertToDisplayDate(
-                    'U', strtotime($entry['DueTime'])
+                    'U', $dueDate
                 ),
-                'dueStatus' => $entry['ServiceCode'],
+                'dueStatus' => $dueStatus,
                 'renew' => $renewalCount,
                 'renewLimit' => $renewLimit,
                 'renewable' => ($renewLimit - $renewalCount) > 0,
