@@ -240,6 +240,10 @@ TitleStart:
   DismaxFields:
     - title_txtP_l^1000
 
+TitleExact:
+  DismaxFields:
+    - title_txtP_lr^1000
+
 Series:
   DismaxFields:
     - series^100
@@ -457,9 +461,8 @@ WorkKeys:
       - [or, ~]
 
 description:
-  QueryFields:
-    description:
-      - [or, ~]
+  DismaxFields:
+    - description
 
 Identifier:
   DismaxFields:
