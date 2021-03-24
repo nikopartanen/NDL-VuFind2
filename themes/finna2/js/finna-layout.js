@@ -110,7 +110,7 @@ finna.layout = (function finnaLayout() {
 
         var moreLink = $('<button type="button" class="more-link">' + moreLabel + ' <i class="fa fa-arrow-down" aria-hidden="true"></i></button>');
         var lessLink = $('<button type="button" class="less-link">' + lessLabel + ' <i class="fa fa-arrow-up" aria-hidden="true"></i></button>');
-        
+
         var linkClass = self.data('button-class') || '';
         if (linkClass) {
           moreLink.addClass(linkClass);
@@ -119,7 +119,7 @@ finna.layout = (function finnaLayout() {
         lessLink.on('click', function showLess() {
           self.siblings('.less-link').hide();
           self.siblings('.more-link').show();
-          self.css('height', truncation[index] - 1 + 'px');   
+          self.css('height', truncation[index] - 1 + 'px');
         });
         moreLink.on('click', function showMore() {
           self.siblings('.more-link').hide();
@@ -521,7 +521,7 @@ finna.layout = (function finnaLayout() {
       return;
     }
     document.addEventListener('VuFind.lightbox.login', function onLightboxLogin(e) {
-      if (typeof action !== 'undefined' && action === 'home' && !e.detail.formUrl.match(/catalogLogin/) && !e.detail.formUrl.match(/\Save/) && !e.detail.formUrl.match(/%2[fF]Save/)) {
+      if ($('body').hasClass('template-name-home') && !e.detail.formUrl.match(/catalogLogin/) && !e.detail.formUrl.match(/\Save/) && !e.detail.formUrl.match(/%2[fF]Save/)) {
         window.location.href = VuFind.path + '/MyResearch/Home';
         e.preventDefault();
       }
