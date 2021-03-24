@@ -1752,7 +1752,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 );
             }
 
-            $dueDate = strtotime($loan->loanDueDate);
+            $dueDate = strtotime($loan->loanDueDate . ' 23:59:59');
             if ($now > $dueDate) {
                 $dueStatus = 'overdue';
             } elseif (($dueDate - $now) < 86400) {
