@@ -1,4 +1,4 @@
-/*global VuFind, videojs, checkSaveStatuses, action, finna, initFacetTree, priorityNav */
+/*global VuFind, videojs, checkSaveStatuses, finna, initFacetTree, priorityNav */
 finna.layout = (function finnaLayout() {
   var _fixFooterTimeout = null;
   var currentOpenTooltips = [];
