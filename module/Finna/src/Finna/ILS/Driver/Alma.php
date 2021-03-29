@@ -79,18 +79,20 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
      * @var array
      */
     protected $feeTypeMappings = [
-        'OVERDUEFINE' => 'Overdue',
-        'OVERDUENOTIFICATIONFINE' => 'Overdue',
-        'RECALLEDOVERDUEFINE' => 'Overdue',
-        'LOSTITEMREPLACEMENTFEE' => 'Lost Item Replacement',
-        'LOSTITEMPROCESSFEE' => 'Lost Item Processing',
-        'LIBRARYCARDREPLACEMENT' => 'New Card',
         'CARDRENEWAL' => 'New Card',
+        'DAMAGEDITEMFINE' => 'Damaged Item',
+        'FINEFEENOTIFICATIONFEE' => 'Processing Fee for Overdue Notice',
         'ISSUELIBRARYCARD' => 'New Card',
-        'SERVICEFEE' => 'Service Fee',
+        'LIBRARYCARDREPLACEMENT' => 'New Card',
         'LOCKERKEY' => 'Locker Key',
+        'LOSTITEMPROCESSFEE' => 'Lost Item Processing',
+        'LOSTITEMREPLACEMENTFEE' => 'Lost Item Replacement',
+        'NOTIFICATIONFEE' => 'Processing Fee for Overdue Notice',
         'OTHER' => 'Other',
-        'DAMAGEDITEMFINE' => 'Damaged Item'
+        'OVERDUEFINE' => 'Overdue',
+        'OVERDUENOTIFICATIONFINE' => 'Overdue Notice',
+        'RECALLEDOVERDUEFINE' => 'Overdue',
+        'SERVICEFEE' => 'Service Fee',
     ];
 
     /**
