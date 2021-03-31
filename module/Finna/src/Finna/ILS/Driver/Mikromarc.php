@@ -588,7 +588,11 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
         $transactions = [];
         foreach ($result as $entry) {
             $renewalCount = $entry['RenewalCount'];
-            $dueDate = strtotime($entry['DueTime']);
+            $dueDateTimeStr = $entry['DueTime'];
+            if (strlen($dueDateTimeStr) === 10) {
+                $dueDateTimeStr .= ' 23:59:59';
+            }
+            $dueDate = strtotime($dueDateTimeStr);
             if ($now > $dueDate) {
                 $dueStatus = 'overdue';
             } elseif (($dueDate - $now) < 86400) {
