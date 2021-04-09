@@ -2647,6 +2647,12 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
         $functionResult = '';
         $functionParam = '';
 
+        // Workaround for AWS issue where a bare plus sign gets converted to a space
+        if (!isset($this->config['updateEmail']['encodeEmailPlusSign'])
+            || $this->config['updateEmail']['encodeEmailPlusSign']
+        ) {
+            $email = str_replace('+', '%2B', $email);
+        }
         $conf = [
             'arenaMember'  => $this->arenaMember,
             'language'     => 'en',
