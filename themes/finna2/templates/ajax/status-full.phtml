@@ -328,7 +328,7 @@ finna.layout.initTruncate($('.holding-details'));
 VuFind.lightbox.bind($('.holding-details'));
 
 var item = $('.hiddenId[value="{$this->escapeHtmlAttr($id)}"]').closest('.record-container');
-item.find('.holdings-container.collapsible > .header').click(function onClickCollapsibleHeader() {
+item.find('.holdings-container.collapsible > .header').on('click', function onClickCollapsibleHeader() {
   $(this).next('.holdings').toggleClass('collapsed');
   $(this).find('.fa.arrow:first.right')
     .removeClass('fa-arrow-down fa-arrow-right')

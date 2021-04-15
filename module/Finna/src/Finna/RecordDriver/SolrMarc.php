@@ -1185,6 +1185,42 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
     }
 
     /**
+     * Get the full title of the record.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->stripTrailingPunctuation(
+            $this->getFirstFieldValue('245', ['a', 'b', 'n', 'p'])
+        );
+    }
+
+    /**
+     * Get the short (pre-subtitle) title of the record.
+     *
+     * @return string
+     */
+    public function getShortTitle()
+    {
+        return $this->stripTrailingPunctuation(
+            $this->getFirstFieldValue('245', ['a'])
+        );
+    }
+
+    /**
+     * Get the subtitle of the record.
+     *
+     * @return string
+     */
+    public function getSubtitle()
+    {
+        return $this->stripTrailingPunctuation(
+            $this->getFirstFieldValue('245', ['b', 'n', 'p'])
+        );
+    }
+
+    /**
      * Get the short (pre-subtitle) title of the record in alternative script.
      *
      * @return string
@@ -1596,7 +1632,7 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
         $linkedFieldNum = $parts[1];
         foreach ($marc->getFields($linkedFieldCode) as $linkedField) {
             $sub6 = $marc->getSubfield($linkedField, '6');
-            list($target) = explode('/', $sub6, 2);
+            [$target] = explode('/', $sub6, 2);
             $targetParts = explode('-', $target);
             if (count($targetParts) !== 2) {
                 continue;
@@ -1784,7 +1820,7 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
     }
 
     /**
-     * Get methodologoy from field 567.
+     * Get methodology from field 567.
      *
      * @return array
      */
@@ -1940,22 +1976,22 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
         foreach ($this->getMarcReader()->getFields('024') as $field) {
             $subfields = [];
             switch ($field['i1']) {
-            case 0:
+            case '0':
                 $subfields[] = 'ISRC';
                 break;
-            case 1:
+            case '1':
                 $subfields[] = 'UPC';
                 break;
-            case 2:
+            case '2':
                 $subfields[] = 'ISMN';
                 break;
-            case 3:
+            case '3':
                 $subfields[] = 'EAN';
                 break;
-            case 4:
+            case '4':
                 $subfields[] = 'SICI';
                 break;
-            case 7:
+            case '7':
                 if ($sub2 = $this->getSubfield($field, '2')) {
                     $subfields[] = $this->stripTrailingPunctuation($sub2);
                 }
