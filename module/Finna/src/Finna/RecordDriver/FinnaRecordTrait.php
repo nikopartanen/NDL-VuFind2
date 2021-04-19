@@ -157,12 +157,22 @@ trait FinnaRecordTrait
     protected function getUnknownFormatOpenUrlParams($format = 'UnknownFormat')
     {
         $params = $this->getDefaultOpenUrlParams();
-        $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:dc';
-        $params['rft.creator'] = $this->getOpenUrlAuthor();
-        $params['rft.format'] = $format;
-        $langs = $this->getLanguages();
-        if (count($langs) > 0) {
-            $params['rft.language'] = $langs[0];
+        $resolver = strtolower($this->mainConfig->OpenURL->resolver ?? '');
+        // Alma does not support rft_val_fmt 'info:ofi/fmt:kev:mtx:dc', so
+        // use the 'info:ofi/fmt:kev:mtx:book' format instead
+        if ('alma' === $resolver) {
+            $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:book';
+            // Don't set genre. It seems to cause Alma to ignore date and author.
+            // $params['rft.genre'] = 'unknown';
+            $params['rft.au'] = $this->getOpenUrlAuthor();
+        } else {
+            $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:dc';
+            $params['rft.creator'] = $this->getOpenUrlAuthor();
+            $params['rft.format'] = $format;
+            $langs = $this->getLanguages();
+            if (count($langs) > 0) {
+                $params['rft.language'] = $langs[0];
+            }
         }
         $publishers = $this->getPublishers();
         if (count($publishers) > 0) {
