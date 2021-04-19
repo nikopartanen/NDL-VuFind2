@@ -82,6 +82,7 @@ trait FinnaRecordTrait
         if ($mmsId = $this->tryMethod('getAlmaMmsId')) {
             $params['rft.mms_id'] = $mmsId;
         }
+        $params['rft.au'] = $this->getOpenUrlAuthor();
 
         return $params;
     }
@@ -103,6 +104,7 @@ trait FinnaRecordTrait
         if ($mmsId = $this->tryMethod('getAlmaMmsId')) {
             $params['rft.mms_id'] = $mmsId;
         }
+        $params['rft.au'] = $this->getOpenUrlAuthor();
 
         return $params;
     }
@@ -121,6 +123,8 @@ trait FinnaRecordTrait
         if ($mmsId = $this->tryMethod('getAlmaMmsId')) {
             $params['rft.mms_id'] = $mmsId;
         }
+        $params['rft.au'] = $this->getOpenUrlAuthor();
+
         return $params;
     }
 
@@ -138,7 +142,47 @@ trait FinnaRecordTrait
         if ($mmsId = $this->tryMethod('getAlmaMmsId')) {
             $params['rft.mms_id'] = $mmsId;
         }
+        $params['rft.au'] = $this->getOpenUrlAuthor();
+
         return $params;
+    }
+
+    /**
+     * Get OpenURL parameters for an unknown format.
+     *
+     * @param string $format Name of format
+     *
+     * @return array
+     */
+    protected function getUnknownFormatOpenUrlParams($format = 'UnknownFormat')
+    {
+        $params = $this->getDefaultOpenUrlParams();
+        $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:dc';
+        $params['rft.creator'] = $this->getOpenUrlAuthor();
+        $params['rft.format'] = $format;
+        $langs = $this->getLanguages();
+        if (count($langs) > 0) {
+            $params['rft.language'] = $langs[0];
+        }
+        $publishers = $this->getPublishers();
+        if (count($publishers) > 0) {
+            $params['rft.pub'] = $publishers[0];
+        }
+        return $params;
+    }
+
+    /**
+     * Get an author for OpenURL
+     *
+     * @return string
+     */
+    protected function getOpenUrlAuthor()
+    {
+        $author = $this->getPrimaryAuthor();
+        if (!$author && $authors = $this->getSecondaryAuthors()) {
+            $author = $authors[0];
+        }
+        return trim($author, ' .');
     }
 
     /**
