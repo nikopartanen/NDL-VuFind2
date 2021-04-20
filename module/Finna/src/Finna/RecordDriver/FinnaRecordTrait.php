@@ -188,11 +188,20 @@ trait FinnaRecordTrait
      */
     protected function getOpenUrlAuthor()
     {
-        $author = $this->getPrimaryAuthor();
-        if (!$author && $authors = $this->getSecondaryAuthors()) {
-            $author = $authors[0];
+        if ($authors = $this->tryMethod('getNonPresenterAuthors')) {
+            return $authors[0]['name'];
         }
-        return trim($author, ' .');
+        if ($authors = $this->tryMethod('getPresenters')) {
+            return $authors[0]['name'];
+        }
+        if ($author = $this->getPrimaryAuthor()) {
+            return trim($author, ' .');
+        }
+        if ($authors = $this->getSecondaryAuthors()) {
+            return trim($authors[0], ' .');
+        }
+
+        return '';
     }
 
     /**
