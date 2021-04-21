@@ -178,6 +178,10 @@ trait FinnaRecordTrait
         if (count($publishers) > 0) {
             $params['rft.pub'] = $publishers[0];
         }
+        if ($mmsId = $this->tryMethod('getAlmaMmsId')) {
+            $params['rft.mms_id'] = $mmsId;
+        }
+
         return $params;
     }
 
