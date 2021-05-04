@@ -47,6 +47,12 @@ extraHoldFields = comments:requiredByDate:pickUpLocation
 ; 3) a value within the Location IDs returned by getPickUpLocations()
 defaultPickUpLocation = ""
 
+; By default the pick up location list is sorted alphabetically. This setting can be
+; used to manually set the order by entering location IDs as a colon-separated list.
+; You can also disable sorting by setting this to false.
+; The code for home pickup is $$HOME and workplace pickup is $$WORK.
+;pickUpLocationOrder = "MAIN:SUB:$$WORK:$$HOME"
+
 ; Optional help texts that can be displayed on the hold form
 ;helpText = "Help text for all languages."
 ;helpText[en-gb] = "Help text for English language."

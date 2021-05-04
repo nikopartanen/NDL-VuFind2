@@ -1527,6 +1527,33 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
             $this->debug("Filtered pickup locations:\n" . $libs2str($libraries));
         }
 
+        // Do we need to sort pickup locations? If the setting is false, don't
+        // bother doing any more work. If it's not set at all, default to
+        // alphabetical order.
+        $orderSetting = $this->config['Holds']['pickUpLocationOrder'] ?? 'default';
+        if (count($libraries) > 1 && !empty($orderSetting)) {
+            $locationOrder = $orderSetting === 'default'
+                ? [] : array_flip(explode(':', $orderSetting));
+            $sortFunction = function ($a, $b) use ($locationOrder) {
+                $aLoc = (string)$a['locationID'];
+                $bLoc = (string)$b['locationID'];
+                if (isset($locationOrder[$aLoc])) {
+                    if (isset($locationOrder[$bLoc])) {
+                        return $locationOrder[$aLoc] - $locationOrder[$bLoc];
+                    }
+                    return -1;
+                }
+                if (isset($locationOrder[$bLoc])) {
+                    return 1;
+                }
+                return strcasecmp(
+                    (string)$a['locationDisplay'],
+                    (string)$b['locationDisplay']
+                );
+            };
+            usort($libraries, $sortFunction);
+        }
+
         $cachedPickups[$cacheKey] = $libraries;
 
         return $libraries;
