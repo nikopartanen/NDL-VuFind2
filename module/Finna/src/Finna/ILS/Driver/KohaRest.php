@@ -1823,18 +1823,13 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
      */
     protected function translateLocation($location, $default = null)
     {
-        if (empty($location)) {
-            return $default ?? '';
+        $defaultTranslation = parent::translateLocation($location, $default);
+        if (empty($this->config['Catalog']['id'])) {
+            return $defaultTranslation;
         }
-        $prefix = 'location_';
-        if (!empty($this->config['Catalog']['id'])) {
-            $prefix .= $this->config['Catalog']['id'] . '_';
-        }
-        return $this->translate(
-            "$prefix$location",
-            [],
-            $this->translate("location_$location", [], $default ?? $location)
-        );
+
+        $prefix = 'location_' . $this->config['Catalog']['id'] . '_';
+        return $this->translate("$prefix$location", [], $defaultTranslation);
     }
 
     /**
