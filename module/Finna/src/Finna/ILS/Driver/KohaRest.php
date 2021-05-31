@@ -1279,6 +1279,9 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
         $electronic = [];
         if (!empty($holdings)) {
             foreach ($holdings as $holding) {
+                if ($holding['suppressed']) {
+                    continue;
+                }
                 $marc = $this->getHoldingMarc($holding);
                 if (null === $marc) {
                     continue;
