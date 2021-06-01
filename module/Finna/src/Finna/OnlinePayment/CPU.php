@@ -172,10 +172,13 @@ class CPU extends BaseHandler
                     'UTF-8',
                     iconv('UTF-8', 'ISO-8859-1//IGNORE', $fineDesc)
                 );
-                // Remove ' since that causes the string to be truncated
+                // Remove ' since it causes the string to be truncated
                 $fineDesc = str_replace("'", ' ', $fineDesc);
-                // Make sure that description length does not exceed CPU
-                // max limit of 100 characters.
+                // Sanitize before limiting the length, otherwise the sanitization
+                // process may blow the string through the limit
+                $fineDesc = \Cpu_Client::sanitize($fineDesc);
+                // Make sure that description length does not exceed CPU max limit of
+                // 100 characters.
                 $fineDesc = mb_substr($fineDesc, 0, 100, 'UTF-8');
             }
 
