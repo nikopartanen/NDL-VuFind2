@@ -1559,8 +1559,14 @@ class KohaRestSuomiVuFind extends \VuFind\ILS\Driver\AbstractBase implements
 
         // Set timeout value
         $timeout = $this->config['Catalog']['http_timeout'] ?? 30;
+        $connectTimeout = $this->config['Catalog']['connect_timeout'] ?? 10;
         $client->setOptions(
-            ['timeout' => $timeout, 'useragent' => 'VuFind', 'keepalive' => true]
+            [
+                'timeout' => $timeout,
+                'connecttimeout' => $connectTimeout,
+                'useragent' => 'VuFind',
+                'keepalive' => true
+            ]
         );
 
         // Set Accept header
