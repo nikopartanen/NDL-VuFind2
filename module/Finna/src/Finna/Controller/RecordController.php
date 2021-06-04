@@ -263,9 +263,16 @@ class RecordController extends \VuFind\Controller\RecordController
         }
 
         // Block invalid requests:
-        $validRequest = $catalog->checkRequestIsValid(
-            $driver->getUniqueID(), $gatheredDetails, $patron
-        );
+        try {
+            $validRequest = $catalog->checkRequestIsValid(
+                $driver->getUniqueID(),
+                $gatheredDetails,
+                $patron
+            );
+        } catch (\VuFind\Exception\ILS $e) {
+            $this->flashMessenger()->addErrorMessage('ils_connection_failed');
+            return $this->redirectToRecord('#top');
+        }
         if ((is_array($validRequest) && !$validRequest['valid']) || !$validRequest) {
             $this->flashMessenger()->addErrorMessage(
                 is_array($validRequest)
@@ -297,7 +304,12 @@ class RecordController extends \VuFind\Controller\RecordController
             // group, so make sure pickup locations match with the group
             $pickupDetails['requestGroupId'] = $requestGroups[0]['id'];
         }
-        $pickup = $catalog->getPickUpLocations($patron, $pickupDetails);
+        try {
+            $pickup = $catalog->getPickUpLocations($patron, $pickupDetails);
+        } catch (\VuFind\Exception\ILS $e) {
+            $this->flashMessenger()->addErrorMessage('ils_connection_failed');
+            return $this->redirectToRecord('#top');
+        }
 
         // Process form submissions if necessary:
         if (null !== $this->params()->fromPost('placeHold')) {
@@ -328,8 +340,13 @@ class RecordController extends \VuFind\Controller\RecordController
                 $holdDetails = $gatheredDetails + ['patron' => $patron];
 
                 // Attempt to place the hold:
-                $function = (string)$checkHolds['function'];
-                $results = $catalog->$function($holdDetails);
+                try {
+                    $function = (string)$checkHolds['function'];
+                    $results = $catalog->$function($holdDetails);
+                } catch (\VuFind\Exception\ILS $e) {
+                    $this->flashMessenger()
+                        ->addErrorMessage('ils_connection_failed');
+                }
 
                 // Success: Go to Display Holds
                 if (isset($results['success']) && $results['success'] == true) {
