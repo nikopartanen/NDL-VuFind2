@@ -1565,7 +1565,7 @@ class KohaRestSuomiVuFind extends \VuFind\ILS\Driver\AbstractBase implements
                 'timeout' => $timeout,
                 'connecttimeout' => $connectTimeout,
                 'useragent' => 'VuFind',
-                'keepalive' => true
+                'keepalive' => false
             ]
         );
 
