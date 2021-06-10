@@ -332,7 +332,7 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
             'Accessibility Feature', 'Accessibility Hazard',
             'Access Restrictions', 'Access Restrictions Extended',
             'Additional Information',
-            'Age Limit', 'Archive', 'Archive Films',
+            'Age Limit', 'Appraisal', 'Archive', 'Archive Films',
             'Archive Origination', 'Archive Relations',
             'Archive Series', 'Archive File', 'Aspect Ratio', 'Audience',
             'Authors', 'Author Notes', 'Available Online', 'Awards',
@@ -366,8 +366,8 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
             'Related Materials', 'Related Places', 'Scale', 'Secondary Authors',
             'Sound', 'Source of Acquisition', 'Standard Codes',
             'Studios', 'Subject Actor', 'Subject Date',
-            'Subject Detail', 'Subject Place', 'Subjects',
-            'subjects_extended', 'System Format', 'Terms of Use',
+            'Subject Detail', 'Subject Place', 'subjects_extended',
+            'System Format', 'Terms of Use',
             'Time Period', 'Time Period of Creation', 'Trade Availability Note',
             'Uncontrolled Title', 'Uniform Title', 'Unit IDs'
         ];
@@ -500,7 +500,7 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
         $include = [
             'Accessibility Feature', 'Accessibility Hazard', 'Access Restrictions',
             'Access Restrictions Extended', 'Actors', 'Additional Information',
-            'Age Limit', 'Archive', 'Archive Films',
+            'Age Limit', 'Appraisal', 'Archive', 'Archive Films',
             'Archive Origination', 'Archive Series', 'Aspect Ratio',
             'Audience', 'Author Notes', 'Authors',
             'Available Online', 'Awards', 'Bibliography',

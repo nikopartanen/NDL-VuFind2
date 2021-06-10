@@ -806,15 +806,16 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
     }
 
     /**
-     * Cancel Hold Details
+     * Get details of a single hold request.
      *
-     * This is responsible for getting the details required for canceling holds.
+     * @param array $holdDetails A single hold array from getMyHolds
+     * @param array $patron      Patron information from patronLogin
      *
-     * @param string $holdDetails The request details
+     * @return string            The Alma request ID
      *
-     * @return string           Required details passed to cancelHold
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function getCancelHoldDetails($holdDetails)
+    public function getCancelHoldDetails($holdDetails, $patron = [])
     {
         return $holdDetails['reqnum'];
     }
@@ -1872,7 +1873,9 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 'title' => $obj->title,
                 'checkoutdate' => $this->formatDate($record->checkOutDate),
                 'returndate' => isset($record->checkInDate)
-                    ? $this->formatDate($record->checkInDate) : ''
+                    ? $this->formatDate($record->checkInDate) : '',
+                'publication_year' => $obj->publicationYear ?? '',
+                'volume' => $obj->volume ?? ''
             ];
             $transList[] = $trans;
         }

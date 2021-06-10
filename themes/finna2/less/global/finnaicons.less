@@ -158,6 +158,19 @@ table .iconlabel {
         display: none;
     }
 }
+.image-popup-trigger {
+    .model-trigger {
+        display: none;
+    }
+    &.model-no-image {
+        .model-trigger {
+            display: block;
+        }
+        img {
+            display: none;
+        }
+    }
+}
 #description_text .fa-spinner {
     position: absolute;
     right: 15px;
@@ -492,6 +505,7 @@ table .iconlabel {
 .cc-nd-eu:before {
     content: "\e865";
 }
+.iconlabel.format-unknownname:before,
 .iconlabel.format-personalname:before {
     font-family: finnaicons;
     content: "\e922";
@@ -606,6 +620,11 @@ table .iconlabel {
 }
 .iconlabel.other-records:before {
     content: "\e00d";
+}
+
+.fa-finna-3d::before {
+    font-family: finnaicons;
+    content:"\e8c0";
 }
 
 /** toolbar icons **/
@@ -877,6 +896,7 @@ i.bigger {
 .fa-videodisc:before      {content:"\f109"} // .fa-laptop
 .fa-videoreel:before      {content:"\f03d"} // .fa-video-camera
 
+.fa-authority-unknownname:before,
 .fa-authority-personalname:before {
     font-family: finnaicons;
     content: "\e922";

@@ -1901,12 +1901,14 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
     /**
      * Get details of a single hold request.
      *
-     * @param array $holdDetails One of the item arrays returned by the
-     *                           getMyHolds method
+     * @param array $holdDetails A single hold array from getMyHolds
+     * @param array $patron      Patron information from patronLogin
      *
      * @return string            The Alma request ID
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function getCancelHoldDetails($holdDetails)
+    public function getCancelHoldDetails($holdDetails, $patron = [])
     {
         return (empty($holdDetails['available'])
             || !empty($this->config['Holds']['allowCancelingAvailableRequests']))

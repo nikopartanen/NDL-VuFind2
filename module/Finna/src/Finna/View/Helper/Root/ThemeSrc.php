@@ -41,6 +41,11 @@ namespace Finna\View\Helper\Root;
  */
 class ThemeSrc extends \Laminas\View\Helper\AbstractHelper
 {
+    /**
+     * Theme information service
+     *
+     * @var \VufindTheme\ThemeInfo
+     */
     protected $themeInfo;
 
     /**
@@ -54,7 +59,7 @@ class ThemeSrc extends \Laminas\View\Helper\AbstractHelper
     }
 
     /**
-     * Check if file is found in the current theme.
+     * Returns filepath from current theme if found.
      *
      * @param string $relPath           File relative path
      * @param bool   $returnAbsolute    Whether to return absolute file system path

@@ -235,6 +235,7 @@ $config = [
             'Finna\Controller\ExternalAuthController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\FeedbackController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\FeedContentController' => 'VuFind\Controller\AbstractBaseFactory',
+            'Finna\Controller\HoldsController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\LibraryCardsController' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\L1Controller' => 'VuFind\Controller\AbstractBaseFactory',
             'Finna\Controller\L1recordController' => 'VuFind\Controller\AbstractBaseWithConfigFactory',
@@ -300,6 +301,7 @@ $config = [
             'VuFind\Controller\ErrorController' => 'Finna\Controller\ErrorController',
             'VuFind\Controller\ExternalAuthController' => 'Finna\Controller\ExternalAuthController',
             'VuFind\Controller\FeedbackController' => 'Finna\Controller\FeedbackController',
+            'VuFind\Controller\HoldsController' => 'Finna\Controller\HoldsController',
             'VuFind\Controller\LibraryCardsController' => 'Finna\Controller\LibraryCardsController',
             'VuFind\Controller\MyResearchController' => 'Finna\Controller\MyResearchController',
             'VuFind\Controller\PrimoController' => 'Finna\Controller\PrimoController',
@@ -334,6 +336,7 @@ $config = [
             'Finna\Connection\Finto' => 'Finna\Connection\FintoFactory',
             'Finna\Cookie\RecommendationMemory' => 'Finna\Cookie\RecommendationMemoryFactory',
             'Finna\Cover\Loader' => 'VuFind\Cover\LoaderFactory',
+            'Finna\File\Loader' => 'Finna\File\LoaderFactory',
             'Finna\Feed\Feed' => 'Finna\Feed\FeedFactory',
             'Finna\Feed\LinkedEvents' => 'Finna\Feed\LinkedEventsFactory',
             'Finna\Form\Form' => 'Finna\Form\FormFactory',
@@ -419,6 +422,8 @@ $config = [
                         'Finna\AjaxHandler\GetDateRangeVisualFactory',
                     'Finna\AjaxHandler\GetDescription' =>
                         'Finna\AjaxHandler\GetDescriptionFactory',
+                    'Finna\AjaxHandler\GetModel' =>
+                        'Finna\AjaxHandler\GetModelFactory',
                     'Finna\AjaxHandler\GetFacetData' =>
                         'Finna\AjaxHandler\GetFacetDataFactory',
                     'Finna\AjaxHandler\GetFeed' =>
@@ -476,6 +481,7 @@ $config = [
                     'getAuthorityFullInfo' => 'Finna\AjaxHandler\GetAuthorityFullInfo',
                     'getContentFeed' => 'Finna\AjaxHandler\GetContentFeed',
                     'getDescription' => 'Finna\AjaxHandler\GetDescription',
+                    'getModel' => 'Finna\AjaxHandler\GetModel',
                     'getDateRangeVisual' => 'Finna\AjaxHandler\GetDateRangeVisual',
                     'getFeed' => 'Finna\AjaxHandler\GetFeed',
                     'getHoldingsDetails' => 'Finna\AjaxHandler\GetHoldingsDetails',
@@ -899,6 +905,18 @@ $config = [
                     'Finna\Hierarchy\TreeDataSource\R2' => 'Finna\Hierarchy\TreeDataSource\R2Factory'
                 ]
 
+            ],
+            'view_customelement' => [
+                'factories' => [
+                    'Finna\View\CustomElement\FinnaList' => 'Finna\View\CustomElement\AbstractBaseFactory',
+                    'Finna\View\CustomElement\FinnaPanel' => 'Finna\View\CustomElement\AbstractBaseFactory',
+                    'Finna\View\CustomElement\FinnaTruncate' => 'Finna\View\CustomElement\AbstractBaseFactory',
+                ],
+                'aliases' => [
+                    'finna-list' => 'Finna\View\CustomElement\FinnaList',
+                    'finna-panel' => 'Finna\View\CustomElement\FinnaPanel',
+                    'finna-truncate' => 'Finna\View\CustomElement\FinnaTruncate',
+                ]
             ]
         ],
     ],
@@ -953,7 +971,8 @@ $staticRoutes = [
     'R2/Home', 'R2/Results', 'R2/Advanced',
     'Search/StreetSearch',
     'Barcode/Show', 'Search/MapFacet', 'Search/Blended',
-    'L1/Advanced', 'L1/FacetList', 'L1/Home', 'L1/Results'
+    'L1/Advanced', 'L1/FacetList', 'L1/Home', 'L1/Results',
+    'Record/DownloadModel'
 ];
 
 $routeGenerator = new \VuFind\Route\RouteGenerator();

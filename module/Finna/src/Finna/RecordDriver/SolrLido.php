@@ -64,7 +64,29 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      *
      * @var array
      */
-    protected $undisplayableFileFormats = [];
+    protected $undisplayableFileFormats = [
+        'tif', 'tiff', '3d-pdf', '3d model', 'gltf', 'glb','obj'
+    ];
+
+    /**
+     * Array of web friendly model formats
+     *
+     * @var array
+     */
+    protected $displayableModelFormats = ['gltf', 'glb'];
+
+    /**
+     * Recognized model viewer settings
+     *
+     * @var array
+     */
+    protected $modelViewerSettings = [
+        'popup',
+        'ambientIntensity',
+        'hemisphereIntensity',
+        'viewerPaddingAngle',
+        'debug'
+    ];
 
     /**
      * Images cache
@@ -87,14 +109,15 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         $searchSettings = null
     ) {
         parent::__construct($mainConfig, $recordConfig, $searchSettings);
+
         // Keep old setting name for back-compatibility:
-        $this->undisplayableFileFormats
-            = explode(
-                ',',
-                $mainConfig['Content']['lidoFileFormatBlockList']
-                    ?? $mainConfig['Content']['lidoFileFormatBlackList']
-                    ?? ''
-            );
+        $formatBlockList = $mainConfig['Content']['lidoFileFormatBlockList']
+            ?? $mainConfig['Content']['lidoFileFormatBlackList']
+            ?? '';
+
+        if (!empty($formatBlockList)) {
+            $this->undisplayableFileFormats = explode(',', $formatBlockList);
+        }
     }
 
     /**
@@ -202,6 +225,19 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         }
 
         $results = [];
+
+        $addToResults = function ($imageData) use (&$results) {
+            if (!isset($imageData['urls']['small'])) {
+                $imageData['urls']['small'] = $imageData['urls']['medium']
+                    ?? $imageData['urls']['large'];
+            }
+            if (!isset($imageData['urls']['medium'])) {
+                $imageData['urls']['medium'] = $imageData['urls']['small']
+                    ?? $imageData['urls']['large'];
+            }
+            $results[] = $imageData;
+        };
+
         $defaultRights = $this->getImageRights($language, true);
         foreach ($this->getXmlRecord()->xpath(
             '/lidoWrap/lido/administrativeMetadata/'
@@ -278,8 +314,9 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                     $format = trim(
                         (string)$linkResource->attributes()->formatResource
                     );
+                    $format = strtolower($format);
                     $formatDisallowed = in_array(
-                        strtolower($format), $this->undisplayableFileFormats
+                        $format, $this->undisplayableFileFormats
                     );
                     if ($formatDisallowed) {
                         continue;
@@ -317,11 +354,13 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                         // We already have URL's, store them in the final results
                         // first. This shouldn't happen unless there are multiple
                         // images without type in the same set.
-                        $results[] = [
-                            'urls' => $urls,
-                            'description' => '',
-                            'rights' => $rights
-                        ];
+                        $addToResults(
+                            [
+                                'urls' => $urls,
+                                'description' => '',
+                                'rights' => $rights
+                            ]
+                        );
                     }
                     $urls['small'] = $urls['medium'] = $urls['large'] = $url;
                 } else {
@@ -347,14 +386,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             // If current set has no images to show, continue to next one
             if (empty($urls)) {
                 continue;
-            }
-            if (!isset($urls['small'])) {
-                $urls['small'] = $urls['medium']
-                    ?? $urls['large'];
-            }
-            if (!isset($urls['medium'])) {
-                $urls['medium'] = $urls['small']
-                    ?? $urls['large'];
             }
 
             $result = [
@@ -411,7 +442,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                     }
                 }
             );
-            $results[] = $result;
+            $addToResults($result);
         }
         return $this->cachedImages = $results;
     }
@@ -452,6 +483,76 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             $data[$type] = compact('unit', 'value');
         }
         return $data;
+    }
+
+    /**
+     * Get 3D models
+     *
+     * @return array
+     */
+    public function getModels(): array
+    {
+        $models = [];
+        $i = 0;
+        $xml = $this->getXmlRecord();
+        foreach ($xml->lido->administrativeMetadata->resourceWrap->resourceSet
+        as $resourceSet) {
+            foreach ($resourceSet->resourceRepresentation as $representation) {
+                $linkResource = $representation->linkResource;
+                $url = trim((string)$linkResource);
+                if (empty($url)) {
+                    continue;
+                }
+                $type = strtolower(
+                    (string)$representation->attributes()->type ?? ''
+                );
+                $format = $linkResource->attributes()->formatResource ?? '';
+                $format = strtolower(trim($format));
+                switch ($type) {
+                case 'preview_3d':
+                    if (in_array($format, $this->displayableModelFormats)) {
+                        $models[$i][$format]['preview'] = $url;
+                    }
+                    break;
+                case 'provided_3d':
+                    $models[$i][$format]['provided'] = $url;
+                    break;
+                }
+            }
+            $i++;
+        }
+        return $models;
+    }
+
+    /**
+     * Return model settings from config
+     *
+     * @return array settings
+     */
+    public function getModelSettings(): array
+    {
+        $settings = [];
+        $iniData = $this->recordConfig->Models ?? [];
+        foreach ($this->modelViewerSettings as $setting) {
+            if (!empty($iniData->$setting)) {
+                $settings[$setting] = $iniData->$setting;
+            }
+        }
+        $modelImages = 'model_preview_images';
+        $datasource = $this->getDataSource();
+        $settings['previewImages'] = $this->allowModelPreviewImages();
+        return $settings;
+    }
+
+    /**
+     * Can model preview images be shown
+     *
+     * @return bool
+     */
+    public function allowModelPreviewImages(): bool
+    {
+        $datasource = $this->getDataSource();
+        return !empty($this->mainConfig->Models->previewImages[$datasource]);
     }
 
     /**
