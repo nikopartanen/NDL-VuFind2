@@ -2021,7 +2021,8 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
             // valid JSON that the caller can handle
             $decodedResult = json_decode($result, true);
             if (!$response->isSuccess()
-                && (null === $decodedResult || !empty($decodedResult['error']))
+                && (null === $decodedResult || !empty($decodedResult['error'])
+                || !empty($decodedResult['ExceptionTime']))
                 && !$returnCode
             ) {
                 $params = $method == 'GET'
