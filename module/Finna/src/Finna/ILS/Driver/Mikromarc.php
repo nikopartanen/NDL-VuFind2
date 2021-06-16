@@ -434,7 +434,8 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
                 'item_id' => $entry['ItemId'],
                 // Append payment information
                 'payableOnline' => $payable,
-                'fineId' => $fineId
+                'fineId' => $fineId,
+                'organization' => $entry['LocalUnitId'] ?? ''
             ];
             $recordId = $entry['MarcRecordId'] ?? null;
             if ($recordId) {
