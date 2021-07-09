@@ -709,6 +709,9 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
         }
         $holds = [];
         foreach ($result as $entry) {
+            $available = $entry['ServiceCode'] === 'ReservationArrived'
+                    || $entry['ServiceCode'] === 'ReservationNoticeSent';
+            $frozen = !$entry['ResActiveToday'] && !$available;
             $hold = [
                 'id' => $entry['MarcRecordId'],
                 'item_id' => $entry['ItemId'],
@@ -721,11 +724,9 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
                     'U', strtotime($entry['ResValidUntil'])
                 ),
                 'position' => $entry['NumberInQueue'],
-                'available' => ($entry['ServiceCode'] === 'ReservationArrived'
-                    || $entry['ServiceCode'] === 'ReservationNoticeSent')
-                        ? true : false,
+                'available' => $available,
                 'requestId' => $entry['Id'],
-                'frozen' => !$entry['ResActiveToday'],
+                'frozen' => $frozen,
                 'requestGroup' => $this->requestGroupsEnabled &&
                     isset($entry['Scope']) ?
                     "mikromarc_" . $this->getRequestGroupKey($entry['Scope'])
