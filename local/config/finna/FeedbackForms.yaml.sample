@@ -44,7 +44,7 @@
 #
 #   By default, the form renders input fields for sender name and email address with the
 #   following options:
-#      senderInfoRequired (boolean)  Require sender to fill out name and email fields 
+#      senderInfoRequired (boolean)  Require sender to fill out name and email fields
 #      senderInfoHelp (string) Info text for sender name/email (translation key)
 #
 #   If needed, the default sender fields can be hidden (in case they are not needed
@@ -56,6 +56,10 @@
 #                               This setting can be enabled only for selected forms.
 #                               In addition, the following settings are required:
 #                               - sendMethod = database (barcode can not be sent via email)
+#                               - onlyForLoggedUsers = true (barcode is available only for logged users)
+#   includePatronId   (boolean) Whether to submit the user's identifier in library along with other form data.
+#                               This setting can be enabled only for selected forms.
+#                               In addition, the following setting is required:
 #                               - onlyForLoggedUsers = true (barcode is available only for logged users)
 #   help
 #     pre (string)  Help text displayed at the beginning of the form (translation key).
@@ -78,7 +82,7 @@
 #                          in '_html' here, and define markup in the language files.
 #
 #     And for select, radio and checkbox elements:
-# 
+#
 #     options (array) List of select values (translation keys)
 #                     or a list of options with 'value' and 'label' (translation) keys.
 #                       Examples:
@@ -142,7 +146,7 @@ forms:
     onlyForLoggedUsers: false
     #emailSubject: Palautetta Finnasta
     response: Thank you for your feedback.
-    senderInfoRequired: false 
+    senderInfoRequired: false
     senderInfoHelp: feedback_info
     hideSenderInfo: false
     sendMethod: email
@@ -195,11 +199,11 @@ forms:
     enabled: true
     useCaptcha: false
     #sendMethod: "database"
-    
+
     onlyForLoggedUsers: false
     emailSubject: "Palautetta Finnasta tietueesta: %%record%%"
     response: Thank you for your feedback.
-    senderInfoRequired: false 
+    senderInfoRequired: false
     senderInfoHelp: feedback_info
     hideSenderInfo: true
     help:
