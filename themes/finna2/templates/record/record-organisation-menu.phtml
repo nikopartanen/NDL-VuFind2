@@ -31,6 +31,12 @@
           <?php if ($this->organisationInfo() && $organisationInfoId = $this->driver->getOrganisationInfoId()): ?><li class="organisation-page-link" data-organisation="<?=$this->escapeHtmlAttr($organisationInfoId)?>" data-organisation-name="<?=$this->escapeHtmlAttr($currentSourceTranslated)?>" data-organisation-sector="<?=$this->escapeHtmlAttr($sector)?>"></li><?php endif; ?>
           <li class="material-questions-feedback"><?=$this->transEsc('material_questions_feedback')?></li>
           <li><a href="<?=$this->recordLink()->getActionUrl($this->driver, 'Feedback')?>" data-lightbox class="btn btn-primary feedback-record"><?=$this->transEsc('Send feedback on record')?></a></li>
+          <?php if ($this->record($this->driver)->repositoryLibraryRequestEnabled()): ?>
+            <?php $user = $this->auth()->isLoggedIn(); if ($user && $user->getLibraryCards()->count()): ?>
+              <li class="repository-library-request"><?=$this->transEsc('repository_library_request')?></li>
+              <li><a href="<?=$this->recordLink()->getActionUrl($this->driver, 'RepositoryLibraryRequest')?>" data-lightbox class="btn btn-primary repository-library-request-order"><?=$this->transEsc('repository_library_request_order')?></a></li>
+            <?php endif; ?>
+          <?php endif; ?>
         </ul>
       </li>
     </ul>
