@@ -2406,11 +2406,16 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 $title .= ' (' . $reservation->note . ')';
             }
 
+            $detailsStr = $reservation->id . '|' . $reservation->validFromDate
+                . '|' . $reservation->validToDate . '|'
+                . $reservation->pickUpBranchId;
             $updateDetails = '';
+            $cancelDetails = '';
             if ('yes' === $reservation->isEditable) {
-                $updateDetails = $reservation->id . '|' . $reservation->validFromDate
-                    . '|' . $reservation->validToDate . '|'
-                    . $reservation->pickUpBranchId;
+                $updateDetails = $detailsStr;
+            }
+            if ('yes' === $reservation->isDeletable) {
+                $cancelDetails = $detailsStr;
             }
             $frozen = $reservation->validFromDate > date('Y-m-d');
             if ($frozen && $reservation->validFromDate != $reservation->validToDate
@@ -2456,7 +2461,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                    : '',
                 'in_transit' => $reservation->reservationStatus == 'inTransit',
                 'title' => $title,
-                'cancel_details' => $updateDetails,
+                'cancel_details' => $cancelDetails,
                 'updateDetails' => $updateDetails,
             ];
             $holdsList[] = $hold;
