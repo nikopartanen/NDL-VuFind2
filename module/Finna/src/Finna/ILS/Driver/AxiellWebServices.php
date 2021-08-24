@@ -2439,7 +2439,6 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 'position' =>
                    $reservation->queueNo ?? '-',
                 'available' => $reservation->reservationStatus == 'fetchable',
-                'item_id' => $reservation->id,
                 'reqnum' => $reservation->id,
                 'volume' =>
                    $reservation->catalogueRecord->volume ?? '',
@@ -2449,6 +2448,11 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                    isset($reservation->reservationType)
                    && $this->requestGroupsEnabled
                    ? "axiell_$reservation->reservationType"
+                   : '',
+                'requestGroupId' =>
+                   isset($reservation->reservationType)
+                   && $this->requestGroupsEnabled
+                   ? $reservation->reservationType
                    : '',
                 'in_transit' => $reservation->reservationStatus == 'inTransit',
                 'title' => $title,
