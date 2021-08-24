@@ -27,7 +27,7 @@
 <?php else: ?>
   <?php
     $copyrightInfo = $copyright = $copyrightLink = null;
-    if (!$copyrightInfo = $this->driver->getAccessRestrictionsType($this->layout()->userLang)) {
+    if (!$copyrightInfo = $this->driver->tryMethod('getAccessRestrictionsType', [$this->layout()->userLang])) {
       $copyrightInfo = $this->recordImage($this->record($this->driver))->getImageRights(0) ?? null;
     }
     if ($copyright = $copyrightInfo['copyright'] ?? null) {
