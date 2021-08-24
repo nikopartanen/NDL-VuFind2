@@ -358,7 +358,7 @@ class Connection implements TranslatorAwareInterface, LoggerAwareInterface
             if (isset($functionConfig['extraHoldFields'])) {
                 $response['extraHoldFields'] = $functionConfig['extraHoldFields'];
             }
-            if (isset($functionConfig['updateFields'])) {
+            if (!empty($functionConfig['updateFields'])) {
                 $response['updateFields'] = array_map(
                     'trim',
                     explode(':', $functionConfig['updateFields'])
