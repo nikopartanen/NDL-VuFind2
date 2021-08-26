@@ -2411,7 +2411,12 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 . $reservation->pickUpBranchId;
             $updateDetails = '';
             $cancelDetails = '';
-            if ('yes' === $reservation->isEditable) {
+            // Regional holds have isEditable 'no' even when they're editable, so
+            // check for isDeletetable for them:
+            if ('yes' === $reservation->isEditable
+                || ('regional' === $reservation->reservationType
+                && 'yes' === $reservation->isDeletable)
+            ) {
                 $updateDetails = $detailsStr;
             }
             if ('yes' === $reservation->isDeletable) {
