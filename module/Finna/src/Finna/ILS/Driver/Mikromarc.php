@@ -725,7 +725,7 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
                 );
             }
 
-            $updateDetails = !$available
+            $updateDetails = !$available && !$inProcess
                 ? $entry['Id'] . '|' . $entry['ResValidUntil']
                 : '';
             $hold = [
