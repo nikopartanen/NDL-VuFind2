@@ -551,8 +551,17 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 $result->$functionResult->organisations->organisation
             );
 
+        $keyName = 'limitPickUpLocationChangeToCurrentOrganization';
+        $limitToCurrentOrganisation = $this->config['Holds'][$keyName]
+            ?? !$this->singleReservationQueue;
         foreach ($organisations as $organisation) {
             if (!isset($organisation->branches->branch)) {
+                continue;
+            }
+
+            if (!empty($holdDetails['_organization']) && $limitToCurrentOrganisation
+                && $organisation->name !== $holdDetails['_organization']
+            ) {
                 continue;
             }
 
@@ -2468,6 +2477,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 'title' => $title,
                 'cancel_details' => $cancelDetails,
                 'updateDetails' => $updateDetails,
+                '_organization' => $reservation->organisationId ?? ''
             ];
             $holdsList[] = $hold;
         }
