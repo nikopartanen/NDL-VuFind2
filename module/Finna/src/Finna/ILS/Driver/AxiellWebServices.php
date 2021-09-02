@@ -552,8 +552,8 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
             );
 
         $keyName = 'limitPickUpLocationChangeToCurrentOrganization';
-        $limitToCurrentOrganisation = $this->config['Holds'][$keyName]
-            ?? !$this->singleReservationQueue;
+        $limitToCurrentOrganisation = ($this->config['Holds'][$keyName]
+            ?? !$this->singleReservationQueue) && $holdType !== 'regional';
         foreach ($organisations as $organisation) {
             if (!isset($organisation->branches->branch)) {
                 continue;
