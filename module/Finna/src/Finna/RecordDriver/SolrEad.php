@@ -582,7 +582,7 @@ class SolrEad extends SolrDefault
         if ($levels && !empty(array_diff($levels, self::SERIES_LEVELS))) {
             return [];
         }
-        return $this->fields['hierarchy_parent_id'] ?? [];
+        return (array)($this->fields['hierarchy_parent_id'] ?? []);
     }
 
     /**
@@ -597,7 +597,7 @@ class SolrEad extends SolrDefault
         if ($levels && !empty(array_diff($levels, self::SERIES_LEVELS))) {
             return [];
         }
-        return $this->fields['hierarchy_parent_title'] ?? [];
+        return (array)($this->fields['hierarchy_parent_title'] ?? []);
     }
 
     /**
