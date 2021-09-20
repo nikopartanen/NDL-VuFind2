@@ -292,6 +292,7 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
             $message['recordMetadata'] = [
                 'title' => $driver->tryMethod('getTitle'),
                 'authors' => $driver->tryMethod('getAuthorsWithRoles'),
+                'publicationDates' => $driver->tryMethod('getPublicationDates'),
                 'formats' => array_values(
                     array_unique(
                         array_map(
