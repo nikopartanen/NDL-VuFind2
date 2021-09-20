@@ -286,10 +286,31 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
         $message['emailSubject'] = $subject;
         $message['internalUserId'] = $userId;
         $message['viewBaseUrl'] = $url;
+        if (!empty($message['recordId'])) {
+            [$recordSource, $recordId] = explode('|', $message['recordId'], 2);
+            $driver = $this->getRecordLoader()->load($recordId, $recordSource);
+            $message['recordMetadata'] = [
+                'title' => $driver->tryMethod('getTitle'),
+                'authors' => $driver->tryMethod('getAuthorsWithRoles'),
+                'formats' => array_values(
+                    array_unique(
+                        array_map(
+                            [$this, 'translate'],
+                            $driver->tryMethod('getFormats', [], [])
+                        )
+                    )
+                ),
+                'isbns' => $driver->tryMethod('getISBNs'),
+                'issns' => $driver->tryMethod('getISSNs'),
+            ];
+            if ($openUrl = $driver->tryMethod('getOpenUrl')) {
+                parse_str($openUrl, $openUrlFields);
+                $message['recordMetadata']['openurl'] = $openUrlFields;
+            }
+        }
+
         $messageJson = json_encode($message);
-
         $apiSettings = $form->getApiSettings();
-
         $httpService = $this->serviceLocator->get(\VuFindHttp\HttpService::class);
         $client = $httpService->createClient(
             $apiSettings['url'],
