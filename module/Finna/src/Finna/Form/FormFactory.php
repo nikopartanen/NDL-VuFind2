@@ -75,8 +75,12 @@ class FormFactory extends \VuFind\Form\FormFactory
         if ($user = $container->get(\VuFind\Auth\Manager::class)->isLoggedIn()) {
             $roles = $container->get(\VuFind\Role\PermissionManager::class)
                 ->getActivePermissions();
-            $patron = $container->get(\VuFind\Auth\ILSAuthenticator::class)
-                ->storedCatalogLogin();
+            try {
+                $patron = $container->get(\VuFind\Auth\ILSAuthenticator::class)
+                    ->storedCatalogLogin();
+            } catch (\Exception $e) {
+                $patron = [];
+            }
             $form->setUser($user, $roles, $patron ?: []);
         }
         $form->setViewHelperManager($container->get('ViewHelperManager'));
