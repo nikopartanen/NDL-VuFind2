@@ -16,6 +16,11 @@ merge_array_settings = true
 ;connect-src[] = "https://zefzhat-eu.appspot.com"
 ;connect-src[] = "https://stats.livezhat.com"
 
+; Facebook
+;script-src[] = "https://*.facebook.net/"
+;connect-src[] = "https://*.facebook.net/"
+;frame-src[] = "https://*.facebook.com/"
+
 ; Giosg
 ;connect-src[] = "https://service.giosg.com"
 
