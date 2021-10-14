@@ -24,6 +24,10 @@ merge_array_settings = true
 ; Giosg
 ;connect-src[] = "https://service.giosg.com"
 
+; Kirjastokartta:
+;connect-src[] = "https://kirjastokartta.kansalliskirjasto.fi"
+;frame-src[] = "https://kirjastokartta.kansalliskirjasto.fi"
+
 ; Kirjastot.fi:n rajapinta:
 ;script-src[] = "https://api.kirjastot.fi"
 ;connect-src[] = "https://api.kirjastot.fi"
