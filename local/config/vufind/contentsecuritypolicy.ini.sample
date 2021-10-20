@@ -22,7 +22,15 @@ merge_array_settings = true
 ;frame-src[] = "https://*.facebook.com/"
 
 ; Giosg
-;connect-src[] = "https://service.giosg.com"
+;connect-src[] = "https://*.giosg.com"
+;connect-src[] = "https://*.giosgusercontent.com"
+;frame-src[] = "https://*.giosg.com"
+;frame-src[] = "https://*.giosgusercontent.com"
+;script-src[] = "https://*.giosg.com"
+; HUOM. Seuraavat asetukset, jotka giosg vaatii, käytännössä pilaavat CSP:n suurelta
+; osin:
+;script-src[] = "'unsafe-inline'"
+;script-src[] = "'unsafe-eval'"
 
 ; Kirjastokartta:
 ;connect-src[] = "https://kirjastokartta.kansalliskirjasto.fi"
