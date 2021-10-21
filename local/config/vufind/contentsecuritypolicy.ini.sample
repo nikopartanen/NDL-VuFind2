@@ -66,10 +66,7 @@ merge_array_settings = true
 ; Zendesk chat (Zopim) - https://developer.zendesk.com/documentation/classic-web-widget-sdks/web-widget/integrating-with-google/csp/
 ;connect-src[] = "https://ekr.zdassets.com"
 ;connect-src[] = "wss://widget-mediator.zopim.com"
-;; Vaihtoehto 1 - uusi lataustapa, ks. yllämainittu osoite:
-;script-src[] = "'strict-dynamic'"
-;script-src[] = "'unsafe-eval'"
-;; Vaihtoehto 2 - vanha lataustapa:
+;; Suositellaan tätä lataustapaa alla, uudempi ei toimi Safarilla:
 ;script-src[] = "https://static.zdassets.com"
 ;script-src[] = "https://ekr.zdassets.com"
 ;script-src[] = "https://*.zendesk.com"
@@ -79,4 +76,3 @@ merge_array_settings = true
 ;script-src[] = "'unsafe-eval'"
 ;connect-src[] = "https://ekr.zdassets.com"
 ;connect-src[] = "wss://widget-mediator.zopim.com"
-
