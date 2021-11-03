@@ -51,6 +51,7 @@ merge_array_settings = true
 ;script-src[] = "https://cdn.smilee.io"
 ;script-src[] = "https://saas.smilee.fi"
 ;connect-src[] = "https://saas.smilee.fi"
+;connect-src[] = "wss://saas.smilee.fi"
 
 ; Tawk
 ;script-src[] = "https://va.tawk.to"
