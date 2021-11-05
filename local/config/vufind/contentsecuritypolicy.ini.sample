@@ -5,6 +5,9 @@ merge_array_settings = true
 [Directives]
 ;script-src[] = "https://trusted.service.something"
 
+; Avointen oppimateriaalien kirjasto
+; frame-src[] = “https://aoe.fi”
+
 ; Boost.ai (universitiesfront)
 ;connect-src[] = "https://universitiesfront.boost.ai"
 ;connect-src[] = "https://static.aim.front.ai"
@@ -69,6 +72,9 @@ frame-src[] = "https://*.twitter.com"
 
 ; Youtube
 ;frame-src[] = "https://www.youtube.com"
+
+; Youtube nocookie
+; frame-src[] = “https://www.youtube-nocookie.com”
 
 ; Zendesk chat (Zopim) - https://developer.zendesk.com/documentation/classic-web-widget-sdks/web-widget/integrating-with-google/csp/
 ;; Uusi lataustapa, ei toimi Safarilla:
