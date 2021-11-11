@@ -65,7 +65,7 @@ merge_array_settings = true
 ;connect-src[] = "wss://*.tawk.to"
 
 ; Twitter
-frame-src[] = "https://*.twitter.com"
+;frame-src[] = "https://*.twitter.com"
 
 ; Vimeo
 ;frame-src[] = "https://player.vimeo.com"
