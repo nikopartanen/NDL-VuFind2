@@ -202,11 +202,6 @@ class Form extends \VuFind\Form\Form
 
         // Validate form settings
         if ($this->formSettings['includeBarcode'] ?? false) {
-            if (!$this->isRecordRequestFormWithBarcode()) {
-                throw new \VuFind\Exception\BadConfig(
-                    'Library card barcode can not be used with this form.'
-                );
-            }
             $handler = $this->formSettings['sendMethod'] ?? Form::HANDLER_EMAIL;
             if (!in_array($handler, $this->secureHandlers)) {
                 throw new \VuFind\Exception\BadConfig(
