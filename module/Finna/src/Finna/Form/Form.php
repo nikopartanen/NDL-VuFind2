@@ -210,24 +210,12 @@ class Form extends \VuFind\Form\Form
                     . implode(', ', $this->secureHandlers)
                 );
             }
-            if (!($this->formSettings['onlyForLoggedUsers'] ?? false)) {
-                throw new \VuFind\Exception\BadConfig(
-                    'Enable \'onlyForLoggedUsers\' when'
-                    . ' \'includeBarcode\' is enabled'
-                );
-            }
             if ($this->user && ($catUsername = $this->user->cat_username)) {
                 [, $barcode] = explode('.', $catUsername);
                 $this->userCatUsername = $barcode;
             }
         }
         if ($this->formSettings['includePatronId'] ?? false) {
-            if (!($this->formSettings['onlyForLoggedUsers'] ?? false)) {
-                throw new \VuFind\Exception\BadConfig(
-                    'Enable \'onlyForLoggedUsers\' when'
-                    . ' \'includePatronId\' is enabled'
-                );
-            }
             if ($this->ilsPatron && ($catId = $this->ilsPatron['id'] ?? '')) {
                 [, $id] = explode('.', $catId);
                 $this->userCatId = $id;
