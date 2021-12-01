@@ -751,6 +751,16 @@ finna.layout = (function finnaLayout() {
     }
   }
 
+  function initPrintTriggers() {
+    $('[data-trigger-print]').off('click').on(
+      'click',
+      function printWindow() {
+        window.print();
+        return false;
+      }
+    );
+  }
+
   var my = {
     getOrganisationPageLink: getOrganisationPageLink,
     isTouchDevice: isTouchDevice,
@@ -800,6 +810,7 @@ finna.layout = (function finnaLayout() {
       setImagePaginatorTranslations();
       initImagePaginators();
       initHelpTabs();
+      initPrintTriggers();
     },
     showPostLoginLightbox: showPostLoginLightbox
   };
