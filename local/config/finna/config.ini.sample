@@ -1397,6 +1397,17 @@ allowed_url_schemes[] = 'maps'
 ; 4. (optional) Solr field that contains the identifier in the new record (default is ctrlnum).
 ; missing_record_redirect[] = "/^lusto\.(.+)/###(knp)$1###lusto-new"
 
+; Sources available for repository library request:
+repository_library_request_sources[] = vaari
+; Form used for repository library request:
+repository_library_request_form = RepositoryLibraryRequest
+; Whether to display repository library request in search results:
+repository_library_request_in_results = true
+; Whether to display repository library request in holdings:
+repository_library_request_in_holdings = true
+; Whether to display repository library request in organisation info box:
+repository_library_request_in_organisation_info = true
+
 ; The following two sections control the Alphabetic Browse module.
 [AlphaBrowse]
 ; This setting controls how many headings are displayed on each page of results:
@@ -1589,9 +1600,9 @@ count = 2
 ;WorldCat = WorldCat
 ;SolrWeb = "Library Website"
 
-; Use Piwik for visitor tracking
-[Piwik]
-url = https://piwik.jotain.jossain/
+; Use Matomo for visitor tracking
+[Matomo]
+url = https://analytics.jotain.jossain/
 ;site_id = 1
 ;token_auth = ...
 custom_variables = 1

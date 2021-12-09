@@ -149,6 +149,17 @@ finna.layout = (function finnaLayout() {
     });
   }
 
+  function initMobileCartIndicator() {
+    $('.btn-bookbag-toggle a').on('click', function onClickMobileCart() {
+      if ($(this).hasClass('cart-add')){
+        $('.navbar-toggle').removeClass('activated');
+        setTimeout(function triggerAnimation() {
+          $('.navbar-toggle').addClass('activated');
+        }, 100);
+      }
+    });
+  }
+
   function initCheckboxClicks() {
     $('.template-name-mylist input.checkbox-select-item').on('click', function onClickCheckbox() {
       var actions = $('.mylist-functions button, .mylist-functions select');
@@ -306,6 +317,9 @@ finna.layout = (function finnaLayout() {
     // Add count descriptor to every facet value node for accessibility
     tree.find('.facet').each(function appendDescriptors() {
       var badge = $(this).find('.badge');
+      if (badge.length === 0) {
+        return;
+      }
       badge.attr('aria-hidden', 'true');
       if ($(this).find('.facet-value .sr-only').length > 0) {
         return;
@@ -786,6 +800,7 @@ finna.layout = (function finnaLayout() {
       initTruncate();
       initContentNavigation();
       initMobileNarrowSearch();
+      initMobileCartIndicator();
       initCheckboxClicks();
       initToolTips();
       initModalToolTips();

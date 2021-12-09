@@ -209,17 +209,26 @@ class Record extends \VuFind\View\Helper\Root\Record
     /**
      * Is repository library request form enabled for this record.
      *
-     * @return boolean
+     * @param string $context Context
+     *
+     * @return bool
      */
-    public function repositoryLibraryRequestEnabled() : bool
-    {
+    public function repositoryLibraryRequestEnabled(
+        string $context = 'organisation_info'
+    ) : bool {
         if (!isset($this->config->Record->repository_library_request_sources)) {
             return false;
         }
-        return in_array(
+        $enabled = in_array(
             $this->driver->tryMethod('getDataSource'),
             $this->config->Record->repository_library_request_sources->toArray()
         ) && $this->getRepositoryLibraryRequestFormId();
+
+        if (!$enabled) {
+            return false;
+        }
+        $setting = "repository_library_request_in_$context";
+        return $this->config->Record->$setting ?? false;
     }
 
     /**
