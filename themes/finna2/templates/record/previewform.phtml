@@ -49,8 +49,9 @@ $('#data').change(function onDataChange() {
   var data = $(this).val();
   if (data.match(/<\/([^>]+:)?lidoWrap>/)) {
     format = 'lido';
-  } else if ((data.match(/<\/([^>]+:)?record>/) && data.match(/<\/([^>]+:)?leader>/)
-    || data.match(/^\d{5}/))
+  } else if ((data.match(/<\/([^>]+:)?record>/) && data.match(/<\/([^>]+:)?leader>/))
+    || data.match(/^\d{5}/)
+    || data.match(/\s*(LDR|\d{5})\s/)
   ) {
     format = 'marc';
   } else if (data.match(/<\/([^>]+:)?qualifieddc>/)) {

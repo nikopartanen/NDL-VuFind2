@@ -168,34 +168,6 @@ $config = [
                     ]
                 ],
             ],
-            'record-feedback' => [
-                'type'    => 'Laminas\Router\Http\Segment',
-                'options' => [
-                    'route'    => '/Record/[:id]/Feedback',
-                    'constraints' => [
-                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    ],
-                    'defaults' => [
-                        'controller' => 'Record',
-                        'action'     => 'Feedback',
-                    ]
-                ]
-            ],
-            'record-repositorylibraryrequest' => [
-                'type'    => 'Laminas\Router\Http\Segment',
-                'options' => [
-                    'route'    => '/Record/[:id]/RepositoryLibraryRequest',
-                    'constraints' => [
-                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    ],
-                    'defaults' => [
-                        'controller' => 'Record',
-                        'action'     => 'RepositoryLibraryRequest',
-                    ]
-                ]
-            ],
             'record-preview' => [
                 'type' => 'Laminas\Router\Http\Literal',
                 'options' => [
@@ -215,34 +187,6 @@ $config = [
                         'action'     => 'get',
                     ]
                 ],
-            ],
-            'solrrecord-feedback' => [
-                'type'    => 'Laminas\Router\Http\Segment',
-                'options' => [
-                    'route'    => '/Record/[:id]/Feedback',
-                    'constraints' => [
-                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    ],
-                    'defaults' => [
-                        'controller' => 'Record',
-                        'action'     => 'Feedback',
-                    ]
-                ]
-            ],
-            'solrauthrecord-feedback' => [
-                'type'    => 'Laminas\Router\Http\Segment',
-                'options' => [
-                    'route'    => '/AuthorityRecord/[:id]/Feedback',
-                    'constraints' => [
-                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    ],
-                    'defaults' => [
-                        'controller' => 'AuthorityRecord',
-                        'action'     => 'Feedback',
-                    ]
-                ]
             ],
         ],
     ],
@@ -984,6 +928,11 @@ $recordRoutes = [
     'l1record' => 'L1Record'
 ];
 
+// Define non tab record actions
+$nonTabRecordActions = [
+    'Feedback', 'RepositoryLibraryRequest',
+];
+
 // Define dynamic routes -- controller => [route name => action]
 $dynamicRoutes = [
     'Comments' => ['inappropriate' => 'inappropriate/[:id]'],
@@ -1013,11 +962,12 @@ $staticRoutes = [
 ];
 
 $routeGenerator = new \VuFind\Route\RouteGenerator();
+$routeGenerator->addNonTabRecordActions($config, $nonTabRecordActions);
 $routeGenerator->addRecordRoutes($config, $recordRoutes);
 $routeGenerator->addDynamicRoutes($config, $dynamicRoutes);
 $routeGenerator->addStaticRoutes($config, $staticRoutes);
 
-// This needs to be defined after VuFind's record routes...
+// These need to be defined after VuFind's record routes:
 $config['router']['routes']['l1record-feedback'] = [
     'type'    => 'Laminas\Router\Http\Segment',
     'options' => [
@@ -1032,7 +982,6 @@ $config['router']['routes']['l1record-feedback'] = [
         ]
     ]
 ];
-
 $config['router']['routes']['r2record-feedback'] = [
     'type'    => 'Laminas\Router\Http\Segment',
     'options' => [
@@ -1043,6 +992,34 @@ $config['router']['routes']['r2record-feedback'] = [
         ],
         'defaults' => [
             'controller' => 'R2Record',
+            'action'     => 'Feedback',
+        ]
+    ]
+];
+$config['router']['routes']['solrrecord-feedback'] = [
+    'type'    => 'Laminas\Router\Http\Segment',
+    'options' => [
+        'route'    => '/Record/[:id]/Feedback',
+        'constraints' => [
+            'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+            'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+        ],
+        'defaults' => [
+            'controller' => 'Record',
+            'action'     => 'Feedback',
+        ]
+    ]
+];
+$config['router']['routes']['solrauthrecord-feedback'] = [
+    'type'    => 'Laminas\Router\Http\Segment',
+    'options' => [
+        'route'    => '/AuthorityRecord/[:id]/Feedback',
+        'constraints' => [
+            'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+            'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+        ],
+        'defaults' => [
+            'controller' => 'AuthorityRecord',
             'action'     => 'Feedback',
         ]
     ]
