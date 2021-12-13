@@ -1051,14 +1051,6 @@ class RecordDataFormatterFactory
                 'context' => ['class' => 'extendedAccess']
             ]
         );
-        $setTemplateLine(
-            'Type',
-            'getTypes',
-            'data-escapeHtml',
-            [
-                'context' => ['class' => 'record-type']
-            ]
-        );
 
         $setTemplateLine(
             'Terms of Use',
