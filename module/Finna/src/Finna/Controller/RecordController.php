@@ -814,6 +814,20 @@ class RecordController extends \VuFind\Controller\RecordController
                 }
             }
         );
+        $searchConfig = $this->getConfig('searches');
+        if (!empty($searchConfig->Records->sources)) {
+            foreach (explode(',', $searchConfig->Records->sources)
+                as $priority => $id
+            ) {
+                foreach ($sources as &$source) {
+                    if ($id === $source['id']) {
+                        $source['priority'] = $priority;
+                        break;
+                    }
+                }
+                unset($source);
+            }
+        }
         usort(
             $sources,
             function ($a, $b) {
