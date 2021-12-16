@@ -290,7 +290,7 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
         $paymentConfig = $this->config['OnlinePayment'] ?? [];
         $blockedTypes = $paymentConfig['nonPayable'] ?? [];
         $xml = $this->makeRequest(
-            '/users/' . $patron['id'] . '/fees'
+            '/users/' . rawurlencode($patron['id']) . '/fees'
         );
         $fineList = [];
         foreach ($xml as $fee) {
@@ -396,8 +396,8 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
 
         // Get user loans from Alma API
         $apiResult = $this->makeRequest(
-            '/users/' . $patronId . '/loans',
-            $params
+            '/users/' . rawurlencode($patronId) . '/loans',
+            $params,
         );
 
         // If there is an API result, process it
@@ -533,7 +533,8 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
                     'external_transaction_id' => $transactionId
                 ];
                 $this->makeRequest(
-                    '/users/' . $patron['id'] . '/fees/' . $fine['id'],
+                    '/users/' . rawurlencode($patron['id']) . '/fees/'
+                    . rawurlencode($fine['id']),
                     $getParams,
                     [],
                     'POST'
@@ -551,7 +552,7 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
                 'external_transaction_id' => $transactionId
             ];
             $this->makeRequest(
-                '/users/' . $patron['id'] . '/fees/all',
+                '/users/' . rawurlencode($patron['id']) . '/fees/all',
                 $getParams,
                 [],
                 'POST'
@@ -573,7 +574,7 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
     public function getMyProfile($patron)
     {
         $patronId = $patron['id'];
-        $xml = $this->makeRequest('/users/' . $patronId);
+        $xml = $this->makeRequest('/users/' . rawurlencode($patronId));
         if (empty($xml)) {
             return [];
         }
@@ -771,7 +772,7 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
             return $cachedBlocks;
         }
 
-        $xml = $this->makeRequest('/users/' . $patronId);
+        $xml = $this->makeRequest('/users/' . rawurlencode($patronId));
         if ($xml == null || empty($xml)) {
             return false;
         }
@@ -858,7 +859,7 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
         }
 
         // Retrieve old data first
-        $userData = $this->makeRequest('/users/' . $patron['id']);
+        $userData = $this->makeRequest('/users/' . rawurlencode($patron['id']));
 
         $contact = $userData->contact_info ?? $userData->addChild('contact_info');
 
@@ -1455,7 +1456,7 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
             = $this->config['Holds']['allowCancelingAvailableRequests'] ?? true;
         while ($offset < $totalCount) {
             $xml = $this->makeRequest(
-                '/users/' . $patron['id'] . '/requests',
+                '/users/' . rawurlencode($patron['id']) . '/requests',
                 ['request_type' => 'HOLD', 'offset' => $offset, 'limit' => 100]
             );
             $offset += 100;
