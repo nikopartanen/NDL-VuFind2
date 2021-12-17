@@ -229,6 +229,7 @@ class Form extends \VuFind\Form\Form
                 );
             }
             if (strpos($this->formSettings['apiSettings']['url'], 'https://') !== 0
+                && $this->formSettings['apiSettings']['url'] !== 'test'
                 && 'development' !== APPLICATION_ENV
             ) {
                 throw new \VuFind\Exception\BadConfig(
