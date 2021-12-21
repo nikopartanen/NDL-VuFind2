@@ -778,8 +778,11 @@ class Form extends \VuFind\Form\Form
         if (!empty($this->formConfig['hideSenderInfo'])) {
             // Remove default sender info fields
             $filtered = [];
+            $configFieldNames = array_column($config['fields'] ?? [], 'name');
             foreach ($elements as $el) {
-                if (isset($el['group']) && $el['group'] === '__sender__') {
+                if (isset($el['group']) && $el['group'] === '__sender__'
+                    && !in_array($el['name'] ?? '', $configFieldNames)
+                ) {
                     continue;
                 }
                 $filtered[] = $el;
