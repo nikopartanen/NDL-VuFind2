@@ -96,6 +96,32 @@ class Matomo extends \VuFind\View\Helper\Root\Matomo
     }
 
     /**
+     * Get custom data for lightbox actions
+     *
+     * @return array Associative array of custom data
+     */
+    protected function getLightboxCustomData(): array
+    {
+        if ($this->calledFromImagePopup()) {
+            // Custom vars for image popup (same data as for record page)
+
+            // Prepend variable names with 'ImagePopup' unless listed here:
+            $preserveName = ['RecordAvailableOnline'];
+
+            $customData = $this->getRecordPageCustomData($this->params['record']);
+            $result = [];
+            foreach ($customData as $key => $val) {
+                if (!in_array($key, $preserveName)) {
+                    $key = "ImagePopup{$key}";
+                }
+                $result[$key] = $val;
+            }
+            return $result;
+        }
+        return [];
+    }
+
+    /**
      * Check if the view helper was called from image popup template.
      *
      * @return bool
