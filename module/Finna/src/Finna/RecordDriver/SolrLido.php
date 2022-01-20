@@ -1435,7 +1435,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     public function getMainFormat()
     {
         if (!isset($this->fields['format'])) {
-            return '';
+            return 'Other';
         }
         $formats = $this->fields['format'];
         $format = reset($formats);
