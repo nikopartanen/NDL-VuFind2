@@ -615,6 +615,7 @@ $config = [
                     'VuFind\Recommend\SideFacets' => 'Finna\Recommend\Factory::getSideFacets',
                     'Finna\Recommend\AuthorityRecommend' => 'Finna\Recommend\AuthorityRecommendFactory',
                     'Finna\Recommend\Feedback' => 'Finna\Recommend\FeedbackFactory',
+                    'Finna\Recommend\FinnaStaticHelp' => 'Laminas\ServiceManager\Factory\InvokableFactory',
                     'Finna\Recommend\FinnaSuggestions' => 'Finna\Recommend\FinnaSuggestionsFactory',
                     'Finna\Recommend\FinnaSuggestionsDeferred' => 'Finna\Recommend\FinnaSuggestionsDeferredFactory',
                     'Finna\Recommend\LearningMaterial' => 'Finna\Recommend\LearningMaterialFactory',
@@ -625,6 +626,7 @@ $config = [
                 'aliases' => [
                     'authorityrecommend' => 'Finna\Recommend\AuthorityRecommend',
                     'feedback' => 'Finna\Recommend\Feedback',
+                    'finnastatichelp' => 'Finna\Recommend\FinnaStaticHelp',
                     'finnasuggestions' => 'Finna\Recommend\FinnaSuggestions',
                     'finnasuggestionsdeferred' => 'Finna\Recommend\FinnaSuggestionsDeferred',
                     'learningmaterial' => 'Finna\Recommend\LearningMaterial',
@@ -958,7 +960,7 @@ $staticRoutes = [
     'Search/StreetSearch',
     'Barcode/Show', 'Search/MapFacet', 'Search/Blended',
     'L1/Advanced', 'L1/FacetList', 'L1/Home', 'L1/Results',
-    'Record/DownloadModel'
+    'Record/DownloadModel', 'Record/DownloadFile'
 ];
 
 $routeGenerator = new \VuFind\Route\RouteGenerator();

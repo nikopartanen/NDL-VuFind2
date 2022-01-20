@@ -189,26 +189,6 @@ class RecordController extends \VuFind\Controller\RecordController
         $source = $this->params()->fromPost('source')
             ?: $this->params()->fromQuery('source');
 
-        if (!$data) {
-            // Support marc parameter for backwards-compatibility
-            $marcData = $this->params()->fromPost('marc')
-                ?: $this->params()->fromQuery('marc');
-            if ($marcData) {
-                $format = 'marc';
-                if (!$source) {
-                    $source = '_marc_preview';
-                }
-                $marc = new \File_MARC($marcData, \File_MARC::SOURCE_STRING);
-                $record = $marc->next();
-                if (false === $record) {
-                    throw new \Exception('Missing record data');
-                }
-                $data = $record->toXML();
-                $data = preg_replace('/[\x00-\x09,\x11,\x12,\x14-\x1f]/', '', $data);
-                $data = iconv('UTF-8', 'UTF-8//IGNORE', $data);
-            }
-        }
-
         $manager
             = $this->serviceLocator->get(\Laminas\Session\SessionManager::class);
         $sessionContainer = new \Laminas\Session\Container(
@@ -929,6 +909,57 @@ class RecordController extends \VuFind\Controller\RecordController
                         ob_end_clean();
                     }
                     readfile($file['path']);
+                }
+            } else {
+                $response->setStatusCode(404);
+            }
+        } else {
+            $response->setStatusCode(400);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Download a file
+     *
+     * @return \Laminas\Http\Response
+     */
+    public function downloadFileAction()
+    {
+        $params = $this->params();
+        $index = $params->fromQuery('index');
+        $format = $params->fromQuery('format');
+        $type = $params->fromQuery('type');
+        $response = $this->getResponse();
+        if ($type && $format && isset($index)) {
+            $driver = $this->loadRecord();
+            $representations = [];
+            switch ($type) {
+            case 'document':
+                $representations = $driver->tryMethod('getDocuments');
+                break;
+            default:
+                $response->setStatusCode(400);
+                break;
+            }
+            if (!$representations) {
+                return $response;
+            }
+            $id = $driver->getUniqueID();
+            $representation = $representations[$index] ?? [];
+            if ($url = $representation['url'] ?? false) {
+                $fileName = $representation['description']
+                    ?? $representation['desc']
+                    ?? urlencode($id) . '-' . $index . '.' . $format;
+                $fileLoader = $this->serviceLocator->get(\Finna\File\Loader::class);
+                $file = $fileLoader->proxyFileLoad(
+                    $url,
+                    $fileName,
+                    $format
+                );
+                if (empty($file['result'])) {
+                    $response->setStatusCode(500);
                 }
             } else {
                 $response->setStatusCode(404);

@@ -53,6 +53,11 @@
   <?php endif; ?>
   <div class="media-body record-information">
       <h1 property="name" class="record-title hidden-xs"><?=$this->escapeHtml($this->driver->getTitle())?></h1>
+      <?php if ($results = $this->driver->getAlternativeTitles()): ?>
+        <div class="recordAltTitles record-alt-titles">
+          <?=implode('<br>', array_map([$this, 'escapeHtml'], $results))?>
+        </div>
+      <?php endif; ?>
       <?= $this->R2()->register($this->driver, ['brief' => true])?>
       <?php if ($serviceURLs = $this->driver->getServiceURLs()): ?>
         <div class="recordURLs">
@@ -125,6 +130,8 @@
         $coreFields = $driver->getRecordFormat() === 'ead3'
             ? $formatter->filterEAD3Fields($coreFields)
             : $formatter->filterEADFields($coreFields);
+        $coreFields['Access Restrictions Extended']['hideSubheadings']
+            = ['access_restrictions_general'];
         $coreFieldGroups = $formatter->getGroupedData($driver, $formatter->getGroupedFields([
           ['label' => 'Context',
            'lines' => ['Archive Origination', 'Archive', 'Archive Series', 'Archive File']
@@ -134,8 +141,12 @@
              'subjects_extended', 'Dates', 'Material Condition']
           ],
           ['label' => 'access_restrictions_general',
-           'lines' => ['Access Restrictions Extended']]
-          ], $coreFields));
+           'lines' => ['Access Restrictions Extended']
+          ],
+          [
+           'lines' => ['Access Restrictions']
+          ]
+        ], $coreFields));
       ?>
       <?php if (!empty($coreFieldGroups)): ?>
         <table class="table table-finna-record record-details record-field-groups">
