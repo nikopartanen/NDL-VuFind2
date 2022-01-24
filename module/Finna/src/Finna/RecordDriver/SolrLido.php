@@ -483,7 +483,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                     // final results first. This shouldn't
                     // happen unless there are multiple
                     // images without type in the same set.
-                    if (!$imageUrls) {
+                    if ($imageUrls) {
                         $addToResults(
                             [
                                 'urls' => $imageUrls,
