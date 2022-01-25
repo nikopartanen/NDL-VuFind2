@@ -985,27 +985,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      */
     public function getAlternativeTitles()
     {
-        $results = [];
-        // Main title might be already normalized, but do it again to make sure:
-        $mainTitle = \Normalizer::normalize($this->getTitle(), \Normalizer::FORM_KC);
-        foreach ($this->getXmlRecord()->xpath(
-            'lido/descriptiveMetadata/objectIdentificationWrap/titleWrap/titleSet/'
-            . "appellationValue"
-        ) as $node) {
-            $attr = $node->attributes();
-            $label = $attr->label ?? null;
-            if (!$label
-                || !in_array((string)$label, ['teosnimi','nimi','title','titel'])
-            ) {
-                continue;
-            }
-            $title = trim((string)$node);
-            // Compare the normalized forms:
-            if (\Normalizer::normalize($title, \Normalizer::FORM_KC) != $mainTitle) {
-                $results[] = $title;
-            }
-        }
-        return $results;
+        return $this->fields['title_alt'] ?? [];
     }
 
     /**
