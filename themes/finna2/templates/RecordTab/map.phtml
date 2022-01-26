@@ -1,9 +1,4 @@
 <!-- START of: finna - RecordTab/map.phtml -->
-<?php
-  $this->inlineScript(\Laminas\View\Helper\HeadScript::FILE, 'vendor/leaflet-omnivore.min.js');
-  echo $this->inlineScript();
-?>
-
 <div class="map-canvas"></div>
 
 <?php
@@ -27,8 +22,8 @@ $(document).ready(function() {
   for (var i = 0; i < markersData.length; i++) {
     var marker = markersData[i];
     var item = null;
-    if (marker.wkt) {
-      item = omnivore.wkt.parse(marker.wkt);
+    if (marker.geojson) {
+      item = L.geoJson(marker.geojson);
     } else if (marker.polygon) {
       item = L.polygon(marker.polygon);
     } else if (marker.multipolygon) {
