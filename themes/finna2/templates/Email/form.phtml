@@ -8,7 +8,7 @@
 
 -----
 <?php elseif (in_array($data['type'], ['checkbox', 'radio', 'select'])): ?>
-<?php if ('select' === $data['type'] && $data['recipient'] ?? false): ?>
+<?php if ('select' === $data['type'] && ($data['recipient'] ?? false)): ?>
 <?=($label ? "$label: " : '') . $this->translate($data['valueLabel']) . ' <' . $this->translate($data['value']) . '>' . PHP_EOL ?>
 <?php else: ?>
 <?=($label ? "$label: " : '') . implode(', ', array_map([$this, 'translate'], (array)$data['valueLabel'])) . PHP_EOL ?>
