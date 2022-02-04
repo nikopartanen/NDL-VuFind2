@@ -213,9 +213,8 @@ class Record extends \VuFind\View\Helper\Root\Record
      *
      * @return bool
      */
-    public function repositoryLibraryRequestEnabled(
-        string $context = 'organisation_info'
-    ) : bool {
+    public function repositoryLibraryRequestEnabled(string $context = '') : bool
+    {
         if (!isset($this->config->Record->repository_library_request_sources)) {
             return false;
         }
@@ -225,6 +224,16 @@ class Record extends \VuFind\View\Helper\Root\Record
         ) && $this->getRepositoryLibraryRequestFormId();
 
         if (!$enabled) {
+            return false;
+        }
+        if (!$context) {
+            // Context not specified, check for any:
+            foreach (['holdings', 'organisation_info', 'results'] as $ctx) {
+                $setting = "repository_library_request_in_$ctx";
+                if ($this->config->Record->$setting ?? false) {
+                    return true;
+                }
+            }
             return false;
         }
         $setting = "repository_library_request_in_$context";
