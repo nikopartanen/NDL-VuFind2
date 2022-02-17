@@ -366,7 +366,9 @@ JS;
       $url = $this->followup()->retrieveAndClear('postLoginLightbox', null);
       if ($url && $this->layout()->getTemplate() !== 'layout/lightbox') {
         $script = <<<EOT
-          finna.layout.showPostLoginLightbox('{$url}');
+$(document).ready(function handlePostLoginLightbox() {
+  finna.layout.showPostLoginLightbox('{$url}');
+});
 EOT;
           echo $this->inlineScript(\Laminas\View\Helper\HeadScript::SCRIPT, $script, 'SET');
       }
