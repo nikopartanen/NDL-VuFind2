@@ -714,6 +714,10 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
             }
         }
 
+        if ($expiryDate = (string)$xml->expiry_date) {
+            $profile['expiration_date'] = $this->parseDate($expiryDate);
+        }
+
         // Cache the user group code
         $cacheId = 'alma|user|' . $patronId . '|group_code';
         $this->putCachedData($cacheId, $profile['group_code'] ?? null);
