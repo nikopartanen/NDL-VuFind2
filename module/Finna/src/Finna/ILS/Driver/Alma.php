@@ -104,6 +104,13 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
     protected $locationTypeToItemStatus = [];
 
     /**
+     * Days before account expiration to start displaying a notification
+     *
+     * @var int
+     */
+    protected $daysBeforeAccountExpirationNotification = 30;
+
+    /**
      * Initialize the driver.
      *
      * Validate configuration and perform all resource-intensive tasks needed to
@@ -149,6 +156,12 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
         if (!empty($this->config['Holdings']['locationTypeItemStatus'])) {
             $this->locationTypeToItemStatus
                 = $this->config['Holdings']['locationTypeItemStatus'];
+        }
+
+        $key = 'daysBeforeAccountExpirationNotification';
+        if (isset($this->config['Catalog'][$key])) {
+            $this->daysBeforeAccountExpirationNotification
+                = $this->config['Catalog'][$key];
         }
     }
 
@@ -715,7 +728,20 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
         }
 
         if ($expiryDate = (string)$xml->expiry_date) {
-            $profile['expiration_date'] = $this->parseDate($expiryDate);
+            $parsed = $this->parseDate($expiryDate);
+            $profile['expiration_date'] = $parsed;
+            if ($this->daysBeforeAccountExpirationNotification) {
+                $date = \DateTime::createFromFormat(
+                    'Y-m-d',
+                    $this->dateConverter->convertFromDisplayDate('Y-m-d', $parsed)
+                );
+                $diff = $date->diff(new \Datetime());
+                if ($diff->invert
+                    && $diff->days <= $this->daysBeforeAccountExpirationNotification
+                ) {
+                    $profile['expiration_soon'] = true;
+                }
+            }
         }
 
         // Cache the user group code
