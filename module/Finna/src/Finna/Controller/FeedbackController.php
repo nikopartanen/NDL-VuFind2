@@ -258,14 +258,18 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
             if (in_array($field['name'], array_keys($recordParamMap))) {
                 continue;
             }
-            $message['fields'][$field['name']] = [
+            $details = [
                 'type' => $field['type'],
-                'label' => $field['label'],
-                'labelTranslated' => $this->translate($field['label']),
-                'value' => $field['value'],
-                'valueLabel' => $field['valueLabel'],
-                'valueLabelTranslated' => $this->translate($field['valueLabel']),
+                'label' => $field['label'] ?? '',
+                'labelTranslated' => $this->translate($field['label'] ?? ''),
+                'value' => $field['value'] ?? '',
             ];
+            if (isset($field['valueLabel'])) {
+                $details['valueLabel'] = $field['valueLabel'];
+                $details['valueLabelTranslated']
+                    = $this->translate($field['valueLabel']);
+            }
+            $message['fields'][$field['name']] = $details;
         }
         foreach ($recordParamMap as $from => $to) {
             if (isset($message[$from])) {
