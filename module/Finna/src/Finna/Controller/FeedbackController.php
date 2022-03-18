@@ -266,8 +266,9 @@ class FeedbackController extends \VuFind\Controller\FeedbackController
             ];
             if (isset($field['valueLabel'])) {
                 $details['valueLabel'] = $field['valueLabel'];
-                $details['valueLabelTranslated']
-                    = $this->translate($field['valueLabel']);
+                $details['valueLabelTranslated'] = is_array($field['valueLabel'])
+                    ? array_map([$this, 'translate'], $field['valueLabel'])
+                    : $this->translate($field['valueLabel']);
             }
             $message['fields'][$field['name']] = $details;
         }
