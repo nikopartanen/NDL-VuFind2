@@ -590,7 +590,8 @@ class SolrForwardTest extends \PHPUnit\Framework\TestCase
                 'getAlternativeTitles',
                 [
                     'Zoo (swe)',
-                    'Animals (working title)',
+                    'Animals (language name)',
+                    'Animals Working (working title)',
                     'Park (test name)'
                 ]
             ],
