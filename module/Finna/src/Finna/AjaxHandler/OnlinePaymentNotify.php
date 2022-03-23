@@ -65,7 +65,9 @@ class OnlinePaymentNotify extends AbstractOnlinePaymentAction
 
         if (empty($reqParams['finna_payment_id'])) {
             $this->logError(
-                'Error processing payment: finna_payment_id not provided'
+                'Error processing payment: finna_payment_id not provided. Query: '
+                . $request->getQuery()->toString()
+                . ', post parameters: ' . $request->getPost()->toString()
             );
             return $this->formatResponse('', self::STATUS_HTTP_BAD_REQUEST);
         }
