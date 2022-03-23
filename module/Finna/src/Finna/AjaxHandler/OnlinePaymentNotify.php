@@ -53,7 +53,7 @@ class OnlinePaymentNotify extends AbstractOnlinePaymentAction
     {
         $request = $params->getController()->getRequest();
 
-        $this->logger->info(
+        $this->logger->warn(
             'Online payment notify handler called. Request: '
             . (string)$request
         );
@@ -95,7 +95,7 @@ class OnlinePaymentNotify extends AbstractOnlinePaymentAction
 
         $paymentResult = $handler->processPaymentResponse($t, $request);
 
-        $this->logger->info(
+        $this->logger->warn(
             "Online payment notify handler for $transactionId result: $paymentResult"
         );
 
