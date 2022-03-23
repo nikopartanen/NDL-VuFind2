@@ -289,12 +289,14 @@ class OnlinePaymentMonitor extends AbstractUtilCommand
         }
 
         $patron = null;
+        $matches = false;
         foreach ($user->getLibraryCards() as $card) {
             $card = $user->getLibraryCard($card['id']);
 
             $match = mb_strtolower($card['cat_username'], 'UTF-8')
                 === mb_strtolower($t->cat_username, 'UTF-8');
             if ($match) {
+                $matches = true;
                 try {
                     $cardUser = $this->userTable->createRow();
                     $cardUser->cat_username = $card['cat_username'];
@@ -317,12 +319,23 @@ class OnlinePaymentMonitor extends AbstractUtilCommand
             }
         }
 
+        if (!$matches) {
+            $this->warn(
+                "Library card not found for user {$user->username}"
+                . " (id {$user->id}), card {$t->cat_username}"
+            );
+            $t->setRegistrationFailed('card not found');
+            $failedCnt++;
+            return false;
+        }
+
         if (!$patron) {
             $this->warn(
                 "Catalog login failed for user {$user->username}"
                 . " (id {$user->id}), card {$card->cat_username}"
                 . " (id {$card->id})"
             );
+            $t->setRegistrationFailed('patron login error');
             $failedCnt++;
             return false;
         }
