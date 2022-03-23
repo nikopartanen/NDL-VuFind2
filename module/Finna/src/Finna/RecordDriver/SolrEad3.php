@@ -1940,7 +1940,7 @@ class SolrEad3 extends SolrEad
             }
         }
 
-        if ($obeyPreferredLanguage) {
+        if ($obeyPreferredLanguage && $lang) {
             return $languageResults;
         }
         if (! empty($languageResults)) {
