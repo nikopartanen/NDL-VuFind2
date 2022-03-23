@@ -292,7 +292,9 @@ class OnlinePaymentMonitor extends AbstractUtilCommand
         foreach ($user->getLibraryCards() as $card) {
             $card = $user->getLibraryCard($card['id']);
 
-            if ($card['cat_username'] == $t->cat_username) {
+            $match = mb_strtolower($card['cat_username'], 'UTF-8')
+                === mb_strtolower($t->cat_username, 'UTF-8');
+            if ($match) {
                 try {
                     $cardUser = $this->userTable->createRow();
                     $cardUser->cat_username = $card['cat_username'];
