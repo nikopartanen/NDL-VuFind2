@@ -69,6 +69,12 @@ class OnlinePaymentNotify extends AbstractOnlinePaymentAction
                 . $request->getQuery()->toString()
                 . ', post parameters: ' . $request->getPost()->toString()
             );
+            // If this is an old (invalid) request, return success:
+            if (!empty($reqParams['driver'])
+                && '1' == ($reqParams['payment'] ?? '')
+            ) {
+                return $this->formatResponse('');
+            }
             return $this->formatResponse('', self::STATUS_HTTP_BAD_REQUEST);
         }
         $transactionId = $reqParams['finna_payment_id'];
