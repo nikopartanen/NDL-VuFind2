@@ -414,7 +414,7 @@ class OnlinePaymentMonitor extends AbstractUtilCommand
                     'onlinePayment',
                     ['id' => "$driver.123"]
                 );
-                if (!$settings || !isset($settings['errorEmail'])) {
+                if (!$settings || empty($settings['errorEmail'])) {
                     if (!empty($this->datasourceConfig[$driver]['feedbackEmail'])) {
                         $settings['errorEmail']
                             = $this->datasourceConfig[$driver]['feedbackEmail'];
