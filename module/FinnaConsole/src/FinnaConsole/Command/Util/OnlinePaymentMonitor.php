@@ -371,10 +371,10 @@ class OnlinePaymentMonitor extends AbstractUtilCommand
     /**
      * Process an unresolved transaction.
      *
-     * @param Transaction $t         Transaction
-     * @param array       $report    Transactions to be reported.
-     * @param int         $remindCnt Number of transactions to be
-     *                               reported as unresolved.
+     * @param \Finna\Db\Row\Transaction $t         Transaction
+     * @param array                     $report    Transactions to be reported.
+     * @param int                       $remindCnt Number of transactions to be
+     * reported as unresolved.
      *
      * @return void
      */
@@ -382,13 +382,7 @@ class OnlinePaymentMonitor extends AbstractUtilCommand
     {
         $this->msg("  Transaction id {$t->transaction_id} still unresolved.");
 
-        if (!$this->transactionTable->setTransactionReported($t->transaction_id)) {
-            $this->err(
-                '    Failed to update transaction ' . $t->transaction_id
-                    . ' as reported',
-                'Failed to update a transaction as reported'
-            );
-        }
+        $t->setReportedAndExpired();
         if (!isset($report[$t->driver])) {
             $report[$t->driver] = 0;
         }
