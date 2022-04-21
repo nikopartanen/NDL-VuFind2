@@ -137,16 +137,26 @@ finna.layout = (function finnaLayout() {
   }
 
   function initMobileNarrowSearch() {
-    $('.mobile-navigation .sidebar-navigation, .sidebar h1').off('click').on('click', function onClickMobileNav(e) {
-      if ($(e.target).attr('class') !== 'fa fa-info-big') {
-        $('.sidebar').toggleClass('open');
-      }
+    $('.mobile-navigation .sidebar-navigation, .finna-search-filter-toggle .btn-search-filter, .sidebar .sidebar-close-btn, .sidebar .mylist-bar h1').off('click').on('click', function onClickMobileNav() {
+      $('.sidebar').toggleClass('open');
       $('.mobile-navigation .sidebar-navigation i').toggleClass('fa-arrow-down');
       $('body').toggleClass('prevent-scroll');
     });
     $('.mobile-navigation .sidebar-navigation .active-filters').off('click').on('click', function onClickMobileActiveFilters() {
       $('.sidebar').scrollTop(0);
     });
+    const narrowSearchMobileTrigger = document.querySelector('.finna-search-filter-toggle-trigger');
+    const narrowSearchMobile = document.querySelector('.finna-search-filter-toggle');
+    if (narrowSearchMobileTrigger && narrowSearchMobile && ('IntersectionObserver' in window)) {
+      const narrowSearchMobileObserver = new IntersectionObserver(
+        ([e]) => narrowSearchMobile.classList.toggle('sticky', e.intersectionRatio < 1),
+        {
+          threshold: [1],
+          rootMargin: '-' + narrowSearchMobile.offsetHeight + 'px',
+        }
+      );
+      narrowSearchMobileObserver.observe(narrowSearchMobileTrigger);
+    }
   }
 
   function initMobileCartIndicator() {
