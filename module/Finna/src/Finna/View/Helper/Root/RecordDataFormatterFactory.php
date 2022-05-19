@@ -348,7 +348,7 @@ class RecordDataFormatterFactory
         $setTemplateLine(
             'Language',
             'getLanguages',
-            'data-transEsc.phtml',
+            'data-transEscLangcode.phtml',
             [
                 'context' => ['class' => 'recordLanguage']
             ]
@@ -356,7 +356,7 @@ class RecordDataFormatterFactory
         $setTemplateLine(
             'original_work_language',
             'getOriginalLanguages',
-            'data-transEsc.phtml',
+            'data-transEscLangcode.phtml',
             [
                 'context' => ['class' => 'originalLanguage']
             ]
@@ -1142,6 +1142,14 @@ class RecordDataFormatterFactory
                 'context' => ['class' => 'materialCondition']
             ]
         );
+        $setTemplateLine(
+            'Contained In',
+            'getAllRecordLinks',
+            'data-containedIn.phtml',
+            [
+                'context' => ['class' => 'isPartOf']
+            ]
+        );
 
         $getAccessRestrictions = function ($data, $options) {
             $final = [];
@@ -1370,7 +1378,7 @@ class RecordDataFormatterFactory
         $setTemplateLine(
             'Uncontrolled Title',
             'getUncontrolledTitle',
-            'data-transEsc.phtml',
+            'data-escapeHtml.phtml',
             [
                 'context' => ['class' => 'record-uncontrolled-title']
             ]

@@ -154,19 +154,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     protected $displayableModelFormats = ['gltf', 'glb'];
 
     /**
-     * Recognized model viewer settings
-     *
-     * @var array
-     */
-    protected $modelViewerSettings = [
-        'popup',
-        'ambientIntensity',
-        'hemisphereIntensity',
-        'viewerPaddingAngle',
-        'debug'
-    ];
-
-    /**
      * Events used for author information.
      *
      * Key is event type, value is priority (lower is more important),
@@ -929,14 +916,15 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      */
     public function getModelSettings(): array
     {
+        $datasource = $this->getDataSource();
         $settings = [];
-        $iniData = $this->recordConfig->Models ?? [];
-        foreach ($this->modelViewerSettings as $setting) {
-            if (!empty($iniData->$setting)) {
-                $settings[$setting] = $iniData->$setting;
-            }
+        if ($iniData = $this->recordConfig->Models ?? []) {
+            $settings = [
+                'debug' => boolval($iniData->debug ?? 0),
+                'previewImages' => $this->allowModelPreviewImages()
+            ];
         }
-        $settings['previewImages'] = $this->allowModelPreviewImages();
+
         return $settings;
     }
 
@@ -975,14 +963,14 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             . 'relatedWorkSet'
         ) as $node) {
             if (!empty($node->relatedWork->displayObject)) {
-                $title = (string)$node->relatedWork->displayObject;
+                $title = trim((string)$node->relatedWork->displayObject);
                 $attributes = $node->relatedWork->displayObject->attributes();
                 $label = !empty($attributes->label)
                     ? (string)$attributes->label : '';
                 $term = !empty($node->relatedWorkRelType->term)
                     ? (string)$node->relatedWorkRelType->term : '';
                 $termLC = mb_strtolower($term, 'UTF-8');
-                if (in_array($termLC, $publicationTypes)) {
+                if ($title && in_array($termLC, $publicationTypes)) {
                     $term = $termLC != 'julkaisu' ? $term : '';
                     $results[] = [
                       'title' => $title,
@@ -1042,8 +1030,9 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             . 'relatedWorkSet'
         ) as $node) {
             $term = $node->relatedWorkRelType->term ?? '';
-            if (in_array($term, $allowedTypes)) {
-                $results[] = (string)$node->relatedWork->displayObject;
+            $collection = trim((string)$node->relatedWork->displayObject ?? '');
+            if ($collection && in_array($term, $allowedTypes)) {
+                $results[] = $collection;
             }
         }
         return $results;
@@ -1208,10 +1197,12 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 }
             }
             $culture = (string)($node->culture->term ?? '');
-            $description = (string)(
-                $node->eventDescriptionSet->descriptiveNoteValue
-                ?? ''
-            );
+            $descriptions = [];
+            foreach ($node->eventDescriptionSet ?? [] as $set) {
+                if ($note = trim((string)($set->descriptiveNoteValue ?? ''))) {
+                    $descriptions[] = $note;
+                }
+            }
 
             $event = [
                 'type' => $type,
@@ -1222,7 +1213,9 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
                 'places' => $places,
                 'actors' => $actors,
                 'culture' => $culture,
-                'description' => $description
+                'descriptions' => $descriptions,
+                // For backward compatibility
+                'description' => $descriptions[0] ?? ''
             ];
             // Only add the event if it has content
             foreach ($event as $key => $field) {
@@ -1347,12 +1340,16 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
         ) as $inscriptions) {
             $group = [];
             foreach ($inscriptions->inscriptionDescription as $node) {
-                $content = (string)$node->descriptiveNoteValue;
+                $content = trim((string)$node->descriptiveNoteValue ?? '');
                 $type = $node->attributes()->type ?? '';
                 $label = $node->descriptiveNoteValue->attributes()->label ?? '';
-                $group[] = compact('type', 'label', 'content');
+                if ($content) {
+                    $group[] = compact('type', 'label', 'content');
+                }
             }
-            $results[] = $group;
+            if ($group) {
+                $results[] = $group;
+            }
         }
         return $results;
     }
