@@ -250,6 +250,18 @@ class Params extends \VuFind\Search\Blender\Params
     }
 
     /**
+     * Remove all hidden filters.
+     *
+     * Used in the search tabs filter handling thingy.
+     *
+     * @return void
+     */
+    public function removeHiddenFilters()
+    {
+        $this->hiddenFilters = [];
+    }
+
+    /**
      * Format a geographic filter for use in getFilterList().
      *
      * @param array  $listEntry List entry
