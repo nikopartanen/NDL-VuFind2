@@ -67,6 +67,36 @@ Facets:
       Mappings:
         Solr:
           Field: building
+    finna.deduplication:
+      Mappings:
+        EDS:
+          Ignore: true
+        Primo:
+          Ignore: true
+        Solr:
+          Field: "finna.deduplication"
+        SolrAuth:
+          Ignore: true
+    finna.sources:
+      Mappings:
+        EDS:
+          Ignore: true
+        Primo:
+          Ignore: true
+        Solr:
+          Field: finna.sources
+        SolrAuth:
+          Ignore: true
+    finna.sources.auth:
+      Mappings:
+        EDS:
+          Ignore: true
+        Primo:
+          Ignore: true
+        Solr:
+          Ignore: true
+        SolrAuth:
+          Field: finna.sources
     format:
       Mappings:
         EDS:

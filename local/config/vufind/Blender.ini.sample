@@ -44,13 +44,6 @@ blockSize = 7
 ; data source. By default all versions are displayed.
 ;versions_filter = 'same_source'
 
-[Records]
-; Boolean value indicating if deduplication is enabled. Defaults to false.
-;deduplication = true
-; Priority order (descending) for record sources (record ID prefixes separated
-; from the actual record by period, e.g. testsrc.12345)
-;sources = alli,testsrc
-
 ; ---------- facets.ini settings ----------
 
 ; The order of display is as shown below
