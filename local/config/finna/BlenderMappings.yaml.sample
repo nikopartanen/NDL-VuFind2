@@ -327,6 +327,10 @@ Facets:
           Field: creationdate
         Solr:
           Field: search_daterange_mv
+    source_available_str_mv:
+      Mappings:
+        Solr:
+          Field: source_available_str_mv
     topic_facet:
       Mappings:
         EDS:
