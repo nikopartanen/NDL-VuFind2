@@ -50,17 +50,17 @@ blockSize = 7
 ; The name of the index field is on the left
 ; The display name of the field is on the right
 [Results]
-sector_str_mv      = Sector
-;institution        = Institution
-building           = Organisation
-;building_sub_str_mv = Department
-format_ext_str_mv   = Format
+;blender_backend    = Source
+;institution         = Institution
+building            = Organisation
+;building_sub        = Department
+format_ext          = Format
 author_facet        = Author
 language            = Language
-original_lng_str_mv = original_work_language
-subtitle_lng_str_mv = subtitle_language
-;main_date_str       = "Year"
-search_daterange_mv = "Main Year"
+language_original   = original_work_language
+language_subtitles  = subtitle_language
+;year                = "Year"
+search_daterange    = "Main Year"
 topic_facet         = Topic
 
 [CheckboxFacets]
