@@ -127,6 +127,24 @@ class Params extends \VuFind\Search\Blender\Params
     }
 
     /**
+     * Add filters to the object based on values found in the request object.
+     *
+     * @param \Laminas\Stdlib\Parameters $request Parameter object representing user
+     * request.
+     *
+     * @return void
+     */
+    protected function initFilters($request)
+    {
+        parent::initFilters($request);
+        foreach ($this->searchParams as $params) {
+            if ($params instanceof \Finna\Search\Solr\Params) {
+                $params->initSpatialDateRangeFilter($request);
+            }
+        }
+    }
+
+    /**
      * Format a single filter for use in getFilterList().
      *
      * @param string $field     Field name
