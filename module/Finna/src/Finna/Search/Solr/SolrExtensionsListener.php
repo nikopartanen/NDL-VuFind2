@@ -204,7 +204,9 @@ class SolrExtensionsListener
             foreach ($fq as $key => $filter) {
                 $parts = explode(':', $filter);
                 if ('finna.sources' === $parts[0]) {
-                    $sources = $parts[1] ?? null;
+                    if ($sources = $parts[1] ?? null) {
+                        $sources = trim($sources, '"');
+                    }
                     unset($fq[$key]);
                     $params->set('fq', $fq);
                     break;
