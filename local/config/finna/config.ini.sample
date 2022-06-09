@@ -544,7 +544,8 @@ email = SHIB_mail
 
 ; IdP-specific mappings from an attribute to ILS account identifier. The key is the
 ; IdP identifier and value contains the user attribute and ILS driver separated by a
-; colon.
+; colon. Multiple mappings may be entered by separating them with a pipe
+; (e.g. "SHIB_eppn:almasandbox|SHIB_mail:almasandbox)").
 ;idp_to_ils_map[https://testidp.funet.fi/idp/shibboleth] = "SHIB_mail:almasandbox"
 
 ; Shibboleth Suomi.fi is optional.

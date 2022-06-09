@@ -513,7 +513,7 @@ $config = [
                 'factories' => [
                     'Finna\Auth\ILS' => 'VuFind\Auth\ILSFactory',
                     'Finna\Auth\MultiILS' => 'VuFind\Auth\ILSFactory',
-                    'Finna\Auth\Shibboleth' => 'VuFind\Auth\ShibbolethFactory',
+                    'Finna\Auth\Shibboleth' => 'Finna\Auth\ShibbolethFactory',
                     'Finna\Auth\Suomifi' => 'Finna\Auth\SuomifiFactory',
                 ],
                 'aliases' => [
