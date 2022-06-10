@@ -1903,4 +1903,18 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
             $arrayKey => $transactions
         ];
     }
+
+    /**
+     * Create a HTTP client
+     *
+     * @param string $url Request URL
+     *
+     * @return \Laminas\Http\Client
+     */
+    protected function createHttpClient($url)
+    {
+        $client = parent::createHttpClient($url);
+        $client->setOptions(['keepalive' => false]);
+        return $client;
+    }
 }
