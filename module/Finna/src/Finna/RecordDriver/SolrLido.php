@@ -1404,28 +1404,13 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     }
 
     /**
-     * Get measurements and augment them data source specifically if needed.
+     * Get measurements.
      *
      * @return array
      */
     public function getMeasurements()
     {
-        $results = [];
-        if (isset($this->fields['measurements'])) {
-            $results = $this->fields['measurements'];
-            $confParam = 'lido_augment_display_measurement_with_extent';
-            if ($this->getDataSourceConfigurationValue($confParam)) {
-                $extent = $this->getXmlRecord()->xpath(
-                    'lido/descriptiveMetadata/objectIdentificationWrap/'
-                    . 'objectMeasurementsWrap/objectMeasurementsSet/'
-                    . 'objectMeasurements/extentMeasurements'
-                );
-                if ($extent) {
-                    $results[0] = "$results[0] ($extent[0])";
-                }
-            }
-        }
-        return $results;
+        return $this->fields['measurements'] ?? [];
     }
 
     /**
