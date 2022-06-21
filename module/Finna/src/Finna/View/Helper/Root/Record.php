@@ -570,7 +570,7 @@ class Record extends \VuFind\View\Helper\Root\Record
            'id' => $authId,
            'authorityLink' => $id && $this->isAuthorityLinksEnabled(),
            'showInlineInfo' => false,
-           'recordSource' => $this->driver->getDataSource(),
+           'recordSource' => $this->driver->tryMethod('getDataSource'),
            'type' => $type,
            'authorityType' => $authorityType,
            'title' => $params['title'] ?? null,
