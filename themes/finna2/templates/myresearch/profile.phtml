@@ -56,9 +56,7 @@
       <?php endif; ?>
       <?=$this->partial('myresearch/borrowing-block.phtml', ['blocks' => $this->blocks]); ?>
       <?php if (!empty($this->profile['expiration_date'])): ?>
-        <?php
-          $cardExpired = !empty($this->profile['expired']) || !empty($this->profile['full_data']['blocks']['Patron::CardExpired'])
-        ?>
+        <?php $cardExpired = !empty($this->profile['expired']) ?>
         <?php if (!empty($this->profile['expiration_soon']) && !$cardExpired): ?>
           <div class="flash-message alert alert-warning">
             <?=$this->transEsc('patron_status_card_expires_soon', ['%%expirationDate%%' => $this->profile['expiration_date']])?>
