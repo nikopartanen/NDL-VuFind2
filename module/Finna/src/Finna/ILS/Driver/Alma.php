@@ -301,36 +301,7 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
      */
     public function getMyFines($patron)
     {
-        $paymentConfig = $this->config['OnlinePayment'] ?? [];
-        $blockedTypes = $paymentConfig['nonPayable'] ?? [];
-        $xml = $this->makeRequest(
-            '/users/' . rawurlencode($patron['id']) . '/fees'
-        );
-        $fineList = [];
-        foreach ($xml as $fee) {
-            $created = (string)$fee->creation_time;
-            $payable = false;
-            if (!empty($paymentConfig['enabled'])) {
-                $type = (string)$fee->type;
-                $payable = !in_array($type, $blockedTypes)
-                    && $fee->balance > 0;
-            }
-            $feeType = $this->feeTypeMappings[(string)$fee->type]
-                ?? (string)$fee->type['desc'];
-            $fineList[] = [
-                'id'       => (string)$fee->id,
-                "title"    => (string)($fee->title ?? ''),
-                "amount"   => round(floatval($fee->original_amount) * 100),
-                "balance"  => round(floatval($fee->balance) * 100),
-                "createdate" => $this->parseDate($created, true),
-                "fine"     => $feeType,
-                'payableOnline' => $payable,
-                '_create_time' => (string)$fee->creation_time,
-                '_status_time' => (string)$fee->status_time,
-                '_barcode'    => (string)($fee->barcode ?? ''),
-                '_status'  => (string)$fee->status ?? '',
-            ];
-        }
+        $fineList = $this->getFineList($patron);
         if (!empty($this->config['Catalog']['groupFees'])) {
             $finesGrouped = [];
             foreach ($fineList as $fine) {
@@ -534,7 +505,7 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
         $transactionId,
         $transactionNumber
     ) {
-        $fines = $this->getMyFines($patron);
+        $fines = $this->getFineList($patron);
         $amountRemaining = $amount;
         // Mark payable fines as long as amount remains. If there's any left over
         // send it as a generic payment.
@@ -808,7 +779,7 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
         }
 
         $xml = $this->makeRequest('/users/' . rawurlencode($patronId));
-        if ($xml == null || empty($xml)) {
+        if ($xml === null) {
             return false;
         }
 
@@ -2354,6 +2325,7 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
         [$holdingId, $libraryCode, $locationCode] = explode('||', $groupKey);
 
         // Summary holdings
+        $holding = null;
         if ($holdingId) {
             $holding = $this->makeRequest(
                 '/bibs/' . rawurlencode($id) . '/holdings/'
@@ -2370,7 +2342,7 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
         }
 
         $marcDetails = [];
-        if ($params['page'] == 1) {
+        if ($holding && $params['page'] == 1) {
             $marc = $holding->record;
 
             // Get Notes
@@ -3296,5 +3268,49 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
             return $result;
         }
         return $fieldConfig;
+    }
+
+    /**
+     * Get a list of patron's fines.
+     *
+     * Gets a list of fines without grouping etc.
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return mixed        Array of the patron's fines on success.
+     */
+    protected function getFineList($patron)
+    {
+        $paymentConfig = $this->config['OnlinePayment'] ?? [];
+        $blockedTypes = $paymentConfig['nonPayable'] ?? [];
+        $xml = $this->makeRequest(
+            '/users/' . rawurlencode($patron['id']) . '/fees'
+        );
+        $fineList = [];
+        foreach ($xml as $fee) {
+            $created = (string)$fee->creation_time;
+            $payable = false;
+            if (!empty($paymentConfig['enabled'])) {
+                $type = (string)$fee->type;
+                $payable = !in_array($type, $blockedTypes)
+                    && floatval($fee->balance) > 0;
+            }
+            $feeType = $this->feeTypeMappings[(string)$fee->type]
+                ?? (string)$fee->type['desc'];
+            $fineList[] = [
+                'id'       => (string)$fee->id,
+                "title"    => (string)($fee->title ?? ''),
+                "amount"   => round(floatval($fee->original_amount) * 100),
+                "balance"  => round(floatval($fee->balance) * 100),
+                "createdate" => $this->parseDate($created, true),
+                "fine"     => $feeType,
+                'payableOnline' => $payable,
+                '_create_time' => (string)$fee->creation_time,
+                '_status_time' => (string)$fee->status_time,
+                '_barcode'    => (string)($fee->barcode ?? ''),
+                '_status'  => (string)$fee->status ?? '',
+            ];
+        }
+        return $fineList;
     }
 }

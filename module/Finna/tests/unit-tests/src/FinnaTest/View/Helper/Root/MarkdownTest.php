@@ -28,17 +28,17 @@
  */
 namespace FinnaTest\View\Helper\Root;
 
-use Finna\Service\CommonMark\MarkdownBlockRenderer;
-use Finna\Service\CommonMark\MarkdownHeadingRenderer;
-use Finna\View\CustomElement\CommonMark\CustomElementExtension;
+use Finna\CommonMark\Extension\CustomElementExtension;
 use Finna\View\CustomElement\FinnaPanel;
 use Finna\View\CustomElement\FinnaTruncate;
 use Finna\View\CustomElement\PluginManager;
+use Finna\View\Helper\Root\AdjustHeadingLevel;
 use Finna\View\Helper\Root\CleanHtml;
 use Finna\View\Helper\Root\CleanHtmlFactory;
 use Finna\View\Helper\Root\CustomElement;
 use Finna\View\Helper\Root\Markdown;
-use League\CommonMark\Environment;
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\MarkdownConverter;
 
 /**
@@ -74,6 +74,7 @@ class MarkdownTest extends \PHPUnit\Framework\TestCase
 
         $view = $this->getPhpRenderer(
             [
+                'adjustHeadingLevel' => new AdjustHeadingLevel(),
                 'cleanHtml' => new CleanHtml(
                     null,
                     CleanHtmlFactory::getAllowedElements($elements)
@@ -83,18 +84,10 @@ class MarkdownTest extends \PHPUnit\Framework\TestCase
         );
 
         // Create Markdown environment.
-        $environment = Environment::createCommonMarkEnvironment();
-        $environment->mergeConfig([
+        $environment = new Environment([
             'html_input' => 'allow',
         ]);
-        $environment->addBlockRenderer(
-            'League\CommonMark\Block\Element\HtmlBlock',
-            new MarkdownBlockRenderer()
-        );
-        $environment->addBlockRenderer(
-            'League\CommonMark\Block\Element\Heading',
-            new MarkdownHeadingRenderer()
-        );
+        $environment->addExtension(new CommonMarkCoreExtension());
         $pluginManager = $this->createMock(PluginManager::class);
         $pluginManager
             ->method('get')
@@ -124,7 +117,7 @@ class MarkdownTest extends \PHPUnit\Framework\TestCase
     {
         $markdown = "# One\n## Two\n### Three\n#### Four\n##### Five\n###### Six\n####### Seven";
         $converted = $this->getHelper()->toHtml($markdown);
-        $expected = "<h2>One</h2>\n<h3>Two</h3>\n<h4>Three</h4>\n<h5>Four</h5>\n<h6>Five</h6>\n<h7>Six</h7>\n<p>####### Seven</p>\n";
+        $expected = "<h2>One</h2>\n<h3>Two</h3>\n<h4>Three</h4>\n<h5>Four</h5>\n<h6>Five</h6>\n<h6>Six</h6>\n<p>####### Seven</p>\n";
         $this->assertEquals($expected, $converted);
     }
 
@@ -163,7 +156,7 @@ class MarkdownTest extends \PHPUnit\Framework\TestCase
     {
         $markdown = <<<EOT
             <finna-panel heading-id="hid" collapse-id="cid">
-              <h3 slot="heading">Heading</h3>
+              <h2 slot="heading">Heading</h2>
               
               **Content**
             </finna-panel>
@@ -182,10 +175,10 @@ class MarkdownTest extends \PHPUnit\Framework\TestCase
     {
         $markdown = <<<EOT
             <finna-panel heading-id="hid" collapse-id="cid">
-             <h3 slot="heading">Heading</h3>
+             <h2 slot="heading">Heading</h2>
               
              <finna-panel heading-id="hid" collapse-id="cid">
-              <h3 slot="heading">Heading</h3>
+              <h2 slot="heading">Heading</h2>
 
               **Content**
              </finna-panel>
@@ -226,8 +219,24 @@ class MarkdownTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $converted);
     }
 
-    protected function getExpectedFinnaPanel(string $content): string
+    /**
+     * Test Markdown support for empty single line custom elements.
+     *
+     * @return void
+     */
+    public function testSingleLineCustomElement()
     {
+        $markdown = "<finna-panel></finna-panel> Extra content";
+        $converted = $this->getHelper()->toHtml($markdown);
+        $expected = trim($this->getExpectedFinnaPanel(null, null)) . "\n"
+            . "<p>Extra content</p>\n";
+        $this->assertEquals($expected, $converted);
+    }
+
+    protected function getExpectedFinnaPanel(
+        ?string $content,
+        ?string $heading = 'Heading'
+    ): string {
         return $this->getHelper()->getView()->render(
             FinnaPanel::getTemplateName(),
             array_merge(
@@ -235,7 +244,7 @@ class MarkdownTest extends \PHPUnit\Framework\TestCase
                 [
                     'headingId' => 'hid',
                     'collapseId' => 'cid',
-                    'heading' => 'Heading',
+                    'heading' => $heading,
                     'content' => $content,
                 ]
             )

@@ -250,7 +250,7 @@ class Loader extends \VuFind\Cover\Loader
             }
         }
 
-        if (empty($keys)) {
+        if ($keys) {
             if (isset($ids['recordid'])) {
                 $keys['recordid'] = $ids['recordid'];
             }
