@@ -53,8 +53,7 @@ class AdminApiController extends \VuFindApi\Controller\AdminApiController
         $this->disableSessionWrites();
         $this->determineOutputMode();
 
-        $factory = new RecordDataFormatterFactory();
-        $formatter = $factory();
+        $formatter = $this->getViewRenderer()->plugin('recordDataFormatter');
         $fields = $formatter->getDefaults('core');
 
         $data = [];
