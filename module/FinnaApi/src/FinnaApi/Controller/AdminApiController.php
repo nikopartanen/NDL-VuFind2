@@ -28,8 +28,6 @@
  */
 namespace FinnaApi\Controller;
 
-use Finna\View\Helper\Root\RecordDataFormatterFactory;
-
 /**
  * Provides web api for different admin tasks.
  *
