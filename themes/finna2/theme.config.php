@@ -257,6 +257,12 @@ $config = [
         'active' => false
     ],
     'favicon' => 'favicon.ico',
+    'icons' => [
+        'aliases' => [
+            'service-available' => 'FontAwesome:ok',
+            'service-unavailable' => 'FontAwesome:remove'
+        ]
+    ]
 ];
 include 'components.config.php';
 return $config;
