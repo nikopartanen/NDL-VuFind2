@@ -288,20 +288,35 @@ class TurkuPaymentAPI extends AbstractBase
      */
     public function getPaymentResponseParams($request)
     {
-        $params = $request->getQuery()->toArray();
-
-        $required = [
-            'checkout-amount',
-            'checkout-reference',
-            'checkout-stamp',
-            'checkout-status',
-            'checkout-provider',
-            'checkout-transaction-id',
-            'X-TURKU-SP',
-            'X-TURKU-TS',
-            'Authorization'
-        ];
-
+        $params = [];
+        $required = [];
+        // Payment response is a get request and notify is a post request
+        if ($request->isGet()) {
+            $params = $request->getQuery()->toArray();
+            $required = [
+                'checkout-amount',
+                'checkout-reference',
+                'checkout-stamp',
+                'checkout-status',
+                'checkout-provider',
+                'checkout-transaction-id',
+                'X-TURKU-SP',
+                'X-TURKU-TS',
+                'Authorization'
+            ];
+        } elseif ($request->isPost()) {
+            $params = $request->getHeaders()->toArray();
+            $required = [
+                'X-TURKU-SP',
+                'X-TURKU-TS',
+                'Authorization'
+            ];
+        } else {
+            $this->logPaymentError(
+                'The request was not POST or GET'
+            );
+            return false;
+        }
         foreach ($required as $name) {
             if (empty($params[$name])) {
                 $this->logPaymentError(
