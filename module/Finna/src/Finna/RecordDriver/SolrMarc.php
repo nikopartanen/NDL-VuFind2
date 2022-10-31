@@ -294,7 +294,9 @@ class SolrMarc extends \VuFind\RecordDriver\SolrMarc
                     case '080':
                         $classification = 'udk';
                         $version = $this->getSubfield($field, '2');
-                        if (strpos($version, '2017') !== false) {
+                        if ($version && preg_match('/(\d{4})/', $version, $matches)
+                            && 2017 <= $matches[1]
+                        ) {
                             $classification .= '2017';
                         }
                         break;
