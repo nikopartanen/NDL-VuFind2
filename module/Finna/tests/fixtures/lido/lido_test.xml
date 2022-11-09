@@ -116,12 +116,6 @@
             <linkResource formatResource="docx">https://linkkiDocx.fi</linkResource>
           </resourceRepresentation>
         </resourceSet>
-        <resourceSet>
-          <resourceID type="ID">607644</resourceID>
-          <resourceRepresentation>
-            <linkResource>https://kaikkilinkit.com</linkResource>
-          </resourceRepresentation>
-        </resourceSet>
       </resourceWrap>
     </administrativeMetadata>
   </lido>
