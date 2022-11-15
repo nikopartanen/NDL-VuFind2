@@ -556,33 +556,41 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
     }
 
     /**
-     * Helper method for getting a spec of field groups.
+     * Helper method for getting a spec of field groups from FieldGroupBuilder.
      *
-     * @param array  $groups        Array specifying the groups.
-     * @param array  $lines         All lines used in the groups.
-     * @param string $template      Default group template to use if not
-     *                              specified (optional).
-     * @param array  $options       Additional options to use if not specified
-     *                              for a group (optional).
-     * @param array  $unusedOptions Additional options for unused lines
-     *                              (optional).
+     * @param array  $groups        Array specifying the groups. See
+     *                              FieldGroupBuilder::addGroup() for details.
+     * @param array  $lines         All lines used in the groups. If this contains
+     *                              lines not specified in $groups, all unused lines
+     *                              will be appended as their own group.
+     * @param string $template      Default group template to use if not specified
+     *                              for a group (optional, set to null to use the
+     *                              default value).
+     * @param array  $options       Additional options to use if not specified for a
+     *                              group (optional, set to null to use the default
+     *                              value). See FieldGroupBuilder::addGroup() for
+     *                              details.
+     * @param array  $unusedOptions Additional options for the unused lines group
+     *                              (optional, set to null to use the default value).
+     *                              See FieldGroupBuilder::addGroup()
+     *                              for details.
      *
      * @return array
      */
     public function getGroupedFields(
         $groups,
         $lines,
-        $template = 'core-field-group-fields.phtml',
-        $options = [],
-        $unusedOptions = []
+        $template = null,
+        $options = null,
+        $unusedOptions = null
     ) {
         $fieldGroups = new FieldGroupBuilder();
         $fieldGroups->setGroups(
             $groups,
             $lines,
-            $template,
-            $options,
-            $unusedOptions
+            $template ?? 'core-field-group-fields.phtml',
+            $options ?? [],
+            $unusedOptions ?? []
         );
         return $fieldGroups->getArray();
     }
@@ -603,6 +611,9 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
         // Apply the group spec.
         $result = [];
         foreach ($groups as $group) {
+            if (!empty($group['skipGroup'])) {
+                continue;
+            }
             $lines = $group['lines'];
             $data = $this->getData($driver, $lines);
             if (empty($data)) {

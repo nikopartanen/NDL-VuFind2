@@ -104,6 +104,10 @@ CookieConsent:
           Domain: '{{vufind_cookie_domain}}'
           Description: CookieConsent::cookie_description_collapse_authority_info_html
           Expiration: session
+        - Name: finna.fi, _shib_session_*, _opensaml_req_ss*
+          Domain: '{{vufind_cookie_domain}}'
+          Description: CookieConsent::cookie_description_session_html
+          Expiration: session
         - Name: finnaSurvey
           Domain: '{{vufind_cookie_domain}}'
           Description: CookieConsent::cookie_description_finna_survey_html
