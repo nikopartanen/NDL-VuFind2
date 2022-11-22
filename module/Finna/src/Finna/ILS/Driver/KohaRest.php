@@ -1040,9 +1040,9 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
 
             $number = $item['serial_issue_number'];
             if (!$number
-                && !empty($this->config['Holdings']['display_call_number_per_item'])
+                && !empty($this->config['Holdings']['display_sub_location_per_item'])
             ) {
-                $number = $callnumber;
+                $number = $this->getItemSubLocationName($item);
             }
 
             $entry = [
@@ -1376,6 +1376,95 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
             }
         }
         return $result;
+    }
+
+    /**
+     * Return a sub-location for a Koha item
+     *
+     * @param array $item Item
+     *
+     * @return string
+     */
+    protected function getItemSubLocationName($item)
+    {
+        if (empty($item['sub_location'])) {
+            return '';
+        }
+        $result = [];
+        if (!empty($item['collection_code'])
+            && !empty($this->config['Holdings']['display_ccode'])
+        ) {
+            $result[] = $this->translateCollection(
+                $item['collection_code'],
+                $item['collection_code_description'] ?? $item['collection_code']
+            );
+        }
+        if (!$this->groupHoldingsByLocation) {
+            $loc = $this->translateLocation(
+                $item['location'],
+                !empty($item['location_description'])
+                    ? $item['location_description'] : $item['location']
+            );
+            if ($loc) {
+                $result[] = $loc;
+            }
+        }
+
+        $subLocations = $this->getSubLocations();
+        $result[] = $this->translateSubLocation(
+            $item['sub_location'],
+            $subLocations[$item['sub_location']]['lib_opac'] ?? null
+        );
+
+        return implode(', ', $result);
+    }
+
+    /**
+     * Translate sub-location name
+     *
+     * @param string $location Location code
+     * @param string $default  Default value if translation is not available
+     *
+     * @return string
+     */
+    protected function translateSubLocation($location, $default = null)
+    {
+        if (empty($location)) {
+            return $default ?? '';
+        }
+        $prefix = !empty($this->config['Catalog']['id'])
+            ? ($this->config['Catalog']['id'] . '_')
+            : '';
+        $prefix .= 'sub_location_';
+
+        return $this->translate(
+            "$prefix$location",
+            null,
+            $default ?? $location
+        );
+    }
+
+    /**
+     * Get sub-locations from cache or from the API
+     *
+     * @return array
+     */
+    protected function getSubLocations()
+    {
+        $cacheKey = 'sublocations';
+        $locations = $this->getCachedData($cacheKey);
+        if (null === $locations) {
+            $result = $this->makeRequest(
+                'v1/contrib/kohasuomi/authorised_values/authorised_value_categories/'
+                . '?authorised_value_category=SUBLOC'
+            );
+            $locations = [];
+            foreach ($result['data'] as $location) {
+                $locations[$location['authorised_value']] = $location;
+            }
+            $this->putCachedData($cacheKey, $locations, 3600);
+        }
+        return $locations;
     }
 
     /**
