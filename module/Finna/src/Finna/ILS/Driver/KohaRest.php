@@ -1039,10 +1039,8 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
             $locationId = $item['location'];
 
             $number = $item['serial_issue_number'];
-            if (!$number
-                && !empty($this->config['Holdings']['display_sub_location_per_item'])
-            ) {
-                $number = $this->getItemSubLocationName($item);
+            if (!$number) {
+                $number = $this->getItemSpecificLocation($item);
             }
 
             $entry = [
@@ -1379,42 +1377,63 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
     }
 
     /**
-     * Return a sub-location for a Koha item
+     * Return item-specific location information as configured
      *
-     * @param array $item Item
+     * @param array $item Koha item
      *
      * @return string
      */
-    protected function getItemSubLocationName($item)
+    protected function getItemSpecificLocation($item)
     {
-        if (empty($item['sub_location'])) {
+        if (empty($this->config['Holdings']['display_location_per_item'])) {
             return '';
         }
+
         $result = [];
-        if (!empty($item['collection_code'])
-            && !empty($this->config['Holdings']['display_ccode'])
+        foreach (explode(',', $this->config['Holdings']['display_location_per_item'])
+            as $field
         ) {
-            $result[] = $this->translateCollection(
-                $item['collection_code'],
-                $item['collection_code_description'] ?? $item['collection_code']
-            );
-        }
-        if (!$this->groupHoldingsByLocation) {
-            $loc = $this->translateLocation(
-                $item['location'],
-                !empty($item['location_description'])
-                    ? $item['location_description'] : $item['location']
-            );
-            if ($loc) {
-                $result[] = $loc;
+            switch ($field) {
+            case 'collection_code':
+                if (!empty($item['collection_code'])) {
+                    $collection = $this->translateCollection(
+                        $item['collection_code'],
+                        $item['collection_code_description']
+                            ?? $item['collection_code']
+                    );
+                    if ($collection) {
+                        $result[] = $collection;
+                    }
+                }
+                break;
+            case 'location':
+                if (!empty($item['location'])) {
+                    $location = $this->translateLocation(
+                        $item['location'],
+                        !empty($item['location_description'])
+                            ? $item['location_description'] : $item['location']
+                    );
+                    if ($location) {
+                        $result[] = $location;
+                    }
+                }
+                break;
+            case 'sub_location':
+                if (!empty($item['sub_location'])) {
+                    $subLocations = $this->getSubLocations();
+                    $result[] = $this->translateSubLocation(
+                        $item['sub_location'],
+                        $subLocations[$item['sub_location']]['lib_opac'] ?? null
+                    );
+                }
+                break;
+            case 'callnumber':
+                if (!empty($item['callnumber'])) {
+                    $result[] = $item['callnumber'];
+                }
+                break;
             }
         }
-
-        $subLocations = $this->getSubLocations();
-        $result[] = $this->translateSubLocation(
-            $item['sub_location'],
-            $subLocations[$item['sub_location']]['lib_opac'] ?? null
-        );
 
         return implode(', ', $result);
     }
