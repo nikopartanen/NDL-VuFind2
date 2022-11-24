@@ -106,8 +106,10 @@ class TurkuPaymentAPI extends AbstractBase
             ->setSuccess($notifyUrl)
             ->setCancel($notifyUrl);
 
+        // Use email from the ILS as default and use the one stored in Finna as a
+        // fallback:
         $customer = (new Customer())
-            ->setEmail(trim($user->email));
+            ->setEmail(trim(($patron['email'] ?? '') ?: $user->email));
 
         $language = $this->languageMap[$this->getCurrentLanguageCode()] ?? 'FI';
         $sapOrganization = [
