@@ -402,7 +402,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
           var serviceText = '';
           var serviceTitle = '<b>' + services[0] + '</b>';
           if (typeof services.desc !== 'undefined' || typeof services.shortDesc !== 'undefined') {
-            serviceText = $('<a class="service-tooltip" data-toggle="tooltip" data-placement="bottom" data-html="true" />').html(serviceTitle);
+            serviceText = $('<button type="button" class="service-tooltip" data-toggle="tooltip" data-placement="bottom" data-html="true" />').html(serviceTitle);
             var serviceDesc = '';
             if (typeof services.desc !== 'undefined') {
               serviceDesc = services.desc;
