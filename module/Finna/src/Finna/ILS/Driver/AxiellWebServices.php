@@ -1867,7 +1867,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase
                 $renewals = max(
                     [
                         0,
-                        $renewLimit - $loan->remainingRenewals
+                        $renewalLimit - $loan->remainingRenewals
                     ]
                 );
             } elseif ($loan->remainingRenewals > 0) {
