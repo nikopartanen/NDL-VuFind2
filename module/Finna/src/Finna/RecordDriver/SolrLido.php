@@ -161,6 +161,13 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
     protected $excludedClassifications = ['language'];
 
     /**
+     * Array of excluded measurements
+     *
+     * @var array
+     */
+    protected $excludedMeasurements = ['extent'];
+
+    /**
      * Events used for author information.
      *
      * Key is event type, value is priority (lower is more important),
@@ -1448,9 +1455,99 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
      *
      * @return array
      */
-    public function getMeasurements()
+    public function getMeasurements(): array
     {
-        return $this->fields['measurements'] ?? [];
+        return $this->getMeasurementsByType();
+    }
+
+    /**
+     * Get extent.
+     *
+     * @return array
+     */
+    public function getPhysicalDescriptions(): array
+    {
+        return $this->getMeasurementsByType(['extent']);
+    }
+
+    /**
+     * Get measurements by type.
+     *
+     * @param array $include Measurement types to include, otherwise all but
+     * excluded types
+     *
+     * @return array
+     */
+    public function getMeasurementsByType(array $include = []): array
+    {
+        $results = [];
+        $exclude = $include ? [] : $this->excludedMeasurements;
+        foreach ($this->getXmlRecord()->lido->descriptiveMetadata
+            ->objectIdentificationWrap->objectMeasurementsWrap
+            ->objectMeasurementsSet ?? [] as $set
+        ) {
+            $setExtents = [];
+            foreach ($set->objectMeasurements->extentMeasurements ?? []
+                as $extent
+            ) {
+                if ($value = trim((string)$extent)) {
+                    $setExtents[] = $value;
+                }
+            }
+            $setExtents = implode(', ', $setExtents);
+            // Use allowed display elements
+            $displayFound = false;
+            foreach ($set->displayObjectMeasurements as $measurements) {
+                if ($value = trim((string)$measurements)) {
+                    $displayFound = true;
+                    $label = $measurements->attributes()->label ?? '';
+                    if (($include && !in_array($label, $include))
+                        || ($exclude && in_array($label, $exclude))
+                    ) {
+                        continue;
+                    }
+                    if ($setExtents) {
+                        $value .= " ($setExtents)";
+                    }
+                    $results[] = $value;
+                }
+            }
+            // Use measurementsSet only if no display elements exist
+            if (!$displayFound) {
+                foreach ($set->objectMeasurements->measurementsSet ?? []
+                    as $measurements
+                ) {
+                    $type = trim(
+                        (string)($measurements->measurementType->term ?? '')
+                    );
+                    if (($include && !in_array($type, $include))
+                        || ($exclude && in_array($type, $exclude))
+                    ) {
+                        continue;
+                    }
+                    $parts = [];
+                    if ($type = trim((string)($measurements->measurementType ?? ''))
+                    ) {
+                        $parts[] = $type;
+                    }
+                    if ($val = trim((string)($measurements->measurementValue ?? ''))
+                    ) {
+                        $parts[] = $val;
+                    }
+                    if ($unit = trim((string)($measurements->measurementUnit ?? ''))
+                    ) {
+                        $parts[] = $unit;
+                    }
+                    if ($parts) {
+                        if ($setExtents) {
+                            $parts[] = "($setExtents)";
+                        }
+                        $results[] = implode(' ', $parts);
+                    }
+                }
+            }
+        }
+        return $results;
     }
 
     /**
@@ -1773,22 +1870,38 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault
             . 'relatedWorkSet/relatedWork'
         );
         $data = [];
+        $language = $this->getLocale();
         foreach ($relatedWorks as $work) {
             if (!empty($work->object->objectWebResource)) {
                 $tmp = [];
-                $url = trim((string)$work->object->objectWebResource);
+                $url = trim(
+                    (string)$this->getLanguageSpecificItem(
+                        $work->object->objectWebResource,
+                        $language
+                    )
+                );
                 if ($this->urlBlocked($url)) {
                     continue;
                 }
                 $tmp['url'] = $url;
                 if (!empty($work->displayObject)) {
-                    $tmp['desc'] = trim((string)$work->displayObject);
+                    $tmp['desc'] = trim(
+                        (string)$this->getLanguageSpecificItem(
+                            $work->displayObject,
+                            $language
+                        )
+                    );
                 }
                 if (!empty($work->object->objectID)) {
                     $tmp['info'] = trim((string)$work->object->objectID);
                     $objectAttrs = $work->object->objectID->attributes();
                     if (!empty($objectAttrs->label)) {
-                        $tmp['label'] = trim((string)$objectAttrs->label);
+                        $tmp['label'] = trim(
+                            (string)$this->getLanguageSpecificItem(
+                                $objectAttrs->label,
+                                $language
+                            )
+                        );
                     }
                 }
                 $data[] = $tmp;

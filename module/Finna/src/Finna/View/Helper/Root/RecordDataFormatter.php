@@ -150,6 +150,7 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
             'Edition',
             'Education Programs',
             'Events',
+            'Extent',
             'Finding Aid',
             'Format',
             'Genre',
@@ -175,7 +176,6 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
             'Parent Series',
             'Parent Unclassified Entity',
             'Parent Work',
-            'Physical Description',
             'Playing Time',
             'Presenters',
             'Previous Title',
@@ -651,7 +651,6 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
             }
             // Render the fields in the group as the value for the group.
             $value = $this->renderRecordDriverTemplate(
-                $driver,
                 $data,
                 ['template' => $group['template']]
             );

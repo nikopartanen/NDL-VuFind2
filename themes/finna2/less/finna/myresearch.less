@@ -827,11 +827,14 @@
   }
 }
 
-.useraccount-cancel > li {
+.useraccount-confirm {
+  min-width: 205px;
+}
+.useraccount-confirm > li {
   border-bottom: none;
   &:not(.disabled) {
     float: left;
-    width: 45%;
+    width: 100px;
     padding: 10px;
     text-align: center;
     a {
@@ -846,12 +849,12 @@
     margin-bottom: 20px;
   }
 }
-.template-dir-librarycards .dropdown-menu.useraccount-cancel {
+.template-dir-librarycards .dropdown-menu.useraccount-confirm {
   left: auto;
   right: 0;
   top: auto;
 }
-.template-dir-myresearch .toolbar > .btn-group:last-of-type .dropdown-menu.useraccount-cancel {
+.template-dir-myresearch .toolbar > .btn-group:last-of-type .dropdown-menu.useraccount-confirm {
   @media (max-width: @screen-xs-max) {
     left: auto;
     right: 0;
