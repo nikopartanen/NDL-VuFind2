@@ -4,7 +4,7 @@
  *
  * PHP version 7
  *
- * Copyright (C) The National Library of Finland 2016-2019.
+ * Copyright (C) The National Library of Finland 2016-2023.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -264,20 +264,18 @@ class Feed implements \VuFind\I18n\Translator\TranslatorAwareInterface,
 
         $channel = null;
 
-        // Check for cached version
-        $cacheDir
-            = $this->cacheManager->getCache('feed')->getOptions()->getCacheDir();
-
-        $localFile = "$cacheDir/" . md5(var_export($cacheKey, true)) . '.xml';
-        $maxAge = isset($this->mainConfig->Content->feedcachetime)
-            && '' !== $this->mainConfig->Content->feedcachetime
-            ? $this->mainConfig->Content->feedcachetime : 10;
-
         $httpClient = $this->httpService->createClient();
         $httpClient->setOptions(['useragent' => 'VuFind']);
         $httpClient->setOptions(['timeout' => 30]);
         Reader::setHttpClient($httpClient);
 
+        // Check for cached version
+        $cacheDir
+            = $this->cacheManager->getCache('feed')->getOptions()->getCacheDir();
+        $localFile = "$cacheDir/" . md5(var_export($cacheKey, true)) . '.xml';
+        $maxAge = isset($this->mainConfig->Content->feedcachetime)
+            && '' !== $this->mainConfig->Content->feedcachetime
+            ? $this->mainConfig->Content->feedcachetime : 10;
         if ($maxAge) {
             if (is_readable($localFile)
                 && time() - filemtime($localFile) < $maxAge * 60
@@ -450,6 +448,9 @@ EOT;
                             $imgLink = $this->checkLocalFile($value['url']);
                             if (null !== $imgLink) {
                                 $value['url'] = $imgLink;
+                            } elseif ($id) {
+                                $value['url']
+                                    = $this->proxifyImageUrl($value['url'], $id);
                             }
                         }
                     } elseif ($setting == 'date') {
@@ -511,7 +512,10 @@ EOT;
                             if (!empty($imgLink = $this->extractImage($xcal))) {
                                 if ($localFile = $this->checkLocalFile($imgLink)) {
                                     $imgLink = $localFile;
+                                } elseif ($id) {
+                                    $imgLink = $this->proxifyImageUrl($imgLink, $id);
                                 }
+
                                 $data['xcal']['featured'] = $imgLink;
                                 if ($elements['image'] != 0
                                     || !isset($elements['image'])
@@ -588,7 +592,7 @@ EOT;
                             $styleAttr = $el->getAttribute('style');
                             $properties = explode(';', $styleAttr);
                             foreach ($properties as $prop) {
-                                [$field, $val] = explode(':', $prop);
+                                [$field] = explode(':', $prop);
                                 if (stristr($field, 'width') === false
                                     && stristr($field, 'height') === false
                                     && stristr($field, 'margin') === false
@@ -618,6 +622,36 @@ EOT;
             }
         }
         return compact('channel', 'items', 'config', 'modal', 'contentPage');
+    }
+
+    /**
+     * Proxify an image url for loading via the FeedContent controller
+     *
+     * @param string $url    Image URL
+     * @param string $feedId Feed identifier
+     *
+     * @return string
+     */
+    public function proxifyImageUrl(string $url, string $feedId): string
+    {
+        // Ensure that we don't proxify an empty or already proxified URL:
+        if (!$url) {
+            return '';
+        }
+        $check = $this->urlHelper->fromRoute('feed-image', ['page' => '']);
+        if (strncasecmp($url, $check, strlen($check)) === 0) {
+            return $url;
+        }
+
+        return $this->urlHelper->fromRoute(
+            'feed-image',
+            ['page' => $feedId],
+            [
+                'query' => [
+                    'image' => $url,
+                ]
+            ]
+        );
     }
 
     /**
