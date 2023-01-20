@@ -381,7 +381,7 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
             $id = $item['finnaId'];
             $data = "{$url}?" . http_build_query(['id' => $id]);
             if ($link) {
-                $logo = null;
+                $logo = '';
                 if (isset($response['items'][0]['logo'])) {
                     $logos = $response['items'][0]['logo'];
                     foreach (['small', 'medium'] as $size) {
@@ -394,8 +394,10 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
                 $data = $this->viewRenderer->partial(
                     'Helpers/organisation-page-link.phtml',
                     [
-                       'url' => $data, 'label' => 'organisation_info_link',
-                       'logo' => $logo, 'name' => $parentName
+                       'url' => $data,
+                       'label' => 'organisation_info_link',
+                       'logo' => $this->proxifyImageUrl($logo),
+                       'name' => $parentName
                     ]
                 );
             }
@@ -435,17 +437,17 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
             $id = $json['finna_org_id'];
             $data = "{$url}?" . http_build_query(['id' => $id]);
             if ($link) {
-                $logo = !empty($json['image'])
-                    ? $this->proxifyImageUrl($json['image'])
-                    : null;
+                $logo = $json['image'] ?? '';
                 $lang = $this->getLanguage();
                 $name = $json['name'][$lang]
                         ?? $this->translator->translate("source_{$parent}");
                 $data = $this->viewRenderer->partial(
                     'Helpers/organisation-page-link.phtml',
                     [
-                    'url' => $data, 'label' => 'organisation_info_link',
-                    'logo' => $logo, 'name' => $name
+                    'url' => $data,
+                    'label' => 'organisation_info_link',
+                    'logo' => $this->proxifyImageUrl($logo),
+                    'name' => $name
                     ]
                 );
             }
@@ -506,8 +508,11 @@ class OrganisationInfo implements \VuFind\I18n\Translator\TranslatorAwareInterfa
                 $consortium['homepage'] = $response['homepage'];
             }
             if (!empty($response['logo'])) {
-                $consortium['logo']['small'] = $response['logo']['small']['url']
-                ?? $response['logo']['medium']['url'];
+                $consortium['logo']['small'] = $this->proxifyImageUrl(
+                    $response['logo']['small']['url']
+                    ?? $response['logo']['medium']['url']
+                    ?? ''
+                );
             }
 
             $consortium['finna'] = [
