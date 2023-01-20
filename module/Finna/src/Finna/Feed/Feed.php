@@ -28,6 +28,7 @@
  */
 namespace Finna\Feed;
 
+use Finna\View\Helper\Root\CleanHtml;
 use Laminas\Config\Config;
 use Laminas\Feed\Reader\Entry\AbstractEntry;
 use Laminas\Feed\Reader\Feed\AbstractFeed;
@@ -90,6 +91,13 @@ class Feed implements \VuFind\I18n\Translator\TranslatorAwareInterface,
     protected $imageLinkHelper;
 
     /**
+     * Clean HTML helper
+     *
+     * @var CleanHtml
+     */
+    protected $cleanHtml;
+
+    /**
      * Constructor.
      *
      * @param Config       $config     Main configuration
@@ -97,19 +105,22 @@ class Feed implements \VuFind\I18n\Translator\TranslatorAwareInterface,
      * @param CacheManager $cm         Cache manager
      * @param Url          $url        URL helper
      * @param ImageLink    $imageLink  Image link helper
+     * @param CleanHtml    $cleanHtml  Clean HTML helper
      */
     public function __construct(
         Config $config,
         Config $feedConfig,
         CacheManager $cm,
         Url $url,
-        ImageLink $imageLink
+        ImageLink $imageLink,
+        CleanHTML $cleanHtml
     ) {
         $this->mainConfig = $config;
         $this->feedConfig = $feedConfig;
         $this->cacheManager = $cm;
         $this->urlHelper = $url;
         $this->imageLinkHelper = $imageLink;
+        $this->cleanHtml = $cleanHtml;
     }
 
     /**
@@ -383,6 +394,7 @@ EOT;
         $dateFormat = $config->dateFormat ?? 'j.n.';
         $contentDateFormat = $config->contentDateFormat ?? 'j.n.Y';
         $fullDateFormat = $config->fullDateFormat ?? 'j.n.Y';
+        $cleanContent = $config->cleanContent ?? true;
 
         $itemsCnt = $config->items ?? null;
         $elements = $config->content ?? [];
@@ -616,6 +628,12 @@ EOT;
                                 $content = $replaced;
                             }
                         }
+
+                        // Clean up the HTML:
+                        if ($cleanContent) {
+                            $content = ($this->cleanHtml)($content);
+                        }
+
                         $item[$setting] = $content;
                     }
                 }
