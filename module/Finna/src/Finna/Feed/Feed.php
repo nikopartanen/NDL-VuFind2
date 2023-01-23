@@ -459,6 +459,7 @@ EOT;
                             if (null !== $imgLink) {
                                 $value['url'] = $imgLink;
                             } elseif ($id) {
+                                $allowedImages[] = $value['url'];
                                 $value['url']
                                     = $this->proxifyImageUrl($value['url'], $id);
                             }
