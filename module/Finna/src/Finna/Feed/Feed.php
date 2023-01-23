@@ -676,7 +676,7 @@ EOT;
         // Ensure that we don't proxify an empty or already proxified URL or a
         // relative url:
         if (!$url || !parse_url($url, PHP_URL_HOST)) {
-            return '';
+            return $url;
         }
         $check = $this->urlHelper->fromRoute('feed-image', ['page' => '']);
         if (strncasecmp($url, $check, strlen($check)) === 0) {
