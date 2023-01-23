@@ -459,6 +459,7 @@ EOT;
                             if (null !== $imgLink) {
                                 $value['url'] = $imgLink;
                             } elseif ($id) {
+                                $allowedImages[] = $value['url'];
                                 $value['url']
                                     = $this->proxifyImageUrl($value['url'], $id);
                             }
@@ -522,7 +523,6 @@ EOT;
                             if (!empty($imgLink = $this->extractImage($xcal))) {
                                 if ($localFile = $this->checkLocalFile($imgLink)) {
                                     $imgLink = $localFile;
-                                    $allowedImages[] = $imgLink;
                                 } elseif ($id) {
                                     $allowedImages[] = $imgLink;
                                     $imgLink = $this->proxifyImageUrl($imgLink, $id);
