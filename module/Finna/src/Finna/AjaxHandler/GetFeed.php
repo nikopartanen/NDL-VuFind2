@@ -189,7 +189,6 @@ class GetFeed extends \VuFind\AjaxHandler\AbstractBase
                 $feed,
                 $this->config,
                 $this->renderer,
-                false,
                 $touchDevice
             )
         );
