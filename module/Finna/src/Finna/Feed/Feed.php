@@ -523,6 +523,7 @@ EOT;
                             if (!empty($imgLink = $this->extractImage($xcal))) {
                                 if ($localFile = $this->checkLocalFile($imgLink)) {
                                     $imgLink = $localFile;
+                                    $allowedImages[] = $imgLink;
                                 } elseif ($id) {
                                     $allowedImages[] = $imgLink;
                                     $imgLink = $this->proxifyImageUrl($imgLink, $id);
@@ -558,11 +559,10 @@ EOT;
             }
 
             // Make sure that we have something to display
-            $accept = $data['title'] && trim($data['title']) != ''
-                || $data['text'] && trim($data['text']) != ''
-                || $data['image']
-            ;
-            if (!$accept) {
+            if (trim($data['title'] ?? '') === ''
+                && trim($data['text'] ?? '') === ''
+                && empty($data['image'])
+            ) {
                 continue;
             }
             $this->populateIcon($data, $config);
