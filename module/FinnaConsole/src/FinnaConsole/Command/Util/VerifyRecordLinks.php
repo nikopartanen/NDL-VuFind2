@@ -295,13 +295,14 @@ class VerifyRecordLinks extends AbstractUtilCommand
     {
         $this->msg('Checking ratings');
         $count = $fixed = 0;
-        $startTime = date('Y-m-d H:i:s');
+        $startDate = date('Y-m-d');
         $lastId = null;
         do {
             $callback = function ($select) use ($lastId) {
                 if (null !== $lastId) {
                     $select->where->greaterThan('id', $lastId);
                 }
+                $select->where->notEqualTo('created', '2000-01-01 00:00:00');
                 $select->order('id');
                 $select->limit($this->batchSize);
                 $select->columns(['id']);
@@ -314,7 +315,7 @@ class VerifyRecordLinks extends AbstractUtilCommand
                 $rating = $this->ratingsTable->select(['id' => $current->id])
                     ->current();
                 $lastId = $rating->id;
-                if ($rating->finna_checked >= $startTime) {
+                if ($rating->finna_checked >= $startDate) {
                     continue;
                 }
                 $resource = $this->resourceTable
@@ -407,7 +408,7 @@ class VerifyRecordLinks extends AbstractUtilCommand
                 $targetRow->resource_id = $resource->id;
             }
             $targetRow->rating = $rating->rating;
-            $targetRow->created = $rating->created;
+            // Don't set creation date to indicate that this is a generated entry
             $targetRow->finna_checked = date('Y-m-d H:i:s');
             $targetRow->save();
         }
