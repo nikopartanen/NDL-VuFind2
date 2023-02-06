@@ -639,7 +639,8 @@ EOT;
                             $content ?: '',
                             $searchReplace,
                             $cleanContent,
-                            $id ?? ''
+                            $id ?? '',
+                            $allowedImages
                         );
 
                         $item[$setting] = $content;
@@ -666,6 +667,7 @@ EOT;
      * @param array  $searchReplace Search and replacement values
      * @param bool   $cleanContent  Whether to run the content through cleanHtml
      * @param string $feedId        Feed ID
+     * @param array  $allowedImages Allowed images
      *
      * @return string
      */
@@ -673,7 +675,8 @@ EOT;
         string $content,
         array $searchReplace,
         bool $cleanContent,
-        string $feedId
+        string $feedId,
+        array &$allowedImages
     ): string {
         if (!$content) {
             return $content;
