@@ -852,12 +852,22 @@ $config = [
                     'SolrBrowse' => 'Finna\Search\SolrBrowse\Results',
                 ]
             ],
+            'session' => [
+                'factories' => [
+                    'Finna\Session\Redis' => 'VuFind\Session\RedisFactory',
+                ],
+                'aliases' => [
+                    'VuFind\Session\Redis' => 'Finna\Session\Redis',
+                ]
+            ],
             'statistics_driver' => [
                 'factories' => [
                     'Finna\Statistics\Driver\Database' => 'Finna\Statistics\Driver\DatabaseFactory',
+                    'Finna\Statistics\Driver\Redis' => 'Finna\Statistics\Driver\RedisFactory',
                 ],
                 'aliases' => [
                     'Database' => 'Finna\Statistics\Driver\Database',
+                    'Redis' => 'Finna\Statistics\Driver\Redis',
                 ]
             ],
             'content_covers' => [
