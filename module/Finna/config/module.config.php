@@ -855,9 +855,11 @@ $config = [
             'statistics_driver' => [
                 'factories' => [
                     'Finna\Statistics\Driver\Database' => 'Finna\Statistics\Driver\DatabaseFactory',
+                    'Finna\Statistics\Driver\Redis' => 'Finna\Statistics\Driver\RedisFactory',
                 ],
                 'aliases' => [
                     'Database' => 'Finna\Statistics\Driver\Database',
+                    'Redis' => 'Finna\Statistics\Driver\Redis',
                 ]
             ],
             'content_covers' => [
