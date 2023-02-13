@@ -60,6 +60,29 @@ class Redis extends \VuFind\Session\Redis
     }
 
     /**
+     * Write function that is called when session data is to be saved.
+     *
+     * @param string $sessId The current session ID
+     * @param string $data   The session data to write
+     *
+     * @return bool
+     */
+    protected function saveSession($sessId, $data): bool
+    {
+        try {
+            return parent::saveSession($sessId, $data);
+        } catch (\Exception $e) {
+            // Retry once (if the connection was closed, this will re-open it):
+            try {
+                return parent::saveSession($sessId, $data);
+            } catch (\Exception $e2) {
+                // Re-throw original exception:
+                throw $e;
+            }
+        }
+    }
+
+    /**
      * The destroy handler, this is executed when a session is destroyed with
      * session_destroy() and takes the session id as its only parameter.
      *
@@ -69,7 +92,17 @@ class Redis extends \VuFind\Session\Redis
      */
     public function destroy($sessId): bool
     {
-        parent::destroy($sessId);
+        try {
+            parent::destroy($sessId);
+        } catch (\Exception $e) {
+            // Retry once (if the connection was closed, this will re-open it):
+            try {
+                parent::destroy($sessId);
+            } catch (\Exception $e2) {
+                // Re-throw original exception:
+                throw $e;
+            }
+        }
         return true;
     }
 }
