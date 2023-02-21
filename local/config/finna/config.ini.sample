@@ -1868,3 +1868,7 @@ use_locale_sorting = true
 [DOI]
 ; Whether to open links in a new window. Default is false.
 new_window = true
+; The following settings control where DOI-based links are displayed:
+show_in_results = true      ; include in search results
+show_in_record = true      ; include in core record metadata
+show_in_holdings = false    ; include in holdings tab of record view
