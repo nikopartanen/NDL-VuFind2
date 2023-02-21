@@ -432,4 +432,30 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
             $lastException
         );
     }
+
+    /**
+     * Get Item Statuses
+     *
+     * This is responsible for retrieving the status information of a certain
+     * record.
+     *
+     * @param string $id            The record id to retrieve the holdings for
+     * @param bool   $checkHoldings Whether to check holdings records
+     *
+     * @return array An associative array with the following keys:
+     * id, availability (boolean), status, location, reserve, callnumber.
+     */
+    protected function getItemStatusesForBib($id, $checkHoldings)
+    {
+        $result = parent::getItemStatusesForBib($id, $checkHoldings);
+        foreach ($result as &$item) {
+            if (strncmp($item['item_id'], 'ORDER_', 6) === 0) {
+                $item['number'] = $this->translate('item_order_heading');
+            } else {
+                $item['number'] = $item['callnumber'];
+            }
+        }
+        unset($item);
+        return $result;
+    }
 }
