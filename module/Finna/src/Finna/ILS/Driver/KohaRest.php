@@ -1849,6 +1849,14 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
             return $defaultTranslation;
         }
 
+        // Try first with location_ prefix:
+        $prefix = 'location_' . $this->config['Catalog']['id'] . '_';
+        $key = "$prefix$location";
+        $translated = $this->translate($key);
+        if ($translated !== $key) {
+            return $translated;
+        }
+        // Fall back to just catalog id:
         $prefix = $this->config['Catalog']['id'] . '_';
         return $this->translate("$prefix$location", [], $defaultTranslation);
     }
