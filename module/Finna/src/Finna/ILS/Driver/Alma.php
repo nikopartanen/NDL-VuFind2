@@ -3161,6 +3161,7 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
     {
         $paymentConfig = $this->config['OnlinePayment'] ?? [];
         $blockedTypes = $paymentConfig['nonPayable'] ?? [];
+        $payableStatuses = $paymentConfig['payableStatuses'] ?? ['ACTIVE'];
         $xml = $this->makeRequest(
             '/users/' . rawurlencode($patron['id']) . '/fees'
         );
@@ -3170,7 +3171,9 @@ class Alma extends \VuFind\ILS\Driver\Alma implements TranslatorAwareInterface
             $payable = false;
             if (!empty($paymentConfig['enabled'])) {
                 $type = (string)$fee->type;
-                $payable = !in_array($type, $blockedTypes)
+                $status = (string)($fee->status ?? '');
+                $payable = in_array($status, $payableStatuses)
+                    && !in_array($type, $blockedTypes)
                     && floatval($fee->balance) > 0;
             }
             $feeType = $this->feeTypeMappings[(string)$fee->type]
