@@ -452,6 +452,12 @@ class MyResearchController extends \VuFind\Controller\MyResearchController
                 foreach ($result['transactions'] as $i => $current) {
                     // loadBatch ensures correct indexing
                     $driver = $records[$i];
+                    // If the record is removed from the collection and
+                    // there is no indication about the id of the old record
+                    // then skip it
+                    if (empty($driver->getUniqueID())) {
+                        continue;
+                    }
                     $otherNotes = '';
                     $notesBlocks = [];
 
