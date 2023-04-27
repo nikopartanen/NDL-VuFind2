@@ -102,8 +102,12 @@ class LocationService
             }
         }
 
+        $callnum = $fields['callnumber'] ?? '';
+        if ($callnum instanceof \VuFind\I18n\TranslatableString) {
+            $callnum = $callnum->getDisplayString();
+        }
         $params = [
-            'callno' => $fields['callnumber'] ?? '',
+            'callno' => $callnum,
             'collection' => $collection,
             'location' => $location,
             'branch' => $fields['branch'] ?? '',
