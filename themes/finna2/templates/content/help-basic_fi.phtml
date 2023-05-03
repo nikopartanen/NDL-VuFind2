@@ -41,23 +41,30 @@
       <p>Hakutulossivu näyttää oletusarvoisesti parhaiten hakuun täsmänneet tulokset ylimmäisenä (täsmäävyys, relevanssi). Hakutulosten järjestyksen voi muuttaa myös esimerkiksi vanhimmasta uusimpaan valmistusvuoden mukaan. Lisäksi näkymästä saa galleriamuotoisen tai tiivistetyn listan.</p>
       <p><strong>Rajaa hakua</strong> -valikon avulla saat rajattua hakutuloksia suppeammaksi käyttämällä jopa useita rajauksia samanaikaisesti. Vaihtoehdot ovat oletuksena kiinni, mutta ne saa auki alasvetovalikko-nuolesta.</p>
       <p><strong>Verkossa saatavilla</strong>: rajaa tulokset aineistoon, johon on pääsy Finnan kautta.</p>
-      <p><strong>Sallitut käyttötavat</strong>: toimii verkossa saatavilla olevilla aineistoilla. Tutustu aineistojen yhteydessä esitettyihin käyttöoikeustietoihin. Aineistojen käyttäjällä on vastuu tekijänoikeuksien ja yksityisyydensuojan kunnioittamisesta. Lähde ja tekijä on nimettävä, jos rajausvaihtoehto on jokin muu kuin vapaa käyttö.</p>
-      <ul class="list-bullets">
-        <li><strong>Vapaa käyttö</strong></li>
-        <li><strong>Saa muokata</strong>
-          <ul class="list-bullets">
-            <li>Ei kaupalliseen käyttöön</li>
-            <li>Myös kaupalliseen käyttöön</li>
-          </ul>
-        </li>
-        <li><strong>Muokkauksia tekemättä</strong>
-          <ul class="list-bullets">
-            <li>Ei kaupalliseen käyttöön</li>
-            <li>Myös kaupalliseen käyttöön</li>
-            <li>Luvanvarainen käyttö / ei tiedossa</li>
-          </ul>
-        </li>
-      </ul>
+      <?php $facetFields = $this->config()->getFacetFields(); ?>
+      <?php if (isset($facetFields['usage_rights_ext_str_mv'])): ?>
+        <p><strong>Käyttöoikeudet</strong>: toimii verkossa saatavilla olevilla aineistoilla. Rajain sisältää erilaisia vaihtoehtoja sen mukaan, millaisia käyttöoikeusmerkintöjä aineistoista löytyy. (CC-lisenssit, Right Statements –käyttöoikeuskuvaukset)</p>
+        <p>Tarkempia tietoja käyttöoikeusmerkinnöistä löytyy <a href="/Content/terms">aineistojen käyttöoikeudet -ohjesivulta</a>. Aineistojen käyttäjällä on vastuu tekijänoikeuksien ja yksityisyydensuojan kunnioittamisesta.</p>
+      <?php endif; ?>
+      <?php if (isset($facetFields['usage_rights_str_mv'])): ?>
+        <p><strong>Sallitut käyttötavat</strong>: toimii verkossa saatavilla olevilla aineistoilla. Tutustu aineistojen yhteydessä esitettyihin käyttöoikeustietoihin. Aineistojen käyttäjällä on vastuu tekijänoikeuksien ja yksityisyydensuojan kunnioittamisesta. Lähde ja tekijä on nimettävä, jos rajausvaihtoehto on jokin muu kuin vapaa käyttö.</p>
+        <ul class="list-bullets">
+          <li><strong>Vapaa käyttö</strong></li>
+          <li><strong>Saa muokata</strong>
+            <ul class="list-bullets">
+              <li>Ei kaupalliseen käyttöön</li>
+              <li>Myös kaupalliseen käyttöön</li>
+            </ul>
+          </li>
+          <li><strong>Muokkauksia tekemättä</strong>
+            <ul class="list-bullets">
+              <li>Ei kaupalliseen käyttöön</li>
+              <li>Myös kaupalliseen käyttöön</li>
+              <li>Luvanvarainen käyttö / ei tiedossa</li>
+            </ul>
+          </li>
+        </ul>
+      <?php endif; ?>
       <p><strong>Aineistotyyppi</strong>: sisältää erilaisia vaihtoehtoja sen mukaan minkä tyyppistä aineistoa on saatavilla, esimerkiksi kuvia, esineitä, kirjoja jne.</p>
       <p><strong>Tekijä</strong>: kuka aineiston on tuottanut tai kuka oikeuksia hallinnoi</p>
       <p><strong>Aihe</strong>: valmiita aiheita helpottamaan haun rajaamista</p>
