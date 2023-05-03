@@ -37,22 +37,31 @@
     <div id="narrowsearch" class="content-section">
       <h2>Narrowing your search</h2>
       <p>The search results page displays the best results at the top based on the relevance of the match. You can change the order of the results by, for example, changing the date of manufacture to view from oldest to newest. Additionally you can view the search results as a summary list or in gallery format.</p>
-       <ul class="list-bullets">
-        <li><strong>Free use</strong></li>
-        <li><strong>Can be edited</strong>
-          <ul class="list-bullets">
-            <li>Not for commercial use</li>
-            <li>Also for commercial use</li>
-          </ul>
-        </li>
-        <li><strong>Cannot be edited</strong>
-          <ul class="list-bullets">
-            <li>Not for commercial use</li>
-            <li>Also for commercial use</li>
-            <li>Authorised use only/unknown</li>
-          </ul>
-        </li>
-      </ul>
+      <p><strong>Available Online</strong>: limits results to those accessible online via Finna.</p>
+      <?php $facetFields = $this->config()->getFacetFields(); ?>
+      <?php if (isset($facetFields['usage_rights_ext_str_mv'])): ?>
+        <p><strong>Usage rights</strong>: Pertains to material that is available online. The filter has various options depending on the usage rights for resources (CC licences, Rights Statements).</p>
+        <p>For further information on usage rights, please see <a href="/Content/terms">Material usage rights</a>. The user is responsible for respecting copyright and privacy laws.</p>
+      <?php endif; ?>
+      <?php if (isset($facetFields['usage_rights_str_mv'])): ?>
+        <p><strong>Permissible uses</strong>: Pertains to material that is available online. The filter has various options depending on the usage rights for resources.</p>
+        <ul class="list-bullets">
+          <li><strong>Free use</strong></li>
+          <li><strong>Can be edited</strong>
+            <ul class="list-bullets">
+              <li>Not for commercial use</li>
+              <li>Also for commercial use</li>
+            </ul>
+          </li>
+          <li><strong>Cannot be edited</strong>
+            <ul class="list-bullets">
+              <li>Not for commercial use</li>
+              <li>Also for commercial use</li>
+              <li>Authorised use only/unknown</li>
+            </ul>
+          </li>
+        </ul>
+      <?php endif; ?>
       <p><strong>Type of material</strong>: includes different options based on the materials available in the collections, for example, pictures, objects, books, etc.</p>
       <p><strong>Author</strong>: the creator(s) of the work or the rights holder(s)</p>
       <p><strong>Subject</strong>: ready subject headings to help filter your search</p>
