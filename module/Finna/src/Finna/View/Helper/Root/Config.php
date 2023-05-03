@@ -59,4 +59,15 @@ class Config extends \VuFind\View\Helper\Root\Config
         $config = $this->get('facets')->Results ?? null;
         return $config ? $config->toArray() : [];
     }
+
+    /**
+     * Get default checkbox facets
+     *
+     * @return array
+     */
+    public function getCheckboxFacets(): array
+    {
+        $config = $this->get('facets')->CheckboxFacets ?? null;
+        return $config ? $config->toArray() : [];
+    }
 }
