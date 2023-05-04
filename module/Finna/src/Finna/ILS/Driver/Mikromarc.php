@@ -2330,8 +2330,9 @@ class Mikromarc extends \VuFind\ILS\Driver\AbstractBase implements
         if ('title' === $data['level']) {
             $items = $this->getStatus($id);
             $summary = array_pop($items);
-            if ((isset($summary['titleHold']) && $summary['titleHold'] === false)
-                || !$summary['holdable']
+            if (
+                !empty($summary['number'])
+                || empty($summary['is_holdable'])
             ) {
                 return false;
             }
