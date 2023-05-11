@@ -58,6 +58,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
   function updateSelectedOrganisation(id, clearSearch) {
     setOfficeInformationLoader(true);
     holder.find('.error, .info-element').hide();
+    holder.find('.more-less-btn-wrapper').remove();
     infoWidget.showDetails(id, '', true);
     if (clearSearch) {
       $('#office-search').val('');
@@ -284,7 +285,11 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     var longDesc = holder.find('.office-description.description-long');
     if ('description' in data.details) {
       longDesc.html(data.details.description).show();
+    } else {
+      longDesc.html('');
     }
+    longDesc.removeAttr('style');
+    longDesc.removeClass('truncate-done');
 
     if ('links' in data.details) {
       var links = data.details.links;
@@ -299,17 +304,24 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
       }
     }
 
-    var openToday = false;
+    var timeOpen = holder.find('.time-open');
+    timeOpen.find('.times').remove();
+    var staffTimes = timeOpen.find('.staff-times');
+    staffTimes.find('.shift').remove();
     if ('schedules' in data.openTimes) {
       $.each(data.openTimes.schedules, function handleSchedule(ind, obj) {
         if ('today' in obj && 'times' in obj && obj.times.length) {
-          openToday = obj.times[0];
-
-          var lastElement = obj.times[obj.times.length - 1];
-          var timeOpen = holder.find('.time-open');
-          timeOpen.find('.opening-times .opens').text(openToday.opens);
-          timeOpen.find('.opening-times .closes').text(lastElement.closes);
-          timeOpen.show();
+          $.each(obj.times, function handleTimes(indt, time) {
+            var item = timeOpen.find('.times-template').clone().addClass('times').removeClass('times-template hide');
+            item.find('.opens').text(time.opens);
+            item.find('.closes').text(time.closes);
+            if (indt > 0) {
+              item.prepend(', ');
+            }
+            item.show();
+            timeOpen.find('.times-template').before(item);
+            timeOpen.show();
+          });
           var staffSchedule = [];
           $.each(obj.times, function isSelfservice(index, object) {
             if (object.selfservice === false) {
@@ -320,11 +332,8 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
             }
             return staffSchedule;
           });
-          var staffTimes;
           if (staffSchedule && obj.times.length > 1) {
-            staffTimes = timeOpen.find('.staff-times');
             var shift;
-            staffTimes.find('.shift').remove();
             staffTimes.removeClass('hide');
             for (var i = 0; i < obj.times.length; i++) {
               staffSchedule = obj.times[i];
@@ -349,6 +358,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     var hasSchedules = 'openTimes' in data && 'schedules' in data.openTimes && data.openTimes.schedules.length > 0;
 
     if (hasSchedules) {
+      holder.find('.open-or-closed').toggleClass('hidden', null === data.openNow);
       holder.find('.open-or-closed > span.library-is-' + (data.openNow ? 'open' : 'closed')).show();
     }
 
@@ -394,9 +404,30 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
       contactInfo.find('> p').html(data.details.contactInfo);
       contactInfo.show();
     }
+    if ('accessibilityInfo' in data.details) {
+      let template = document.getElementById('accessibility_info_template');
+      let blocks = [];
+      data.details.accessibilityInfo.forEach((info) => {
+        let block = template.content.cloneNode(true);
+        block.querySelector('.accessibility-group-heading').textContent = info.heading;
+        let statements = block.querySelector('.accessibility-group-statements');
+        info.statements.forEach((statement) => {
+          let p = document.createElement('p');
+          p.textContent = statement;
+          statements.appendChild(p);
+        });
+        blocks.push(block);
+      });
+      if (blocks.length > 0) {
+        let accessibilityDetails = holder.find('.accessibility-details');
+        accessibilityDetails.find('.panel-body').append(blocks);
+        accessibilityDetails.show();
+      }
+    }
 
     $('.office-quick-information').show();
     $('.office-information').show();
+    VuFind.truncate.initTruncate(longDesc);
     setOfficeInformationLoader(false);
   }
 
