@@ -71,7 +71,7 @@ finna.organisationInfoWidget = (function finnaOrganisationInfoWidget() {
     if (hasSchedules) {
       var schedules = response.openTimes.schedules;
 
-      // Check if there are self-service times
+      // Check if there are self-service times or gaps
       var selfServiceTimes = false;
       var gaps = false;
       $.each(schedules, function checkSchedule(ind, obj) {

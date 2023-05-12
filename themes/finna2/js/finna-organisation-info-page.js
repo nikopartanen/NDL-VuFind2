@@ -306,50 +306,75 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
 
     var timeOpen = holder.find('.time-open');
     timeOpen.find('.times').remove();
-    var staffTimes = timeOpen.find('.staff-times');
-    staffTimes.find('.shift').remove();
+    var staffTimesElem = timeOpen.find('.staff-times');
+    staffTimesElem.find('.shift').remove();
+    var closedTimesElem = timeOpen.find('.closed-times');
+    closedTimesElem.find('.gap').remove();
     if ('schedules' in data.openTimes) {
       $.each(data.openTimes.schedules, function handleSchedule(ind, obj) {
         if ('today' in obj && 'times' in obj && obj.times.length) {
-          $.each(obj.times, function handleTimes(indt, time) {
-            var item = timeOpen.find('.times-template').clone().addClass('times').removeClass('times-template hide');
-            item.find('.opens').text(time.opens);
-            item.find('.closes').text(time.closes);
-            if (indt > 0) {
-              item.prepend(', ');
+          var firstOpenDateTime = null;
+          var firstOpenTime = null;
+          var lastCloseDateTime = null;
+          var lastCloseTime = null;
+          var selfServiceTimes = [];
+          var staffTimes = [];
+          var gaps = [];
+
+          $.each(obj.times, function checkOpenTimes(tind, time) {
+            if (null === firstOpenDateTime || time.opens_datetime < firstOpenDateTime) {
+              firstOpenDateTime = time.opens_datetime;
+              firstOpenTime = time.opens;
             }
-            item.show();
-            timeOpen.find('.times-template').before(item);
-            timeOpen.show();
-          });
-          var staffSchedule = [];
-          $.each(obj.times, function isSelfservice(index, object) {
-            if (object.selfservice === false) {
-              staffSchedule = {
-                opens: object.opens,
-                closes: object.closes
-              };
+            if (null === lastCloseDateTime || time.closes_datetime > lastCloseDateTime) {
+              lastCloseDateTime = time.closes_datetime;
+              lastCloseTime = time.closes;
             }
-            return staffSchedule;
+            if (time.closed) {
+              gaps.push(time);
+            } else if (time.selfservice) {
+              selfServiceTimes.push(time);
+            } else {
+              staffTimes.push(time);
+            }
           });
-          if (staffSchedule && obj.times.length > 1) {
-            var shift;
-            staffTimes.removeClass('hide');
-            for (var i = 0; i < obj.times.length; i++) {
-              staffSchedule = obj.times[i];
-              if (staffSchedule.selfservice === false) {
-                shift = staffTimes.find('.shift-template').clone().addClass('shift').removeClass('shift-template hide');
-                shift.find('.opens').text(staffSchedule.opens);
-                shift.find('.closes').text(staffSchedule.closes);
-                if (i > 1) {
-                  shift.prepend(', ');
-                }
-                staffTimes.find('.shift-template').before(shift);
+
+          var item = timeOpen.find('.times-template').clone().addClass('times').removeClass('times-template hide');
+          item.find('.opens').text(firstOpenTime);
+          item.find('.closes').text(lastCloseTime);
+          timeOpen.find('.times-template').before(item);
+          timeOpen.show();
+
+          if (selfServiceTimes.length > 0) {
+            staffTimesElem.removeClass('hide');
+            for (let i = 0; i < staffTimes.length; i++) {
+              let schedule = staffTimes[i];
+              let shift = staffTimesElem.find('.shift-template').clone().addClass('shift').removeClass('shift-template hide');
+              shift.find('.opens').text(schedule.opens);
+              shift.find('.closes').text(schedule.closes);
+              if (i > 1) {
+                shift.prepend(', ');
               }
+              staffTimesElem.find('.shift-template').before(shift);
             }
           } else {
-            staffTimes = timeOpen.find('.staff-times');
-            staffTimes.addClass('hide');
+            staffTimesElem.addClass('hide');
+          }
+
+          if (gaps.length > 0) {
+            closedTimesElem.removeClass('hide');
+            for (let i = 0; i < gaps.length; i++) {
+              let schedule = gaps[i];
+              let gapElem = timeOpen.find('.gap-template').clone().addClass('gap').removeClass('gap-template hide');
+              gapElem.find('.opens').text(schedule.opens);
+              gapElem.find('.closes').text(schedule.closes);
+              if (i > 1) {
+                gapElem.prepend(', ');
+              }
+              closedTimesElem.find('.gap-template').before(gapElem);
+            }
+          } else {
+            closedTimesElem.addClass('hide');
           }
         }
       });

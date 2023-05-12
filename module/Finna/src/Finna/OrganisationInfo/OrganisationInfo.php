@@ -903,8 +903,7 @@ class OrganisationInfo implements
                 'status' => $item['liveStatus'],
             ];
             $data['openTimes'] = $this->parseSchedules($schedules);
-
-            $data['openNow'] = $item['liveStatus'] >= 1;
+            $data['openNow'] = $data['openTimes']['openNow'];
 
             $result[] = $data;
         }
@@ -1282,20 +1281,20 @@ class OrganisationInfo implements
             'friday', 'saturday', 'sunday',
         ];
 
+        $openNow = false;
         $openToday = false;
         $currentWeek = false;
-        $currentDate = new \DateTime();
-        $currentDate->setTime(0, 0, 0);
+        $currentDateTime = new \DateTime();
+        $currentDateTimeStr = $this->formatDateTime($currentDateTime, date('H:i'));
         foreach ($data['schedule'] as $day) {
             if (!$periodStart) {
                 $periodStart = $day['date'];
             }
 
-            $date = new \DateTime($day['date']);
-            $date->setTime(0, 0, 0);
+            $dateTime = new \DateTime($day['date']);
 
-            // Non-strong comparison to not require same object:
-            $today = $currentDate == $date;
+            // Compare dates:
+            $today = $currentDateTime->format('Y-m-d') === $dateTime->format('Y-m-d');
 
             $dayTime = strtotime($day['date']);
             if ($dayTime === false) {
@@ -1314,16 +1313,24 @@ class OrganisationInfo implements
             // Open times
             foreach ($day['times'] as $time) {
                 $result['opens'] = $this->formatTime($time['from']);
-                $result['opens_datetime'] = $this->formatDateTime($date, $time['from']);
+                $result['opens_datetime'] = $this->formatDateTime($dateTime, $time['from']);
                 $result['closes'] = $this->formatTime($time['to']);
-                $result['closes_datetime'] = $this->formatDateTime($date, $time['to']);
+                $result['closes_datetime'] = $this->formatDateTime($dateTime, $time['to']);
                 $result['selfservice'] = $time['status'] === 2;
                 $result['closed'] = 0 === $time['status'];
                 $times[] = $result;
-            }
 
-            if ($today && !empty($times)) {
-                $openToday = $times;
+                if ($today) {
+                    if (!$result['closed']) {
+                        $openToday = true;
+                    }
+                    if (
+                        $result['opens_datetime'] <= $currentDateTimeStr
+                        && $result['closes_datetime'] >= $currentDateTimeStr
+                    ) {
+                        $openNow = true;
+                    }
+                }
             }
 
             $scheduleData = [
@@ -1350,9 +1357,7 @@ class OrganisationInfo implements
             }
         }
 
-        $result = compact('schedules', 'openToday', 'currentWeek');
-        $result['openNow'] = $data['status'];
-        return $result;
+        return compact('schedules', 'openToday', 'currentWeek', 'openNow');
     }
 
     /**
