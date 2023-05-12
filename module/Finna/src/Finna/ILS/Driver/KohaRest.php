@@ -56,7 +56,10 @@ class KohaRest extends \VuFind\ILS\Driver\KohaRest
         'Hold_Reminder' => 'pickUpReminder',
         'Item_Check_in' => 'checkinNotice',
         'Item_Checkout' => 'checkoutNotice',
-        'Item_Due' => 'dueDateNotice'
+        'Item_Due' => 'dueDateNotice',
+        'Ill_ready' => 'illRequestReadyForPickUp',
+        'Ill_unavailable' => 'illRequestUnavailable',
+        'Ill_update' => 'illRequestUpdate',
     ];
 
     /**
