@@ -1360,7 +1360,11 @@ class Record extends \VuFind\View\Helper\Root\Record
     public function getContainerJsClasses(): string
     {
         $classes = [];
-        if (!empty($this->driver) && $this->driver->supportsAjaxStatus()) {
+        if (
+            !empty($this->driver)
+            && ($this->driver->supportsAjaxStatus()
+            || $this->getView()->plugin('doi')($this->driver, 'results')->isActive())
+        ) {
             $classes[] = 'ajaxItem';
         }
         if (!$this->getPreferredSource()) {
