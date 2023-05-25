@@ -1584,7 +1584,11 @@ class OrganisationInfo implements
     {
         $today = date('d.m');
         $currentHour = date('H:i');
-        $return = [];
+        $return = [
+            'times' => [],
+            'closed' => false,
+            'openNow' => false,
+        ];
         $dayShortcode = substr($day, 0, 3);
         $dayDate = new \DateTime("$day this week");
         $schedule = $json['opening_time'] ?? [];
