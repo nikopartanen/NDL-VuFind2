@@ -567,7 +567,7 @@ class OrganisationInfo implements
                 'usage_info' => $response['usageInfo'],
                 'notification' => $response['notification'],
                 'finna_coverage' => $response['finnaCoverage'],
-                'usage_perc' => $response['finnaCoverage'],
+                'usage_perc' => (int)$response['finnaCoverage'],
             ];
 
             if (isset($response['links'])) {
@@ -1445,7 +1445,7 @@ class OrganisationInfo implements
             'finna' => [
                 'service_point' => $params['id'],
                 'finna_coverage' => $json['coverage'],
-                'usage_perc' => $json['coverage'],
+                'usage_perc' => (int)$json['coverage'],
                 'usage_info' => $json['usage_rights'][$language],
             ],
         ];
