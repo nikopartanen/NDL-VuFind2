@@ -1357,6 +1357,8 @@ class OrganisationInfo implements
             }
         }
 
+        $schedules = $this->cleanUpTimes($schedules);
+
         return compact('schedules', 'openToday', 'currentWeek', 'openNow');
     }
 
@@ -1369,11 +1371,36 @@ class OrganisationInfo implements
      */
     protected function formatTime($time)
     {
-        $parts = explode(':', $time);
-        if (!isset($parts[1]) || $parts[1] == '00') {
-            return ltrim($parts[0], '0');
-        }
         return $this->dateConverter->convertToDisplayTime('H:i', $time);
+    }
+
+    /**
+     * Convert hour+min in schedules to just hour if all times end with '00'
+     *
+     * @param array $schedules Schedules
+     *
+     * @return array
+     */
+    protected function cleanUpTimes(array $schedules): array
+    {
+        // Check for non-zero minutes:
+        foreach ($schedules as $day) {
+            foreach ($day['times'] as $time) {
+                if (!str_ends_with($time['opens'], '00') || !str_ends_with($time['closes'], '00')) {
+                    return $schedules;
+                }
+            }
+        }
+        // Convert to hour only:
+        foreach ($schedules as &$day) {
+            foreach ($day['times'] as &$time) {
+                $time['opens'] = rtrim(rtrim($time['opens'], '0'), ':.');
+                $time['closes'] = rtrim(rtrim($time['closes'], '0'), ':.');
+            }
+        }
+        unset($time);
+
+        return $schedules;
     }
 
     /**
@@ -1463,6 +1490,7 @@ class OrganisationInfo implements
                 $details['openTimes']['openNow'] = true;
             }
         }
+        $details['openTimes']['schedules'] = $this->cleanUpTimes($details['openTimes']['schedules']);
         // Address handling
         if (!empty($details['address'])) {
             $mapUrl = $this->config->General->mapUrl;
