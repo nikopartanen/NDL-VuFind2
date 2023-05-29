@@ -345,7 +345,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
           timeOpen.find('.times-template').before(item);
           timeOpen.show();
 
-          if (selfServiceTimes.length > 0) {
+          if (selfServiceTimes.length > 0 && staffTimes.length > 0) {
             staffTimesElem.removeClass('hide');
             for (let i = 0; i < staffTimes.length; i++) {
               let schedule = staffTimes[i];
