@@ -57,6 +57,28 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
     protected $onlinePayableManualFineDescriptionPatterns = [];
 
     /**
+     * Mappings from item status codes to VuFind strings
+     *
+     * @var array
+     */
+    protected $itemStatusMappings = [
+        '!' => 'On Holdshelf',
+        't' => 'In Transit',
+        'o' => 'On Reference Desk',
+        'k' => 'In Repair',
+        'm' => 'Missing',
+        'n' => 'Long Overdue',
+        '$' => 'lost_loan_and_paid',
+        'p' => 'Withdrawn',
+        'z' => 'Claims Returned',
+        's' => 'On Search',
+        'd' => 'In Process',
+        '-' => 'On Shelf',
+        'Charged' => 'Charged',
+        'Ordered' => 'Ordered',
+    ];
+
+    /**
      * SOAP options for the IMMS connection
      *
      * @var array
