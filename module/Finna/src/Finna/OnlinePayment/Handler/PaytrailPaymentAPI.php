@@ -3,7 +3,7 @@
 /**
  * Paytrail Payment API handler
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2022.
  *
@@ -35,6 +35,7 @@ use Finna\OnlinePayment\Handler\Connector\Paytrail\PaytrailPaymentAPI\Customer;
 use Paytrail\SDK\Model\CallbackUrl;
 use Paytrail\SDK\Model\Item;
 use Paytrail\SDK\Request\PaymentRequest;
+use Paytrail\SDK\Request\ShopInShopPaymentRequest;
 use Paytrail\SDK\Util\Signature;
 
 /**
@@ -115,7 +116,14 @@ class PaytrailPaymentAPI extends AbstractBase
             ->setEmail(trim($user->email));
 
         $language = $this->languageMap[$this->getCurrentLanguageCode()] ?? 'EN';
-        $paymentRequest = (new PaymentRequest())
+
+        $productCodeMappings = $this->getProductCodeMappings();
+        $organizationProductCodeMappings = $this->getOrganizationProductCodeMappings();
+        $organizationMerchantIdMappings = $this->getOrganizationMerchantIdMappings();
+
+        $paymentRequest = $organizationMerchantIdMappings
+            ? new ShopInShopPaymentRequest() : new PaymentRequest();
+        $paymentRequest
             ->setStamp($transactionId)
             ->setRedirectUrls($returnUrls)
             ->setCallbackUrls($callbackUrls)
@@ -126,19 +134,16 @@ class PaytrailPaymentAPI extends AbstractBase
             ->setCustomer($customer);
         // Payment description in $this->config->paymentDescription is not supported
 
+        $productCode = $this->config->productCode ?? '';
+        $transactionFeeProductCode = $this->config->transactionFeeProductCode ?? null;
         if (
-            isset($this->config->productCode)
-            || isset($this->config->transactionFeeProductCode)
-            || isset($this->config->productCodeMappings)
-            || isset($this->config->organizationProductCodeMappings)
+            $productCode
+            || $transactionFeeProductCode
+            || $productCodeMappings
+            || $organizationProductCodeMappings
+            || $organizationMerchantIdMappings
         ) {
             // Map fines to items:
-            $productCode = !empty($this->config->productCode)
-                ? $this->config->productCode : '';
-            $productCodeMappings = $this->getProductCodeMappings();
-            $organizationProductCodeMappings
-                = $this->getOrganizationProductCodeMappings();
-
             $items = [];
             foreach ($fines as $fine) {
                 $fineType = $fine['fine'] ?? '';
@@ -177,16 +182,24 @@ class PaytrailPaymentAPI extends AbstractBase
                     );
                     $fineDesc .= " ($title)";
                 }
+                $itemId = $fine['fine_id'] ?? $fine['id'] ?? null;
                 $item = (new Item())
                     ->setDescription($fineDesc)
                     ->setProductCode($code)
                     ->setUnitPrice(round($fine['balance']))
                     ->setUnits(1)
-                    ->setVatPercentage(0);
+                    ->setVatPercentage(0)
+                    ->setStamp("$transactionId $itemId")
+                    ->setReference($itemId);
+
+                if ($itemMerchant = $organizationMerchantIdMappings[$fineOrg] ?? null) {
+                    $item->setMerchant($itemMerchant);
+                }
+
                 $items[] = $item;
             }
             if ($transactionFee) {
-                $code = $this->config->transactionFeeProductCode ?? $productCode;
+                $code = $transactionFeeProductCode ?? $productCode;
                 $item = (new Item())
                     ->setDescription(
                         'Palvelumaksu / Serviceavgift / Transaction fee'
@@ -236,37 +249,38 @@ class PaytrailPaymentAPI extends AbstractBase
      * @param \Finna\Db\Row\Transaction $transaction Transaction
      * @param \Laminas\Http\Request     $request     Request
      *
-     * @return int One of the result codes defined in AbstractBase
+     * @return array One of the result codes defined in AbstractBase and bool
+     * indicating whether the transaction was just now marked as paid
      */
     public function processPaymentResponse(
         \Finna\Db\Row\Transaction $transaction,
         \Laminas\Http\Request $request
-    ): int {
+    ): array {
         if (!($params = $this->getPaymentResponseParams($request))) {
-            return self::PAYMENT_FAILURE;
+            return [self::PAYMENT_FAILURE, false];
         }
 
         // Make sure the transaction IDs match:
         if ($transaction->transaction_id !== $params['checkout-stamp']) {
-            return self::PAYMENT_FAILURE;
+            return [self::PAYMENT_FAILURE, false];
         }
 
         $status = $params['checkout-status'];
         switch ($status) {
             case 'ok':
-                $transaction->setPaid();
-                return self::PAYMENT_SUCCESS;
+                $marked = $transaction->setPaid();
+                return [self::PAYMENT_SUCCESS, $marked];
             case 'fail':
                 $transaction->setCanceled();
-                return self::PAYMENT_CANCEL;
+                return [self::PAYMENT_CANCEL, false];
             case 'new':
             case 'pending':
             case 'delayed':
-                return self::PAYMENT_PENDING;
+                return [self::PAYMENT_PENDING, false];
         }
 
         $this->logPaymentError("unknown status $status");
-        return self::PAYMENT_FAILURE;
+        return [self::PAYMENT_FAILURE, false];
     }
 
     /**
@@ -330,13 +344,13 @@ class PaytrailPaymentAPI extends AbstractBase
             }
         }
 
-        $client = new Client(
+        return new Client(
             $this->config->merchantId,
             $this->config->secret,
-            'Finna'
+            'Finna',
+            $this->http,
+            $this->getLogger(),
+            Client::API_ENDPOINT
         );
-        $client->setHttpService($this->http);
-        $client->setLogger($this->logger);
-        return $client;
     }
 }

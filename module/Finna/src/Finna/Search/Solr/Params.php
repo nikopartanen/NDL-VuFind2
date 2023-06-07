@@ -3,7 +3,7 @@
 /**
  * Solr Search Parameters
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2023.
  *
@@ -695,7 +695,7 @@ class Params extends \VuFind\Search\Solr\Params
         if ($field === AuthorityHelper::AUTHOR2_ID_FACET) {
             return 'authority_id_label';
         }
-        if (strpos($field, '{!geofilt ') === 0) {
+        if (str_starts_with($field, '{!geofilt ')) {
             return 'Geographical Area';
         }
         return parent::getFacetLabel($field, $value, $default);

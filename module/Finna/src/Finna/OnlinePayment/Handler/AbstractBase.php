@@ -3,7 +3,7 @@
 /**
  * Abstract payment handler
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2016-2022.
  *
@@ -166,7 +166,7 @@ abstract class AbstractBase implements
      */
     protected function addQueryParams(string $url, array $params): string
     {
-        $url .= strpos($url, '?') === false ? '?' : '&';
+        $url .= !str_contains($url, '?') ? '?' : '&';
         $url .= http_build_query($params);
         return $url;
     }
@@ -270,17 +270,7 @@ abstract class AbstractBase implements
      */
     protected function getProductCodeMappings()
     {
-        $mappings = [];
-        if (!empty($this->config->productCodeMappings)) {
-            foreach (explode(':', $this->config->productCodeMappings) as $item) {
-                $parts = explode('=', $item, 2);
-                if (count($parts) != 2) {
-                    continue;
-                }
-                $mappings[trim($parts[0])] = trim($parts[1]);
-            }
-        }
-        return $mappings;
+        return $this->parseMappings($this->config->productCodeMappings ?? '');
     }
 
     /**
@@ -290,18 +280,44 @@ abstract class AbstractBase implements
      */
     protected function getOrganizationProductCodeMappings()
     {
-        $mappings = [];
-        if (!empty($this->config->organizationProductCodeMappings)) {
-            $map = explode(':', $this->config->organizationProductCodeMappings);
-            foreach ($map as $item) {
-                $parts = explode('=', $item, 2);
-                if (count($parts) != 2) {
-                    continue;
-                }
-                $mappings[trim($parts[0])] = trim($parts[1]);
+        return $this->parseMappings($this->config->organizationProductCodeMappings ?? '');
+    }
+
+    /**
+     * Get organization to merchant id mappings from configuration
+     *
+     * @return array
+     */
+    protected function getOrganizationMerchantIdMappings()
+    {
+        return $this->parseMappings($this->config->organizationMerchantIdMappings ?? '');
+    }
+
+    /**
+     * Parse a mappings configuration to an array
+     *
+     * @param string $mappings Mappings
+     *
+     * @return array
+     */
+    protected function parseMappings(string $mappings): array
+    {
+        if (!$mappings) {
+            return [];
+        }
+        $result = [];
+        foreach (explode(':', $mappings) as $item) {
+            $parts = explode('=', $item, 2);
+            if (count($parts) !== 2) {
+                continue;
+            }
+            $key = trim($parts[0]);
+            $value = trim($parts[1]);
+            if ('' !== $key && '' !== $value) {
+                $result[$key] = $value;
             }
         }
-        return $mappings;
+        return $result;
     }
 
     /**
@@ -375,7 +391,7 @@ abstract class AbstractBase implements
                 if (method_exists($value, 'toArray')) {
                     $value = $value->toArray();
                 } else {
-                    $key = "$key: " . get_class($value);
+                    $key = "$key: " . $value::class;
                     $value = get_object_vars($value);
                 }
             }

@@ -3,7 +3,7 @@
 /**
  * SolrAuth aspect of the Search Multi-class (Options)
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2020.
  *
@@ -40,6 +40,13 @@ namespace Finna\Search\SolrAuth;
  */
 class Options extends \VuFind\Search\SolrAuth\Options
 {
+    /**
+     * Default view option
+     *
+     * @var string
+     */
+    protected $defaultView = 'condensed';
+
     /**
      * Return the route name for the search results action.
      *

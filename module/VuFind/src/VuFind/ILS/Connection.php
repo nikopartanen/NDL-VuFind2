@@ -6,7 +6,7 @@
  * This wrapper works with a driver class to pass information from the ILS to
  * VuFind.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2007.
  *
@@ -58,6 +58,27 @@ class Connection implements TranslatorAwareInterface, LoggerAwareInterface
 {
     use \VuFind\I18n\Translator\TranslatorAwareTrait;
     use \VuFind\Log\LoggerAwareTrait;
+
+    /**
+     * Status code for unavailable items
+     *
+     * @var int
+     */
+    public const ITEM_STATUS_UNAVAILABLE = 0;
+
+    /**
+     * Status code for available items
+     *
+     * @var int
+     */
+    public const ITEM_STATUS_AVAILABLE = 1;
+
+    /**
+     * Status code for items with uncertain availability
+     *
+     * @var int
+     */
+    public const ITEM_STATUS_UNCERTAIN = 2;
 
     /**
      * Has the driver been initialized yet?
@@ -229,7 +250,7 @@ class Connection implements TranslatorAwareInterface, LoggerAwareInterface
         // done so!
         if ($this->hasNoILSFailover()) {
             $noILS = $this->driverManager->get('NoILS');
-            if (get_class($noILS) != $this->getDriverClass()) {
+            if ($noILS::class != $this->getDriverClass()) {
                 $this->setDriver($noILS);
                 $this->initializeDriver();
                 return true;
@@ -657,7 +678,7 @@ class Connection implements TranslatorAwareInterface, LoggerAwareInterface
      */
     protected function checkMethodchangePassword($functionConfig, $params)
     {
-        if ($this->checkCapability('changePassword', $params ?: [])) {
+        if ($this->checkCapability('changePassword', [$params ?: []])) {
             return ['function' => 'changePassword'];
         }
         return false;

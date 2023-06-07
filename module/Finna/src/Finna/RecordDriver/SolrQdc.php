@@ -3,7 +3,7 @@
 /**
  * Model for Qualified Dublin Core records in Solr.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2013-2020.
  *
@@ -215,17 +215,11 @@ class SolrQdc extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\L
 
         $results = [];
         $rights = [];
-        $pdf = false;
         $xml = $this->getXmlRecord();
         $thumbnails = [];
         $otherSizes = [];
         $highResolution = [];
-        $rightsStmt = $this->getMappedRights((string)($xml->rights ?? ''));
-        $rights = [
-            'copyright' => $rightsStmt,
-            'link' => $this->getRightsLink($rightsStmt, $language),
-        ];
-
+        $rights = $this->getRights($language);
         $addToResults = function ($imageData) use (&$results) {
             if (!isset($imageData['urls']['small'])) {
                 $imageData['urls']['small'] = $imageData['urls']['medium']
@@ -334,6 +328,65 @@ class SolrQdc extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\L
             }
         }
         return $this->cache[$cacheKey] = $results;
+    }
+
+    /**
+     * Get image rights
+     *
+     * @param string $language Language for the copyright
+     *
+     * @return array [copyright, link, description = []]
+     */
+    protected function getRights(string $language): array
+    {
+        $xml = $this->getXmlRecord();
+        $result = [
+            'copyright' => '',
+            'link' => '',
+            'description' => [],
+        ];
+        $cache = [];
+        // Get all the copyrights and save them in an array identified by language.
+        foreach ($xml->rights as $right) {
+            $strRight = trim((string)$right);
+            $type = trim((string)$right->attributes()->type);
+            $rightLanguage = trim((string)$right->attributes()->lang) ?: 'no_locale';
+            $cache[$rightLanguage][] = [
+                'txt' => $strRight,
+                'type' => $type,
+            ];
+        }
+        if (empty($cache)) {
+            return $result;
+        }
+        // Check that there is proper values to use for displaying the rights.
+        $localizedRights = [];
+        foreach ($this->getPrioritizedLanguages([$language], 'no_locale') as $lang) {
+            if (!empty($cache[$lang])) {
+                $localizedRights = $cache[$lang];
+                break;
+            }
+        }
+        if (empty($localizedRights)) {
+            return $result;
+        }
+        // Try to get the main copyright to display, normally the first in array.
+        $priorityRight = array_shift($localizedRights);
+        $mappedRight = $this->getMappedRights($priorityRight['txt']);
+        $result['copyright'] = $mappedRight;
+        $result['link'] = $this->getRightsLink($mappedRight, $language);
+        foreach ($localizedRights as $right) {
+            // Add rights as descriptions which have the same localization
+            // as the primary right.
+            if (
+                'copyright' === $right['type']
+                && $result['copyright'] !== $right['txt']
+            ) {
+                $result['description'][] = $right['txt'];
+            }
+        }
+
+        return $result;
     }
 
     /**
