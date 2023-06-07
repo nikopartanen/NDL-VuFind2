@@ -517,7 +517,7 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                 if (!empty($item['bibIds'])) {
                     $bibId = $item['bibIds'][0];
                     // Fetch bib information
-                    $bib = $this->getBibRecord($bibId, 'title,publishYear', $patron);
+                    $bib = $this->getBibRecord($bibId, null, $patron);
                     $title = $bib['title'] ?? '';
                 }
             }
