@@ -962,8 +962,8 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                 ['v5', 'holdings'],
                 [
                     'bibIds' => $this->extractBibId($id),
-                    //'deleted' => 'false',
-                    //'suppressed' => 'false',
+                    'deleted' => 'false',
+                    'suppressed' => 'false',
                     'fields' => 'fixedFields,varFields',
                 ],
                 'GET'
@@ -972,7 +972,7 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
                 $location = '';
                 foreach ($entry['fixedFields'] as $code => $field) {
                     if (
-                        $code === static::HOLDINGS_LOCATION_FIELD
+                        (string)$code === static::HOLDINGS_LOCATION_FIELD
                         || $field['label'] === 'LOCATION'
                     ) {
                         $location = $field['value'];
@@ -986,97 +986,81 @@ class SierraRest extends \VuFind\ILS\Driver\SierraRest
             }
         }
 
-        $offset = 0;
-        $limit = 50;
-        $fields = 'location,status,barcode,callNumber,fixedFields,varFields';
+        $fields = [
+            'location',
+            'status',
+            'barcode',
+            'callNumber',
+            'fixedFields',
+            'varFields',
+        ];
         $statuses = [];
         $sort = 0;
-        $result = null;
         // Fetch hold count for items if needed:
         $displayItemHoldCount = $this->config['Holdings']['display_item_hold_counts'] ?? false;
         if ($displayItemHoldCount) {
-            $fields .= ',holdCount';
+            $fields[] = 'holdCount';
         }
-        while (null === $result || $limit === $result['total']) {
-            $result = $this->makeRequest(
-                [$this->apiBase, 'items'],
-                [
-                    'bibIds' => $this->extractBibId($id),
-                    'deleted' => 'false',
-                    'suppressed' => 'false',
-                    'fields' => $fields,
-                    'limit' => $limit,
-                    'offset' => $offset,
-                ],
-                'GET'
-            );
-            if (empty($result['entries'])) {
-                if (!empty($result['httpStatus']) && 404 !== $result['httpStatus']) {
-                    $msg = "Item status request failed: {$result['httpStatus']}";
-                    if (!empty($result['description'])) {
-                        $msg .= " ({$result['description']})";
-                    }
-                    throw new ILSException($msg);
+
+        $items = $this->getItemsForBibRecord(
+            $id,
+            array_unique([...$this->defaultItemFields, ...$fields]),
+            $patron
+        );
+        foreach ($items as $item) {
+            $location = $this->translateLocation($item['location']);
+            [$status, $duedate, $notes] = $this->getItemStatus($item);
+            $available = $status == $this->mapStatusCode('-');
+            // OPAC message
+            if (isset($item['fixedFields']['108'])) {
+                $opacMsg = $item['fixedFields']['108'];
+                $trimmedMsg = trim($opacMsg['value']);
+                if (strlen($trimmedMsg) && $trimmedMsg != '-') {
+                    $notes[] = $this->translateOpacMessage(
+                        trim($opacMsg['value'])
+                    );
                 }
-                break;
+            }
+            $callnumber = isset($item['callNumber'])
+                ? preg_replace('/^\|a/', '', $item['callNumber'])
+                : $bibCallNumber;
+
+            $volume = isset($item['varFields']) ? $this->extractVolume($item)
+                : '';
+
+            $entry = [
+                'id' => $id,
+                'item_id' => $item['id'],
+                'location' => $location,
+                'availability' => $available,
+                'status' => $status,
+                'reserve' => 'N',
+                'callnumber' => $callnumber,
+                'duedate' => $duedate,
+                'number' => $volume,
+                'barcode' => $item['barcode'],
+                'sort' => $sort--,
+                'requests_placed' => $displayItemHoldCount ? ($item['holdCount'] ?? null) : null,
+            ];
+            if ($notes) {
+                $entry['item_notes'] = $notes;
             }
 
-            foreach ($result['entries'] as $item) {
-                $location = $this->translateLocation($item['location']);
-                [$status, $duedate, $notes] = $this->getItemStatus($item);
-                $available = $status == $this->mapStatusCode('-');
-                // OPAC message
-                if (isset($item['fixedFields']['108'])) {
-                    $opacMsg = $item['fixedFields']['108'];
-                    $trimmedMsg = trim($opacMsg['value']);
-                    if (strlen($trimmedMsg) && $trimmedMsg != '-') {
-                        $notes[] = $this->translateOpacMessage(
-                            trim($opacMsg['value'])
-                        );
-                    }
-                }
-                $callnumber = isset($item['callNumber'])
-                    ? preg_replace('/^\|a/', '', $item['callNumber'])
-                    : $bibCallNumber;
-
-                $volume = isset($item['varFields']) ? $this->extractVolume($item)
-                    : '';
-
-                $entry = [
-                    'id' => $id,
-                    'item_id' => $item['id'],
-                    'location' => $location,
-                    'availability' => $available,
-                    'status' => $status,
-                    'reserve' => 'N',
-                    'callnumber' => $callnumber,
-                    'duedate' => $duedate,
-                    'number' => $volume,
-                    'barcode' => $item['barcode'],
-                    'sort' => $sort--,
-                    'requests_placed' => $displayItemHoldCount ? ($item['holdCount'] ?? null) : null,
-                ];
-                if ($notes) {
-                    $entry['item_notes'] = $notes;
-                }
-
-                if ($this->isHoldable($item, $bib)) {
-                    $entry['is_holdable'] = true;
-                    $entry['level'] = 'copy';
-                    $entry['addLink'] = true;
-                } else {
-                    $entry['is_holdable'] = false;
-                }
-
-                $locationCode = $item['location']['code'] ?? '';
-                if (!empty($holdingsData[$locationCode])) {
-                    $entry += $this->getHoldingsData($holdingsData[$locationCode]);
-                    $holdingsData[$locationCode]['_hasItems'] = true;
-                }
-
-                $statuses[] = $entry;
+            if ($this->isHoldable($item, $bib)) {
+                $entry['is_holdable'] = true;
+                $entry['level'] = 'copy';
+                $entry['addLink'] = true;
+            } else {
+                $entry['is_holdable'] = false;
             }
-            $offset += $limit;
+
+            $locationCode = $item['location']['code'] ?? '';
+            if (!empty($holdingsData[$locationCode])) {
+                $entry += $this->getHoldingsData($holdingsData[$locationCode]);
+                $holdingsData[$locationCode]['_hasItems'] = true;
+            }
+
+            $statuses[] = $entry;
         }
 
         // Add holdings that don't have items
