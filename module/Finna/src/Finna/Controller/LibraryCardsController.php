@@ -3,7 +3,7 @@
 /**
  * LibraryCards Controller
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2010.
  * Copyright (C) The National Library of Finland 2015-2018.
@@ -874,7 +874,7 @@ class LibraryCardsController extends \VuFind\Controller\LibraryCardsController
                 $message
             );
         } catch (\VuFind\Exception\Mail $e) {
-            $this->flashMessenger()->addMessage($e->getMessage(), 'error');
+            $this->flashMessenger()->addMessage($e->getDisplayMessage(), 'error');
         }
     }
 

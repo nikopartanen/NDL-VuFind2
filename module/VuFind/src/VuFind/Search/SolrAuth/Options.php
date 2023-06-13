@@ -3,7 +3,7 @@
 /**
  * Solr Authority aspect of the Search Multi-class (Options)
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2011.
  *
@@ -40,13 +40,6 @@ namespace VuFind\Search\SolrAuth;
  */
 class Options extends \VuFind\Search\Solr\Options
 {
-    /**
-     * Default view option
-     *
-     * @var string
-     */
-    protected $defaultView = 'condensed';
-
     /**
      * Constructor
      *

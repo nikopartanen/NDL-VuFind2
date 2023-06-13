@@ -3,7 +3,7 @@
 /**
  * Factory for SolrDefault record drivers.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2018.
  * Copyright (C) The National Library of Finland 2018-2022.
@@ -78,7 +78,7 @@ class SolrDefaultFactory extends \VuFind\RecordDriver\SolrDefaultWithoutSearchSe
             $container->get(\VuFind\Config\PluginManager::class)->get('datasources')
         );
         $driver->attachVideoHandler($container->get(\Finna\Video\Video::class));
-
+        $driver->attachLocaleSettings($container->get(\VuFind\I18n\Locale\LocaleSettings::class));
         return $driver;
     }
 }

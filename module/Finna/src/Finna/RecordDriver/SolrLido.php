@@ -3,7 +3,7 @@
 /**
  * Model for LIDO records in Solr.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2015-2022.
  *
@@ -554,7 +554,7 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                 // Representation is a 3d model
                 if (in_array($type, $modelTypeKeys)) {
                     if ($model = $this->getModel($url, $format, $type)) {
-                        $modelUrls = array_merge($modelUrls, $model);
+                        $modelUrls[] = $model;
                     }
                     continue;
                 }
@@ -608,9 +608,16 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
                     }
                 );
             }
+            $modelResult = [];
+            if ($modelUrls) {
+                $modelResult = [
+                    'models' => $modelUrls,
+                    'rights' => $rights,
+                ];
+            }
             $addToResults(
                 $imageResult,
-                $modelUrls,
+                $modelResult,
                 $audioUrls,
                 $videoUrls,
                 $documentUrls
@@ -728,14 +735,22 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      *
      * @return array
      */
-    protected function getModel(string $url, string $format, string $type): array
-    {
+    protected function getModel(
+        string $url,
+        string $format,
+        string $type,
+    ): array {
         $type = $this->modelTypes[$type];
         $format = strtolower($format);
-        if ('preview_3D' === $type && !in_array($format, $this->displayableModelFormats)) {
-            return [];
+        if ('preview' === $type && !in_array($format, $this->displayableModelFormats)) {
+            // If we can not display the file, then tag it as a provided 3D model
+            $type = 'provided';
         }
-        return [$format => [$type => $url]];
+        return [
+            'url' => $url,
+            'format' => $format,
+            'type' => $type,
+        ];
     }
 
     /**
@@ -960,7 +975,6 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
      */
     public function getModelSettings(): array
     {
-        $datasource = $this->getDataSource();
         $settings = [];
         if ($iniData = $this->recordConfig->Models ?? []) {
             $settings = [
@@ -2020,6 +2034,52 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
     }
 
     /**
+     * Get physical locations
+     *
+     * @return array
+     */
+    public function getPhysicalLocations(): array
+    {
+        $results = [];
+        foreach (
+            $this->getXmlRecord()->lido->descriptiveMetadata->objectIdentificationWrap
+            ->repositoryWrap->repositorySet ?? [] as $repository
+        ) {
+            $type = (string)($repository->attributes()->type ?? '');
+            if ($type !== 'Current location') {
+                continue;
+            }
+            $locations = [];
+            foreach ($repository->repositoryLocation->namePlaceSet ?? [] as $nameSet) {
+                if ($name = trim((string)$nameSet->appellationValue ?? '')) {
+                    $locations[] = $name;
+                }
+            }
+            foreach ($repository->repositoryLocation->partOfPlace ?? [] as $part) {
+                while ($part->namePlaceSet ?? false) {
+                    if ($partName = trim((string)$part->namePlaceSet->appellationValue ?? '')) {
+                        $locations[] = $partName;
+                    }
+                    $part = $part->partOfPlace;
+                }
+            }
+            if ($locations) {
+                $results[] = implode(', ', $locations);
+            }
+            $lang = $this->getLocale();
+            if (
+                $display = trim(
+                    (string)($this->getLanguageSpecificItem($repository->displayRepository, $lang))
+                    ?? ''
+                )
+            ) {
+                $results[] = $display;
+            }
+        }
+        return $results;
+    }
+
+    /**
      * Get a language-specific item from an element array
      *
      * @param SimpleXMLElement $element  Element to use
@@ -2032,8 +2092,10 @@ class SolrLido extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\
         $languages = [];
         if ($language) {
             $languages[] = $language;
-            if (strlen($language) > 2) {
-                $languages[] = substr($language, 0, 2);
+            // Add region-less language if needed:
+            $parts = explode('-', $language, 2);
+            if (isset($parts[1])) {
+                $languages[] = $parts[0];
             }
         }
         foreach ($languages as $lng) {

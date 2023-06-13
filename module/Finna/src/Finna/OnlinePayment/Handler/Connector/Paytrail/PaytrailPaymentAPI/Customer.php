@@ -3,7 +3,7 @@
 /**
  * Paytrail Payment API customer
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2022.
  *
@@ -51,7 +51,7 @@ class Customer extends \Paytrail\SDK\Model\Customer
      *
      * @throws ValidationException
      */
-    public function validate()
+    public function validate(): bool
     {
         $props = get_object_vars($this);
 

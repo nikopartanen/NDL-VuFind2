@@ -3,7 +3,7 @@
 /**
  * Record driver data formatting view helper
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2016.
  * Copyright (C) The National Library of Finland 2017-2023.
@@ -161,6 +161,7 @@ class RecordDataFormatter extends \VuFind\View\Helper\Root\RecordDataFormatter
             'ISSN',
             'Language',
             'lido_editions',
+            'Location',
             'Measurements',
             'Organisation',
             'original_work_language',

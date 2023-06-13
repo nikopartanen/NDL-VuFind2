@@ -3,7 +3,7 @@
 /**
  * Record driver view helper
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2010.
  * Copyright (C) The National Library of Finland 2015-2022.
@@ -399,7 +399,7 @@ class Record extends \VuFind\View\Helper\Root\Record
         );
 
         if ($searchTabsFilters) {
-            $prepend = (strpos($result, '?') === false) ? '?' : '&amp;';
+            $prepend = (!str_contains($result, '?')) ? '?' : '&amp;';
             $result .= $this->getView()->plugin('searchTabs')->getCurrentHiddenFilterParams(
                 $this->driver->getSourceIdentifier(),
                 false,
@@ -1225,7 +1225,7 @@ class Record extends \VuFind\View\Helper\Root\Record
      *
      * @param string $copyright Copyright
      *
-     * @return string
+     * @return string HTML-escaped translation
      */
     public function translateCopyright(string $copyright): string
     {

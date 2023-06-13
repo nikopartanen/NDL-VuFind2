@@ -216,45 +216,63 @@ class SolrEad3 extends SolrEad
      */
     public function getURLs()
     {
-        $urls = $localeUrls = [];
+        $urls = [];
         $record = $this->getXmlRecord();
         if (!isset($record->did)) {
             return [];
         }
-        $preferredLangCodes = $this->mapLanguageCode($this->preferredLanguage);
-        foreach ($record->did->xpath('//daoset') ?? [] as $daoset) {
-            $localtype = (string)$daoset->attributes()->localtype;
 
-            if ($localtype && in_array($localtype, self::EXTERNAL_DATA_URLS)) {
+        $preferredLangCodes = $this->mapLanguageCode($this->preferredLanguage);
+
+        $isExternalUrl = function ($node) {
+            $localtype = (string)$node->attributes()->localtype;
+            return $localtype && in_array($localtype, self::EXTERNAL_DATA_URLS);
+        };
+        $processURL = function ($node) use ($preferredLangCodes, $isExternalUrl, &$urls) {
+            $attr = $node->attributes();
+            if (
+                (string)$attr->linkrole === 'image/jpeg'
+                || !$attr->href
+                || $isExternalUrl($node)
+            ) {
+                return;
+            }
+            $lang = (string)$attr->lang;
+            $preferredLang = $lang && in_array($lang, $preferredLangCodes);
+
+            $url = (string)$attr->href;
+            $desc = $attr->linktitle ?? $node->descriptivenote->p ?? $url;
+
+            if (!$this->urlBlocked($url, $desc)) {
+                $urlData = [
+                    'url' => $url,
+                    'desc' => (string)$desc,
+                ];
+                if ($preferredLang) {
+                    $urls['localeurls'][] = $urlData;
+                } else {
+                    $urls['urls'][] = $urlData;
+                }
+            }
+        };
+
+        foreach ($record->did->daoset as $daoset) {
+            if ($isExternalUrl($daoset)) {
                 continue;
             }
-            foreach ($daoset->dao as $node) {
-                $attr = $node->attributes();
-                if ((string)$attr->linkrole === 'image/jpeg' || !$attr->href) {
-                    continue;
-                }
-                $lang = (string)$attr->lang;
-                $preferredLang = $lang && in_array($lang, $preferredLangCodes);
-
-                $url = (string)$attr->href;
-                $desc = $attr->linktitle ?? $node->descriptivenote->p ?? $url;
-
-                if (!$this->urlBlocked($url, $desc)) {
-                    $urlData = [
-                        'url' => $url,
-                        'desc' => (string)$desc,
-                    ];
-                    $urls[] = $urlData;
-                    if ($preferredLang) {
-                        $localeUrls[] = $urlData;
-                    }
-                }
+            foreach ($daoset->dao as $dao) {
+                $processURL($dao);
             }
         }
-        if ($localeUrls) {
-            $urls = $localeUrls;
+        foreach ($record->did->dao as $dao) {
+            $processURL($dao);
         }
-        return $this->resolveUrlTypes($urls);
+
+        if (empty($urls)) {
+            return [];
+        }
+
+        return $this->resolveUrlTypes($urls['localeurls'] ?? $urls['urls']);
     }
 
     /**
@@ -823,7 +841,7 @@ class SolrEad3 extends SolrEad
         };
         $isExcludedFromOCR = function ($title) {
             foreach (self::EXCLUDE_OCR_TITLE_PARTS as $part) {
-                if (false !== strpos($title, $part)) {
+                if (str_contains($title, $part)) {
                     return true;
                 }
             }

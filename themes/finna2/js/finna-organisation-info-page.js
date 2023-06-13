@@ -83,6 +83,21 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
   }
 
   function initMap() {
+    // If all coordinates are empty, hide map
+    var coordinatesExist = false;
+    $.each(organisationList, function checkEmptyCoordinates(i, obj) {
+      if (obj.address && obj.address.coordinates) {
+        var coordinates = obj.address.coordinates;
+        var isEmpty = Object.values(coordinates).some(value => (value === '' || value === null));
+        if (!isEmpty) {
+          coordinatesExist = true;
+        }
+      }
+    });
+    if (!coordinatesExist) {
+      holder.find('.office.map-ui').hide();
+      holder.find('.map-control-buttons').hide();
+    }
     $.each(organisationList, function handleOrganisation(ind, obj) {
       // Map data (info bubble, icon)
       var bubble = holder.find('.map-bubble-template').clone();
@@ -147,7 +162,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     var count = Object.keys(list).length;
     var translation = VuFind.translate('organisationInfoAutocomplete').replace('%%count%%', count);
 
-    $(document).ready(function initSelect() {
+    $(function initSelect() {
       var select = document.querySelector('#office-search');
       var placeholder = document.createElement('option');
       select.append(placeholder);
@@ -241,7 +256,7 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     contactHolder.show();
 
     holder.find('.office-quick-information .service-title').text(data.name);
-    if ('address' in data) {
+    if ('address' in data && data.address) {
       holder.find('.office-links.address').html(data.address);
       if (!data.details.museum) {
         var address = holder.find('.address-contact');
@@ -381,8 +396,16 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
     }
 
     var hasSchedules = 'openTimes' in data && 'schedules' in data.openTimes && data.openTimes.schedules.length > 0;
+    var schedules = data.openTimes.schedules;
+    var isClosedForWeek = schedules.every(schedule => schedule.closed === true);
+    var hasScheduleDescriptions = 'scheduleDescriptions' in data.details
+      ? data.details.scheduleDescriptions.every(description => description !== '')
+      : false;
 
-    if (hasSchedules) {
+    if (isClosedForWeek && !hasScheduleDescriptions) {
+      holder.find('.open-or-closed').hide();
+    }
+    else if (hasSchedules) {
       holder.find('.open-or-closed').toggleClass('hidden', null === data.openNow);
       holder.find('.open-or-closed > span.library-is-' + (data.openNow ? 'open' : 'closed')).show();
     }
@@ -413,23 +436,23 @@ finna.organisationInfoPage = (function finnaOrganisationInfoPage() {
       holder.find('.extra-image-2').hide();
     }
 
-    if ('buildingYear' in data.details) {
+    if ('buildingYear' in data.details && data.details.buildingYear) {
       var year = holder.find('.building-year');
       year.find('> span').text(data.details.buildingYear);
       year.show();
     }
 
-    if ('phone' in data.details) {
+    if ('phone' in data.details && data.details.phone) {
       var phones = holder.find('.phone-numbers');
       phones.find('> p').html(data.details.phone);
       phones.show();
     }
-    if ('contactInfo' in data.details) {
+    if ('contactInfo' in data.details && data.details.contactInfo) {
       var contactInfo = holder.find('.phone-numbers');
       contactInfo.find('> p').html(data.details.contactInfo);
       contactInfo.show();
     }
-    if ('accessibilityInfo' in data.details) {
+    if ('accessibilityInfo' in data.details && data.details.accessibilityInfo) {
       let template = document.getElementById('accessibility_info_template');
       let blocks = [];
       data.details.accessibilityInfo.forEach((info) => {

@@ -3,7 +3,7 @@
 /**
  * Finna Module Configuration
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2014-2021.
  *
@@ -370,6 +370,7 @@ $config = [
             'Finna\OAI\Server' => 'VuFind\OAI\ServerFactory',
             'Finna\OnlinePayment\Handler\PluginManager' => 'VuFind\ServiceManager\AbstractPluginManagerFactory',
             'Finna\OnlinePayment\OnlinePayment' => 'Finna\OnlinePayment\OnlinePaymentFactory',
+            'Finna\OnlinePayment\Receipt' => 'Finna\OnlinePayment\ReceiptFactory',
             'Finna\OnlinePayment\Session' => 'Finna\OnlinePayment\OnlinePaymentSessionFactory',
             'Finna\OrganisationInfo\OrganisationInfo' => 'Finna\OrganisationInfo\OrganisationInfoFactory',
             'Finna\Record\Loader' => 'Finna\Record\LoaderFactory',
@@ -686,7 +687,7 @@ $config = [
             ],
             'ils_driver' => [
                 'factories' => [
-                    'Finna\ILS\Driver\Alma' => 'VuFind\ILS\Driver\AlmaFactory',
+                    'Finna\ILS\Driver\Alma' => 'VuFind\ILS\Driver\DriverWithDateConverterFactory',
                     'Finna\ILS\Driver\AxiellWebServices' => 'Finna\ILS\Driver\AxiellWebServicesFactory',
                     'Finna\ILS\Driver\Demo' => 'VuFind\ILS\Driver\DemoFactory',
                     'Finna\ILS\Driver\KohaRest' => 'VuFind\ILS\Driver\KohaRestFactory',

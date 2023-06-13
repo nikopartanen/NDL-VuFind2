@@ -3,7 +3,7 @@
 /**
  * Model for EAD records in Solr.
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) Villanova University 2010.
  * Copyright (C) The National Library of Finland 2012-2020.
@@ -284,8 +284,7 @@ class SolrEad extends SolrDefault implements \Laminas\Log\LoggerAwareInterface
             }
         }
 
-        $parts = explode('_', $language);
-        $language = $parts[0];
+        [$language] = explode('-', $language);
         switch ($language) {
             case 'fi':
                 $language = 'fin';

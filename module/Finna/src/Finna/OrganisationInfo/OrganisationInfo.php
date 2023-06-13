@@ -4,7 +4,7 @@
  * Service for querying Kirjastohakemisto database.
  * See: https://api.kirjastot.fi/
  *
- * PHP version 7
+ * PHP version 8
  *
  * Copyright (C) The National Library of Finland 2016-2023.
  *
@@ -959,7 +959,7 @@ class OrganisationInfo implements
             $phones = [];
             foreach ($response['phoneNumbers'] as $phone) {
                 // Check for email data in phone numbers
-                if (strpos($phone['number'], '@') !== false) {
+                if (str_contains($phone['number'], '@')) {
                     continue;
                 }
                 $name = $phone['name'];
@@ -1492,7 +1492,7 @@ class OrganisationInfo implements
         }
         $details['openTimes']['schedules'] = $this->cleanUpTimes($details['openTimes']['schedules']);
         // Address handling
-        if (!empty($details['address'])) {
+        if (!empty($details['address']['street'])) {
             $mapUrl = $this->config->General->mapUrl;
             $routeUrl = $this->config->General->routeUrl;
             $replace['street'] = $details['address']['street'];
@@ -1530,13 +1530,15 @@ class OrganisationInfo implements
                         $key['contact_info']['phone_email_' . $language . ''],
                 ];
         }
-        try {
-            $contactInfoToResult = $this->viewRenderer->partial(
-                "Helpers/organisation-info-museum-page.phtml",
-                ['contactInfo' => $contactInfo]
-            );
-        } catch (\Exception $e) {
-            $this->logError($e->getmessage());
+        if (!empty($contactInfo)) {
+            try {
+                $contactInfoToResult = $this->viewRenderer->partial(
+                    "Helpers/organisation-info-museum-page.phtml",
+                    ['contactInfo' => $contactInfo]
+                );
+            } catch (\Exception $e) {
+                $this->logError($e->getmessage());
+            }
         }
         // All data to view
         $result = [
@@ -1582,7 +1584,7 @@ class OrganisationInfo implements
      */
     protected function getMuseumDaySchedule($day, $json)
     {
-        $today = date('d.m');
+        $today = date('d.n.');
         $currentHour = date('H:i');
         $return = [
             'times' => [],
@@ -1611,7 +1613,7 @@ class OrganisationInfo implements
             $return['times'][] = $time;
         }
         $return['day'] = $this->translator->translate("day-name-short-$day");
-        $return['date'] = $dayDate->format('d.m');
+        $return['date'] = $dayDate->format('d.n.');
         if ($today === $return['date']) {
             $return['today'] = true;
             if (
