@@ -398,7 +398,7 @@ class SolrQdc extends \VuFind\RecordDriver\SolrDefault implements \Laminas\Log\L
     public function getDescriptionURL()
     {
         if ($isbn = $this->getCleanISBN()) {
-            return 'http://s1.doria.fi/getText.php?query=' . $isbn;
+            return 'https://kansikuvat.finna.fi/getText.php?query=' . $isbn;
         }
         return false;
     }
