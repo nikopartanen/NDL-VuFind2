@@ -51,6 +51,8 @@ namespace Finna\RecordDriver;
  */
 class SolrEad3 extends SolrEad
 {
+    use Feature\SolrFinnaTrait;
+
     // Image types
     public const IMAGE_MEDIUM = 'medium';
     public const IMAGE_LARGE = 'large';
@@ -408,6 +410,34 @@ class SolrEad3 extends SolrEad
         }
 
         return $localeResults ?: $results;
+    }
+
+    /**
+     * See if holdings tab is shown on current item
+     *
+     * @return bool
+     */
+    public function archiveRequestAllowed()
+    {
+        $xml = $this->getXmlRecord();
+        $attributes = $xml->attributes();
+        $datasourceSettings = $this->datasourceSettings[$this->getDataSource()] ?? [];
+        // Requests only allowed on specified datasource
+        if (!($datasourceSettings['allowArchiveRequest'] ?? false)) {
+            return false;
+        }
+        // Check if specified item hierarchy levels match the item's
+        if ($allowedLevels = $datasourceSettings['archiveRequestAllowedRecordLevels'] ?? false) {
+            $recordLevels = explode(':', $allowedLevels);
+            if (!in_array((string)$attributes->level, $recordLevels)) {
+                return false;
+            }
+        }
+        // Check if required filing unit exists
+        if (($datasourceSettings['archiveRequestRequireFilingUnit'] ?? false) && empty($this->getFilingUnit())) {
+            return false;
+        }
+        return true;
     }
 
     /**
