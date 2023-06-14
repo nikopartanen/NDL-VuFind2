@@ -7,7 +7,6 @@
     $openUrlActive = $openUrl->isActive();
     $doi = $this->doi($this->driver, 'holdings');
     $doiActive = $doi->isActive();
-    $allowArchiveRequest = $this->driver->tryMethod('archiveRequestAllowed');
     // Account for replace_other_urls setting
     $urls = $this->record($this->driver)->getLinkDetails($openUrlActive);
     $offlineMode = $this->ils()->getOfflineMode();
@@ -101,15 +100,6 @@
 
 <?=($offlineMode == "ils-offline") ? $this->render('Helpers/ils-offline.phtml', ['offlineModeMsg' => 'ils_offline_holdings_message']) : ''?>
 
-<?php if ($user && $allowArchiveRequest): ?>
-  <div class="text-right">
-    <a href="<?=$this->escapeHtmlAttr($this->recordLinker()->getActionUrl($driver, 'ArchiveRequest'))?>" class="btn btn-primary" data-lightbox="" data-toggle="modal" data-target="order_archive_material_form" data-lightbox><?=$this->transEsc('archive_request_reserve_action')?></a>
-  </div>
-<?php elseif (!$user && $allowArchiveRequest && !$holdsAllowed): ?>
-  <div class="text-right">    
-    <a href="<?=$this->url('myresearch-userlogin') ?>" class="btn btn-primary" data-lightbox><span><?=$this->transEsc('archive_request_login')?></span></a>
-  </div>
-<?php endif; ?>
 <?php if ($this->driver && $recordSource && $externalInterfaceUrl):?>
   <?=$this->record($driver)->renderTemplate('external-interface-link.phtml', ['driver' => $driver, 'source' => $recordSource, 'link' => $externalInterfaceUrl ?? ''])?>
 <?php endif;?>
