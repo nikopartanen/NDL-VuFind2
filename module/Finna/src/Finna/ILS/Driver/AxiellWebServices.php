@@ -662,7 +662,7 @@ class AxiellWebServices extends \VuFind\ILS\Driver\AbstractBase implements
 
                 $locationsList[] = [
                     'locationID' => $locationID,
-                    'locationDisplay' => $branch->name,
+                    'locationDisplay' => $branch->name ?? '',
                 ];
             }
         }
