@@ -48,7 +48,7 @@
         <?php endif; ?>
 
         <?php $journalTitle = $this->driver->getContainerTitle();
-        $summDate = $this->driver->getPublicationDateRange(); ?>
+        $summDate = $this->driver->tryMethod('getPublicationDateRange'); ?>
         <?php if (!empty($journalTitle)): ?>
           <?=!empty($summAuthor) ? '' : ' '?>
           <?php $ref = $this->driver->getContainerReference();
