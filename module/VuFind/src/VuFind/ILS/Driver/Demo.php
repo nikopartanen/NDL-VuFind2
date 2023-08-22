@@ -4,7 +4,7 @@
  * Advanced Dummy ILS Driver -- Returns sample values based on Solr index.
  *
  * Note that some sample values (holds, transactions, fines) are stored in
- * the session.  You can log out and log back in to get a different set of
+ * the session. You can log out and log back in to get a different set of
  * values.
  *
  * PHP version 8
@@ -491,7 +491,6 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
         }
         $result = [
             'id'           => $id,
-            'record_id'    => $id, // for hold links to not rely on id from route
             'source'       => $this->getRecordSource(),
             'item_id'      => $number,
             'number'       => $number,
@@ -1480,10 +1479,10 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
      * @param array $patron      Patron information returned by the patronLogin
      * method.
      * @param array $holdDetails Optional array, only passed in when getting a list
-     * in the context of placing or editing a hold.  When placing a hold, it contains
-     * most of the same values passed to placeHold, minus the patron data.  When
+     * in the context of placing or editing a hold. When placing a hold, it contains
+     * most of the same values passed to placeHold, minus the patron data. When
      * editing a hold it contains all the hold information returned by getMyHolds.
-     * May be used to limit the pickup options or may be ignored.  The driver must
+     * May be used to limit the pickup options or may be ignored. The driver must
      * not add new options to the return array based on this data or other areas of
      * VuFind may behave incorrectly.
      *
@@ -1545,7 +1544,7 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
      * method.
      * @param array $holdDetails Optional array, only passed in when getting a list
      * in the context of placing a hold; contains most of the same values passed to
-     * placeHold, minus the patron data.  May be used to limit the pickup options
+     * placeHold, minus the patron data. May be used to limit the pickup options
      * or may be ignored.
      *
      * @return false|string      The default pickup location for the patron or false
@@ -1568,7 +1567,7 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
      * method.
      * @param array $holdDetails Optional array, only passed in when getting a list
      * in the context of placing a hold; contains most of the same values passed to
-     * placeHold, minus the patron data.  May be used to limit the request group
+     * placeHold, minus the patron data. May be used to limit the request group
      * options or may be ignored.
      *
      * @return false|string      The default request group for the patron.
@@ -1593,7 +1592,7 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
      * method.
      * @param array $holdDetails Optional array, only passed in when getting a list
      * in the context of placing a hold; contains most of the same values passed to
-     * placeHold, minus the patron data.  May be used to limit the request group
+     * placeHold, minus the patron data. May be used to limit the request group
      * options or may be ignored.
      *
      * @return array  False if request groups not in use or an array of
@@ -1971,7 +1970,7 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
     /**
      * Renew My Items
      *
-     * Function for attempting to renew a patron's items.  The data in
+     * Function for attempting to renew a patron's items. The data in
      * $renewDetails['details'] is determined by getRenewDetails().
      *
      * @param array $renewDetails An array of data required for renewing items
@@ -2160,7 +2159,7 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
         }
         $session->holds->append(
             [
-                'id'       => $holdDetails['record_id'],
+                'id'       => $holdDetails['id'],
                 'source'   => $this->getRecordSource(),
                 'location' => $holdDetails['pickUpLocation'],
                 'expire'   => $expire,
@@ -2641,7 +2640,7 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
         if ($function == 'Holds') {
             return $this->config['Holds']
                 ?? [
-                    'HMACKeys' => 'record_id:item_id:level',
+                    'HMACKeys' => 'id:item_id:level',
                     'extraHoldFields' =>
                         'comments:requestGroup:pickUpLocation:requiredByDate',
                     'defaultRequiredDate' => 'driver:0:2:0',
@@ -2769,9 +2768,6 @@ class Demo extends AbstractBase implements \VuFind\I18n\HasSorterInterface
 
     /**
      * Get list of users for whom the provided patron is a proxy.
-     *
-     * This requires the FOLIO user configured in Folio.ini to have the permission:
-     * proxiesfor.collection.get
      *
      * @param array $patron The patron array with username and password
      *
