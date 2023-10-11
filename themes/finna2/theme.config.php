@@ -222,9 +222,6 @@ $config = [
         'finna-mylist.js',
         'finna-online-payment.js',
         'finna-organisation-info.js',
-        'finna-organisation-info-page.js',
-        'finna-organisation-info-page-consortium.js',
-        'finna-organisation-info-widget.js',
         'finna-organisation-map-leaflet.js',
         'finna-primo-adv-search.js',
         'finna-R2.js',
@@ -252,6 +249,7 @@ $config = [
         'vendor/priority-nav.min.js',
         'vendor/leaflet.min.js',
         'vendor/leaflet.draw.min.js',
+        'vendor/L.Control.Locate.min.js',
         'vendor/js.cookie.js',
         'jstree-vufind-facet-plugin.js', // Load after jstree
         'finna-multiselect.js',
@@ -275,6 +273,7 @@ $config = [
         'aliases' => [
             'adv-search-group-add' => 'FontAwesome:plus-circle',
             'adv-search-group-remove' => 'FinnaIcons:remove',
+            'audio-play' => 'FontAwesome:play-circle',
             'authority-corporatename' => 'FinnaIcons:authority-communityname',
             'authority-corporatename-alt' => 'FinnaIcons:authority-corporatename',
             'authority-familyname' => 'FinnaIcons:authority-familyname',
@@ -341,7 +340,6 @@ $config = [
             'image-next' => 'FontAwesome:chevron-right',
             'image-more' => 'FinnaIcons:down',
             'image-previous' => 'FontAwesome:chevron-left',
-            'image-rights-more' => 'FinnaIcons:right',
             'image-zoom-in' => 'FinnaIcons:zoom-in',
             'image-zoom-out' => 'FinnaIcons:zoom-out',
             'image-zoom-reset' => 'FinnaIcons:zoom-all',
